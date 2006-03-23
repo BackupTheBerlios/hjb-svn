@@ -34,9 +34,10 @@ HJB
 <li>is deployed as a servlet (HJBServlet) that can run on any compliant Servlet container</li>
 <li>uses standard Java API libraries and APIs, so as to remain JMS vendor agnostic</li>
 <li>does not concern itself with session management, authentication and security -
-it acts an HTTP origin server for JMS resources, these other features can be added by other
-HTTP servers in the request processing chain.  These could include the servlet container in which 
-the HJB servlet resides, or any other server with the necessary features e.g., Apache</li>
+it acts an HTTP origin server for JMS resources; these features can be added by other
+HTTP servers in the request processing chain.  This might be the container in which the HJB servlet 
+resides, a servlet in the same container or different container, or any other HTTP proxy server 
+with the necessary features  e.g., Apache, Zope, RubyOnRails...</li>
 <li>is extensively unit tested using <a href="http://www.junit.org">JUnit</a> and 
 <a href="http://www.jmock.org">JMock</a></li>
 <li>is fully internationalized</li>
@@ -45,9 +46,11 @@ the HJB servlet resides, or any other server with the necessary features e.g., A
 <h3>Related resources</h3>
 
 <ul>
-<li><a href="http://en.wikipedia.org/wiki/REST">REST (Representational State Transfer)</a></li>
+<li><a href="http://en.wikipedia.org/wiki/REST">REST (Representational State Transfer) info</a></li>
+<li><a http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm">REST paper</a></li>
 <li><a href="http://java.sun.com/products/jms/faq.html">Sun's JMS FAQ<a></li>
 <li><a href="http://java.sun.com/products/jms/docs.html">JMS specification 1.1</a></li>
+<li><a href="http://java.sun.com/products/jms/docs.html">JMS documentation downloads</a></li>
 <li><a href="http://java.sun.com/products/servlet/download.html#specs">Java Servlet specification 2.4</a></li
 </ul>
 
