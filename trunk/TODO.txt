@@ -1,0 +1,12 @@
+* Fix all the TODOs in the java source
+
+* Deploy the standalone war against Tomcat + ActiveMQ, and perform
+* functional tests
+
+* Begin Python Client for HJB API
+
+* Begin Ruby Client for HJB API
+
+* Build a website, and add documentation to it
+
+* Deploy the website

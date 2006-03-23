@@ -1,0 +1,22 @@
+<html>
+<body bgcolor="white">
+
+Provides the interface and classes used to encapsulate the dispatch 
+of invocation of various JMS API methods on the JMS objects contained 
+by HJB.
+
+<p>
+Each <code>JMSCommand</code> is used to invoke a particular method of
+the JMS API, and reporting on the success or failure of the call.  
+There are implementations of this interface to cover invocation of all 
+of the JMS API methods supported by HJB.  The classes all extend from 
+<code>BaseJMSCommand</code>.
+</p>
+
+<p>
+<code>JMSCommandRunner</code> is a {@link java.lang.Runnable} that is
+used queue <code>JMSCommands</code> for execution in a separate thread.
+</p>
+
+</body>
+</html>

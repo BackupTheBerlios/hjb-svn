@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+
+  <display-name>HJB ActiveMQ Web application</display-name>
+  <description>
+    An web application containing the HJB servlet deployed to run
+    against the ActiveMQ messaging service 
+  </description>
+
+  <!-- Define the HJB Servlet mapping -->
+  <servlet>
+    <servlet-name>HJB</servlet-name>
+    <servlet-class>hjb.http.HJBServlet</servlet-class>
+    <init-param>
+      <param-name>hjb.config.rootpath</param-name>
+      <param-value>/home/tbe/tmp/hjb</param-value>
+    </init-param>
+    <init-param>
+      <param-name>hjb.config.command.timeout</param-name>
+      <param-value>600</param-value>
+    </init-param>
+  </servlet>
+
+  <!-- Define the HJB Servlet Mapping -->
+  <servlet-mapping>
+    <servlet-name>HJB</servlet-name>
+    <url-pattern>/hjb/*</url-pattern>
+  </servlet-mapping>
+
+</web-app>

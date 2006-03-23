@@ -1,0 +1,28 @@
+<html>
+<body bgcolor="white">
+
+Provides the interface and classes used to allow data to be
+transferred between {@link hjb.msg.HJBMessage} and {@link
+javax.jms.Message} instances.
+
+<p>
+<code>MessageCopier</code> defines the methods used to copy data
+between the HJB and JMS versions of a message.  The package contains
+implementations of this interface for each of the JMS Message types,
+all which extend a base class, <code>PayloadMessageCopier</code> which
+defines utility methods used by all the implementations.
+
+<p>
+<code>MessageCopierFactory</code> is used to instantiate the
+appropriate <code>MessageCopier<code> for a given message.
+</p>
+
+<p> 
+<code>AttributeCopier<code>, <code>AttributeCopierAssistant</code>
+and <code>NamedProperyCopier</code> are used by the implementations of
+<code>MessageCopier</code> to copy the attributes and properties
+between the two versions of a message.
+</p>
+
+</body>
+</html>
