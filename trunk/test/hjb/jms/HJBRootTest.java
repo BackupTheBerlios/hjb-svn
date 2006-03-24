@@ -46,13 +46,13 @@ public class HJBRootTest extends MockObjectTestCase {
                     br.getCommandRunner().isTerminated());
     }
 
+    public void testDeletingNonExistentProviderDoesNotThrow() {
+        HJBRoot br = new HJBRoot(testRootPath);
+        br.deleteProvider("notPresent");        
+    }
+    
     public void testDeleteProvider() throws Exception {
         HJBRoot br = new HJBRoot(testRootPath);
-
-        try {
-            br.deleteProvider("notPresent");
-            fail("removed non-existant provider");
-        } catch (HJBException hjbe) {}
 
         br.addProvider(testEnvironment);
         Map providers = br.getProviders();
@@ -63,11 +63,14 @@ public class HJBRootTest extends MockObjectTestCase {
         assertEquals("provider not removed", 0, providers.size());
     }
 
-    public void testAddProvider() throws Exception {
+    public void testRegisterProvider() throws Exception {
         HJBRoot br = new HJBRoot(testRootPath);
 
         br.addProvider(testEnvironment);
         Map providers = br.getProviders();
+        assertEquals("wrong number of providers", 1, providers.size());
+        br.addProvider(testEnvironment);
+        providers = br.getProviders();
         assertEquals("wrong number of providers", 1, providers.size());
 
         br.addProvider(anotherEnvironment);
