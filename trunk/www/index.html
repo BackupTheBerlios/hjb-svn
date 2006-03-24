@@ -23,9 +23,13 @@ HJB
 <ul>
 <li>will allow any language/library capable of communication via HTTP to access JMS-compliant messaging products</li>
 <li>aims to provide a RESTful equivalent to all of the non-optional portions of the JMS API</li>
+<li>the access to JMS includes
+<ul>
+<li>registration of JNDI configured provider resources</li>
+<li>connection and session management</li>
+<li>sending/receiving of all types of JMS message</li>
+</uL>
 </ul>
-<li>JMS access include sending/receiving of all types of JMS message, registration of JNDI configured provider resources
-and connection/session management</li>
 </p>
 
 <h3>Implementation overview</h3>
@@ -33,11 +37,12 @@ HJB
 <ul>
 <li>is deployed as a servlet (HJBServlet) that can run on any compliant Servlet container</li>
 <li>uses standard Java API libraries and APIs, so as to remain JMS vendor agnostic</li>
-<li>does not concern itself with session management, authentication and security -
-it acts an HTTP origin server for JMS resources; these features can be added by other
-HTTP servers in the request processing chain.  This might be the container in which the HJB servlet 
-resides, a servlet in the same container or different container, or any other HTTP proxy server 
-with the necessary features  e.g., Apache, Zope, RubyOnRails...</li>
+<li>aims to one thing only, i.e., act an HTTP origin server for JMS resources. 
+It does not concern itself with session management, authentication and security -
+these features can be added by other HTTP servers in the request processing chain.  
+This might be the container in which the HJB servlet  resides, or a servlet in the same 
+container or different container, or any other HTTP proxy server with the necessary features  
+e.g., Apache, Zope, RubyOnRails...</li>
 <li>is extensively unit tested using <a href="http://www.junit.org">JUnit</a> and 
 <a href="http://www.jmock.org">JMock</a></li>
 <li>is fully internationalized</li>
@@ -47,6 +52,7 @@ with the necessary features  e.g., Apache, Zope, RubyOnRails...</li>
 
 <ul>
 <li><a href="http://en.wikipedia.org/wiki/REST">REST (Representational State Transfer) info</a></li>
+<li><a href="http://www.prescod.net/rest/rest_vs_soap_overview/">REST vs SOAP</a></li>
 <li><a href="http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm">REST paper</a></li>
 <li><a href="http://www.prescod.net/rest/mistakes/">REST design advice</a></li>
 <li><a href="http://java.sun.com/products/jms/faq.html">Sun's JMS FAQ<a></li>
