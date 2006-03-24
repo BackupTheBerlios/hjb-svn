@@ -157,11 +157,15 @@ public class HJBConnectionFactory implements ConnectionFactory {
 
     public void deleteConnection(int index) {
         synchronized (activeConnections) {
-            HJBConnection c = (HJBConnection) activeConnections.get(new Integer(index));
-            stopThenCloseConnection(c);
-            activeConnections.remove(new Integer(index));
-            LOG.info(strings().getString(HJBStrings.DELETED_CONNECTION,
-                                         new Integer(index)));
+            try {
+                HJBConnection c = (HJBConnection) activeConnections.get(new Integer(index));
+                stopThenCloseConnection(c);
+                activeConnections.remove(new Integer(index));
+                LOG.info(strings().getString(HJBStrings.DELETED_CONNECTION,
+                                             new Integer(index)));                
+            } catch (IndexOutOfBoundsException e) {
+                handleConnectionNotFound(index, e);
+            }
         }
     }
 

@@ -395,7 +395,7 @@ public final class HJBStrings {
     public static final String ENCODING_NOT_SUPPORTED = "encoding.not.supported";
 
     public static final String END_SHUTDOWN_PROVIDERS = "end.shutdown.providers";
-    
+        
     public static final String END_SHUTDOWN_1_PROVIDER = "end.shutdown.1.provider";
     
     public static final String START_SHUTDOWN_1_PROVIDER = "start.shutdown.1.provider";
@@ -411,4 +411,6 @@ public final class HJBStrings {
     public static final String NOT_MATCHED = "not.matched";
 
     public static final String SHUTDOWN_NOT_SMOOTH = "shutdown.not.smooth";
+
+    public static final String PROVIDER_ALREADY_REGISTERED = "provider.already.registered";
 }

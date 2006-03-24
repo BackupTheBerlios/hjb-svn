@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.jms;
 
 import java.util.*;
@@ -56,10 +56,12 @@ public class HJBProvider {
      *
      */
     public void shutdown() {
-        LOG.info(strings().getString(HJBStrings.START_SHUTDOWN_1_PROVIDER, getName()));
+        LOG.info(strings().getString(HJBStrings.START_SHUTDOWN_1_PROVIDER,
+                                     getName()));
         shutdownConnectionFactories();
         shutdownDestinations();
-        LOG.info(strings().getString(HJBStrings.END_SHUTDOWN_1_PROVIDER, getName()));
+        LOG.info(strings().getString(HJBStrings.END_SHUTDOWN_1_PROVIDER,
+                                     getName()));
     }
 
     public String getName() {
@@ -100,10 +102,9 @@ public class HJBProvider {
         Object tobeRemoved = factories.remove(factoryName);
         if (null == tobeRemoved) {
             String message = strings().getString(HJBStrings.NOT_REMOVED,
-                                                 "Connection Factory "
-                                                         + factoryName);
-            LOG.error(message);
-            throw new HJBException(message);
+                                                 "Connection Factory " + factoryName);
+            LOG.warn(message);
+            return;
         }
         HJBConnectionFactory removedFactory = (HJBConnectionFactory) tobeRemoved;
         removedFactory.removeConnections();
@@ -113,10 +114,8 @@ public class HJBProvider {
         Object tobeRemoved = destinations.remove(destinationName);
         if (null == tobeRemoved) {
             String message = strings().getString(HJBStrings.NOT_REMOVED,
-                                                 "Destination "
-                                                         + destinationName);
-            LOG.error(message);
-            throw new HJBException(message);
+                                                 "Destination " + destinationName);
+            LOG.warn(message);
         }
     }
 
@@ -150,7 +149,8 @@ public class HJBProvider {
      */
     public boolean equals(Object obj) {
         if (!(obj instanceof HJBProvider)) return false;
-        return ((HJBProvider) obj).getEnvironment().equals(this.getEnvironment());
+        return ((HJBProvider) obj).getEnvironment()
+                                  .equals(this.getEnvironment());
     }
 
     /**
@@ -176,7 +176,8 @@ public class HJBProvider {
                     // destinations, so deleting from destinations is safe
                     // while iterating through it
                     deleteDestination((String) i.next());
-                } catch (HJBException e) {}
+                } catch (HJBException e) {
+                }
                 // ok to handle the exception in this way - it is logged
                 // when it is created, and we don't want to stop until all the
                 // destinations are removed
@@ -192,7 +193,8 @@ public class HJBProvider {
                     // factories, so deleting from factories is safe
                     // while iterating through it
                     deleteConnectionFactory((String) i.next());
-                } catch (HJBException e) {}
+                } catch (HJBException e) {
+                }
                 // ok to handle the exception in this way - it is logged
                 // when it is created, and we don't want to stop until all the
                 // factories are removed

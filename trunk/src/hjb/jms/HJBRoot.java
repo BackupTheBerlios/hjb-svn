@@ -1,35 +1,38 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.jms;
-
-import java.io.File;
-import java.util.*;
-
-import org.apache.log4j.Logger;
 
 import hjb.jms.cmd.JMSCommandRunner;
 import hjb.misc.HJBClientException;
 import hjb.misc.HJBException;
-import hjb.misc.HJBNotFoundException;
 import hjb.misc.HJBStrings;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 /**
  * HJBRoot is the root of an HJB runtime, a registry of the configured
@@ -65,7 +68,8 @@ public class HJBRoot {
                     // providers, so deleting from providers is safe
                     // while iterating through it
                     deleteProvider((String) i.next());
-                } catch (HJBException e) {}
+                } catch (HJBException e) {
+                }
                 // ok to handle the exception in this way, as it is logged on
                 // when it is created, and we don't want top until all providers
                 // are removed
@@ -81,7 +85,13 @@ public class HJBRoot {
     public void addProvider(Hashtable environment) {
         synchronized (providers) {
             HJBProvider provider = new ProviderBuilder(environment).createProvider();
-            checkThatProviderIsUnique(provider);
+            if (isTheSameProviderAlreadyRegistered(provider)) {
+                String message = strings().getString(HJBStrings.PROVIDER_ALREADY_REGISTERED,
+                                                     provider.getName());
+                LOG.warn(message);
+                return;
+            }
+            assertThatProviderIsUnique(provider);
             providers.put(provider.getName(), provider);
         }
     }
@@ -92,8 +102,8 @@ public class HJBRoot {
             if (null == tobeRemoved) {
                 String message = strings().getString(HJBStrings.PROVIDER_NOT_REMOVED,
                                                      providerName);
-                LOG.error(message);
-                throw new HJBNotFoundException(message);
+                LOG.warn(message);
+                return;
             }
             HJBProvider removedProvider = (HJBProvider) tobeRemoved;
             removedProvider.shutdown();
@@ -125,15 +135,22 @@ public class HJBRoot {
 
     protected void storagePathIsValid(File storagePath) {
         if (null == storagePath || !storagePath.isDirectory()
-                || !storagePath.canWrite()) {
+            || !storagePath.canWrite()) {
             String message = "Directory " + storagePath
-                    + " can not be accessed";
+                             + " can not be accessed";
             LOG.error(message);
             throw new HJBException(message);
         }
     }
 
-    protected void checkThatProviderIsUnique(HJBProvider provider) {
+    protected boolean isTheSameProviderAlreadyRegistered(HJBProvider provider) {
+        if (!providers.containsKey(provider.getName())) return false;
+        Map registeredEnvironment = ((HJBProvider) providers.get(provider.getName())).getEnvironment();
+        return provider.getEnvironment().equals(registeredEnvironment);
+
+    }
+
+    protected void assertThatProviderIsUnique(HJBProvider provider) {
         if (providers.containsKey(provider.getName())) {
             String message = strings().getString(HJBStrings.PROVIDER_NAME_ALREADY_USED,
                                                  provider.getName());
