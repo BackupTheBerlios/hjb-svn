@@ -99,10 +99,7 @@ public class JMSCommandRunner implements Runnable {
     }
 
     public void terminate() {
-        synchronized (commands) {
-            setTerminated(true);
-            commands.notifyAll();
-        }
+        setTerminated(true);
     }
 
     protected void processNextCommand() {
@@ -176,7 +173,7 @@ public class JMSCommandRunner implements Runnable {
     private List commands;
     private List ignoredCommands;
     private boolean running;
-    private boolean terminated;
+    private volatile boolean terminated;
 
     private static final Logger LOG = Logger.getLogger(JMSCommandRunner.class);
     private static final HJBStrings STRINGS = new HJBStrings();
