@@ -62,7 +62,7 @@ public class CreateConnectionGenerator extends PatternMatchingCommandGenerator {
 
         String formatterText = FORMATTER_GENERATOR.format(new Object[] {
                 request.getContextPath(),
-                request.getServletPath(),
+                "".equals(request.getServletPath()) ? "" : "/" + request.getServletPath(),
                 providerName,
                 factoryName,
         });
@@ -106,5 +106,5 @@ public class CreateConnectionGenerator extends PatternMatchingCommandGenerator {
     private transient MessageFormat createdLocationFormat;
     private transient CreateConnection generatedCommand;
     private static Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/create$");
-    private static MessageFormat FORMATTER_GENERATOR = new MessageFormat("{0}/{1}/{2}/{3}/connection-'{0}'");
+    private static MessageFormat FORMATTER_GENERATOR = new MessageFormat("{0}{1}/{2}/{3}/connection-'{0}'");
 }

@@ -65,7 +65,7 @@ public class CreateConsumerGeneratorTest extends
         assertSame(root.getProvider("testProvider").getConnectionFactory("testFactory").getConnection(0).getSessionCommandRunner(0),
                    generator.getAssignedCommandRunner());
         assertTrue(generator.getGeneratedCommand() instanceof CreateConsumer);
-        assertEquals("hjb//testProvider/testFactory/connection-0/session-0/consumer-{0}",
+        assertEquals("hjb/testProvider/testFactory/connection-0/session-0/consumer-{0}",
                      generator.getCreatedLocationFormatter().toPattern());
     }
 

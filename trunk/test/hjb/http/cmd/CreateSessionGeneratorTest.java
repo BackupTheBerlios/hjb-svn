@@ -59,7 +59,7 @@ public class CreateSessionGeneratorTest extends BaseJMSCommandGeneratorTestCase 
         assertSame(root.getCommandRunner(),
                    generator.getAssignedCommandRunner());
         assertTrue(generator.getGeneratedCommand() instanceof CreateSession);
-        assertEquals("hjb//testProvider/testFactory/connection-0/session-{0}",
+        assertEquals("hjb/testProvider/testFactory/connection-0/session-{0}",
                      generator.getCreatedLocationFormatter().toPattern());
 
     }

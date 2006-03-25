@@ -158,7 +158,7 @@ public class HJBConnectionFactory implements ConnectionFactory {
     public void deleteConnection(int index) {
         synchronized (activeConnections) {
             try {
-                HJBConnection c = (HJBConnection) activeConnections.get(new Integer(index));
+                HJBConnection c = getConnection(index);
                 stopThenCloseConnection(c);
                 activeConnections.remove(new Integer(index));
                 LOG.info(strings().getString(HJBStrings.DELETED_CONNECTION,

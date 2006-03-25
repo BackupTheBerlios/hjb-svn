@@ -63,7 +63,7 @@ public class CreateProducerGenerator extends PatternMatchingCommandGenerator {
 
         String formatterText = FORMATTER_GENERATOR.format(new Object[] {
                 request.getContextPath(),
-                request.getServletPath(),
+                "".equals(request.getServletPath()) ? "" : "/" + request.getServletPath(),
                 providerName,
                 factoryName,
                 new Integer(connectionIndex),
@@ -114,5 +114,5 @@ public class CreateProducerGenerator extends PatternMatchingCommandGenerator {
     private transient CreateProducer generatedCommand;
 
     private static Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/connection-(\\d+)/session-(\\d+)/create-producer$");
-    private static MessageFormat FORMATTER_GENERATOR = new MessageFormat("{0}/{1}/{2}/{3}/connection-{4}/session-{5}/producer-'{0}'");
+    private static MessageFormat FORMATTER_GENERATOR = new MessageFormat("{0}{1}/{2}/{3}/connection-{4}/session-{5}/producer-'{0}'");
 }

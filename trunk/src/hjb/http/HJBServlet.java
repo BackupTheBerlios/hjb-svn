@@ -241,6 +241,10 @@ public class HJBServlet extends HttpServlet {
                 timeIsUp.cancel();
             }
         }
+        if (! generatedCommand.isExecutedOK()) {
+            getServletContext().log(generatedCommand.getStatusMessage(), generatedCommand.getFault());
+            LOG.error(generatedCommand.getStatusMessage(), generatedCommand.getFault());
+        }
         generator.sendResponse(response);
     }
 

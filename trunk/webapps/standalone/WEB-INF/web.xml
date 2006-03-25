@@ -21,7 +21,7 @@
     </init-param>
     <init-param>
       <param-name>hjb.config.command.timeout</param-name>
-      <param-value>600</param-value>
+      <param-value>30</param-value>
     </init-param>
   </servlet>
 

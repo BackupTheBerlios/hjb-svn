@@ -85,7 +85,8 @@ public class JMSArgumentFinder {
     public int findAcknowledgementMode(Map decodedParameters) {
         Object rawAcknowledgementMode = decodedParameters.get(HJBServletConstants.SESSION_ACKNOWLEDGEMENT_MODE);
         if (!(rawAcknowledgementMode instanceof Integer)) {
-            String message = strings().getString("acknowledgement mode",
+            String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
+                                                 "acknowledgement mode",
                                                  rawAcknowledgementMode,
                                                  new Integer(HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE));
             LOG.warn(message);
@@ -98,7 +99,8 @@ public class JMSArgumentFinder {
         case Session.SESSION_TRANSACTED:
             return acknowledgementValue;
         default:
-            String message = strings().getString("acknowledgement mode",
+            String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
+                                                 "acknowledgement mode",
                                                  rawAcknowledgementMode,
                                                  new Integer(HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE));
             LOG.warn(message);
@@ -109,7 +111,8 @@ public class JMSArgumentFinder {
     public boolean findTransacted(Map decodedParameters) {
         Object rawTransacted = decodedParameters.get(HJBServletConstants.SESSION_TRANSACTED);
         if (!(rawTransacted instanceof Boolean)) {
-            String message = strings().getString("transacted",
+            String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
+                                                 "transacted",
                                                  rawTransacted,
                                                  new Boolean(HJBServletConstants.DEFAULT_TRANSACTED));
             LOG.warn(message);

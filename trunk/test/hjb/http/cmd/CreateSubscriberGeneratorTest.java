@@ -65,7 +65,7 @@ public class CreateSubscriberGeneratorTest extends
         assertSame(root.getProvider("testProvider").getConnectionFactory("testFactory").getConnection(0).getSessionCommandRunner(0),
                    generator.getAssignedCommandRunner());
         assertTrue(generator.getGeneratedCommand() instanceof CreateSubscriber);
-        assertEquals("hjb//testProvider/testFactory/connection-0/session-0/subscriber-{0}",
+        assertEquals("hjb/testProvider/testFactory/connection-0/session-0/subscriber-{0}",
                      generator.getCreatedLocationFormatter().toPattern());
     }
 

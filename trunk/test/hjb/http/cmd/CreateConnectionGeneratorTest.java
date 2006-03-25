@@ -59,7 +59,7 @@ public class CreateConnectionGeneratorTest extends
         assertSame(root.getCommandRunner(),
                    generator.getAssignedCommandRunner());
         assertTrue(generator.getGeneratedCommand() instanceof CreateConnection);
-        assertEquals("hjb//testProvider/testFactory/connection-{0}",
+        assertEquals("hjb/testProvider/testFactory/connection-{0}",
                      generator.getCreatedLocationFormatter().toPattern());
 
     }

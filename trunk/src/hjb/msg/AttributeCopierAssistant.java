@@ -322,7 +322,7 @@ public class AttributeCopierAssistant {
 
         public String read(Message aMessage) throws HJBException {
             try {
-                return aMessage.getJMSDestination().toString();
+                return "" + aMessage.getJMSDestination();
             } catch (JMSException e) {
                 return handleJMSException(e);
             }
@@ -341,7 +341,7 @@ public class AttributeCopierAssistant {
 
         public String read(Message aMessage) throws HJBException {
             try {
-                return aMessage.getJMSReplyTo().toString();
+                return "" + aMessage.getJMSReplyTo();
             } catch (JMSException e) {
                 return handleJMSException(e);
             }

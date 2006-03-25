@@ -49,11 +49,11 @@ public class JMSCommandRunner implements Runnable {
                                      getThreadName()));
         synchronized (commands) {
             try {
-                while (!(hasCommands() || isTerminated())) {
-                    commands.wait();
+                while (!isTerminated()) {
                     while (hasCommands()) {
                         processNextCommand();
                     }
+                    commands.wait();
                 }
             } catch (InterruptedException e) {
                 String message = strings().getString(HJBStrings.HJB_RUNNER_DIED,
@@ -71,7 +71,7 @@ public class JMSCommandRunner implements Runnable {
             LOG.warn(strings().getString(HJBStrings.HJB_RUNNER_IGNORED_NULL_COMMAND));
             return;
         }
-        if (!isRunning()) {
+        if (isTerminated()) {
             String message = strings().getString(HJBStrings.HJB_RUNNER_REFUSED_COMMAND,
                                                  aCommand.getDescription());
             LOG.error(message);
