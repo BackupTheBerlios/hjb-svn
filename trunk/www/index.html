@@ -37,12 +37,11 @@ HJB
 <ul>
 <li>is deployed as a servlet (HJBServlet) that can run on any compliant Servlet container</li>
 <li>uses standard Java API libraries and APIs, so as to remain JMS vendor agnostic</li>
-<li>aims to one thing only, i.e., act an HTTP origin server for JMS resources. 
+<li>aims to do one thing very well, i.e., act an HTTP gateway server for JMS resources. 
 It does not concern itself with session management, authentication and security -
-these features can be added by other HTTP servers in the request processing chain.  
-This might be the container in which the HJB servlet  resides, or a servlet in the same 
-container or different container, or any other HTTP proxy server with the necessary features  
-e.g., Apache, Zope, RubyOnRails...</li>
+these features can be added by other HTTP servers in the HTTP request processing chain.  
+This might be the container in which the HJB servlet resides, or a servlet in the same 
+or different container, or any other HTTP proxy server e.g., Apache, Zope, RubyOnRails...</li>
 <li>is extensively unit tested using <a href="http://www.junit.org">JUnit</a> and 
 <a href="http://www.jmock.org">JMock</a></li>
 <li>is fully internationalized</li>

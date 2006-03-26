@@ -23,6 +23,8 @@ package hjb.msg;
 import java.util.HashMap;
 import java.util.Map;
 
+import hjb.http.cmd.HJBMessageWriter;
+
 /**
  * <code>HJBMessage</code> serves as an intermediate representation of a
  * <code>JMS</code> message.
@@ -58,6 +60,10 @@ public class HJBMessage {
 
     public String addHeader(String name, String value) {
         return (String) headers.put(name, value);
+    }
+    
+    public String toString() {
+        return new HJBMessageWriter().asText(this);
     }
 
     private Map headers;

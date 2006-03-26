@@ -158,6 +158,7 @@ public class HJBMessenger {
             asJMS.acknowledge();
             HJBMessage result = createHJBMessageFor(asJMS);
             findMessageCopierFor(asJMS).copyToHJBMessage(asJMS, result);
+            LOG.info("Created HJB message: " + result);
             return result;
         } catch (JMSException e) {
             return handleReceiptFailure();

@@ -66,7 +66,7 @@ public class ReceiveFromConsumer extends MessengerCommand {
         return messageReceived;
     }
 
-    protected void setMessageReceived(HJBMessage messageReceived) {
+    protected void setMessageReceived(HJBMessage messageReceived) {        
         this.messageReceived = messageReceived;
     }
 
@@ -89,9 +89,10 @@ public class ReceiveFromConsumer extends MessengerCommand {
         return timeout;
     }
 
+    private int consumerIndex;
+    private long timeout;
+
     public static final long NO_TIMEOUT_SET = Long.MAX_VALUE;
     public static final long NO_WAIT = Long.MIN_VALUE;
     private HJBMessage messageReceived;
-    private int consumerIndex;
-    private long timeout;
 }
