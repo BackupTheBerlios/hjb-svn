@@ -88,5 +88,5 @@ public class SendHJBMessageGenerator extends PatternMatchingCommandGenerator {
 
     private transient SendHJBMessage generatedCommand;
 
-    private static Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/connection-(\\d+)/session-(\\d+)/producer-(\\d+)/send$");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/connection-(\\d+)/session-(\\d+)/producer-(\\d+)/send$");
 }

@@ -88,9 +88,9 @@ public class CharCodec extends BaseValueCodec {
 
     protected static String UNICODE_REGEX = "\\\\u([0123456789aAbBcCdDeEfF]{1,4})";
 
-    private static Pattern ENCODING_MATCHER = Pattern.compile("^\\s*\\(char\\s*("
+    private static final Pattern ENCODING_MATCHER = Pattern.compile("^\\s*\\(char\\s*("
             + UNICODE_REGEX + ")\\)\\s*$");
 
-    private static MessageFormat ENCODER = new MessageFormat("(char \\u{0})");
+    private static final MessageFormat ENCODER = new MessageFormat("(char \\u{0})");
 
 }

@@ -81,7 +81,7 @@ public class CreateSubscriberGeneratorTest extends
             "testSubscriber"
         });
         parameterMap.put(HJBServletConstants.DESTINATION_URL, new String[] {
-            "/testProvider/testDestination"
+            "/context/servlet/testProvider/testDestination"
         });
         return Collections.unmodifiableMap(parameterMap);
     }

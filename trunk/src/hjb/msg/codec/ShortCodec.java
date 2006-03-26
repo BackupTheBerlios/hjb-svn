@@ -85,9 +85,9 @@ public class ShortCodec extends BaseValueCodec {
 
     protected static String SHORT_REGEX = "[-+]?\\d+";
 
-    private static Pattern ENCODING_MATCHER = Pattern.compile("^\\s*\\(short\\s*("
+    private static final Pattern ENCODING_MATCHER = Pattern.compile("^\\s*\\(short\\s*("
             + SHORT_REGEX + ")\\)\\s*$");
 
-    private static MessageFormat ENCODER = new MessageFormat("(short {0,number,0})");
+    private static final MessageFormat ENCODER = new MessageFormat("(short {0,number,0})");
 
 }

@@ -85,8 +85,8 @@ public class ByteCodec extends BaseValueCodec {
 
     protected static String BYTE_REGEX = "[-+]?\\d+";
 
-    public static Pattern ENCODING_MATCHER = Pattern.compile("^\\s*\\(byte\\s*("
+    public static final Pattern ENCODING_MATCHER = Pattern.compile("^\\s*\\(byte\\s*("
             + BYTE_REGEX + ")\\)\\s*$");
 
-    public static MessageFormat ENCODER = new MessageFormat("(byte {0})");
+    public static final MessageFormat ENCODER = new MessageFormat("(byte {0})");
 }

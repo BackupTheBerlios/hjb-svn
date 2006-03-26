@@ -86,9 +86,9 @@ public class LongCodec extends BaseValueCodec {
 
     protected static String LONG_REGEX = "[-+]?\\d+[lL]?";
 
-    private static Pattern ENCODING_MATCHER = Pattern.compile("^\\s*\\(long\\s*("
+    private static final Pattern ENCODING_MATCHER = Pattern.compile("^\\s*\\(long\\s*("
             + LONG_REGEX + ")\\)\\s*$");
 
-    private static MessageFormat ENCODER = new MessageFormat("(long {0,number,0})");
+    private static final MessageFormat ENCODER = new MessageFormat("(long {0,number,0})");
 
 }

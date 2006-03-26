@@ -64,7 +64,7 @@ public class CreateBrowserGenerator extends PatternMatchingCommandGenerator {
 
         String formatterText = FORMATTER_GENERATOR.format(new Object[] {
                 request.getContextPath(),
-                "".equals(request.getServletPath()) ? "" : "/" + request.getServletPath(),
+                request.getServletPath(),
                 providerName,
                 factoryName,
                 new Integer(connectionIndex),
@@ -115,6 +115,6 @@ public class CreateBrowserGenerator extends PatternMatchingCommandGenerator {
     private transient MessageFormat createdLocationFormat;
     private transient CreateBrowser generatedCommand;
 
-    private static Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/connection-(\\d+)/session-(\\d+)/create-browser$");
-    private static MessageFormat FORMATTER_GENERATOR = new MessageFormat("{0}{1}/{2}/{3}/connection-{4}/session-{5}/browser-'{0}'");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/connection-(\\d+)/session-(\\d+)/create-browser$");
+    private static final MessageFormat FORMATTER_GENERATOR = new MessageFormat("{0}{1}/{2}/{3}/connection-{4}/session-{5}/browser-'{0}'");
 }

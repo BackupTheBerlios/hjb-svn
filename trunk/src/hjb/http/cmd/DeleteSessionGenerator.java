@@ -80,5 +80,5 @@ public class DeleteSessionGenerator extends PatternMatchingCommandGenerator {
 
     private transient DeleteSession generatedCommand;
 
-    private static Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/connection-(\\d+)/session-(\\d+)/?$");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/connection-(\\d+)/session-(\\d+)/?$");
 }

@@ -136,14 +136,13 @@ public class JMSArgumentFinder {
         return (Queue) rawDestination;
     }
 
-    public boolean findNoLocal(PatternMatchingCommandGenerator generator,
-                               Map decodedParameters) {
+    public boolean findNoLocal(Map decodedParameters) {
         Object rawNoLocal = decodedParameters.get(HJBServletConstants.CONSUMER_NOLOCAL);
         if (!(rawNoLocal instanceof Boolean)) {
-            String message = generator.strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
-                                                           "noLocal",
-                                                           rawNoLocal,
-                                                           new Boolean(HJBServletConstants.DEFAULT_NOLOCAL));
+            String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
+                                                 "noLocal",
+                                                 rawNoLocal,
+                                                 new Boolean(HJBServletConstants.DEFAULT_NOLOCAL));
             LOG.warn(message);
             return HJBServletConstants.DEFAULT_NOLOCAL;
         }
@@ -253,6 +252,6 @@ public class JMSArgumentFinder {
     }
 
     private static final Logger LOG = Logger.getLogger(JMSArgumentFinder.class);
-    private static Pattern DESTINATION_PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/?$");
+    private static final Pattern DESTINATION_PATH_MATCHER = Pattern.compile("^/[^/]*/[^/]*/(\\w+)/([^/]+)/?$");
     private static HJBStrings STRINGS = new HJBStrings();
 }

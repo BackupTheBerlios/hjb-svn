@@ -85,9 +85,9 @@ public class BooleanCodec extends BaseValueCodec {
 
     protected static String BOOLEAN_REGEX = "\\S+";
 
-    private static Pattern ENCODING_MATCHER = Pattern.compile("^\\s*\\(boolean\\s*("
+    private static final Pattern ENCODING_MATCHER = Pattern.compile("^\\s*\\(boolean\\s*("
             + BOOLEAN_REGEX + ")\\)\\s*$");
 
-    private static MessageFormat ENCODER = new MessageFormat("(boolean {0})");
+    private static final MessageFormat ENCODER = new MessageFormat("(boolean {0})");
 
 }

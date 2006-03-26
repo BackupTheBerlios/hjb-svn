@@ -96,8 +96,8 @@ public class ByteArrayCodec extends BaseValueCodec {
 
     protected static String ALLOW_ALL_REGEX = "(.*?)";
 
-    private static Pattern ENCODING_MATCHER = Pattern.compile("^\\s*\\(base64\\s*("
+    private static final Pattern ENCODING_MATCHER = Pattern.compile("^\\s*\\(base64\\s*("
             + ALLOW_ALL_REGEX + ")\\)\\s*$");
 
-    private static MessageFormat ENCODER = new MessageFormat("(base64 {0})");
+    private static final MessageFormat ENCODER = new MessageFormat("(base64 {0})");
 }

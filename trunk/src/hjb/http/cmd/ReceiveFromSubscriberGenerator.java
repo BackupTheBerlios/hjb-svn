@@ -102,5 +102,5 @@ public class ReceiveFromSubscriberGenerator extends
 
     private transient ReceiveFromSubscriber generatedCommand;
 
-    private static Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/connection-(\\d+)/session-(\\d+)/subscriber-(\\d+)/receive$");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/connection-(\\d+)/session-(\\d+)/subscriber-(\\d+)/receive$");
 }

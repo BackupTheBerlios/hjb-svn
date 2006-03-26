@@ -85,9 +85,9 @@ public class FloatCodec extends BaseValueCodec {
 
     protected static String FLOATING_POINT_REGEX = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?[fFdD]?";
 
-    private static Pattern ENCODING_MATCHER = Pattern.compile("^\\s*\\(float\\s*("
+    private static final Pattern ENCODING_MATCHER = Pattern.compile("^\\s*\\(float\\s*("
             + FLOATING_POINT_REGEX + ")\\)\\s*$");
 
-    private static MessageFormat ENCODER = new MessageFormat("(float {0,number,##0.###E0})");
+    private static final MessageFormat ENCODER = new MessageFormat("(float {0,number,##0.###E0})");
 
 }

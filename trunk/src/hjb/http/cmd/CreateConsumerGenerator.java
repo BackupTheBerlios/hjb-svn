@@ -64,7 +64,7 @@ public class CreateConsumerGenerator extends PatternMatchingCommandGenerator {
 
         String formatterText = FORMATTER_GENERATOR.format(new Object[] {
                 request.getContextPath(),
-                "".equals(request.getServletPath()) ? "" : "/" + request.getServletPath(),
+                request.getServletPath(),
                 providerName,
                 factoryName,
                 new Integer(connectionIndex),
@@ -90,8 +90,7 @@ public class CreateConsumerGenerator extends PatternMatchingCommandGenerator {
                                                                                root,
                                                                                providerName),
                                                    getFinder().findMessageSelector(decodedParameters),
-                                                   getFinder().findNoLocal(this,
-                                                                           decodedParameters));
+                                                   getFinder().findNoLocal(decodedParameters));
         setAssignedCommandRunner(connection.getSessionCommandRunner(sessionIndex));
     }
 
@@ -117,6 +116,6 @@ public class CreateConsumerGenerator extends PatternMatchingCommandGenerator {
     private transient MessageFormat createdLocationFormat;
     private transient CreateConsumer generatedCommand;
 
-    private static Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/connection-(\\d+)/session-(\\d+)/create-consumer$");
-    private static MessageFormat FORMATTER_GENERATOR = new MessageFormat("{0}{1}/{2}/{3}/connection-{4}/session-{5}/consumer-'{0}'");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/connection-(\\d+)/session-(\\d+)/create-consumer$");
+    private static final MessageFormat FORMATTER_GENERATOR = new MessageFormat("{0}{1}/{2}/{3}/connection-{4}/session-{5}/consumer-'{0}'");
 }

@@ -34,16 +34,17 @@ import hjb.msg.HJBMessage;
  * 
  * <p />
  * A single HJBMessage is represented as follows:<br />
- * All the headers are written as follows
+ * All the headers are written as follows, where <code>CR</code> indicates
+ * the platform-specific end-of-line character sequence
  * 
  * <pre>
- *     headerName=headerValue 'CR'
+ *     headerName=headerValue CR
  * </pre>
  * 
  * Then a '%' is written by itself:
  * 
  * <pre>
- *      % 'CR'
+ *      % CR
  * </pre>
  * 
  * Finally, the message body is written.
@@ -52,7 +53,7 @@ import hjb.msg.HJBMessage;
  * and a '%% ' is used to separate each one.
  * 
  * <pre>
- *      % 'CR'
+ *      % CR
  * </pre>
  * 
  * @author Tim Emiola

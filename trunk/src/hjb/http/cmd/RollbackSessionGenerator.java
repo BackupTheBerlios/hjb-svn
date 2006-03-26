@@ -85,5 +85,5 @@ public class RollbackSessionGenerator extends PatternMatchingCommandGenerator {
 
     private transient RollbackSession generatedCommand;
 
-    private static Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/connection-(\\d+)/session-(\\d+)/rollback$");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/connection-(\\d+)/session-(\\d+)/rollback$");
 }

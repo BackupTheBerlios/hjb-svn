@@ -66,5 +66,5 @@ public class RegisterProviderGenerator extends PatternMatchingCommandGenerator {
 
     private transient RegisterProvider generatedCommand;
 
-    private static Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/register");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/register");
 }

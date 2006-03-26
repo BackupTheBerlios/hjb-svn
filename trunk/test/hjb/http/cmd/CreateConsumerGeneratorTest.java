@@ -78,7 +78,7 @@ public class CreateConsumerGeneratorTest extends
             "(boolean false)"
         });
         parameterMap.put(HJBServletConstants.DESTINATION_URL, new String[] {
-            "/testProvider/testDestination"
+            "/context/servlet/testProvider/testDestination"
         });
         return Collections.unmodifiableMap(parameterMap);
     }

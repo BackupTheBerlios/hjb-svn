@@ -62,5 +62,5 @@ public class DeleteProviderGenerator extends PatternMatchingCommandGenerator {
 
     private transient DeleteProvider generatedCommand;
 
-    private static Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/?");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/?");
 }

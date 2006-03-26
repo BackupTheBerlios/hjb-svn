@@ -71,5 +71,5 @@ public class DeleteConnectionFactoryGenerator extends
 
     private transient DeleteConnectionFactory generatedCommand;
 
-    private static Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/??$");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/??$");
 }

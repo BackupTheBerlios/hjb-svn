@@ -85,9 +85,9 @@ public class IntCodec extends BaseValueCodec {
 
     protected static String INTEGER_REGEX = "[-+]?\\d+";
 
-    private static Pattern ENCODING_MATCHER = Pattern.compile("^\\s*\\(int\\s*("
+    private static final Pattern ENCODING_MATCHER = Pattern.compile("^\\s*\\(int\\s*("
             + INTEGER_REGEX + ")\\)\\s*$");
 
-    private static MessageFormat ENCODER = new MessageFormat("(int {0,number,0})");
+    private static final MessageFormat ENCODER = new MessageFormat("(int {0,number,0})");
 
 }

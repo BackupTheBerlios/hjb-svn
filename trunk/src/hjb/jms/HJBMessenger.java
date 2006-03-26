@@ -85,6 +85,7 @@ public class HJBMessenger {
                 LOG.warn(message);
                 return;
             }
+            LOG.info("About to send HJB message: " + asHJB);
             Message asJMS = createJMSMessageFor(asHJB);
             findMessageCopierFor(asHJB).copyToJMSMessage(asHJB, asJMS);
             getProducerFor(index).send(asJMS);
@@ -259,7 +260,7 @@ public class HJBMessenger {
     public static long DEFAULT_TIMEOUT = 1000 * 15 * 60;
     public static long MINIMUM_TIMEOUT = 1000 * 2 * 60;
 
-    private static MessageCopierFactory COPIER_FACTORY = new MessageCopierFactory();
+    private static final MessageCopierFactory COPIER_FACTORY = new MessageCopierFactory();
     private static final Logger LOG = Logger.getLogger(HJBMessenger.class);
     private static final HJBStrings STRINGS = new HJBStrings();
 }
