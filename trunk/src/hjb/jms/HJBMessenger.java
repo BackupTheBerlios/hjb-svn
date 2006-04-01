@@ -48,8 +48,9 @@ import hjb.msg.MessageCopierFactory;
 public class HJBMessenger {
 
     public HJBMessenger(HJBConnection theConnection, int sessionIndex) {
-        if (null == theConnection)
+        if (null == theConnection) {
             throw new IllegalArgumentException(strings().needsANonNull(HJBConnection.class.getName()));
+        }
         this.theConnection = theConnection;
         this.sessionIndex = sessionIndex;
         verifySessionIndex();

@@ -36,10 +36,6 @@ import hjb.msg.valuecopiers.MockMessageBuilder;
  */
 public class MapMessageBooleanValueCopierTest extends MockObjectTestCase {
 
-    public MapMessageBooleanValueCopierTest() {
-
-    }
-
     public void testAnyTwoInstancesAreEqual() {
         assertEquals("Any two instances were not equal",
                      new MapMessageBooleanValueCopier(),

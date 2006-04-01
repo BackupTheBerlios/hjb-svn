@@ -60,9 +60,8 @@ public class ReceiveFromSubscriberTest extends MockObjectTestCase {
         mockTextMessage.expects(once()).method("getText").will(returnValue("boo!"));
         mockTextMessage.expects(once()).method("acknowledge");
         MessageAttributeInvoker attributeInvoker = new MessageAttributeInvoker();
-        attributeInvoker.willInvokeAllAttributeAccessors(mockTextMessage, this);
-        attributeInvoker.willInvokeGetPropertyNamesAndReturnEmptyHanded(mockTextMessage,
-                                                                        this);
+        attributeInvoker.invokesAllAccessors(mockTextMessage);
+        attributeInvoker.invokesGetPropertyNamesReturnsNothing(mockTextMessage);
 
         Message testMessage = (TextMessage) mockTextMessage.proxy();
 

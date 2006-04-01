@@ -62,9 +62,8 @@ public class ViewQueueTest extends MockObjectTestCase {
         Mock mockTextMessage = mock(TextMessage.class);
         mockTextMessage.expects(once()).method("getText").will(returnValue("boo!"));
         MessageAttributeInvoker attributeInvoker = new MessageAttributeInvoker();
-        attributeInvoker.willInvokeAllAttributeAccessors(mockTextMessage, this);
-        attributeInvoker.willInvokeGetPropertyNamesAndReturnEmptyHanded(mockTextMessage,
-                                                                        this);
+        attributeInvoker.invokesAllAccessors(mockTextMessage);
+        attributeInvoker.invokesGetPropertyNamesReturnsNothing(mockTextMessage);
 
         Message testMessage = (TextMessage) mockTextMessage.proxy();
         

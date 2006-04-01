@@ -117,13 +117,12 @@ public class AttributeCopierTest extends MockObjectTestCase {
         }
     }
 
-    public void b() {
+    public void testCopyToHJBMessageDetectsTypesCorrectly() {
         for (int n = 0; n < ALL_ATTRIBUTES.length; n++) {
             Mock mockMessage = mock(Message.class, "message" + n);
 
-            attributeInvoker.willInvokeAttributeAccessorsInOrderUntilNthFails(mockMessage,
-                                                                              n,
-                                                                              this);
+            attributeInvoker.invokesAccessorsInOrderStoppingAfterN(mockMessage,
+                                                                              n);
             mockMessage.expects(once()).method(ALL_ATTRIBUTES[n][1]).will(throwException(new JMSException("thrown as a test")));
             Message testMessage = (Message) mockMessage.proxy();
             try {
@@ -138,7 +137,7 @@ public class AttributeCopierTest extends MockObjectTestCase {
     public void testCopyToHJBMessageCopiesCorrectValues() {
         AttributeCopier copier = new AttributeCopier();
         Mock mockMessage = mock(Message.class, "message");
-        attributeInvoker.willInvokeAllAttributeAccessors(mockMessage, this);
+        attributeInvoker.invokesAllAccessors(mockMessage);
 
         Message testMessage = (Message) mockMessage.proxy();
         HJBMessage mimeMessage = new HJBMessage(new HashMap(), "test");

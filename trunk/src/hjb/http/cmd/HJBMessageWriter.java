@@ -20,11 +20,14 @@
  */
 package hjb.http.cmd;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
+import org.apache.log4j.Logger;
+
+import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 import hjb.msg.HJBMessage;
 
@@ -38,13 +41,13 @@ import hjb.msg.HJBMessage;
  * platform-specific end-of-line character sequence
  * 
  * <pre>
- *        headerName=headerValue CR
+ *         headerName=headerValue CR
  * </pre>
  * 
  * Then a '%' is written by itself:
  * 
  * <pre>
- *         % CR
+ *          % CR
  * </pre>
  * 
  * Finally, the message body is written.
@@ -53,12 +56,44 @@ import hjb.msg.HJBMessage;
  * and a '%% ' is used to separate each one.
  * 
  * <pre>
- *         % CR
+ *          % CR
  * </pre>
  * 
  * @author Tim Emiola
  */
 public class HJBMessageWriter {
+
+    /**
+     * Returns the map of values represented by <code>mapAsText</code>.
+     * 
+     * <p/> <code>mapAsText</code> is assumed to have been created in a manner
+     * similar to that used by {@link #asText(Map)}.
+     * 
+     * @param mapAsText a textual representation of a <code>Map</code>
+     * @return a <code>Map</code>
+     * @throws HJBException
+     *             if a line occurs that is not in the correct format, or if any
+     *             other problem occurs
+     */
+    public Map asMap(String mapAsText) throws HJBException {
+        try {
+            LineNumberReader lines = new LineNumberReader(new StringReader(mapAsText));
+            Map result = new HashMap();
+            for (String line = lines.readLine(); null != line; line = lines.readLine()) {
+                int equalsPosition = line.indexOf('=');
+                if (-1 == equalsPosition) {
+                    handleBadMapData(lines.getLineNumber(), mapAsText);
+                }
+                result.put(line.substring(0, equalsPosition),
+                           line.substring(equalsPosition + 1).trim());
+            }
+            return result;
+        } catch (IOException e) {
+            String errorMessage = strings().getString(HJBStrings.COULD_NOT_GET_MAP_FROM_TEXT);
+            LOG.error(errorMessage, e);
+            throw new HJBException(errorMessage, e);
+        }
+    }
 
     /**
      * Creates a text string representing the contents of
@@ -76,6 +111,20 @@ public class HJBMessageWriter {
     }
 
     /**
+     * Creates a text string representing the contents of <code>anyMap</code>
+     * 
+     * @param anyMap
+     *            a <code>Map</code>
+     * @return the textual representation <code>anyMap</code>
+     */
+    public String asText(Map anyMap) {
+        if (null == anyMap) return "";
+        StringWriter result = new StringWriter();
+        writeAsText(anyMap, result);
+        return result.toString();
+    }
+
+    /**
      * Writes the content of <code>HJBMessage</code> to <code>aWriter</code>.
      * 
      * @param aMessage
@@ -85,15 +134,29 @@ public class HJBMessageWriter {
      */
     public void writeAsText(HJBMessage aMessage, Writer aWriter) {
         if (null == aMessage) return;
+        writeAsText(aMessage.getHeaders(), aWriter);
         PrintWriter pw = new PrintWriter(aWriter);
-        for (Iterator i = aMessage.getHeaders().keySet().iterator(); i.hasNext();) {
-            String headerName = (String) i.next();
-            pw.println(strings().getString(HJBStrings.NAME_AND_VALUE,
-                                           headerName,
-                                           aMessage.getHeader(headerName)));
-        }
         pw.println(HEADER_BODY_SEPARATOR);
         pw.println(aMessage.getBody());
+    }
+
+    /**
+     * Writes the content of <code>anyMap</code> to <code>aWriter</code>.
+     * 
+     * @param anyMap
+     *            a <code>Map</code>
+     * @param aWriter
+     *            a <code>Writer</code>
+     */
+    public void writeAsText(Map anyMap, Writer aWriter) {
+        if (null == anyMap) return;
+        PrintWriter pw = new PrintWriter(aWriter);
+        for (Iterator i = anyMap.keySet().iterator(); i.hasNext();) {
+            String key = (String) i.next();
+            pw.println(strings().getString(HJBStrings.NAME_AND_VALUE,
+                                           key,
+                                           anyMap.get(key)));
+        }
     }
 
     /**
@@ -155,7 +218,16 @@ public class HJBMessageWriter {
         return STRINGS;
     }
 
-    public static String HEADER_BODY_SEPARATOR = "%";
-    public static String MESSAGE_SEPARATOR = "%%";
+    protected void handleBadMapData(int i, String line) throws HJBException {
+        String message = strings().getString(HJBStrings.INCORRECT_FORMAT_IN_MAP_DATA,
+                                             new Integer(i),
+                                             line);
+        LOG.error(message);
+        throw new HJBException(message);
+    }
+
+    public static final String HEADER_BODY_SEPARATOR = "%";
+    public static final String MESSAGE_SEPARATOR = "%%";
     private static final HJBStrings STRINGS = new HJBStrings();
+    private static final Logger LOG = Logger.getLogger(HJBMessageWriter.class);
 }

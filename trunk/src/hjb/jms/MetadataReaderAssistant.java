@@ -1,34 +1,36 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.jms;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.jms.ConnectionMetaData;
 import javax.jms.JMSException;
 
 import org.apache.log4j.Logger;
 
+import hjb.http.cmd.HJBMessageWriter;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 import hjb.msg.codec.IntCodec;
@@ -53,16 +55,14 @@ public class MetadataReaderAssistant {
      */
     public String asText(ConnectionMetaData metadata) {
         if (null == metadata) return "";
+        Map metadataValues = new HashMap();
         String[] headerNames = KNOWN_METADATA_ATTRIBUTES;
-        StringWriter result = new StringWriter();
-        PrintWriter pw = new PrintWriter(result);
         for (int i = 0; i < headerNames.length; i++) {
-            pw.println(strings().getString(HJBStrings.NAME_AND_VALUE,
-                                           headerNames[i],
-                                           getEncodedValueFromMetaData(headerNames[i],
-                                                                       metadata)));
+            metadataValues.put(headerNames[i],
+                               getEncodedValueFromMetaData(headerNames[i],
+                                                           metadata));
         }
-        return result.toString();
+        return new HJBMessageWriter().asText(metadataValues);
     }
 
     /**

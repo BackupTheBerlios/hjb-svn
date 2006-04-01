@@ -231,7 +231,7 @@ public final class HJBStrings {
 
     public static final String COULD_NOT_BUILD_PROVIDER = "could.not.build.provider";
 
-    public static final String COULD_NOT_COPY_MAP_MESSAGE_CONTENTS = "could.not.copy.map.message.contents";
+    public static final String COULD_NOT_GET_MAP_FROM_TEXT = "could.not.get.map.from.text";
 
     public static final String JMS_COMMAND_NOT_GENERATED = "jms.command.not.generated";
 
@@ -255,7 +255,7 @@ public final class HJBStrings {
 
     public static final String STRING_VALUE_WAS_NULL = "string.value.was.null";
 
-    public static final String DISCARDED_A_POSSIBLE_MAP_MESSAGE = "discarded.a.possible.map.message";
+    public static final String INCORRECT_FORMAT_IN_MAP_DATA = "incorrect.format.in.map.data";
 
     public static final String WRONG_TYPE_TO_ENCODE = "wrong.type.to.encode";
 
