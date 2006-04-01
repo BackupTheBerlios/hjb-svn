@@ -28,10 +28,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.jms.Destination;
-import javax.jms.Queue;
-import javax.jms.Session;
-import javax.jms.Topic;
+import javax.jms.*;
 
 import org.apache.log4j.Logger;
 
@@ -67,86 +64,121 @@ public class JMSArgumentFinder {
     }
 
     public String findMessageSelector(Map decodedParameters) {
-        Object rawMessageSelector = decodedParameters.get(HJBServletConstants.MESSAGE_SELECTOR);
-        return (null == rawMessageSelector) ? null : "" + rawMessageSelector;
+        Object rawValue = decodedParameters.get(HJBServletConstants.MESSAGE_SELECTOR);
+        return (null == rawValue) ? null : "" + rawValue;
     }
 
     public boolean findDisableTimestamps(Map decodedParameters) {
-        Object rawValue = decodedParameters.get(HJBServletConstants.DISABLE_TIMESTAMPS);
-        if (!(rawValue instanceof Boolean)) {
+        Boolean rawValue = findBoolean(decodedParameters,
+                                       HJBServletConstants.DISABLE_TIMESTAMPS,
+                                       "disable timestamps",
+                                       new Boolean(false));
+        if (null == rawValue) {
             return false;
         }
         return ((Boolean) rawValue).booleanValue();
     }
 
     public boolean findDisableMessageIds(Map decodedParameters) {
-        Object rawValue = decodedParameters.get(HJBServletConstants.DISABLE_MESSAGE_IDS);
-        if (!(rawValue instanceof Boolean)) {
+        Boolean rawValue = findBoolean(decodedParameters,
+                                       HJBServletConstants.DISABLE_MESSAGE_IDS,
+                                       "disable message IDs",
+                                       new Boolean(false));
+        if (null == rawValue) {
             return false;
         }
         return ((Boolean) rawValue).booleanValue();
     }
 
-    public Integer findDeliveryMode(Map decodedParameters) {
-        Object rawValue = decodedParameters.get(HJBServletConstants.DELIVERY_MODE);
-        if (!(rawValue instanceof Integer)) {
-            return null;
+    public boolean findNoLocal(Map decodedParameters) {
+        Boolean rawValue = findBoolean(decodedParameters,
+                                       HJBServletConstants.CONSUMER_NOLOCAL,
+                                       "noLocal",
+                                       new Boolean(HJBServletConstants.DEFAULT_NOLOCAL));
+        if (null == rawValue) {
+            return HJBServletConstants.DEFAULT_NOLOCAL;
         }
-        return (Integer) rawValue;
+        return ((Boolean) rawValue).booleanValue();
+
+    }
+
+    public Integer findDeliveryMode(Map decodedParameters) {
+        Integer rawValue = findInteger(decodedParameters,
+                                       HJBServletConstants.DELIVERY_MODE,
+                                       "delivery mode",
+                                       null);
+        if (null == rawValue) return null;
+        switch (rawValue.intValue()) {
+            case DeliveryMode.PERSISTENT:
+            case DeliveryMode.NON_PERSISTENT:
+                return (Integer) rawValue;
+            default:
+                String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
+                                                     "delivery mode",
+                                                     rawValue,
+                                                     null);
+                LOG.warn(message);
+                return null;
+        }
     }
 
     public Integer findPriority(Map decodedParameters) {
-        Object rawValue = decodedParameters.get(HJBServletConstants.PRIORITY);
-        if (!(rawValue instanceof Integer)) {
+        Integer rawValue = findInteger(decodedParameters,
+                                       HJBServletConstants.PRIORITY,
+                                       "priority",
+                                       null);
+        if (null == rawValue) return null;
+        if (rawValue.intValue() < MINIMUM_PRIORITY
+                || rawValue.intValue() > MAXIMUM_PRIORITY) {
+            String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
+                                                 "priority",
+                                                 rawValue,
+                                                 null);
+            LOG.warn(message);
             return null;
         }
         return (Integer) rawValue;
     }
 
     public Integer findTimeout(Map decodedParameters) {
-        Object rawValue = decodedParameters.get(HJBServletConstants.TIMEOUT);
-        if (!(rawValue instanceof Integer)) {
-            return null;
-        }
-        return (Integer) rawValue;
+        return findInteger(decodedParameters,
+                           HJBServletConstants.TIMEOUT,
+                           "timeout",
+                           null);
     }
 
     public Long findTimeToLive(Map decodedParameters) {
-        Object rawValue = decodedParameters.get(HJBServletConstants.TIME_TO_LIVE);
-        if (!(rawValue instanceof Long)) {
-            return null;
-        }
-        return (Long) rawValue;
+        return findLong(decodedParameters,
+                        HJBServletConstants.TIME_TO_LIVE,
+                        "time to live",
+                        null);
     }
 
     public MessageProducerArguments findProducerArguments(Map decodedParameters) {
         return new MessageProducerArguments(findDisableTimestamps(decodedParameters),
-                                                           findDisableMessageIds(decodedParameters),
-                                                           findTimeToLive(decodedParameters),
-                                                           findDeliveryMode(decodedParameters),
-                                                           findPriority(decodedParameters));
+                                            findDisableMessageIds(decodedParameters),
+                                            findTimeToLive(decodedParameters),
+                                            findDeliveryMode(decodedParameters),
+                                            findPriority(decodedParameters));
     }
 
     public int findAcknowledgementMode(Map decodedParameters) {
-        Object rawAcknowledgementMode = decodedParameters.get(HJBServletConstants.SESSION_ACKNOWLEDGEMENT_MODE);
-        if (!(rawAcknowledgementMode instanceof Integer)) {
-            String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
-                                                 "acknowledgement mode",
-                                                 rawAcknowledgementMode,
-                                                 new Integer(HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE));
-            LOG.warn(message);
+        Integer rawValue = findInteger(decodedParameters,
+                                       HJBServletConstants.SESSION_ACKNOWLEDGEMENT_MODE,
+                                       "acknowledgement mode",
+                                       new Integer(HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE));
+        if (null == rawValue) {
             return HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE;
         }
-        int acknowledgementValue = ((Integer) rawAcknowledgementMode).intValue();
-        switch (acknowledgementValue) {
-            case Session.CLIENT_ACKNOWLEDGE :
-            case Session.DUPS_OK_ACKNOWLEDGE :
-            case Session.SESSION_TRANSACTED :
-                return acknowledgementValue;
-            default :
+        switch (rawValue.intValue()) {
+            case Session.CLIENT_ACKNOWLEDGE:
+            case Session.DUPS_OK_ACKNOWLEDGE:
+            case Session.SESSION_TRANSACTED:
+                return rawValue.intValue();
+            default:
                 String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
                                                      "acknowledgement mode",
-                                                     rawAcknowledgementMode,
+                                                     rawValue,
                                                      new Integer(HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE));
                 LOG.warn(message);
                 return HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE;
@@ -154,16 +186,14 @@ public class JMSArgumentFinder {
     }
 
     public boolean findTransacted(Map decodedParameters) {
-        Object rawTransacted = decodedParameters.get(HJBServletConstants.SESSION_TRANSACTED);
-        if (!(rawTransacted instanceof Boolean)) {
-            String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
-                                                 "transacted",
-                                                 rawTransacted,
-                                                 new Boolean(HJBServletConstants.DEFAULT_TRANSACTED));
-            LOG.warn(message);
+        Boolean rawValue = findBoolean(decodedParameters,
+                                       HJBServletConstants.SESSION_TRANSACTED,
+                                       "transacted",
+                                       new Boolean(HJBServletConstants.DEFAULT_TRANSACTED));
+        if (null == rawValue) {
             return HJBServletConstants.DEFAULT_TRANSACTED;
         }
-        return ((Boolean) rawTransacted).booleanValue();
+        return ((Boolean) rawValue).booleanValue();
     }
 
     public Queue findQueue(Map decodedParameters,
@@ -174,25 +204,11 @@ public class JMSArgumentFinder {
                                                      sessionProviderName);
         if (!(rawDestination instanceof Queue)) {
             String message = strings().getString(HJBStrings.INVALID_DESTINATION_TYPE,
-                                                 rawDestination.getClass()
-                                                               .getName(),
+                                                 rawDestination.getClass().getName(),
                                                  Queue.class.getName());
             throw new HJBClientException(message);
         }
         return (Queue) rawDestination;
-    }
-
-    public boolean findNoLocal(Map decodedParameters) {
-        Object rawNoLocal = decodedParameters.get(HJBServletConstants.CONSUMER_NOLOCAL);
-        if (!(rawNoLocal instanceof Boolean)) {
-            String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
-                                                 "noLocal",
-                                                 rawNoLocal,
-                                                 new Boolean(HJBServletConstants.DEFAULT_NOLOCAL));
-            LOG.warn(message);
-            return HJBServletConstants.DEFAULT_NOLOCAL;
-        }
-        return ((Boolean) rawNoLocal).booleanValue();
     }
 
     public String findSubscriberName(Map decodedParameters) {
@@ -213,8 +229,7 @@ public class JMSArgumentFinder {
                                                      sessionProviderName);
         if (!(rawDestination instanceof Topic)) {
             String message = strings().getString(HJBStrings.INVALID_DESTINATION_TYPE,
-                                                 rawDestination.getClass()
-                                                               .getName(),
+                                                 rawDestination.getClass().getName(),
                                                  Topic.class.getName());
             throw new HJBClientException(message);
         }
@@ -234,12 +249,57 @@ public class JMSArgumentFinder {
         String destinationName = applyURLDecoding(m.group(2));
         assertIsSameProvider(sessionProviderName, destinationProviderName);
         HJBProvider provider = root.getProvider(sessionProviderName);
-        if (null == provider) handleMissingComponent(destinationURL,
-                                                     destinationProviderName);
+        if (null == provider)
+            handleMissingComponent(destinationURL, destinationProviderName);
         Destination destination = provider.getDestination(destinationName);
-        if (null == destination) handleMissingComponent(destinationURL,
-                                                        destinationName);
+        if (null == destination)
+            handleMissingComponent(destinationURL, destinationName);
         return destination;
+    }
+
+    protected Integer findInteger(Map decodedParameters,
+                                  String key,
+                                  String name,
+                                  Object defaultValue) {
+        Object rawValue = decodedParameters.get(key);
+        if (!(rawValue instanceof Integer)) {
+            String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
+                                                 name,
+                                                 rawValue,
+                                                 defaultValue);
+            LOG.warn(message);
+        }
+        return (Integer) rawValue;
+    }
+
+    protected Boolean findBoolean(Map decodedParameters,
+                                  String key,
+                                  String name,
+                                  Object defaultValue) {
+        Object rawValue = decodedParameters.get(key);
+        if (!(rawValue instanceof Boolean)) {
+            String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
+                                                 name,
+                                                 rawValue,
+                                                 defaultValue);
+            LOG.warn(message);
+        }
+        return (Boolean) rawValue;
+    }
+
+    protected Long findLong(Map decodedParameters,
+                            String key,
+                            String name,
+                            Object defaultValue) {
+        Object rawValue = decodedParameters.get(key);
+        if (!(rawValue instanceof Long)) {
+            String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
+                                                 name,
+                                                 rawValue,
+                                                 defaultValue);
+            LOG.warn(message);
+        }
+        return (Long) rawValue;
     }
 
     protected String findHJBMessageAsText(Map decodedParameters) {
@@ -252,7 +312,8 @@ public class JMSArgumentFinder {
         return (String) rawMessageText;
     }
 
-    protected void handleMissingComponent(String pathInfo, String component) throws HJBException {
+    protected void handleMissingComponent(String pathInfo, String component)
+            throws HJBException {
         String message = strings().getString(HJBStrings.ALLOWED_PATH_NOT_FOUND,
                                              pathInfo,
                                              component);
@@ -260,7 +321,8 @@ public class JMSArgumentFinder {
     }
 
     protected void assertIsSameProvider(String sessionProviderName,
-                                        String destinationProviderName) throws HJBClientException {
+                                        String destinationProviderName)
+            throws HJBClientException {
         if (!destinationProviderName.equals(sessionProviderName)) {
             String message = strings().getString(HJBStrings.CAN_NOT_USE_DESTINATION,
                                                  destinationProviderName,
@@ -269,7 +331,8 @@ public class JMSArgumentFinder {
         }
     }
 
-    protected void assertIsValidDestinationURL(Object rawDestinationURL) throws HJBClientException {
+    protected void assertIsValidDestinationURL(Object rawDestinationURL)
+            throws HJBClientException {
         if (!(rawDestinationURL instanceof String)) {
             String message = strings().getString(HJBStrings.INVALID_DESTINATION_URL,
                                                  rawDestinationURL);
@@ -295,6 +358,8 @@ public class JMSArgumentFinder {
         return DESTINATION_PATH_MATCHER;
     }
 
+    public static final int MAXIMUM_PRIORITY = 9;
+    public static final int MINIMUM_PRIORITY = 0;
     private static final Logger LOG = Logger.getLogger(JMSArgumentFinder.class);
     private static final Pattern DESTINATION_PATH_MATCHER = Pattern.compile("^/[^/]*/[^/]*/(\\w+)/([^/]+)/?$");
     private static HJBStrings STRINGS = new HJBStrings();
