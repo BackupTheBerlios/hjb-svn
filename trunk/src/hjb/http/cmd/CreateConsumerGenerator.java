@@ -78,7 +78,7 @@ public class CreateConsumerGenerator extends PatternMatchingCommandGenerator {
         Map decodedParameters = getDecoder().decode(request.getParameterMap());
         this.generatedCommand = new CreateConsumer(connection.getSessionConsumers(),
                                                    sessionIndex,
-                                                   getFinder().findDestination(decodedParameters,
+                                                   getFinder().findRequiredDestination(decodedParameters,
                                                                                root,
                                                                                providerName),
                                                    getFinder().findMessageSelector(decodedParameters),

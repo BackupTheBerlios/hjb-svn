@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.misc;
 
 import java.text.MessageFormat;
@@ -141,8 +141,9 @@ public final class HJBStrings {
      */
     public static final String RESOURCE_BUNDLE_NAME = "hjb.misc.HJBStrings";
 
-    public static final MessageFormat MISSING_RESOURCE = new MessageFormat("Tried to write message corresponding to {0}, "
-            + "but this resource is not defined, please contact the developers");
+    public static final MessageFormat MISSING_RESOURCE = new MessageFormat("Tried to write message corresponding to [{0}],"
+            + " but no value for this string is present in the localization"
+            + " resources, please contact the developers");
 
     public static final String NOT_APPLICAPLE = "not.applicaple";
 
@@ -395,11 +396,11 @@ public final class HJBStrings {
     public static final String ENCODING_NOT_SUPPORTED = "encoding.not.supported";
 
     public static final String END_SHUTDOWN_PROVIDERS = "end.shutdown.providers";
-        
+
     public static final String END_SHUTDOWN_1_PROVIDER = "end.shutdown.1.provider";
-    
+
     public static final String START_SHUTDOWN_1_PROVIDER = "start.shutdown.1.provider";
-    
+
     public static final String START_SHUTDOWN_PROVIDERS = "start.shutdown.providers";
 
     public static final String JUST_SCHEDULED_A_COMMAND = "just.scheduled.a.command";
@@ -415,16 +416,16 @@ public final class HJBStrings {
     public static final String PROVIDER_ALREADY_REGISTERED = "provider.already.registered";
 
     public static final String NO_VALUE_PROVIDED = "no.value.provided";
-    
+
     public static final String HJB_PATH_CONNECTION = "hjb.path.connection";
-    
+
     public static final String HJB_PATH_SESSION = "hjb.path.session";
-    
+
     public static final String HJB_PATH_BROWSER = "hjb.path.browser";
-    
+
     public static final String HJB_PATH_CONSUMER = "hjb.path.consumer";
-    
+
     public static final String HJB_PATH_SUBSCRIBER = "hjb.path.subscriber";
-    
+
     public static final String HJB_PATH_PRODUCER = "hjb.path.producer";
 }

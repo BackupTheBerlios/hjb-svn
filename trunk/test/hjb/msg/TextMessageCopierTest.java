@@ -79,7 +79,7 @@ public class TextMessageCopierTest extends MockObjectTestCase {
 
     public void testCopyToJMSMessageThrowsHJBExceptionOnJMSException() {
         Mock mockTextMessage = mock(TextMessage.class);
-        mockTextMessage.expects(once()).method("setText").with(eq("test text")).will(throwException(new JMSException("thrown as a test")));
+        mockTextMessage.stubs().method("setText").with(eq("test text")).will(throwException(new JMSException("thrown as a test")));
         Message testMessage = (TextMessage) mockTextMessage.proxy();
 
         HJBMessage testMimeMessage = new HJBMessage(createEmptyTextHJBMessage(),

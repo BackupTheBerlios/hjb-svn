@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.msg.valuecopiers;
 
 import java.util.ArrayList;
@@ -61,103 +61,19 @@ public class OrderedPropertyValueCopierTest extends MockObjectTestCase {
     public void testCanBeEncodedReturnsTrueForCorrectValues() {
         OrderedPropertyValueCopier testCopier = new OrderedPropertyValueCopier();
         ArrayList throwsOn = new ArrayList();
-        int mocks = 0;
-
-        for (int i = 0; i < EXPECTED_DECODED_BYTES.length; i++, mocks++) {
-            Message testMessage = messageBuilder.returnsExpectedValueFromNamedMethod("getByteProperty",
-                                                                                     "testMessage"
-                                                                                             + mocks,
-                                                                                     "testName",
-                                                                                     new Byte(EXPECTED_DECODED_BYTES[i]),
-                                                                                     throwsOn);
-            assertTrue("should be true " + EXPECTED_DECODED_BYTES[i],
-                       testCopier.canBeEncoded("testName", testMessage));
+        for (int i = 0, mocks = 0; i < PROPERTY_METHODS.length; i++) {
+            for (int j = 0; j < ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[i].length; j++, mocks++) {
+                Message testMessage = messageBuilder.throwsOnSome(PROPERTY_METHODS[i][0],
+                                                                  "testMessage"
+                                                                          + mocks,
+                                                                  "testName",
+                                                                  ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[i][j],
+                                                                  throwsOn);
+                assertTrue("should be true " + ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[i][j],
+                           testCopier.canBeEncoded("testName", testMessage));
+            }
+            throwsOn.add(PROPERTY_METHODS[i][0]);            
         }
-        throwsOn.add("getByteProperty");
-
-        for (int i = 0; i < EXPECTED_DECODED_SHORTS.length; i++, mocks++) {
-            Message testMessage = messageBuilder.returnsExpectedValueFromNamedMethod("getShortProperty",
-                                                                                     "testMessage"
-                                                                                             + mocks,
-                                                                                     "testName",
-                                                                                     new Short(EXPECTED_DECODED_SHORTS[i]),
-                                                                                     throwsOn);
-            assertTrue("should be true " + EXPECTED_DECODED_SHORTS[i],
-                       testCopier.canBeEncoded("testName", testMessage));
-        }
-        throwsOn.add("getShortProperty");
-
-        for (int i = 0; i < EXPECTED_DECODED_INTEGERS.length; i++, mocks++) {
-            Message testMessage = messageBuilder.returnsExpectedValueFromNamedMethod("getIntProperty",
-                                                                                     "testMessage"
-                                                                                             + mocks,
-                                                                                     "testName",
-                                                                                     new Integer(EXPECTED_DECODED_INTEGERS[i]),
-                                                                                     throwsOn);
-            assertTrue("should be true " + EXPECTED_DECODED_INTEGERS[i],
-                       testCopier.canBeEncoded("testName", testMessage));
-        }
-        throwsOn.add("getIntProperty");
-
-        for (int i = 0; i < EXPECTED_DECODED_LONGS.length; i++, mocks++) {
-            Message testMessage = messageBuilder.returnsExpectedValueFromNamedMethod("getLongProperty",
-                                                                                     "testMessage"
-                                                                                             + mocks,
-                                                                                     "testName",
-                                                                                     new Long(EXPECTED_DECODED_LONGS[i]),
-                                                                                     throwsOn);
-            assertTrue("should be true " + EXPECTED_DECODED_LONGS[i],
-                       testCopier.canBeEncoded("testName", testMessage));
-        }
-        throwsOn.add("getLongProperty");
-
-        for (int i = 0; i < EXPECTED_DECODED_FLOATS.length; i++, mocks++) {
-            Message testMessage = messageBuilder.returnsExpectedValueFromNamedMethod("getFloatProperty",
-                                                                                     "testMessage"
-                                                                                             + mocks,
-                                                                                     "testName",
-                                                                                     new Float(EXPECTED_DECODED_FLOATS[i]),
-                                                                                     throwsOn);
-            assertTrue("should be true " + EXPECTED_DECODED_FLOATS[i],
-                       testCopier.canBeEncoded("testName", testMessage));
-        }
-        throwsOn.add("getFloatProperty");
-
-        for (int i = 0; i < EXPECTED_DECODED_DOUBLES.length; i++, mocks++) {
-            Message testMessage = messageBuilder.returnsExpectedValueFromNamedMethod("getDoubleProperty",
-                                                                                     "testMessage"
-                                                                                             + mocks,
-                                                                                     "testName",
-                                                                                     new Double(EXPECTED_DECODED_DOUBLES[i]),
-                                                                                     throwsOn);
-            assertTrue("should be true " + EXPECTED_DECODED_DOUBLES[i],
-                       testCopier.canBeEncoded("testName", testMessage));
-        }
-        throwsOn.add("getDoubleProperty");
-
-        for (int i = 0; i < EXPECTED_DECODED_BOOLEANS.length; i++, mocks++) {
-            Message testMessage = messageBuilder.returnsExpectedValueFromNamedMethod("getBooleanProperty",
-                                                                                     "testMessage"
-                                                                                             + mocks,
-                                                                                     "testName",
-                                                                                     new Boolean(EXPECTED_DECODED_BOOLEANS[i]),
-                                                                                     throwsOn);
-            assertTrue("should be true " + EXPECTED_DECODED_BOOLEANS[i],
-                       testCopier.canBeEncoded("testName", testMessage));
-        }
-        throwsOn.add("getBooleanProperty");
-
-        for (int i = 0; i < NOT_OK_FOR_ANYTHING.length; i++, mocks++) {
-            Message testMessage = messageBuilder.returnsExpectedValueFromNamedMethod("getStringProperty",
-                                                                                     "testMessage"
-                                                                                             + mocks,
-                                                                                     "testName",
-                                                                                     NOT_OK_FOR_ANYTHING[i],
-                                                                                     throwsOn);
-            assertTrue("should be true " + NOT_OK_FOR_ANYTHING[i],
-                       testCopier.canBeEncoded("testName", testMessage));
-        }
-
     }
 
     public void testAddToMessageThrowsHJBExceptionOnJMSException() {
@@ -165,7 +81,7 @@ public class OrderedPropertyValueCopierTest extends MockObjectTestCase {
         OrderedPropertyValueCopier testCopier = new OrderedPropertyValueCopier();
         try {
             testCopier.addToMessage("testName",
-                                    OK_EXPECTED_DECODED_BYTES[0],
+                                    ORDERED_OK_EXPECTED_DECODED_VALUES[0][0],
                                     testMessage);
             fail("should have thrown an exception");
         } catch (HJBException e) {}
@@ -174,93 +90,17 @@ public class OrderedPropertyValueCopierTest extends MockObjectTestCase {
     public void testAddToMessageInvokesCorrectPropertySetter() {
         OrderedPropertyValueCopier testCopier = new OrderedPropertyValueCopier();
         int mocks = 0;
-
-        for (int i = 0; i < EXPECTED_DECODED_BYTES.length; i++, mocks++) {
-            Message testMessage = messageBuilder.invokesNamedMethodAsExpected("setByteProperty",
-                                                                              "testMessage"
-                                                                                      + mocks,
-                                                                              "testName",
-                                                                              new Byte(EXPECTED_DECODED_BYTES[i]));
-            testCopier.addToMessage("testName",
-                                    OK_ENCODED_BYTES[i],
-                                    testMessage);
-        }
-
-        for (int i = 0; i < EXPECTED_DECODED_SHORTS.length; i++, mocks++) {
-            Message testMessage = messageBuilder.invokesNamedMethodAsExpected("setShortProperty",
-                                                                              "testMessage"
-                                                                                      + mocks,
-                                                                              "testName",
-                                                                              new Short(EXPECTED_DECODED_SHORTS[i]));
-            testCopier.addToMessage("testName",
-                                    OK_ENCODED_SHORTS[i],
-                                    testMessage);
-        }
-
-        for (int i = 0; i < EXPECTED_DECODED_INTEGERS.length; i++, mocks++) {
-            Message testMessage = messageBuilder.invokesNamedMethodAsExpected("setIntProperty",
-                                                                              "testMessage"
-                                                                                      + mocks,
-                                                                              "testName",
-                                                                              new Integer(EXPECTED_DECODED_INTEGERS[i]));
-            testCopier.addToMessage("testName",
-                                    OK_ENCODED_INTEGERS[i],
-                                    testMessage);
-        }
-
-        for (int i = 0; i < EXPECTED_DECODED_LONGS.length; i++, mocks++) {
-            Message testMessage = messageBuilder.invokesNamedMethodAsExpected("setLongProperty",
-                                                                              "testMessage"
-                                                                                      + mocks,
-                                                                              "testName",
-                                                                              new Long(EXPECTED_DECODED_LONGS[i]));
-            testCopier.addToMessage("testName",
-                                    OK_ENCODED_LONGS[i],
-                                    testMessage);
-        }
-
-        for (int i = 0; i < EXPECTED_DECODED_FLOATS.length; i++, mocks++) {
-            Message testMessage = messageBuilder.invokesNamedMethodAsExpected("setFloatProperty",
-                                                                              "testMessage"
-                                                                                      + mocks,
-                                                                              "testName",
-                                                                              new Float(EXPECTED_DECODED_FLOATS[i]));
-            testCopier.addToMessage("testName",
-                                    OK_ENCODED_FLOATS[i],
-                                    testMessage);
-        }
-
-        for (int i = 0; i < EXPECTED_DECODED_DOUBLES.length; i++, mocks++) {
-            Message testMessage = messageBuilder.invokesNamedMethodAsExpected("setDoubleProperty",
-                                                                              "testMessage"
-                                                                                      + mocks,
-                                                                              "testName",
-                                                                              new Double(EXPECTED_DECODED_DOUBLES[i]));
-            testCopier.addToMessage("testName",
-                                    OK_ENCODED_DOUBLES[i],
-                                    testMessage);
-        }
-
-        for (int i = 0; i < EXPECTED_DECODED_BOOLEANS.length; i++, mocks++) {
-            Message testMessage = messageBuilder.invokesNamedMethodAsExpected("setBooleanProperty",
-                                                                              "testMessage"
-                                                                                      + mocks,
-                                                                              "testName",
-                                                                              new Boolean(EXPECTED_DECODED_BOOLEANS[i]));
-            testCopier.addToMessage("testName",
-                                    OK_ENCODED_BOOLEANS[i],
-                                    testMessage);
-        }
-
-        for (int i = 0; i < NOT_OK_FOR_ANYTHING.length; i++, mocks++) {
-            Message testMessage = messageBuilder.invokesNamedMethodAsExpected("setStringProperty",
-                                                                              "testMessage"
-                                                                                      + mocks,
-                                                                              "testName",
-                                                                              NOT_OK_FOR_ANYTHING[i]);
-            testCopier.addToMessage("testName",
-                                    NOT_OK_FOR_ANYTHING[i],
-                                    testMessage);
+        for (int k = 0; k < PROPERTY_METHODS.length; k++) {
+            for (int i = 0; i < ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[k].length; i++, mocks++) {
+                Message testMessage = messageBuilder.invokesNamedMethodAsExpected(PROPERTY_METHODS[k][1],
+                                                                                  "testMessage"
+                                                                                          + mocks,
+                                                                                  "testName",
+                                                                                  ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[k][i]);
+                testCopier.addToMessage("testName",
+                                        ORDERED_OK_ENCODED_VALUES[k][i],
+                                        testMessage);
+            }            
         }
     }
 
@@ -276,110 +116,20 @@ public class OrderedPropertyValueCopierTest extends MockObjectTestCase {
     public void testGetAsEncodedValueReturnsValuesCorrectlyEncoded() {
         OrderedPropertyValueCopier testCopier = new OrderedPropertyValueCopier();
         ArrayList throwsOn = new ArrayList();
-        int mocks = 0;
-
-        for (int i = 0; i < EXPECTED_DECODED_BYTES.length; i++, mocks++) {
-            Message testMessage = messageBuilder.returnsExpectedValueFromNamedMethod("getByteProperty",
-                                                                                     "testMessage"
-                                                                                             + mocks,
-                                                                                     "testName",
-                                                                                     new Byte(EXPECTED_DECODED_BYTES[i]),
-                                                                                     throwsOn);
-            assertEquals("retrieved property was encoded correctly",
-                         OK_EXPECTED_DECODED_BYTES[i],
-                         testCopier.getAsEncodedValue("testName", testMessage));
-        }
-        throwsOn.add("getByteProperty");
-
-        for (int i = 0; i < EXPECTED_DECODED_SHORTS.length; i++, mocks++) {
-            Message testMessage = messageBuilder.returnsExpectedValueFromNamedMethod("getShortProperty",
-                                                                                     "testMessage"
-                                                                                             + mocks,
-                                                                                     "testName",
-                                                                                     new Short(EXPECTED_DECODED_SHORTS[i]),
-                                                                                     throwsOn);
-            assertEquals("retrieved property was encoded correctly",
-                         OK_EXPECTED_DECODED_SHORTS[i],
-                         testCopier.getAsEncodedValue("testName", testMessage));
-        }
-        throwsOn.add("getShortProperty");
-
-        for (int i = 0; i < EXPECTED_DECODED_INTEGERS.length; i++, mocks++) {
-            Message testMessage = messageBuilder.returnsExpectedValueFromNamedMethod("getIntProperty",
-                                                                                     "testMessage"
-                                                                                             + mocks,
-                                                                                     "testName",
-                                                                                     new Integer(EXPECTED_DECODED_INTEGERS[i]),
-                                                                                     throwsOn);
-            assertEquals("retrieved property was encoded correctly",
-                         OK_EXPECTED_DECODED_INTEGERS[i],
-                         testCopier.getAsEncodedValue("testName", testMessage));
-        }
-        throwsOn.add("getIntProperty");
-
-        for (int i = 0; i < EXPECTED_DECODED_LONGS.length; i++, mocks++) {
-            Message testMessage = messageBuilder.returnsExpectedValueFromNamedMethod("getLongProperty",
-                                                                                     "testMessage"
-                                                                                             + mocks,
-                                                                                     "testName",
-                                                                                     new Long(EXPECTED_DECODED_LONGS[i]),
-                                                                                     throwsOn);
-            assertEquals("retrieved property was encoded correctly",
-                         OK_EXPECTED_DECODED_LONGS[i],
-                         testCopier.getAsEncodedValue("testName", testMessage));
-        }
-        throwsOn.add("getLongProperty");
-
-        for (int i = 0; i < EXPECTED_DECODED_FLOATS.length; i++, mocks++) {
-            Message testMessage = messageBuilder.returnsExpectedValueFromNamedMethod("getFloatProperty",
-                                                                                     "testMessage"
-                                                                                             + mocks,
-                                                                                     "testName",
-                                                                                     new Float(EXPECTED_DECODED_FLOATS[i]),
-                                                                                     throwsOn);
-            assertEquals("retrieved property was encoded correctly",
-                         OK_EXPECTED_DECODED_FLOATS[i],
-                         testCopier.getAsEncodedValue("testName", testMessage));
-        }
-        throwsOn.add("getFloatProperty");
-
-        for (int i = 0; i < EXPECTED_DECODED_DOUBLES.length; i++, mocks++) {
-            Message testMessage = messageBuilder.returnsExpectedValueFromNamedMethod("getDoubleProperty",
-                                                                                     "testMessage"
-                                                                                             + mocks,
-                                                                                     "testName",
-                                                                                     new Double(EXPECTED_DECODED_DOUBLES[i]),
-                                                                                     throwsOn);
-            assertEquals("retrieved property was encoded correctly",
-                         OK_EXPECTED_DECODED_DOUBLES[i],
-                         testCopier.getAsEncodedValue("testName", testMessage));
-        }
-        throwsOn.add("getDoubleProperty");
-
-        for (int i = 0; i < EXPECTED_DECODED_BOOLEANS.length; i++, mocks++) {
-            Message testMessage = messageBuilder.returnsExpectedValueFromNamedMethod("getBooleanProperty",
-                                                                                     "testMessage"
-                                                                                             + mocks,
-                                                                                     "testName",
-                                                                                     new Boolean(EXPECTED_DECODED_BOOLEANS[i]),
-                                                                                     throwsOn);
-            assertEquals("retrieved property was encoded correctly",
-                         OK_EXPECTED_DECODED_BOOLEANS[i],
-                         testCopier.getAsEncodedValue("testName", testMessage));
-        }
-        throwsOn.add("getBooleanProperty");
-
-        for (int i = 0; i < NOT_OK_FOR_ANYTHING.length; i++, mocks++) {
-            Message testMessage = messageBuilder.returnsExpectedValueFromNamedMethod("getStringProperty",
-                                                                                     "testMessage"
-                                                                                             + mocks,
-                                                                                     "testName",
-                                                                                     NOT_OK_FOR_ANYTHING[i],
-                                                                                     throwsOn);
-            assertEquals("retrieved property was encoded correctly",
-                         NOT_OK_FOR_ANYTHING[i],
-                         testCopier.getAsEncodedValue("testName", testMessage));
-        }
+        for (int i = 0, mocks = 0; i < PROPERTY_METHODS.length; i++) {
+            for (int j = 0; j < ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[i].length; j++, mocks++) {
+                Message testMessage = messageBuilder.throwsOnSome(PROPERTY_METHODS[i][0],
+                                                                  "testMessage"
+                                                                          + mocks,
+                                                                  "testName",
+                                                                  ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[i][j],
+                                                                  throwsOn);
+                assertEquals("retrieved property was encoded correctly",
+                             ORDERED_OK_EXPECTED_DECODED_VALUES[i][j],
+                             testCopier.getAsEncodedValue("testName", testMessage));
+            }
+            throwsOn.add(PROPERTY_METHODS[i][0]);
+        }        
     }
 
     protected void setUp() throws Exception {
@@ -388,47 +138,58 @@ public class OrderedPropertyValueCopierTest extends MockObjectTestCase {
 
     private MockMessageBuilder messageBuilder;
 
-    private static final String[] OK_ENCODED_BYTES = CodecTestValues.OK_ENCODED_BYTES;
 
-    private static final byte[] EXPECTED_DECODED_BYTES = CodecTestValues.EXPECTED_DECODED_BYTES;
+    public static final String[][] PROPERTY_METHODS = {
+            new String[] {
+                    "getByteProperty", "setByteProperty"
+            }, new String[] {
+                    "getShortProperty", "setShortProperty"
+            }, new String[] {
+                    "getIntProperty", "setIntProperty"
+            }, new String[] {
+                    "getLongProperty", "setLongProperty"
+            }, new String[] {
+                    "getFloatProperty", "setFloatProperty"
+            }, new String[] {
+                    "getDoubleProperty", "setDoubleProperty"
+            }, new String[] {
+                    "getBooleanProperty", "setBooleanProperty"
+            }, new String[] {
+                    "getStringProperty", "setStringProperty"
+            },
+    };
 
-    private static final String[] OK_EXPECTED_DECODED_BYTES = CodecTestValues.OK_EXPECTED_DECODED_BYTES;
+    public static final Object[][] ORDERED_EXPECTED_DECODED_VALUES_OBJECTS = {
+            CodecTestValues.EXPECTED_DECODED_BYTES_OBJECTS,
+            CodecTestValues.EXPECTED_DECODED_SHORTS_OBJECTS,
+            CodecTestValues.EXPECTED_DECODED_INTEGERS_OBJECTS,
+            CodecTestValues.EXPECTED_DECODED_LONGS_OBJECTS,
+            CodecTestValues.EXPECTED_DECODED_FLOATS_OBJECTS,
+            CodecTestValues.EXPECTED_DECODED_DOUBLES_OBJECTS,
+            CodecTestValues.EXPECTED_DECODED_BOOLEANS_OBJECTS,
+            CodecTestValues.NOT_OK_FOR_ANYTHING,
+    };
 
-    private static final String[] OK_ENCODED_BOOLEANS = CodecTestValues.OK_ENCODED_BOOLEANS;
+    public static final String[][] ORDERED_OK_EXPECTED_DECODED_VALUES = {
+            CodecTestValues.OK_EXPECTED_DECODED_BYTES,
+            CodecTestValues.OK_EXPECTED_DECODED_SHORTS,
+            CodecTestValues.OK_EXPECTED_DECODED_INTEGERS,
+            CodecTestValues.OK_EXPECTED_DECODED_LONGS,
+            CodecTestValues.OK_EXPECTED_DECODED_FLOATS,
+            CodecTestValues.OK_EXPECTED_DECODED_DOUBLES,
+            CodecTestValues.OK_EXPECTED_DECODED_BOOLEANS,
+            CodecTestValues.NOT_OK_FOR_ANYTHING,
+    };
 
-    private static final boolean[] EXPECTED_DECODED_BOOLEANS = CodecTestValues.EXPECTED_DECODED_BOOLEANS;
+    public static final String[][] ORDERED_OK_ENCODED_VALUES = {
+            CodecTestValues.OK_ENCODED_BYTES,
+            CodecTestValues.OK_ENCODED_SHORTS,
+            CodecTestValues.OK_ENCODED_INTEGERS,
+            CodecTestValues.OK_ENCODED_LONGS,
+            CodecTestValues.OK_ENCODED_FLOATS,
+            CodecTestValues.OK_ENCODED_DOUBLES,
+            CodecTestValues.OK_ENCODED_BOOLEANS,
+            CodecTestValues.NOT_OK_FOR_ANYTHING,
+    };
 
-    private static final String[] OK_EXPECTED_DECODED_BOOLEANS = CodecTestValues.OK_EXPECTED_DECODED_BOOLEANS;
-
-    private static final String[] OK_ENCODED_DOUBLES = CodecTestValues.OK_ENCODED_DOUBLES;
-
-    private static final double[] EXPECTED_DECODED_DOUBLES = CodecTestValues.EXPECTED_DECODED_DOUBLES;
-
-    private static final String[] OK_EXPECTED_DECODED_DOUBLES = CodecTestValues.OK_EXPECTED_DECODED_DOUBLES;
-
-    private static final String[] OK_ENCODED_FLOATS = CodecTestValues.OK_ENCODED_FLOATS;
-
-    private static final float[] EXPECTED_DECODED_FLOATS = CodecTestValues.EXPECTED_DECODED_FLOATS;
-
-    private static final String[] OK_EXPECTED_DECODED_FLOATS = CodecTestValues.OK_EXPECTED_DECODED_FLOATS;
-
-    private static final String[] OK_ENCODED_INTEGERS = CodecTestValues.OK_ENCODED_INTEGERS;
-
-    private static final int[] EXPECTED_DECODED_INTEGERS = CodecTestValues.EXPECTED_DECODED_INTEGERS;
-
-    private static final String[] OK_EXPECTED_DECODED_INTEGERS = CodecTestValues.OK_EXPECTED_DECODED_INTEGERS;
-
-    private static final String[] OK_ENCODED_LONGS = CodecTestValues.OK_ENCODED_LONGS;
-
-    private static final long[] EXPECTED_DECODED_LONGS = CodecTestValues.EXPECTED_DECODED_LONGS;
-
-    private static final String[] OK_EXPECTED_DECODED_LONGS = CodecTestValues.OK_EXPECTED_DECODED_LONGS;
-
-    private static final String[] OK_ENCODED_SHORTS = CodecTestValues.OK_ENCODED_SHORTS;
-
-    private static final short[] EXPECTED_DECODED_SHORTS = CodecTestValues.EXPECTED_DECODED_SHORTS;
-
-    private static final String[] OK_EXPECTED_DECODED_SHORTS = CodecTestValues.OK_EXPECTED_DECODED_SHORTS;
-
-    private static final String[] NOT_OK_FOR_ANYTHING = CodecTestValues.NOT_OK_FOR_ANYTHING;
 }

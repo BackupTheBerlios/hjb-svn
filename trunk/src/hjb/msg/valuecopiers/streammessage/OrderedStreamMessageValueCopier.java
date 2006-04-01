@@ -28,8 +28,6 @@ import hjb.msg.valuecopiers.OrderedPropertyValueCopier;
 /**
  * <code>OrderedStreamMessageValueCopier</code>
  * 
- * TODO Add StreamMessageByteArrayValueCopier as soon as its tests are written.
- * 
  * @author Tim Emiola
  */
 public class OrderedStreamMessageValueCopier extends OrderedPropertyValueCopier {
@@ -54,6 +52,7 @@ public class OrderedStreamMessageValueCopier extends OrderedPropertyValueCopier 
      * <li><code>StreamMessageFloatValueCopier</code></li>
      * <li><code>StreamMessageDoubleValueCopier</code></li>
      * <li><code>StreamMessageBooleanValueCopier</code></li>
+     * <li><code>StreamMessageByteArrayValueCopier</code></li>
      * <li><code>StreamMessageStringValueCopier</code></li>
      * </ol>
      * 
@@ -70,6 +69,7 @@ public class OrderedStreamMessageValueCopier extends OrderedPropertyValueCopier 
                 new StreamMessageFloatValueCopier(valuesRead),
                 new StreamMessageDoubleValueCopier(valuesRead),
                 new StreamMessageBooleanValueCopier(valuesRead),
+                new StreamMessageByteArrayValueCopier(valuesRead),
                 new StreamMessageStringValueCopier(valuesRead),
         };
     }

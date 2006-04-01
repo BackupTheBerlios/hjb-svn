@@ -42,7 +42,11 @@ public class SendHJBMessageTest extends MockObjectTestCase {
 
     public void testCommitSessionThrowsOnNullInputs() {
         try {
-            new SendHJBMessage(null, new HJBMessage(new HashMap(), ""), 1);
+            new SendHJBMessage(null,
+                               new HJBMessage(new HashMap(), ""),
+                               1,
+                               null,
+                               null);
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
     }
@@ -63,6 +67,9 @@ public class SendHJBMessageTest extends MockObjectTestCase {
         mockProducer.expects(once()).method("send");
         mockProducer.expects(atLeastOnce()).method("setDisableMessageTimestamp");
         mockProducer.expects(atLeastOnce()).method("setDisableMessageID");
+        mockProducer.stubs().method("getTimeToLive").will(returnValue(Message.DEFAULT_TIME_TO_LIVE));
+        mockProducer.stubs().method("getPriority").will(returnValue(Message.DEFAULT_PRIORITY));
+        mockProducer.stubs().method("getDeliveryMode").will(returnValue(Message.DEFAULT_DELIVERY_MODE));
         MessageProducer testProducer = (MessageProducer) mockProducer.proxy();
 
         Mock mockSession = mock(Session.class);
@@ -78,7 +85,9 @@ public class SendHJBMessageTest extends MockObjectTestCase {
         SendHJBMessage command = new SendHJBMessage(new HJBMessenger(testConnection,
                                                                      0),
                                                     createTestTextHJBMessage(),
-                                                    0);
+                                                    0,
+                                                    new MockSessionBuilder().defaultProducerArguments(),
+                                                    null);
         command.execute();
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());

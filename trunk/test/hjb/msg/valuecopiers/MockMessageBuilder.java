@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.msg.valuecopiers;
 
 import java.util.ArrayList;
@@ -28,7 +28,10 @@ import javax.jms.Message;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.Stub;
 import org.jmock.core.stub.ThrowStub;
+
+import hjb.msg.valuecopiers.streammessage.UpdateByteArrayStub;
 
 /**
  * <code>MockMessageBuilder</code> contains methods that create mock
@@ -77,11 +80,33 @@ public class MockMessageBuilder {
         return (Message) mockMessage.proxy();
     }
 
-    public Message returnsExpectedValueFromNamedMethod(String methodName,
-                                                       String mockName,
-                                                       String arg1,
-                                                       Object returnValue,
-                                                       List toThrowOn) {
+    public Message updatesMessageUsingByteArray(String methodName,
+                                                String mockName,
+                                                byte[] someBytes) {
+        Mock mockMessage = test.mock(mockedClazz, mockName);
+        mockMessage.expects(test.atLeastOnce()).method(methodName).will(updateByteArrayWith(someBytes));
+        return (Message) mockMessage.proxy();
+    }
+
+    public Message updatesMessageUsingByteArray(String methodName,
+                                                String mockName,
+                                                byte[] someBytes,
+                                                List toThrowOn) {
+        Mock mockMessage = test.mock(mockedClazz, mockName);
+        throwsJMSExceptionOnMethods(mockMessage, new ArrayList(toThrowOn));
+        mockMessage.expects(test.atLeastOnce()).method(methodName).will(updateByteArrayWith(someBytes));
+        return (Message) mockMessage.proxy();
+    }
+
+    public Stub updateByteArrayWith(byte[] someBytes) {
+        return new UpdateByteArrayStub(someBytes);
+    }
+
+    public Message throwsOnSome(String methodName,
+                                String mockName,
+                                String arg1,
+                                Object returnValue,
+                                List toThrowOn) {
         Mock mockMessage = test.mock(mockedClazz, mockName);
         throwsJMSExceptionOnMethods(mockMessage, new ArrayList(toThrowOn));
         mockMessage.expects(test.atLeastOnce()).method(methodName).with(test.eq(arg1)).will(test.returnValue(returnValue));
@@ -124,7 +149,7 @@ public class MockMessageBuilder {
     public Message throwsJMSMessageOnMethodNamed(String methodName) {
         if (null == methodName) return throwsJMSMessageOnAnyMethod();
         Mock mockMessage = test.mock(mockedClazz);
-        mockMessage.expects(test.once()).method(methodName).will(test.throwException(new JMSException("thrown as a test")));
+        mockMessage.stubs().method(methodName).will(test.throwException(new JMSException("thrown as a test")));
         return (Message) mockMessage.proxy();
     }
 

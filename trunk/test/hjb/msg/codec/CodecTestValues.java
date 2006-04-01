@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.msg.codec;
 
 public class CodecTestValues {
@@ -43,6 +43,13 @@ public class CodecTestValues {
     public static final byte EXPECTED_DECODED_BYTES[] = new byte[] {
             1, 3, 7, 9, 11, -1,
     };
+
+    public static final Byte EXPECTED_DECODED_BYTES_OBJECTS[] = new Byte[EXPECTED_DECODED_BYTES.length];
+    static {
+        for (int i = 0; i < EXPECTED_DECODED_BYTES.length; i++) {
+            EXPECTED_DECODED_BYTES_OBJECTS[i] = new Byte(EXPECTED_DECODED_BYTES[i]);
+        }
+    }
 
     public static final String OK_EXPECTED_DECODED_BYTES[] = new String[] {
             "(byte 1)",
@@ -75,6 +82,13 @@ public class CodecTestValues {
             1d, 0.3457D, 7.7e11d, 9.999d, 11000.01D, -15.85e-12d,
     };
 
+    public static final Double EXPECTED_DECODED_DOUBLES_OBJECTS[] = new Double[EXPECTED_DECODED_DOUBLES.length];
+    static {
+        for (int i = 0; i < EXPECTED_DECODED_DOUBLES.length; i++) {
+            EXPECTED_DECODED_DOUBLES_OBJECTS[i] = new Double(EXPECTED_DECODED_DOUBLES[i]);
+        }
+    }
+
     public static final String OK_EXPECTED_DECODED_DOUBLES[] = new String[] {
             "(double 1E0)",
             "(double 345.7E-3)",
@@ -106,6 +120,13 @@ public class CodecTestValues {
             1f, 0.3457f, 7.7e11f, 9.999f, 11000.0F, -15.85e-12f,
     };
 
+    public static final Float EXPECTED_DECODED_FLOATS_OBJECTS[] = new Float[EXPECTED_DECODED_FLOATS.length];
+    static {
+        for (int i = 0; i < EXPECTED_DECODED_FLOATS.length; i++) {
+            EXPECTED_DECODED_FLOATS_OBJECTS[i] = new Float(EXPECTED_DECODED_FLOATS[i]);
+        }
+    }
+
     public static final String OK_EXPECTED_DECODED_FLOATS[] = new String[] {
             "(float 1E0)",
             "(float 345.7E-3)",
@@ -136,6 +157,13 @@ public class CodecTestValues {
             1, 3456, 77, 65536, -200000,
     };
 
+    public static final Integer EXPECTED_DECODED_INTEGERS_OBJECTS[] = new Integer[EXPECTED_DECODED_INTEGERS.length];
+    static {
+        for (int i = 0; i < EXPECTED_DECODED_INTEGERS.length; i++) {
+            EXPECTED_DECODED_INTEGERS_OBJECTS[i] = new Integer(EXPECTED_DECODED_INTEGERS[i]);
+        }
+    }
+
     public static final String OK_EXPECTED_DECODED_INTEGERS[] = new String[] {
             "(int 1)",
             "(int 3456)",
@@ -164,6 +192,13 @@ public class CodecTestValues {
     public static final char EXPECTED_DECODED_CHARS[] = new char[] {
             '\u0061', '\u00AA', '\u0009', '\u2620', '\u18FF',
     };
+
+    public static final Character EXPECTED_DECODED_CHARS_OBJECTS[] = new Character[EXPECTED_DECODED_CHARS.length];
+    static {
+        for (int i = 0; i < EXPECTED_DECODED_CHARS.length; i++) {
+            EXPECTED_DECODED_CHARS_OBJECTS[i] = new Character(EXPECTED_DECODED_CHARS[i]);
+        }
+    }
 
     public static final String OK_EXPECTED_DECODED_CHARS[] = new String[] {
             "(char \\u0061)",
@@ -224,6 +259,13 @@ public class CodecTestValues {
             1l, 3456l, 77l, 65536, -200000,
     };
 
+    public static final Long EXPECTED_DECODED_LONGS_OBJECTS[] = new Long[EXPECTED_DECODED_LONGS.length];
+    static {
+        for (int i = 0; i < EXPECTED_DECODED_LONGS.length; i++) {
+            EXPECTED_DECODED_LONGS_OBJECTS[i] = new Long(EXPECTED_DECODED_LONGS[i]);
+        }
+    }
+
     public static final String OK_EXPECTED_DECODED_LONGS[] = new String[] {
             "(long 1)",
             "(long 3456)",
@@ -255,6 +297,13 @@ public class CodecTestValues {
             1, 3456, 77, 2000, -20000,
     };
 
+    public static final Short EXPECTED_DECODED_SHORTS_OBJECTS[] = new Short[EXPECTED_DECODED_SHORTS.length];
+    static {
+        for (int i = 0; i < EXPECTED_DECODED_SHORTS.length; i++) {
+            EXPECTED_DECODED_SHORTS_OBJECTS[i] = new Short(EXPECTED_DECODED_SHORTS[i]);
+        }
+    }
+
     public static final String OK_EXPECTED_DECODED_SHORTS[] = new String[] {
             "(short 1)",
             "(short 3456)",
@@ -279,6 +328,13 @@ public class CodecTestValues {
             true, false, true, false, true
     };
 
+    public static final Boolean EXPECTED_DECODED_BOOLEANS_OBJECTS[] = new Boolean[EXPECTED_DECODED_BOOLEANS.length];
+    static {
+        for (int i = 0; i < EXPECTED_DECODED_BOOLEANS.length; i++) {
+            EXPECTED_DECODED_BOOLEANS_OBJECTS[i] = new Boolean(EXPECTED_DECODED_BOOLEANS[i]);
+        }
+    }
+
     public static final String OK_EXPECTED_DECODED_BOOLEANS[] = new String[] {
             "(boolean true)",
             "(boolean false)",
@@ -289,6 +345,45 @@ public class CodecTestValues {
 
     public static final String NOT_OK_FOR_ANYTHING[] = new String[] {
             "anything", "boolean 1)", "dble 3fggf", "(lng 5)", "(inte 7)",
+    };
+
+    public static final Object[][] ORDERED_EXPECTED_DECODED_VALUES_OBJECTS = {
+            EXPECTED_DECODED_BYTES_OBJECTS,
+            EXPECTED_DECODED_SHORTS_OBJECTS,
+            EXPECTED_DECODED_CHARS_OBJECTS,
+            EXPECTED_DECODED_INTEGERS_OBJECTS,
+            EXPECTED_DECODED_LONGS_OBJECTS,
+            EXPECTED_DECODED_FLOATS_OBJECTS,
+            EXPECTED_DECODED_DOUBLES_OBJECTS,
+            EXPECTED_DECODED_BOOLEANS_OBJECTS,
+            EXPECTED_DECODED_BARRAYS,
+            NOT_OK_FOR_ANYTHING,
+    };
+
+    public static final String[][] ORDERED_OK_EXPECTED_DECODED_VALUES = {
+            OK_EXPECTED_DECODED_BYTES,
+            OK_EXPECTED_DECODED_SHORTS,
+            OK_EXPECTED_DECODED_CHARS,
+            OK_EXPECTED_DECODED_INTEGERS,
+            OK_EXPECTED_DECODED_LONGS,
+            OK_EXPECTED_DECODED_FLOATS,
+            OK_EXPECTED_DECODED_DOUBLES,
+            OK_EXPECTED_DECODED_BOOLEANS,
+            OK_EXPECTED_DECODED_BARRAYS,
+            NOT_OK_FOR_ANYTHING,
+    };
+
+    public static final String[][] ORDERED_OK_ENCODED_VALUES = {
+            OK_ENCODED_BYTES,
+            OK_ENCODED_SHORTS,
+            OK_ENCODED_CHARS,
+            OK_ENCODED_INTEGERS,
+            OK_ENCODED_LONGS,
+            OK_ENCODED_FLOATS,
+            OK_ENCODED_DOUBLES,
+            OK_ENCODED_BOOLEANS,
+            OK_ENCODED_BARRAYS,
+            NOT_OK_FOR_ANYTHING,
     };
 
 }

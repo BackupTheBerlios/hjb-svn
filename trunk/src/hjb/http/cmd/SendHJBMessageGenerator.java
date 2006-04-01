@@ -70,7 +70,11 @@ public class SendHJBMessageGenerator extends PatternMatchingCommandGenerator {
         this.generatedCommand = new SendHJBMessage(new HJBMessenger(connection,
                                                                     sessionIndex),
                                                    getFinder().findHJBMessage(decodedParameters),
-                                                   producerIndex);
+                                                   producerIndex,
+                                                   getFinder().findProducerArguments(decodedParameters),
+                                                   getFinder().findOptionalDestination(decodedParameters,
+                                                                                       root,
+                                                                                       providerName));
         setAssignedCommandRunner(connection.getSessionCommandRunner(sessionIndex));
     }
 

@@ -126,7 +126,7 @@ public class StreamMessageCharValueCopierTest extends MockObjectTestCase {
         } catch (HJBException e) {}
     }
 
-    public void testAddToMessageInvokesWriteInt() {
+    public void testAddToMessageInvokesWriteMethod() {
         StreamMessageCharValueCopier testCopier = new StreamMessageCharValueCopier(valuesRead);
         for (int i = 0; i < EXPECTED_DECODED_CHARS.length; i++) {
             Message testMessage = messageBuilder.invokesNamedMethodAsExpected("writeChar",

@@ -6,8 +6,8 @@ What are they?
 
 JMS Session objects are the actual java class instances used to send
 and receive messages by a JMS messaging application like HJB.  They
-are created using a given Session. The four distinct types supported
-by HJB are
+are created by a JMS Session instance. The four distinct types
+supported by HJB are
 
 * `Message Consumers`_
 

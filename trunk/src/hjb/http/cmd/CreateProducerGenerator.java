@@ -77,7 +77,7 @@ public class CreateProducerGenerator extends PatternMatchingCommandGenerator {
         Map decodedParameters = getDecoder().decode(request.getParameterMap());
         this.generatedCommand = new CreateProducer(connection.getSessionProducers(),
                                                    sessionIndex,
-                                                   getFinder().findDestination(decodedParameters,
+                                                   getFinder().findRequiredDestination(decodedParameters,
                                                                                root,
                                                                                providerName),
                                                    getFinder().findProducerArguments(decodedParameters));

@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.jms;
 
 import java.util.*;
@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
+import hjb.misc.MessageProducerArguments;
 import hjb.msg.HJBMessage;
 import hjb.msg.MessageCopier;
 import hjb.msg.MessageCopierFactory;
@@ -77,6 +78,13 @@ public class HJBMessenger {
     }
 
     public void send(HJBMessage asHJB, int index) throws HJBException {
+        send(asHJB, null, null, index);
+    }
+
+    public void send(HJBMessage asHJB,
+                     Destination destination,
+                     MessageProducerArguments producerArguments,
+                     int index) throws HJBException {
         try {
             if (null == asHJB) {
                 String message = strings().getString(HJBStrings.IGNORED_NULL_HJB_MESSAGE,
@@ -88,7 +96,7 @@ public class HJBMessenger {
             LOG.info("About to send HJB message: " + asHJB);
             Message asJMS = createJMSMessageFor(asHJB);
             findMessageCopierFor(asHJB).copyToJMSMessage(asHJB, asJMS);
-            getProducerFor(index).send(asJMS);
+            sendJMSMessage(asJMS, destination, producerArguments, index);
         } catch (JMSException e) {
             String message = strings().getString(HJBStrings.SEND_OF_MESSAGE_FAILED,
                                                  new Integer(getSessionIndex()));
@@ -126,6 +134,32 @@ public class HJBMessenger {
 
     public int getSessionIndex() {
         return sessionIndex;
+    }
+
+    protected void sendJMSMessage(Message asJMS,
+                                  Destination destination,
+                                  MessageProducerArguments producerArguments,
+                                  int index) throws JMSException {
+        if (null == producerArguments) {
+            if (null == destination) {
+                getProducerFor(index).send(asJMS);
+            } else {
+                getProducerFor(index).send(destination, asJMS);
+            }
+        } else {
+            MessageProducer p = getProducerFor(index);
+            long timeToLive = (producerArguments.isTimeToLiveSet() ? producerArguments.getTimeToLive()
+                    : p.getTimeToLive());
+            int priority = (producerArguments.isPrioritySet() ? producerArguments.getPriority()
+                    : p.getPriority());
+            int deliveryMode = (producerArguments.isDeliveryModeSet() ? producerArguments.getDeliveryMode()
+                    : p.getDeliveryMode());
+            if (null == destination) {
+                p.send(asJMS, deliveryMode, priority, timeToLive);
+            } else {
+                p.send(destination, asJMS, deliveryMode, priority, timeToLive);
+            }
+        }
     }
 
     protected HJBMessage receiveFromConsumer(MessageConsumer aConsumer,

@@ -22,6 +22,8 @@ package hjb.http.cmd;
 
 import javax.jms.Destination;
 
+import org.apache.log4j.Logger;
+
 import hjb.jms.HJBConnection;
 import hjb.jms.HJBConnectionFactory;
 import hjb.jms.HJBProvider;
@@ -90,6 +92,7 @@ public class HJBTreeWalker {
         String message = strings().getString(HJBStrings.ALLOWED_PATH_NOT_FOUND,
                                              getRequestPath(),
                                              component);
+        LOG.error(message);
         throw new HJBNotFoundException(message);
     }
 
@@ -108,4 +111,5 @@ public class HJBTreeWalker {
     private HJBRoot root;
     private String requestPath;
     private static final HJBStrings STRINGS = new HJBStrings();
+    private static final Logger LOG = Logger.getLogger(HJBTreeWalker.class);
 }

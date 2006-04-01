@@ -196,21 +196,6 @@ public class JMSArgumentFinder {
         return ((Boolean) rawValue).booleanValue();
     }
 
-    public Queue findQueue(Map decodedParameters,
-                           HJBRoot root,
-                           String sessionProviderName) {
-        Destination rawDestination = findDestination(decodedParameters,
-                                                     root,
-                                                     sessionProviderName);
-        if (!(rawDestination instanceof Queue)) {
-            String message = strings().getString(HJBStrings.INVALID_DESTINATION_TYPE,
-                                                 rawDestination.getClass().getName(),
-                                                 Queue.class.getName());
-            throw new HJBClientException(message);
-        }
-        return (Queue) rawDestination;
-    }
-
     public String findSubscriberName(Map decodedParameters) {
         Object rawSubscriberName = decodedParameters.get(HJBServletConstants.SUBSCRIBER_NAME);
         if (!(rawSubscriberName instanceof String)) {
@@ -221,24 +206,39 @@ public class JMSArgumentFinder {
         return (String) rawSubscriberName;
     }
 
+    public Queue findQueue(Map decodedParameters,
+                           HJBRoot root,
+                           String sessionProviderName) {
+        Destination rawValue = findRequiredDestination(decodedParameters,
+                                                       root,
+                                                       sessionProviderName);
+        if (!(rawValue instanceof Queue)) {
+            String message = strings().getString(HJBStrings.INVALID_DESTINATION_TYPE,
+                                                 rawValue.getClass().getName(),
+                                                 Queue.class.getName());
+            throw new HJBClientException(message);
+        }
+        return (Queue) rawValue;
+    }
+
     public Topic findTopic(Map decodedParameters,
                            HJBRoot root,
                            String sessionProviderName) {
-        Destination rawDestination = findDestination(decodedParameters,
-                                                     root,
-                                                     sessionProviderName);
-        if (!(rawDestination instanceof Topic)) {
+        Destination rawValue = findRequiredDestination(decodedParameters,
+                                                       root,
+                                                       sessionProviderName);
+        if (!(rawValue instanceof Topic)) {
             String message = strings().getString(HJBStrings.INVALID_DESTINATION_TYPE,
-                                                 rawDestination.getClass().getName(),
+                                                 rawValue.getClass().getName(),
                                                  Topic.class.getName());
             throw new HJBClientException(message);
         }
-        return (Topic) rawDestination;
+        return (Topic) rawValue;
     }
 
-    public Destination findDestination(Map decodedParameters,
-                                       HJBRoot root,
-                                       String sessionProviderName) {
+    public Destination findRequiredDestination(Map decodedParameters,
+                                               HJBRoot root,
+                                               String sessionProviderName) {
         Object rawValue = decodedParameters.get(HJBServletConstants.DESTINATION_URL);
         assertIsValidDestinationURL(rawValue);
         String destinationURL = (String) rawValue;
@@ -250,6 +250,16 @@ public class JMSArgumentFinder {
         assertIsSameProvider(sessionProviderName, destinationProviderName);
         HJBTreeWalker walker = new HJBTreeWalker(root, destinationURL);
         return walker.findDestination(destinationProviderName, destinationName);
+    }
+
+    public Destination findOptionalDestination(Map decodedParameters,
+                                               HJBRoot root,
+                                               String sessionProviderName) {
+        try {
+            return findRequiredDestination(decodedParameters, root, sessionProviderName);
+        } catch (HJBNotFoundException e) {
+            return null;
+        }
     }
 
     protected Integer findInteger(Map decodedParameters,
@@ -298,13 +308,14 @@ public class JMSArgumentFinder {
     }
 
     protected String findHJBMessageAsText(Map decodedParameters) {
-        Object rawMessageText = decodedParameters.get(HJBServletConstants.MESSAGE_TO_SEND);
-        if (!(rawMessageText instanceof String)) {
+        Object rawValue = decodedParameters.get(HJBServletConstants.MESSAGE_TO_SEND);
+        if (!(rawValue instanceof String)) {
             String message = strings().getString(HJBStrings.INVALID_MESSAGE,
-                                                 rawMessageText);
+                                                 rawValue);
+            LOG.error(message);
             throw new HJBClientException(message);
         }
-        return (String) rawMessageText;
+        return (String) rawValue;
     }
 
     protected void assertIsSameProvider(String sessionProviderName,
@@ -314,6 +325,7 @@ public class JMSArgumentFinder {
             String message = strings().getString(HJBStrings.CAN_NOT_USE_DESTINATION,
                                                  destinationProviderName,
                                                  sessionProviderName);
+            LOG.error(message);
             throw new HJBClientException(message);
         }
     }
@@ -323,6 +335,7 @@ public class JMSArgumentFinder {
         if (!(rawDestinationURL instanceof String)) {
             String message = strings().getString(HJBStrings.INVALID_DESTINATION_URL,
                                                  rawDestinationURL);
+            LOG.error(message);
             throw new HJBNotFoundException(message);
         }
     }
@@ -333,6 +346,7 @@ public class JMSArgumentFinder {
         } catch (UnsupportedEncodingException e) {
             String message = strings().getString(HJBStrings.ENCODING_NOT_SUPPORTED,
                                                  HJBServletConstants.JAVA_CHARSET_UTF8);
+            LOG.error(message, e);
             throw new HJBException(message);
         }
     }
@@ -349,5 +363,5 @@ public class JMSArgumentFinder {
     public static final int MINIMUM_PRIORITY = 0;
     private static final Logger LOG = Logger.getLogger(JMSArgumentFinder.class);
     private static final Pattern DESTINATION_PATH_MATCHER = Pattern.compile("^/[^/]*/[^/]*/(\\w+)/([^/]+)/?$");
-    private static HJBStrings STRINGS = new HJBStrings();
+    private static final HJBStrings STRINGS = new HJBStrings();
 }
