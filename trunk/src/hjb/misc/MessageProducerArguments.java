@@ -4,7 +4,7 @@
 package hjb.misc;
 
 /**
- * <code>MessageProducerArguments</code> groups the set of values are
+ * <code>MessageProducerArguments</code> groups the set of values that are
  * optionally used to configure a <code>MessageProducer</code>.
  * 
  * @author Tim Emiola
