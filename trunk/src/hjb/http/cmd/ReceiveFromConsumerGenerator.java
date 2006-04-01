@@ -98,5 +98,9 @@ public class ReceiveFromConsumerGenerator extends
 
     private transient ReceiveFromConsumer generatedCommand;
 
-    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/connection-(\\d+)/session-(\\d+)/consumer-(\\d+)/receive$");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/"
+            + PathNaming.CONNECTION
+            + "-(\\d+)/"
+            + PathNaming.SESSION
+            + "-(\\d+)/" + PathNaming.CONSUMER + "-(\\d+)/receive$");
 }

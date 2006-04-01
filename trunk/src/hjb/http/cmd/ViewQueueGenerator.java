@@ -86,5 +86,9 @@ public class ViewQueueGenerator extends PatternMatchingCommandGenerator {
 
     private transient ViewQueue generatedCommand;
 
-    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/connection-(\\d+)/session-(\\d+)/browser-(\\d+)/view$");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/"
+            + PathNaming.CONNECTION
+            + "-(\\d+)/"
+            + PathNaming.SESSION
+            + "-(\\d+)/" + PathNaming.BROWSER + "-(\\d+)/view$");
 }

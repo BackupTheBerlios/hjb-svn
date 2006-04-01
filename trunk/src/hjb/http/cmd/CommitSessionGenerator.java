@@ -76,5 +76,9 @@ public class CommitSessionGenerator extends PatternMatchingCommandGenerator {
 
     private transient CommitSession generatedCommand;
 
-    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/connection-(\\d+)/session-(\\d+)/commit$");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/"
+            + PathNaming.CONNECTION
+            + "-(\\d+)/"
+            + PathNaming.SESSION
+            + "-(\\d+)/commit$");
 }

@@ -106,6 +106,15 @@ public class CreateProducerGenerator extends PatternMatchingCommandGenerator {
     private transient MessageFormat createdLocationFormat;
     private transient CreateProducer generatedCommand;
 
-    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/connection-(\\d+)/session-(\\d+)/create-producer$");
-    private static final MessageFormat FORMATTER_GENERATOR = new MessageFormat("{0}{1}/{2}/{3}/connection-{4}/session-{5}/producer-'{0}'");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/"
+            + PathNaming.CONNECTION
+            + "-(\\d+)/"
+            + PathNaming.SESSION
+            + "-(\\d+)/create-producer$");
+    private static final MessageFormat FORMATTER_GENERATOR = new MessageFormat("{0}{1}/{2}/{3}/"
+            + PathNaming.CONNECTION
+            + "-{4}/"
+            + PathNaming.SESSION
+            + "-{5}/"
+            + PathNaming.PRODUCER + "-'{0}'");
 }

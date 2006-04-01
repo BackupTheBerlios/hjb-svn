@@ -70,5 +70,6 @@ public class StartConnectionGenerator extends PatternMatchingCommandGenerator {
 
     private transient StartConnection generatedCommand;
 
-    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/connection-(\\d+)/start$");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/"
+            + PathNaming.CONNECTION + "-(\\d+)/start$");
 }

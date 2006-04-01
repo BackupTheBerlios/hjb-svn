@@ -415,4 +415,16 @@ public final class HJBStrings {
     public static final String PROVIDER_ALREADY_REGISTERED = "provider.already.registered";
 
     public static final String NO_VALUE_PROVIDED = "no.value.provided";
+    
+    public static final String HJB_PATH_CONNECTION = "hjb.path.connection";
+    
+    public static final String HJB_PATH_SESSION = "hjb.path.session";
+    
+    public static final String HJB_PATH_BROWSER = "hjb.path.browser";
+    
+    public static final String HJB_PATH_CONSUMER = "hjb.path.consumer";
+    
+    public static final String HJB_PATH_SUBSCRIBER = "hjb.path.subscriber";
+    
+    public static final String HJB_PATH_PRODUCER = "hjb.path.producer";
 }

@@ -38,13 +38,13 @@ import hjb.msg.HJBMessage;
  * platform-specific end-of-line character sequence
  * 
  * <pre>
- *      headerName=headerValue CR
+ *        headerName=headerValue CR
  * </pre>
  * 
  * Then a '%' is written by itself:
  * 
  * <pre>
- *       % CR
+ *         % CR
  * </pre>
  * 
  * Finally, the message body is written.
@@ -53,7 +53,7 @@ import hjb.msg.HJBMessage;
  * and a '%% ' is used to separate each one.
  * 
  * <pre>
- *       % CR
+ *         % CR
  * </pre>
  * 
  * @author Tim Emiola

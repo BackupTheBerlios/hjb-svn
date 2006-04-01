@@ -69,5 +69,6 @@ public class DeleteConnectionGenerator extends PatternMatchingCommandGenerator {
 
     private transient DeleteConnection generatedCommand;
 
-    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/connection-(\\d+)/?$");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/"
+            + PathNaming.CONNECTION + "-(\\d+)/?$");
 }

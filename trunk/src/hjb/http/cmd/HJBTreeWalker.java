@@ -80,7 +80,8 @@ public class HJBTreeWalker {
                                         int connectionIndex) {
         HJBConnection result = findConnectionFactory(providerName, factoryName).getConnection(connectionIndex);
         if (null == result) {
-            handleMissingComponent("connection-" + connectionIndex);
+            handleMissingComponent("" + PathNaming.CONNECTION + ""
+                    + connectionIndex);
         }
         return result;
     }
