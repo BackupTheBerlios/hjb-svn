@@ -8,8 +8,8 @@ What are they?
 ++++++++++++++
 
 A *JMS Connection* represents an instance of a transport endpoint that
-a Provider can use for messaging ([JMSSpec]_).  An application creates
-one using a ConnectionFactory.
+a Provider can use for messaging.  JMS applications create
+them using a ConnectionFactory (see([JMSSpec]_) for further information).
 
 Connections in HJB
 ++++++++++++++++++
@@ -46,8 +46,10 @@ JMS Sessions
 What are they?
 ++++++++++++++
 
-A JMS Session represents a single threaded context in which messages
-are sent and/or received ([JMSSpec]_).
+A JMS *Session* represents a single-threaded context in which messages
+are sent and/or received. They are created from JMS Connections, which
+serve as a factory for JMS Sessions (see [JMSSpec]_ for a full
+description).
 
 Sessions in HJB
 +++++++++++++++

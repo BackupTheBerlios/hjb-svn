@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.http.cmd;
 
 import java.text.MessageFormat;
@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import hjb.http.HJBServletConstants;
 import hjb.jms.HJBConnectionFactory;
-import hjb.jms.HJBProvider;
 import hjb.jms.HJBRoot;
 import hjb.jms.cmd.CreateConnection;
 import hjb.jms.cmd.JMSCommand;
@@ -55,7 +54,8 @@ public class CreateConnectionGenerator extends PatternMatchingCommandGenerator {
 
     protected void constructCommandFrom(HttpServletRequest request, HJBRoot root)
             throws HJBException {
-        Matcher m = getPathPattern().matcher(request.getPathInfo());
+        String pathInfo = request.getPathInfo();
+        Matcher m = getPathPattern().matcher(pathInfo);
         m.matches();
         String providerName = m.group(1);
         String factoryName = applyURLDecoding(m.group(2));
@@ -68,12 +68,9 @@ public class CreateConnectionGenerator extends PatternMatchingCommandGenerator {
         });
         this.createdLocationFormat = new MessageFormat(formatterText);
 
-        HJBProvider provider = root.getProvider(providerName);
-        if (null == provider)
-            handleMissingComponent(request.getPathInfo(), providerName);
-        HJBConnectionFactory factory = provider.getConnectionFactory(factoryName);
-        if (null == factory)
-            handleMissingComponent(request.getPathInfo(), factoryName);
+        HJBTreeWalker walker = new HJBTreeWalker(root, pathInfo);
+        HJBConnectionFactory factory = walker.findConnectionFactory(providerName,
+                                                                    factoryName);
 
         // get the username and password from the decoded parameters,
         // then create the JMSCommand

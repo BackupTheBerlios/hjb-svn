@@ -76,26 +76,25 @@ Destinations
 Administered objects are so called because they are set up by an
 messaging system administrator.  Often, the library jars supplied by a
 vendor will provide a custom API for gaining access to the these
-objects. However, the portable way of doing this is using to lookup
-the object using JNDI, which is how HJB does it.
+objects. However, the portable way of doing this to lookup the object
+using JNDI, which is how HJB does it.
 
 Administered Objects in HJB
 +++++++++++++++++++++++++++
 
 At runtime in HJB, each Administered Object
 
-* is represented by a HTTP resource.
-
-* has a URL that is obtained by combining the Provider's resource
-  name and the actual JNDI name of the object.
+* is represented by a HTTP resource whose URL the child URL obtained
+  by combining the Provider's resource name and the actual JNDI name
+  of the object.
 
 * is added to the HJB runtime by sending a HTTP POST request to the
   registration URL for the administered object. The different types
   administered objects have different registration URLs. The
-  registration URL is a child URL of the actual objects URL.
+  registration URL is a child URL of the object's resource URL.
 
 * can be removed from the HJB runtime by sending a HTTP DELETE request
-  to the object's URL.
+  to the resource URL.
 
 .. [JMSSpec] `Java Message Service specification 1.1
   <http://java.sun.com/products/jms/docs.html>`_

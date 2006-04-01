@@ -239,22 +239,17 @@ public class JMSArgumentFinder {
     public Destination findDestination(Map decodedParameters,
                                        HJBRoot root,
                                        String sessionProviderName) {
-        Object rawURL = decodedParameters.get(HJBServletConstants.DESTINATION_URL);
-        assertIsValidDestinationURL(rawURL);
-        String destinationURL = (String) rawURL;
+        Object rawValue = decodedParameters.get(HJBServletConstants.DESTINATION_URL);
+        assertIsValidDestinationURL(rawValue);
+        String destinationURL = (String) rawValue;
         Matcher m = getDestinationPathMatcher().matcher(destinationURL);
         m.matches();
 
         String destinationProviderName = m.group(1);
         String destinationName = applyURLDecoding(m.group(2));
         assertIsSameProvider(sessionProviderName, destinationProviderName);
-        HJBProvider provider = root.getProvider(sessionProviderName);
-        if (null == provider)
-            handleMissingComponent(destinationURL, destinationProviderName);
-        Destination destination = provider.getDestination(destinationName);
-        if (null == destination)
-            handleMissingComponent(destinationURL, destinationName);
-        return destination;
+        HJBTreeWalker walker = new HJBTreeWalker(root, destinationURL);
+        return walker.findDestination(destinationProviderName, destinationName);
     }
 
     protected Integer findInteger(Map decodedParameters,
@@ -310,14 +305,6 @@ public class JMSArgumentFinder {
             throw new HJBClientException(message);
         }
         return (String) rawMessageText;
-    }
-
-    protected void handleMissingComponent(String pathInfo, String component)
-            throws HJBException {
-        String message = strings().getString(HJBStrings.ALLOWED_PATH_NOT_FOUND,
-                                             pathInfo,
-                                             component);
-        throw new HJBNotFoundException(message);
     }
 
     protected void assertIsSameProvider(String sessionProviderName,

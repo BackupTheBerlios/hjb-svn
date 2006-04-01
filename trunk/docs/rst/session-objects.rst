@@ -5,8 +5,9 @@ What are they?
 --------------
 
 JMS Session objects are the actual java class instances used to send
-and receive messages by a JMS messaging application.  They are created
-using a given Session. The four distinct types supported by HJB are
+and receive messages by a JMS messaging application like HJB.  They
+are created using a given Session. The four distinct types supported
+by HJB are
 
 * `Message Consumers`_
 
@@ -38,20 +39,21 @@ At runtime in HJB, each Message Consumer
   URL of a session.
 
 * is configured to receive messages from a specific Destination. The
-  URL of the destination is included in the parameters of the creating
-  POST request.
+  HJB URL of the destination is included in the parameters of the
+  creating POST request.
 
 * can be configured to use a specific Message Selector (see
   [JMSSpec]_) to control which messages are returned by including the
   message selector as a parameter in the POST request. When it is
-  appropriate, they can also be configured to ignore messages
-  broadcast by the same connection using a noLocal parameter.
+  appropriate (i.e, when the Message Consumer is a Topic Subscriber),
+  they can also be configured to ignore messages broadcast by the same
+  connection using a noLocal parameter.
 
 * has a URL that includes its creation index, i.e, the number of
   Message Consumers that have been created by the session so far.
 
-* returns an HJB-encoded JMS message on receiving a HTTP POST request
-  on the appropriate child URL.
+* returns an HJB-encoded JMS message in the response on receiving a
+  HTTP POST request on its 'receive' child URL.
 
 Message Producers
 -----------------
@@ -83,8 +85,8 @@ At runtime in HJB, each Message Producer
   Message Consumers that have been created by the session so far.
 
 * decodes and sends HJB-encoded JMS message on receiving a HTTP POST
-  request containing the message as a parameter on the appropriate
-  child URL.
+  request containing the message as a parameter on the 'send' child
+  URL.
 
 Durable Subscribers
 -------------------
@@ -105,8 +107,8 @@ Durable Subscribers in HJB
 
 At runtime in HJB, each Durable Subscriber
 
-* is represented by a HTTP resource URL whose URL is a child URL of
-  the session used to create it.
+* is represented by a HTTP resource whose URL is a child URL of the
+  session used to create it.
 
 * is created by sending a HTTP POST request to the appropriate child URL
   of a session URL.
@@ -122,10 +124,10 @@ At runtime in HJB, each Durable Subscriber
   broadcast by the same connection using a noLocal parameter.
 
 * has a URL that includes its creation index, i.e, the number of
-  Durable Subscribers that have been created by the connection so far.
+  Durable Subscribers that have been created by the session so far.
 
-* returns an HJB-encoded JMS message on receiving a HTTP POST request
-  on the appropriate child URL.
+* returns an HJB-encoded JMS message in the response on receiving a
+  HTTP POST request on its 'receive' child URL.
 
 Queue Browsers
 --------------
@@ -145,8 +147,8 @@ Queue Browsers in HJB
 
 At runtime in HJB, each Durable Subscriber
 
-* is represented by a HTTP resource URL whose URL is a child URL of
-  the session used to create it.
+* is represented by a HTTP resource whose URL is a child URL of the
+  session used to create it.
 
 * is created by sending a HTTP POST request to the appropriate child URL
   of a session URL.
@@ -160,10 +162,10 @@ At runtime in HJB, each Durable Subscriber
   message selector as a parameter in the POST request.
 
 * has a URL that includes its creation index, i.e, the number of
-  Queue Browsers that have been created by the connection so far.
+  Queue Browsers that have been created by the session so far.
 
-* returns a set of HJB-encoded JMS messages on receiving a HTTP POST
-  request on the appropriate child URL.
+* returns a set of HJB-encoded JMS message in the response on
+  receiving a HTTP POST request on its 'receive' child URL.
 
 .. [JMSSpec] `Java Message Service specification 1.1
   <http://java.sun.com/products/jms/docs.html>`_
