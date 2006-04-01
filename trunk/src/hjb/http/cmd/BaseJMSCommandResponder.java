@@ -30,8 +30,8 @@ import hjb.jms.cmd.JMSCommand;
 import hjb.misc.HJBStrings;
 
 /**
- * <code>BaseJMSCommandResponders</code> is the base class for all
- * <code>JMSCommandResponder</code> implemenatations in this package.
+ * <code>BaseJMSCommandResponder</code> is the base class for all
+ * <code>JMSCommandResponder</code> implementations in this package.
  * 
  * @author Tim Emiola
  */
@@ -55,8 +55,8 @@ public abstract class BaseJMSCommandResponder implements JMSCommandResponder {
 
     /**
      * Used by the various methods that write the response to add a custom HJB
-     * header to the response that contains status text representing the result
-     * of processing the command.
+     * header that contains status text representing the status of processing 
+     * the command.
      * <p>
      * The name of header is the value of
      * {@link HJBServletConstants#HJB_STATUS_HEADER}.
