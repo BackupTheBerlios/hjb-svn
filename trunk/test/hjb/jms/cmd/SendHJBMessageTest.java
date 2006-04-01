@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.jms.cmd;
 
 import java.io.File;
@@ -36,22 +36,24 @@ import hjb.misc.HJBException;
 import hjb.msg.HJBMessage;
 import hjb.msg.MessageCopierFactory;
 import hjb.testsupport.MockHJBRuntime;
+import hjb.testsupport.MockSessionBuilder;
 
 public class SendHJBMessageTest extends MockObjectTestCase {
 
     public void testCommitSessionThrowsOnNullInputs() {
         try {
-            new SendHJBMessage(null, new HJBMessage(new HashMap(), "") , 1);
+            new SendHJBMessage(null, new HJBMessage(new HashMap(), ""), 1);
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
     }
 
     protected HJBMessage createTestTextHJBMessage() {
         HashMap headers = new HashMap();
-        headers.put(MessageCopierFactory.HJB_JMS_CLASS, TextMessage.class.getName());
-        return new HJBMessage(headers, "boo!");        
+        headers.put(MessageCopierFactory.HJB_JMS_CLASS,
+                    TextMessage.class.getName());
+        return new HJBMessage(headers, "boo!");
     }
-    
+
     public void testExecuteSendsAMessage() {
         Mock mockTextMessage = mock(TextMessage.class);
         mockTextMessage.expects(once()).method("setText").with(eq("boo!"));
@@ -59,19 +61,22 @@ public class SendHJBMessageTest extends MockObjectTestCase {
 
         Mock mockProducer = mock(MessageProducer.class);
         mockProducer.expects(once()).method("send");
+        mockProducer.expects(atLeastOnce()).method("setDisableMessageTimestamp");
+        mockProducer.expects(atLeastOnce()).method("setDisableMessageID");
         MessageProducer testProducer = (MessageProducer) mockProducer.proxy();
-        
+
         Mock mockSession = mock(Session.class);
         mockSession.stubs().method("createProducer").will(returnValue(testProducer));
         mockSession.expects(once()).method("createTextMessage").will(returnValue(testMessage));
         Session testSession = (Session) mockSession.proxy();
-        
+
         HJBRoot root = new HJBRoot(testRootPath);
         mockHJB.make1Session(root, testSession, "testProvider", "testFactory");
         HJBConnection testConnection = root.getProvider("testProvider").getConnectionFactory("testFactory").getConnection(0);
 
         create1Producer(testConnection);
-        SendHJBMessage command = new SendHJBMessage(new HJBMessenger(testConnection, 0),
+        SendHJBMessage command = new SendHJBMessage(new HJBMessenger(testConnection,
+                                                                     0),
                                                     createTestTextHJBMessage(),
                                                     0);
         command.execute();
@@ -89,7 +94,8 @@ public class SendHJBMessageTest extends MockObjectTestCase {
         Destination testDestination = (Destination) mockDestination.proxy();
         CreateProducer command = new CreateProducer(sessionProducers,
                                                     0,
-                                                    testDestination);
+                                                    testDestination,
+                                                    new MockSessionBuilder().defaultProducerArguments());
         command.execute();
     }
 

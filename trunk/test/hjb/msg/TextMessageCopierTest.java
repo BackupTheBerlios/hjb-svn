@@ -20,7 +20,9 @@ USA
 */
 package hjb.msg;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.jms.Destination;
 import javax.jms.JMSException;

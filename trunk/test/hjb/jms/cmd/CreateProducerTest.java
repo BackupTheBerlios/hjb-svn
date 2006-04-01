@@ -31,6 +31,7 @@ import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
 import hjb.jms.HJBSessionProducers;
 import hjb.misc.HJBException;
+import hjb.misc.MessageProducerArguments;
 import hjb.testsupport.MockHJBRuntime;
 
 public class CreateProducerTest extends MockObjectTestCase {
@@ -39,7 +40,7 @@ public class CreateProducerTest extends MockObjectTestCase {
         Mock mockDestination = mock(Destination.class);
         Destination testDestination = (Destination) mockDestination.proxy();
         try {
-            new CreateProducer(null, 1, testDestination);
+            new CreateProducer(null, 1, testDestination, null);
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
 
@@ -48,7 +49,7 @@ public class CreateProducerTest extends MockObjectTestCase {
         HJBConnection testConnection = root.getProvider("testProvider").getConnectionFactory("testFactory").getConnection(0);
         HJBSessionProducers sessionProducers = new HJBSessionProducers(testConnection);
         try {
-            new CreateProducer(sessionProducers, 1, null);
+            new CreateProducer(sessionProducers, 1, null, null);
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
     }
@@ -64,7 +65,8 @@ public class CreateProducerTest extends MockObjectTestCase {
         assertEquals(0, sessionProducers.getProducers(0).length);
         CreateProducer command = new CreateProducer(sessionProducers,
                                                     0,
-                                                    testDestination);
+                                                    testDestination,
+                                                    new MessageProducerArguments(false, false, null, null, null));
         command.execute();
         assertEquals(1, sessionProducers.getProducers(0).length);
         assertTrue(command.isExecutedOK());

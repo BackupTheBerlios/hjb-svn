@@ -29,7 +29,10 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import hjb.http.cmd.HJBMessageWriter;
-import hjb.jms.*;
+import hjb.jms.HJBConnection;
+import hjb.jms.HJBMessenger;
+import hjb.jms.HJBRoot;
+import hjb.jms.HJBSessionConsumers;
 import hjb.misc.HJBException;
 import hjb.msg.HJBMessage;
 import hjb.msg.MessageCopierFactory;

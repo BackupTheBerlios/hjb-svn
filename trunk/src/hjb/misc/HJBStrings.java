@@ -413,4 +413,6 @@ public final class HJBStrings {
     public static final String SHUTDOWN_NOT_SMOOTH = "shutdown.not.smooth";
 
     public static final String PROVIDER_ALREADY_REGISTERED = "provider.already.registered";
+
+    public static final String NO_VALUE_PROVIDED = "no.value.provided";
 }

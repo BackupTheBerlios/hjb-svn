@@ -113,12 +113,57 @@ public final class HJBServletConstants {
 
     /**
      * Constant that holds the name of the request parameter that HJB uses to
-     * identify a subscriber name for use in configuration of a JMS
-     * <code>DurableSubscriber</code>
+     * determine the acknowledgement mode for use in configuration of a JMS
+     * <code>Session</code>
      * <p />
      * The value of this constant is "acknowledgement-mode".
      */
     public static final String SESSION_ACKNOWLEDGEMENT_MODE = "acknowledgement-mode";
+
+    /**
+     * Constant that holds the name of the request parameter that HJB uses to
+     * determine if message Ids should be disabled for use in configuration of a JMS
+     * <code>MessageProducer</code>
+     * <p />
+     * The value of this constant is "disable-message-ids".
+     */
+    public static final String DISABLE_MESSAGE_IDS = "disable-message-ids";
+    
+    /**
+     * Constant that holds the name of the request parameter that HJB uses to
+     * determine if timestamps should be disabled for use in configuration of a JMS
+     * <code>MessageProducer</code>
+     * <p />
+     * The value of this constant is "acknowledgement-mode".
+     */
+    public static final String DISABLE_TIMESTAMPS = "disable-timestamps";
+
+    /**
+     * Constant that holds the name of the request parameter that HJB uses to
+     * assign the time to live for use in configuration of a JMS
+     * <code>MessageProducer</code>
+     * <p />
+     * The value of this constant is "time-to-live".
+     */
+    public static final String TIME_TO_LIVE = "time-to-live";
+
+    /**
+     * Constant that holds the name of the request parameter that HJB uses to
+     * assign the delivery mode for use in configuration of a JMS
+     * <code>MessageProducer</code>
+     * <p />
+     * The value of this constant is "delivery-mode".
+     */
+    public static final String DELIVERY_MODE = "delivery-mode";
+
+    /**
+     * Constant that holds the name of the request parameter that HJB uses to
+     * assign the priority for use in configuration of a JMS
+     * <code>MessageProducer</code>
+     * <p />
+     * The value of this constant is "priority".
+     */
+    public static final String PRIORITY = "priority";
 
     /**
      * Constant that holds the name of the request parameter that HJB uses to

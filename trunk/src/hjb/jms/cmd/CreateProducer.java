@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.jms.cmd;
 
 import javax.jms.Destination;
@@ -25,19 +25,28 @@ import javax.jms.MessageProducer;
 
 import hjb.jms.HJBSessionProducers;
 import hjb.misc.HJBStrings;
+import hjb.misc.MessageProducerArguments;
 
 public class CreateProducer extends BaseJMSCommand {
 
     public CreateProducer(HJBSessionProducers producers,
                           int sessionIndex,
-                          Destination destination) {
-        if (null == producers)
+                          Destination destination,
+                          MessageProducerArguments producerArguments) {
+        if (null == producers) {
             throw new IllegalArgumentException(strings().needsANonNull(HJBSessionProducers.class));
-        if (null == destination)
+        }
+        if (null == destination) {
             throw new IllegalArgumentException(strings().needsANonNull(Destination.class));
-        this.producers = producers;
+        }
+        if (null == producerArguments) {
+            throw new IllegalArgumentException(strings().needsANonNull(MessageProducerArguments.class));
+        }
+
+        this.producerArguments = producerArguments;
         this.sessionIndex = sessionIndex;
         this.destination = destination;
+        this.producers = producers;
         setProducerIndex(UNSET_PRODUCER_INDEX);
     }
 
@@ -45,7 +54,8 @@ public class CreateProducer extends BaseJMSCommand {
         assertNotCompleted();
         try {
             setProducerIndex(getProducers().createProducer(getSessionIndex(),
-                                                           getDestination()));
+                                                           getDestination(),
+                                                           getProducerArguments()));
         } catch (RuntimeException e) {
             setFault(e);
         }
@@ -79,6 +89,10 @@ public class CreateProducer extends BaseJMSCommand {
         this.producerIndex = producerIndex;
     }
 
+    protected MessageProducerArguments getProducerArguments() {
+        return producerArguments;
+    }
+
     protected int getSessionIndex() {
         return sessionIndex;
     }
@@ -91,6 +105,7 @@ public class CreateProducer extends BaseJMSCommand {
         return destination;
     }
 
+    private MessageProducerArguments producerArguments;
     private int sessionIndex;
     private int producerIndex;
     private Destination destination;

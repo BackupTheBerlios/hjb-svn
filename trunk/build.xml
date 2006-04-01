@@ -61,9 +61,10 @@
   </target>
 
   <target name="javadoc" depends="init">
-    <delete>
-      <fileset dir="${javadoc.dir}" includes="**/*"/>
+    <delete failonerror="false">
+      <fileset dir="${javadoc.dir}" includes="**/*" />
     </delete>
+    <mkdir dir="${javadoc.dir}"/>
     <javadoc 
       sourcepath="${src.dir}" 
       destdir="${javadoc.dir}"
@@ -81,7 +82,7 @@
   </target>
 
   <target name="dist.src" depends="dist.jar, dist.doc, dist.webapp.standalone, clean" description="creates the full source HJB distribution">
-    <delete file="${dist.dir}/lib/${src.dist.jar.name}"/>
+    <delete file="${dist.dir}/lib/${src.dist.jar.name}" failonerror="false"/>
     <jar jarfile="${dist.dir}/lib/${src.dist.jar.name}" basedir=".">
       <manifest>
         <attribute name="Implementation-Title" value="HJB Full Source"/>
@@ -100,7 +101,7 @@
   </target>
 
   <target name="dist.doc" depends="javadoc" description="creates the HJB documentation distribution">
-    <delete file="${dist.dir}/lib/${doc.dist.jar.name}"/>
+    <delete file="${dist.dir}/lib/${doc.dist.jar.name}" failonerror="false"/>
     <jar jarfile="${dist.dir}/lib/${doc.dist.jar.name}" basedir="${javadoc.dir}">
       <manifest>
         <attribute name="Implementation-Title" value="HJB Documenation"/>
@@ -111,7 +112,7 @@
   </target>
 
   <target name="dist.jar" depends="test" description="creates the HJB distribution">
-    <delete file="${dist.dir}/lib/${dist.jar.name}"/>
+    <delete file="${dist.dir}/lib/${dist.jar.name}" failonerror="false"/>
     <jar jarfile="${dist.dir}/lib/${dist.jar.name}">
       <fileset dir="${build.dir}/classes"
                excludes="**/Test.class"
@@ -125,11 +126,12 @@
   </target>
 
   <target name="clean" description="removes all files generated during the build">
-    <delete dir="${build.dir}"/>
+    <delete dir="${build.dir}" failonerror="false"/>
+    <delete dir="${javadoc.dir}" failonerror="false"/>
   </target>
 
   <target name="clean.dist" description="removes the distribution files">
-    <delete>
+    <delete failonerror="false">
       <fileset dir="${dist.dir}" includes="**/*"/>
     </delete>
   </target>

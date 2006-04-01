@@ -87,7 +87,8 @@ public class CreateProducerGenerator extends PatternMatchingCommandGenerator {
                                                    sessionIndex,
                                                    getFinder().findDestination(decodedParameters,
                                                                                root,
-                                                                               providerName));
+                                                                               providerName),
+                                                   getFinder().findProducerArguments(decodedParameters));
         setAssignedCommandRunner(connection.getSessionCommandRunner(sessionIndex));
     }
 

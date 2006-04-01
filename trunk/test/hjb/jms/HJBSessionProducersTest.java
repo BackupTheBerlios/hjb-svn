@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.jms;
 
 import javax.jms.Connection;
@@ -46,19 +46,24 @@ public class HJBSessionProducersTest extends MockObjectTestCase {
     }
 
     public void testCreateProducerThrowsIfSessionIsNotThere() throws Exception {
-        mockSession.stubs().method("createProducer");
+        Mock mockProducer = mock(MessageProducer.class);
+        MessageProducer testProducer = (MessageProducer) mockProducer.proxy();
+        mockSession.stubs().method("createProducer").will(returnValue(testProducer));
         HJBSessionProducers producers = new HJBSessionProducers(testConnection);
         try {
-            producers.createProducer(0, testDestination);
+            producers.createProducer(0,
+                                     testDestination,
+                                     sessionBuilder.defaultProducerArguments());
             fail("should have thrown an exception");
         } catch (HJBException hjbe) {}
 
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         try {
-            producers.createProducer(1, testDestination);
+            producers.createProducer(1,
+                                     testDestination,
+                                     sessionBuilder.defaultProducerArguments());
             fail("should have thrown an exception");
         } catch (HJBException hjbe) {}
-        producers.createProducer(0, testDestination);
     }
 
     public void testCreateProducerThrowsHJBExceptionOnJMSException()
@@ -70,20 +75,28 @@ public class HJBSessionProducersTest extends MockObjectTestCase {
         HJBSessionProducers producers = new HJBSessionProducers(testConnection);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         try {
-            producers.createProducer(0, testDestination);
+            producers.createProducer(0,
+                                     testDestination,
+                                     sessionBuilder.defaultProducerArguments());
             fail("should have thrown an exception");
         } catch (HJBException hjbe) {}
     }
 
     public void testCreateProducerIsInvokedOnCorrectSession() throws Exception {
-        mockSession.expects(once()).method("createProducer");
+        Mock mockProducer = mock(MessageProducer.class);
+        MessageProducer testProducer = (MessageProducer) mockProducer.proxy();
+        mockSession.stubs().method("createProducer").will(returnValue(testProducer));
+        mockProducer.expects(atLeastOnce()).method("setDisableMessageTimestamp");
+        mockProducer.expects(atLeastOnce()).method("setDisableMessageID");
         registerToVerify(mockSession);
         testSession = (Session) mockSession.proxy();
         updateConnectionMock(testSession);
 
         HJBSessionProducers producers = new HJBSessionProducers(testConnection);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
-        producers.createProducer(0, testDestination);
+        producers.createProducer(0,
+                                 testDestination,
+                                 sessionBuilder.defaultProducerArguments());
         assertEquals("there should be one producer for the session",
                      1,
                      producers.getProducers(0).length);
@@ -97,7 +110,8 @@ public class HJBSessionProducersTest extends MockObjectTestCase {
         } catch (HJBException hjbe) {}
     }
 
-    public void testGetProducersReturnsEmptyForNewEmptySessions() throws Exception {
+    public void testGetProducersReturnsEmptyForNewEmptySessions()
+            throws Exception {
         HJBSessionProducers producers = new HJBSessionProducers(testConnection);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         assertEquals(0, producers.getProducers(0).length);
@@ -124,12 +138,16 @@ public class HJBSessionProducersTest extends MockObjectTestCase {
         Mock mockMessageProducer = new Mock(MessageProducer.class);
         MessageProducer testMessageProducer = (MessageProducer) mockMessageProducer.proxy();
         mockSession.stubs().method("createProducer").will(returnValue(testMessageProducer));
+        mockMessageProducer.expects(atLeastOnce()).method("setDisableMessageTimestamp");
+        mockMessageProducer.expects(atLeastOnce()).method("setDisableMessageID");
 
         HJBSessionProducers producers = new HJBSessionProducers(testConnection);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         assertEquals("Index should be 0",
                      0,
-                     producers.createProducer(0, testDestination));
+                     producers.createProducer(0,
+                                              testDestination,
+                                              sessionBuilder.defaultProducerArguments()));
         try {
             producers.getProducer(0, 1);
             fail("should have thrown an exception - producer 1 does not exist yet");
@@ -140,16 +158,22 @@ public class HJBSessionProducersTest extends MockObjectTestCase {
         Mock mockMessageProducer = new Mock(MessageProducer.class);
         MessageProducer testMessageProducer = (MessageProducer) mockMessageProducer.proxy();
         mockSession.stubs().method("createProducer").will(returnValue(testMessageProducer));
+        mockMessageProducer.expects(atLeastOnce()).method("setDisableMessageTimestamp");
+        mockMessageProducer.expects(atLeastOnce()).method("setDisableMessageID");
 
         HJBSessionProducers producers = new HJBSessionProducers(testConnection);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         assertEquals("Index should be 0",
                      0,
-                     producers.createProducer(0, testDestination));
+                     producers.createProducer(0,
+                                              testDestination,
+                                              sessionBuilder.defaultProducerArguments()));
         assertNotNull("got first producer", producers.getProducer(0, 0));
         assertEquals("Index should be 1",
                      1,
-                     producers.createProducer(0, testDestination));
+                     producers.createProducer(0,
+                                              testDestination,
+                                              sessionBuilder.defaultProducerArguments()));
         assertNotNull("got second producer", producers.getProducer(0, 1));
     }
 

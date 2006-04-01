@@ -26,6 +26,8 @@ import org.jmock.Mock;
 import org.jmock.core.stub.ReturnStub;
 import org.jmock.core.stub.ThrowStub;
 
+import hjb.misc.MessageProducerArguments;
+
 public class MockSessionBuilder {
 
     public Session createMockSession() {
@@ -34,6 +36,10 @@ public class MockSessionBuilder {
         return (Session) mockSession.proxy();
     }
 
+    public MessageProducerArguments defaultProducerArguments() {
+        return new MessageProducerArguments(false, false, null, null, null);        
+    }
+    
     public Mock createMockSessionThatThrowsJMSOn(String methodName) {
         Mock result = new Mock(Session.class);
         result.stubs().method(methodName).will(new ThrowStub(new JMSException("thrown as a test")));
@@ -48,6 +54,8 @@ public class MockSessionBuilder {
         Mock mockProducer = new Mock(MessageProducer.class);
         MessageProducer testProducer = (MessageProducer) mockProducer.proxy();
         mockSession.stubs().method("createProducer").will(new ReturnStub(testProducer));
+        mockProducer.stubs().method("setDisableMessageTimestamp");
+        mockProducer.stubs().method("setDisableMessageID");
 
         Mock mockSubscriber = new Mock(TopicSubscriber.class);
         TopicSubscriber testSubscriber = (TopicSubscriber) mockSubscriber.proxy();

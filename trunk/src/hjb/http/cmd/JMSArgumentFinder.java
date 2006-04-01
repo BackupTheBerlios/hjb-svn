@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.http.cmd;
 
 import java.io.UnsupportedEncodingException;
@@ -38,10 +38,7 @@ import org.apache.log4j.Logger;
 import hjb.http.HJBServletConstants;
 import hjb.jms.HJBProvider;
 import hjb.jms.HJBRoot;
-import hjb.misc.HJBClientException;
-import hjb.misc.HJBException;
-import hjb.misc.HJBNotFoundException;
-import hjb.misc.HJBStrings;
+import hjb.misc.*;
 import hjb.msg.HJBMessage;
 
 /**
@@ -74,12 +71,60 @@ public class JMSArgumentFinder {
         return (null == rawMessageSelector) ? null : "" + rawMessageSelector;
     }
 
-    public Integer findTimeout(Map decodedParameters) {
-        Object rawTimeout = decodedParameters.get(HJBServletConstants.TIMEOUT);
-        if (!(rawTimeout instanceof Integer)) {
+    public boolean findDisableTimestamps(Map decodedParameters) {
+        Object rawValue = decodedParameters.get(HJBServletConstants.DISABLE_TIMESTAMPS);
+        if (!(rawValue instanceof Boolean)) {
+            return false;
+        }
+        return ((Boolean) rawValue).booleanValue();
+    }
+
+    public boolean findDisableMessageIds(Map decodedParameters) {
+        Object rawValue = decodedParameters.get(HJBServletConstants.DISABLE_MESSAGE_IDS);
+        if (!(rawValue instanceof Boolean)) {
+            return false;
+        }
+        return ((Boolean) rawValue).booleanValue();
+    }
+
+    public Integer findDeliveryMode(Map decodedParameters) {
+        Object rawValue = decodedParameters.get(HJBServletConstants.DELIVERY_MODE);
+        if (!(rawValue instanceof Integer)) {
             return null;
         }
-        return (Integer) rawTimeout;
+        return (Integer) rawValue;
+    }
+
+    public Integer findPriority(Map decodedParameters) {
+        Object rawValue = decodedParameters.get(HJBServletConstants.PRIORITY);
+        if (!(rawValue instanceof Integer)) {
+            return null;
+        }
+        return (Integer) rawValue;
+    }
+
+    public Integer findTimeout(Map decodedParameters) {
+        Object rawValue = decodedParameters.get(HJBServletConstants.TIMEOUT);
+        if (!(rawValue instanceof Integer)) {
+            return null;
+        }
+        return (Integer) rawValue;
+    }
+
+    public Long findTimeToLive(Map decodedParameters) {
+        Object rawValue = decodedParameters.get(HJBServletConstants.TIME_TO_LIVE);
+        if (!(rawValue instanceof Long)) {
+            return null;
+        }
+        return (Long) rawValue;
+    }
+
+    public MessageProducerArguments findProducerArguments(Map decodedParameters) {
+        return new MessageProducerArguments(findDisableTimestamps(decodedParameters),
+                                                           findDisableMessageIds(decodedParameters),
+                                                           findTimeToLive(decodedParameters),
+                                                           findDeliveryMode(decodedParameters),
+                                                           findPriority(decodedParameters));
     }
 
     public int findAcknowledgementMode(Map decodedParameters) {
@@ -94,17 +139,17 @@ public class JMSArgumentFinder {
         }
         int acknowledgementValue = ((Integer) rawAcknowledgementMode).intValue();
         switch (acknowledgementValue) {
-        case Session.CLIENT_ACKNOWLEDGE:
-        case Session.DUPS_OK_ACKNOWLEDGE:
-        case Session.SESSION_TRANSACTED:
-            return acknowledgementValue;
-        default:
-            String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
-                                                 "acknowledgement mode",
-                                                 rawAcknowledgementMode,
-                                                 new Integer(HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE));
-            LOG.warn(message);
-            return HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE;
+            case Session.CLIENT_ACKNOWLEDGE :
+            case Session.DUPS_OK_ACKNOWLEDGE :
+            case Session.SESSION_TRANSACTED :
+                return acknowledgementValue;
+            default :
+                String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
+                                                     "acknowledgement mode",
+                                                     rawAcknowledgementMode,
+                                                     new Integer(HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE));
+                LOG.warn(message);
+                return HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE;
         }
     }
 
@@ -129,7 +174,8 @@ public class JMSArgumentFinder {
                                                      sessionProviderName);
         if (!(rawDestination instanceof Queue)) {
             String message = strings().getString(HJBStrings.INVALID_DESTINATION_TYPE,
-                                                 rawDestination.getClass().getName(),
+                                                 rawDestination.getClass()
+                                                               .getName(),
                                                  Queue.class.getName());
             throw new HJBClientException(message);
         }
@@ -167,7 +213,8 @@ public class JMSArgumentFinder {
                                                      sessionProviderName);
         if (!(rawDestination instanceof Topic)) {
             String message = strings().getString(HJBStrings.INVALID_DESTINATION_TYPE,
-                                                 rawDestination.getClass().getName(),
+                                                 rawDestination.getClass()
+                                                               .getName(),
                                                  Topic.class.getName());
             throw new HJBClientException(message);
         }
@@ -187,11 +234,11 @@ public class JMSArgumentFinder {
         String destinationName = applyURLDecoding(m.group(2));
         assertIsSameProvider(sessionProviderName, destinationProviderName);
         HJBProvider provider = root.getProvider(sessionProviderName);
-        if (null == provider)
-            handleMissingComponent(destinationURL, destinationProviderName);
+        if (null == provider) handleMissingComponent(destinationURL,
+                                                     destinationProviderName);
         Destination destination = provider.getDestination(destinationName);
-        if (null == destination)
-            handleMissingComponent(destinationURL, destinationName);
+        if (null == destination) handleMissingComponent(destinationURL,
+                                                        destinationName);
         return destination;
     }
 
@@ -205,8 +252,7 @@ public class JMSArgumentFinder {
         return (String) rawMessageText;
     }
 
-    protected void handleMissingComponent(String pathInfo, String component)
-            throws HJBException {
+    protected void handleMissingComponent(String pathInfo, String component) throws HJBException {
         String message = strings().getString(HJBStrings.ALLOWED_PATH_NOT_FOUND,
                                              pathInfo,
                                              component);
@@ -214,8 +260,7 @@ public class JMSArgumentFinder {
     }
 
     protected void assertIsSameProvider(String sessionProviderName,
-                                        String destinationProviderName)
-            throws HJBClientException {
+                                        String destinationProviderName) throws HJBClientException {
         if (!destinationProviderName.equals(sessionProviderName)) {
             String message = strings().getString(HJBStrings.CAN_NOT_USE_DESTINATION,
                                                  destinationProviderName,
@@ -224,8 +269,7 @@ public class JMSArgumentFinder {
         }
     }
 
-    protected void assertIsValidDestinationURL(Object rawDestinationURL)
-            throws HJBClientException {
+    protected void assertIsValidDestinationURL(Object rawDestinationURL) throws HJBClientException {
         if (!(rawDestinationURL instanceof String)) {
             String message = strings().getString(HJBStrings.INVALID_DESTINATION_URL,
                                                  rawDestinationURL);
