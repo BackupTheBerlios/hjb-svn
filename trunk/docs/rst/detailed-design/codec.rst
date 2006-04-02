@@ -32,13 +32,13 @@ The table below shows how all the types present in the various JMS API
 methods are encoded in HJB.
 
 +------------+------------------------------------+
-|Java Type   | Encoded form	                  |
+|Java type   | HJB Encoded form	                  |
 +------------+------------------------------------+
 |Byte	     | (byte *= java:Byte.toString()*)    |
 +------------+------------------------------------+
 |Short       | (short *= java:Short.toString()*)  |
 +------------+------------------------------------+
-|Char        | (char *\uXXXX*)                    |
+|Character   | (char *\uXXXX*)                    |
 +------------+------------------------------------+
 |Integer     | (int *= java:Integer.toString()*)  |
 +------------+------------------------------------+
@@ -48,7 +48,7 @@ methods are encoded in HJB.
 +------------+------------------------------------+
 |Double      | (double *= java:Double.toString()*)|
 +------------+------------------------------------+
-|Byte Array  | (base64 *base64 encoded bytes*)	  |
+|byte[]      | (base64 *base64 encoded bytes*)	  |
 +------------+------------------------------------+
 |String      | as is				  |
 +------------+------------------------------------+
