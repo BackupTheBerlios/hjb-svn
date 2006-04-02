@@ -359,8 +359,8 @@ public class JMSArgumentFinder {
         return DESTINATION_PATH_MATCHER;
     }
 
-    public static final int MAXIMUM_PRIORITY = 9;
-    public static final int MINIMUM_PRIORITY = 0;
+    private static final int MAXIMUM_PRIORITY = 9;
+    private static final int MINIMUM_PRIORITY = 0;
     private static final Logger LOG = Logger.getLogger(JMSArgumentFinder.class);
     private static final Pattern DESTINATION_PATH_MATCHER = Pattern.compile("^/[^/]*/[^/]*/(\\w+)/([^/]+)/?$");
     private static final HJBStrings STRINGS = new HJBStrings();

@@ -30,8 +30,6 @@ import javax.jms.TextMessage;
  * <code>TextMessageCopier</code> is the <code>MessageCopier</code> for
  * <code>TextMessages</code>.
  * 
- * TODO write a test case for this class
- * 
  * @author Tim Emiola
  */
 public class TextMessageCopier extends PayloadMessageCopier {

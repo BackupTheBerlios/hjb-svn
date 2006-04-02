@@ -22,9 +22,7 @@ package hjb.msg;
 
 import java.util.*;
 
-import javax.jms.BytesMessage;
 import javax.jms.Message;
-import javax.jms.TextMessage;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -39,24 +37,6 @@ public class MessageCopierFactoryTest extends MockObjectTestCase {
         assertEquals("Loaded distributed factory keys OK",
                      5,
                      f.getMessageCopierNames().size());
-    }
-
-    public interface TextAndObjectMessage extends TextMessage, BytesMessage {
-
-    }
-
-    public void testGetCopierForMessageThrowsIfMoreThanOneMessageInterfaceIsImplemented() {
-        // TODO prove this test so that the body of test reflects its name
-        // ...this passes, but only because the Mock does not test the correct
-        // thing
-        // maybe test the contents of the exception message
-
-        Mock mockMessage = new Mock(TextAndObjectMessage.class);
-        Message testMessage = (Message) mockMessage.proxy();
-        try {
-            new MessageCopierFactory().getCopierFor(testMessage);
-            fail("Should have thrown an exception");
-        } catch (HJBException e) {}
     }
 
     public void testGetCopierForMessageWorksForNormalJMSMessageImplementations()

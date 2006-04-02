@@ -26,6 +26,7 @@ import javax.jms.Message;
 
 import org.apache.log4j.Logger;
 
+import hjb.misc.BufferSizeConfiguration;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 import hjb.msg.codec.ByteArrayCodec;
@@ -38,8 +39,9 @@ import hjb.msg.codec.ByteArrayCodec;
  * The message body is copied between the JMS and HJB representation by applying
  * Base64 encoding/decoding to the all bytes in the <code>BytesMessage</code>.
  * 
- * TODO work out how to configure the
- * buffer size used when reading bytes from the BytesMessage
+ * This is done using {@link hjb.msg.codec.ByteArrayCodec}, it is an error
+ * if the body of the HJB message representing a <code>BytesMessage</code>
+ * does not conform to the encoding pattern used by that class.
  * 
  * @author Tim Emiola
  */
@@ -47,7 +49,7 @@ public class BytesMessageCopier extends PayloadMessageCopier {
 
     public BytesMessageCopier() {
         this.codec = new ByteArrayCodec();
-        setReadBufferSize(DEFAULT_READ_BUFFER_SIZE);
+        setReadBufferSize(new BufferSizeConfiguration().getBufferSize());
     }
 
     public void copyToJMSMessage(HJBMessage source, Message target)
@@ -123,7 +125,6 @@ public class BytesMessageCopier extends PayloadMessageCopier {
 
     private ByteArrayCodec codec;
     private int readBufferSize;
-    protected static final int DEFAULT_READ_BUFFER_SIZE = 8192;
-
+    
     private static final Logger LOG = Logger.getLogger(BytesMessageCopier.class);
 }

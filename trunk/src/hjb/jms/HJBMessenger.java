@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 import hjb.misc.MessageProducerArguments;
+import hjb.misc.MessagingTimeoutConfiguration;
 import hjb.msg.HJBMessage;
 import hjb.msg.MessageCopier;
 import hjb.msg.MessageCopierFactory;
@@ -36,10 +37,6 @@ import hjb.msg.MessageCopierFactory;
 /**
  * <code>HJBMessenger</code> uses a <code>HJBConnection</code> to send and
  * receive {@link hjb.msg.HJBMessage}s as JMS messages.
- * 
- * TODO sort how to configure the default timeout and who does it
- * 
- * TODO sort how to configure the minimum timeout
  * 
  * TODO write junit tests for this class
  * 
@@ -54,8 +51,7 @@ public class HJBMessenger {
         this.theConnection = theConnection;
         this.sessionIndex = sessionIndex;
         verifySessionIndex();
-        setTimeout(DEFAULT_TIMEOUT);
-        minimumTimeout = MINIMUM_TIMEOUT;
+        setTimeout(new MessagingTimeoutConfiguration().getMinimumMessageTimeout());
     }
 
     public HJBMessage[] viewQueue(int index) throws HJBException {
@@ -272,7 +268,8 @@ public class HJBMessenger {
     }
 
     public void setTimeout(long timeout) {
-        this.timeout = timeout;
+        this.timeout = Math.min(timeout,
+                                new MessagingTimeoutConfiguration().getMaximumMessageTimeout());
     }
 
     protected long getTimeout() {
@@ -280,7 +277,7 @@ public class HJBMessenger {
     }
 
     protected long getMinimumTimeout() {
-        return minimumTimeout;
+        return new MessagingTimeoutConfiguration().getMinimumMessageTimeout();
     }
 
     protected HJBStrings strings() {
@@ -290,10 +287,6 @@ public class HJBMessenger {
     private HJBConnection theConnection;
     private int sessionIndex;
     private long timeout;
-    private long minimumTimeout;
-
-    public static long DEFAULT_TIMEOUT = 1000 * 15 * 60;
-    public static long MINIMUM_TIMEOUT = 1000 * 2 * 60;
 
     private static final MessageCopierFactory COPIER_FACTORY = new MessageCopierFactory();
     private static final Logger LOG = Logger.getLogger(HJBMessenger.class);
