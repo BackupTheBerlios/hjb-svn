@@ -152,7 +152,7 @@ public class HJBMessageWriter {
         if (null == anyMap) return;
         PrintWriter pw = new PrintWriter(aWriter);
         for (Iterator i = anyMap.keySet().iterator(); i.hasNext();) {
-            String key = (String) i.next();
+            Object key = i.next();
             pw.println(strings().getString(HJBStrings.NAME_AND_VALUE,
                                            key,
                                            anyMap.get(key)));

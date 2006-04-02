@@ -25,6 +25,8 @@ import java.util.Arrays;
 
 import javax.jms.Message;
 
+import org.apache.log4j.Logger;
+
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 import hjb.msg.codec.OrderedTypedValueCodec;
@@ -60,7 +62,9 @@ public class OrderedPropertyValueCopier extends BaseEncodedValueCopier {
             throws HJBException {
         EncodedValueCopier[] orderedCopiers = getOrderedValueCopiers();
         for (int i = 0; i < orderedCopiers.length; i++) {
-            System.err.println("Trying canBeEncoded with " + orderedCopiers[i]);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Checking if " + name + " can be encoded using " + orderedCopiers[i]);
+            }
             if (orderedCopiers[i].canBeEncoded(name, message)) return true;
         }
         return false;
@@ -71,7 +75,10 @@ public class OrderedPropertyValueCopier extends BaseEncodedValueCopier {
 
         EncodedValueCopier[] orderedCopiers = getOrderedValueCopiers();
         for (int i = 0; i < orderedCopiers.length; i++) {
-            System.err.println("Trying getAsEncodedValue with " + orderedCopiers[i]);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Checking to get value for " + name + " using " + orderedCopiers[i]);
+            }
+
             if (orderedCopiers[i].canBeEncoded(name, message)) {
                 return orderedCopiers[i].getAsEncodedValue(name, message);
             }
@@ -126,4 +133,5 @@ public class OrderedPropertyValueCopier extends BaseEncodedValueCopier {
             new StringPropertyValueCopier(),
     };
 
+    private static final Logger LOG = Logger.getLogger(OrderedPropertyValueCopier.class);
 }

@@ -25,6 +25,8 @@ import java.util.*;
 import javax.jms.Message;
 import javax.jms.StreamMessage;
 
+import org.apache.log4j.Logger;
+
 import hjb.http.cmd.HJBMessageWriter;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
@@ -88,7 +90,9 @@ public class StreamMessageCopier extends PayloadMessageCopier {
                 break;
             }
         }
-        System.err.println("Encoded values: " + encodedValues);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Encoded values read from the Stream Message: " + encodedValues);
+        }
         target.setEntityBody(new HJBMessageWriter().asText(asMap(encodedValues)));
     }
 
@@ -96,7 +100,7 @@ public class StreamMessageCopier extends PayloadMessageCopier {
         Map result = new TreeMap();
         int count = 0;
         for (Iterator i = encodedValues.iterator(); i.hasNext(); count++) {
-            result.put("" + count, i.next());
+            result.put(new Integer(count), i.next());
         }
         return result;
     }
@@ -125,4 +129,5 @@ public class StreamMessageCopier extends PayloadMessageCopier {
     }
 
     private static final HJBStrings STRINGS = new HJBStrings();
+    private static final Logger LOG = Logger.getLogger(StreamMessageCopier.class);
 }

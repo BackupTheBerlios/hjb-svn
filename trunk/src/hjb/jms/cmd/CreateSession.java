@@ -50,9 +50,7 @@ public class CreateSession extends ConnectionCommand {
     public String getDescription() {
         return strings().getString(HJBStrings.DESCRIPTION_OF_CREATE_COMMANDS,
                                    Session.class.getName(),
-                                   strings().getString(HJBStrings.NOT_APPLICAPLE));
-        // TODO remove not applicable once HJBConnection's know and expose
-        // their connection number
+                                   new Integer(getTheConnection().getConnectionIndex()));
     }
 
     public String getStatusMessage() {

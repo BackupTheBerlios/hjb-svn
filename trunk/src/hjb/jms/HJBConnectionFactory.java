@@ -92,9 +92,9 @@ public class HJBConnectionFactory implements ConnectionFactory {
     public int createHJBConnection() {
         synchronized (activeConnections) {
             try {
-                HJBConnection result = new HJBConnection(connectionFactory.createConnection());
                 Integer index = new Integer(connectionIndices.size());
                 connectionIndices.add(index);
+                HJBConnection result = new HJBConnection(connectionFactory.createConnection(), 0);
                 activeConnections.put(index, result);
                 return index.intValue();
             } catch (JMSException e) {
@@ -107,9 +107,9 @@ public class HJBConnectionFactory implements ConnectionFactory {
     public int createHJBConnection(String user, String password) {
         synchronized (activeConnections) {
             try {
-                HJBConnection result = new HJBConnection(getConnectionFactory().createConnection());
                 Integer index = new Integer(connectionIndices.size());
                 connectionIndices.add(index);
+                HJBConnection result = new HJBConnection(getConnectionFactory().createConnection(), 0);
                 activeConnections.put(index, result);
                 return index.intValue();
             } catch (JMSException e) {

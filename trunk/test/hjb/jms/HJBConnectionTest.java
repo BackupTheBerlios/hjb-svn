@@ -36,12 +36,12 @@ public class HJBConnectionTest extends MockObjectTestCase {
         registerToVerify(mockConnection);
         mockConnection.stubs().method("setExceptionListener");
         Connection testConnection = (Connection) mockConnection.proxy();
-        new HJBConnection(testConnection);
+        new HJBConnection(testConnection, 0);
     }
 
     public void testHJBConnectionThrowsIllegalArgumentExceptionOnNullConnection() {
         try {
-            new HJBConnection(null);
+            new HJBConnection(null, 0);
             fail("An IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {}
     }
@@ -53,7 +53,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         mockConnection.expects(once()).method("createSession");
         Connection testConnection = (Connection) mockConnection.proxy();
 
-        HJBConnection h = new HJBConnection(testConnection);
+        HJBConnection h = new HJBConnection(testConnection, 0);
         h.createSession(true, 1);
     }
 
@@ -64,7 +64,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         mockConnection.stubs().method("setExceptionListener");
         mockConnection.expects(once()).method("createSession");
 
-        HJBConnection h = new HJBConnection(testConnection);
+        HJBConnection h = new HJBConnection(testConnection, 0);
         try {
             h.getSessionCommandRunner(0);
             fail("should throw exception");
@@ -86,7 +86,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         mockConnection.expects(atLeastOnce()).method("createSession");
         Connection testConnection = (Connection) mockConnection.proxy();
 
-        HJBConnection h = new HJBConnection(testConnection);
+        HJBConnection h = new HJBConnection(testConnection, 0);
         h.createSession(true, 1);
         assertEquals("1 session should have been added",
                      1,
@@ -105,7 +105,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         Connection testConnection = (Connection) mockConnection.proxy();
 
         try {
-            HJBConnection h = new HJBConnection(testConnection);
+            HJBConnection h = new HJBConnection(testConnection, 0);
             h.createSession(true, 1);
             fail("An HJBException should have been thrown");
         } catch (HJBException e) {}
@@ -118,7 +118,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         mockConnection.expects(once()).method("getClientID");
         Connection testConnection = (Connection) mockConnection.proxy();
 
-        HJBConnection h = new HJBConnection(testConnection);
+        HJBConnection h = new HJBConnection(testConnection, 0);
         h.getClientID();
     }
 
@@ -129,7 +129,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         mockConnection.expects(once()).method("getClientID").will(throwException(new JMSException("thrown as a test")));
         Connection testConnection = (Connection) mockConnection.proxy();
 
-        HJBConnection h = new HJBConnection(testConnection);
+        HJBConnection h = new HJBConnection(testConnection, 0);
         try {
             h.getClientID();
             fail("A JMSException should have been thrown");
@@ -143,7 +143,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         mockConnection.expects(once()).method("setClientID");
         Connection testConnection = (Connection) mockConnection.proxy();
 
-        HJBConnection h = new HJBConnection(testConnection);
+        HJBConnection h = new HJBConnection(testConnection, 0);
         h.setClientID("test");
     }
 
@@ -154,7 +154,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         mockConnection.expects(once()).method("setClientID").will(throwException(new JMSException("thrown as a test")));
         Connection testConnection = (Connection) mockConnection.proxy();
 
-        HJBConnection h = new HJBConnection(testConnection);
+        HJBConnection h = new HJBConnection(testConnection, 0);
         try {
             h.setClientID("test");
             fail("A JMSException should have been thrown");
@@ -168,7 +168,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         mockConnection.expects(once()).method("getMetaData");
         Connection testConnection = (Connection) mockConnection.proxy();
 
-        HJBConnection h = new HJBConnection(testConnection);
+        HJBConnection h = new HJBConnection(testConnection, 0);
         h.getMetaData();
     }
 
@@ -179,7 +179,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         mockConnection.expects(once()).method("getMetaData").will(throwException(new JMSException("thrown as test")));
         Connection testConnection = (Connection) mockConnection.proxy();
 
-        HJBConnection h = new HJBConnection(testConnection);
+        HJBConnection h = new HJBConnection(testConnection, 0);
         try {
             h.getMetaData();
             fail("A JMSException should have been thrown");
@@ -194,7 +194,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         mockConnection.expects(once()).method("getExceptionListener");
         Connection testConnection = (Connection) mockConnection.proxy();
 
-        HJBConnection h = new HJBConnection(testConnection);
+        HJBConnection h = new HJBConnection(testConnection, 0);
         h.getExceptionListener();
     }
 
@@ -206,7 +206,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         mockConnection.expects(once()).method("getExceptionListener").will(throwException(new JMSException("thrown as test")));
         Connection testConnection = (Connection) mockConnection.proxy();
 
-        HJBConnection h = new HJBConnection(testConnection);
+        HJBConnection h = new HJBConnection(testConnection, 0);
         try {
             h.getExceptionListener();
             fail("A JMSException should have been thrown");
@@ -219,7 +219,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         mockConnection.stubs().method("setExceptionListener");
         Connection testConnection = (Connection) mockConnection.proxy();
 
-        HJBConnection h = new HJBConnection(testConnection);
+        HJBConnection h = new HJBConnection(testConnection, 0);
         h.setExceptionListener(null);
         h.setExceptionListener(null);
     }
@@ -231,7 +231,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         mockConnection.expects(once()).method("start");
         Connection testConnection = (Connection) mockConnection.proxy();
 
-        HJBConnection h = new HJBConnection(testConnection);
+        HJBConnection h = new HJBConnection(testConnection, 0);
         h.start();
     }
 
@@ -242,7 +242,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         mockConnection.expects(once()).method("start").will(throwException(new JMSException("thrown as test")));
         Connection testConnection = (Connection) mockConnection.proxy();
 
-        HJBConnection h = new HJBConnection(testConnection);
+        HJBConnection h = new HJBConnection(testConnection, 0);
         try {
             h.start();
             fail("A JMSException should have been thrown");
@@ -256,7 +256,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         mockConnection.expects(once()).method("stop");
         Connection testConnection = (Connection) mockConnection.proxy();
 
-        HJBConnection h = new HJBConnection(testConnection);
+        HJBConnection h = new HJBConnection(testConnection, 0);
         h.stop();
     }
 
@@ -267,7 +267,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         mockConnection.expects(once()).method("stop").will(throwException(new JMSException("thrown as test")));
         Connection testConnection = (Connection) mockConnection.proxy();
 
-        HJBConnection h = new HJBConnection(testConnection);
+        HJBConnection h = new HJBConnection(testConnection, 0);
         try {
             h.stop();
             fail("A JMSException should have been thrown");
@@ -281,7 +281,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         mockConnection.expects(once()).method("close");
         Connection testConnection = (Connection) mockConnection.proxy();
 
-        HJBConnection h = new HJBConnection(testConnection);
+        HJBConnection h = new HJBConnection(testConnection, 0);
         h.close();
     }
 
@@ -292,7 +292,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         mockConnection.expects(once()).method("close").will(throwException(new JMSException("thrown as test")));
         Connection testConnection = (Connection) mockConnection.proxy();
 
-        HJBConnection h = new HJBConnection(testConnection);
+        HJBConnection h = new HJBConnection(testConnection, 0);
         try {
             h.close();
             fail("A JMSException should have been thrown");
@@ -306,7 +306,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         mockConnection.expects(never()).method("createConnectionConsumer");
         Connection testConnection = (Connection) mockConnection.proxy();
 
-        HJBConnection h = new HJBConnection(testConnection);
+        HJBConnection h = new HJBConnection(testConnection, 0);
         try {
             h.createConnectionConsumer(null, null, null, 0);
             fail("An HJBException should have been thrown");
@@ -320,7 +320,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         mockConnection.expects(never()).method("createDurableConnectionConsumer");
         Connection testConnection = (Connection) mockConnection.proxy();
 
-        HJBConnection h = new HJBConnection(testConnection);
+        HJBConnection h = new HJBConnection(testConnection, 0);
         try {
             h.createDurableConnectionConsumer(null, null, null, null, 0);
             fail("An HJBException should have been thrown");

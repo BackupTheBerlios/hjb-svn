@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.msg;
 
 import javax.jms.BytesMessage;
@@ -39,9 +39,10 @@ import hjb.msg.codec.ByteArrayCodec;
  * The message body is copied between the JMS and HJB representation by applying
  * Base64 encoding/decoding to the all bytes in the <code>BytesMessage</code>.
  * 
- * This is done using {@link hjb.msg.codec.ByteArrayCodec}, it is an error
- * if the body of the HJB message representing a <code>BytesMessage</code>
- * does not conform to the encoding pattern used by that class.
+ * Encoding and decoding is performed using {@link hjb.msg.codec.ByteArrayCodec}.
+ * It is an error if the body of the HJB message representing a
+ * <code>BytesMessage</code> does not conform to the encoding output produced by
+ * that class.
  * 
  * @author Tim Emiola
  */
@@ -125,6 +126,6 @@ public class BytesMessageCopier extends PayloadMessageCopier {
 
     private ByteArrayCodec codec;
     private int readBufferSize;
-    
+
     private static final Logger LOG = Logger.getLogger(BytesMessageCopier.class);
 }

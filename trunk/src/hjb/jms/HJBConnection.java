@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.jms;
 
 import java.util.*;
@@ -66,8 +66,11 @@ public class HJBConnection implements Connection {
      * 
      * @param theConnection
      *            the wrapped connection
+     * @param connectionIndex
+     *            the index of this connection in the set of connections created
+     *            by a connection factory.
      */
-    public HJBConnection(Connection theConnection) {
+    public HJBConnection(Connection theConnection, int connectionIndex) {
 
         if (null == theConnection) {
             throw new IllegalArgumentException(strings().needsANonNull(Connection.class.getName()));
@@ -85,6 +88,7 @@ public class HJBConnection implements Connection {
         } catch (JMSException e) {
             LOG.error(strings().getString(HJBStrings.COULD_NOT_ASSIGN_EXCEPTION_LISTENER));
         }
+        this.connectionIndex = connectionIndex;
     }
 
     public Session createSession(boolean transacted, int acknowledgeMode) {
@@ -165,6 +169,10 @@ public class HJBConnection implements Connection {
 
     public Map getActiveSessions() {
         return new HashMap(activeSessions);
+    }
+
+    public int getConnectionIndex() {
+        return connectionIndex;
     }
 
     protected void addAndStartCommandRunner(int sessionIndex) {
@@ -291,6 +299,7 @@ public class HJBConnection implements Connection {
         return STRINGS;
     }
 
+    private int connectionIndex;
     private List sessionIndices;
     private Map activeSessions;
     private Map sessionCommandRunners;

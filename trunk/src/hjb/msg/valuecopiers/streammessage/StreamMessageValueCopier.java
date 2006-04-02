@@ -66,7 +66,9 @@ public abstract class StreamMessageValueCopier extends BaseEncodedValueCopier {
     }
 
     protected LinkedList getValuesRead() {
-        System.err.println("Values read " + valuesRead);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("The current stack of values read: " + valuesRead);
+        }
         return valuesRead;
     }
 

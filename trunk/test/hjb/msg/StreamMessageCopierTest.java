@@ -121,8 +121,9 @@ public class StreamMessageCopierTest extends MockObjectTestCase {
             Stub[] invocations = new Stub[ORDERED_STREAM_MESSAGE_METHODS.length
                     + 1 - i];
 
-            if ("readBytes".equals(methodName)) { // This works because the
-                                                    // test value size < 8192
+            // This works because the test array's length is less
+            // than the default buffer size used to copy the array
+            if ("readBytes".equals(methodName)) {
                 invocations = new Stub[ORDERED_STREAM_MESSAGE_METHODS.length
                         + 2 - i];
             }
@@ -132,9 +133,11 @@ public class StreamMessageCopierTest extends MockObjectTestCase {
                     if ("readBytes".equals(methodName)) {
                         Stub readBytesStub = messageBuilder.updateByteArrayWith((byte[]) methodResult);
                         invocations[j++] = readBytesStub;
-                        invocations[j] = readBytesStub; // This works because
-                                                        // the test value size <
-                                                        // 8192
+                        // second invocation required to terminating reading of the 
+                        // byte array - this works because the test array's length
+                        // is smaller than the default buffer size used to copy it, 
+                        // otherwise further invocations would be needed
+                        invocations[j] = readBytesStub;  
                     } else {
                         invocations[j] = returnValue(methodResult);
                     }

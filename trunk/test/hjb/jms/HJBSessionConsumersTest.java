@@ -218,7 +218,7 @@ public class HJBSessionConsumersTest extends MockObjectTestCase {
         mockConnection = connectionBuilder.createMockConnection(aSession);
         mockConnection.expects(atLeastOnce()).method("setExceptionListener");
         Connection aConnection = (Connection) mockConnection.proxy();
-        testConnection = new HJBConnection(aConnection);
+        testConnection = new HJBConnection(aConnection, 0);
     }
 
     private Mock mockConnection;

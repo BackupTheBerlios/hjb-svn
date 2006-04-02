@@ -199,7 +199,7 @@ public class HJBSessionProducersTest extends MockObjectTestCase {
         mockConnection = connectionBuilder.createMockConnection(aSession);
         mockConnection.stubs().method("setExceptionListener");
         Connection aConnection = (Connection) mockConnection.proxy();
-        testConnection = new HJBConnection(aConnection);
+        testConnection = new HJBConnection(aConnection, 0);
     }
 
     private Mock mockConnection;

@@ -62,8 +62,6 @@ public class CreateConnection extends ConnectionFactoryCommand {
         return strings().getString(HJBStrings.DESCRIPTION_OF_CREATE_COMMANDS,
                                    HJBConnection.class.getName(),
                                    strings().getString(HJBStrings.NOT_APPLICAPLE));
-        // TODO remove not applicable once HJBConnectionFactory's know and
-        // expose their connection number
     }
 
     public String getStatusMessage() {
