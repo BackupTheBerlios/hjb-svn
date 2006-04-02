@@ -61,6 +61,6 @@ methods are encoded in HJB.
   decode data at runtime when it does not know its type beforehand.
 
 .. [JMSSpec] `Java Message Service specification 1.1
-  <http://java.sun.com/products/jms/docs.html>`_
+   <http://java.sun.com/products/jms/docs.html>`_
 
 .. [#] `S-Expressions <http://en.wikipedia.org/wiki/S_expression>`_

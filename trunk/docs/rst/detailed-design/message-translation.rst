@@ -17,137 +17,201 @@ received by HJB.  They are:
 
 * `Stream Message`_
 
-HJB clients will send/receive textual representations of these
-messages.  When sending the message is a parameter of a POST request,
-when receiving the message is part of the content of the response.
+Please refer to [JMSSpec]_ for full descriptions of each these message
+types.
 
-The following sections describe how each component part of JMS message
-is mapped to text in a HJB message.
+HJB clients can send or receive textual representations of any of
+these message types.  When sent, the message is contained in the
+parameters of a the sending POST request.  When received, the message
+is part of the body of a HTTP response.
+
+The following sections describe how the parts of each of these JMS
+message types is transformed into text in a HTTP request or response.
 
 Common features
-+++++++++++++++
+---------------
 
-All JMS messages have a fixed set of standard header fields, and a set
-of optional properties.
+All JMS messages have a fixed set of standard header fields, which JMS
+represents as typed attributes of the JMS message class. In addition,
+they may optionally have application-specific message properties (see
+[JMSSpec]_ for a full description).  
 
-* The fixed header fields are mapped to specific parameter/field names
-  in HJB responses.
+HJB allows all these values to be transferred in a simple, consistent
+fashion.
+
+* The header fields are mapped to specific parameter names in a HTTP
+  POST request and to field-assignment lines in a HTTP response.  The
+  JMS attributes and their corresponding HJB field names are:
   
-  -
+  - JMSType          == hjb.core.jms.type
 
-  -
+  - JMSReplyTo       == hjb.core.jms.replyTo
 
-  -
+  - JMSRedelivered   == hjb.core.jms.redelivered
 
-* The optional properties are mapped to parameter/fields using the
-  property name.
+  - JMSPriorty       == hjb.core.jms.priority
 
-* The Java type of the fixed headers and properties is preserved during
-  transmission using HJB's textual encoding.
+  - JMSMessageID     == hjb.core.jms.messageId
 
-* If a fixed header is encoded as the wrong type, it is ignored.
+  - JMSDestination   == hjb.core.jms.destination
 
-* When sending messages, HJB clients should put header fields and
-  application-specific properties in the POST request as form-encoded
-  parameters. The parameters are decoded and placed in the actual JMS
-  message constructed by HJB.
+  - JMSExpiration    == hjb.core.jms.expiration
 
-* On receiving messages, the JMS header fields, its properties and the
-  body are all included in the response. The headers and properties
-  and **not** mapped to response headers.  The headers are properties
-  are organised in a simple textual format viz:
+  - JMSTimestamp     == hjb.core.jms.timestamp
 
-  - The headers/properties and body of the message are in two sections
-    separated by a 
+  - JMSDeliveryMode  == hjb.core.jms.deliveryMode
 
-    + % <CR> 
+  - JMSCorrelationID == hjb.core.jms.correlationId
 
-    where <CR> is a platform specific line separator. The
-    headers and properties are placed before the message body.
+* The optional application-specific properties are mapped in the same
+  way.  They are additional parameters in the HTTP POST request when
+  sending a message, and field-assignment lines in a HTTP response.
+  No special transformation is required of the parameter/field names.
 
-  - The headers/properties are placed on sequential lines. Each line
-    consists of 
+* The Java type of the message attributes and properties is preserved
+  by ensuring that the values are encoded using HJB's text codec
+  rules.
 
-    + name '=' value
+* If a message attribute is encoded as the wrong type, it is ignored.
 
-    where 'name' is the property name and 'value' is its value. The
-    spaces between the name the equals sign and value are optional. 
+* When sending messages, HJB clients *must* put attribute values and
+  application-specific properties in the HTTP POST request as
+  form-encoded parameters. HJB decodes the parameters and places them
+  into a real JMS message, then sends it.
 
-  - The body of the message depends on the message type, and is
-    included as is.
+* On receiving messages, the JMS message attributes, its optional
+  properties and the mmessage body are all included in the response as
+  text. The message attributes and properties are **not** mapped to
+  HTTP response headers.  The message attributes, properties and the
+  actual returned message are organised in a simple textual format
+  viz:
 
-  - On both sending and receiving, the HJB message must include a
-    special header that states what JMS class the HJB message
-    represents.
+  - The message is in two sections. The message attributes and
+    properties form the first section of the output, the body of the
+    message forms the other section. The two sections are separated by
+    a
 
-    + The name of the header is 'hjb.header.jmsclass' 
+    + %<CR> 
 
-    + On sending and receiving, its value **must** be the name of the
-    JMS interface class that the message represents. I.e., it should
-    be one of:
+    where <CR> is a platform specific line separator.
 
-       o javax.jms.TextMessage
+  - The message attributes and optional properties are placed on
+    sequential lines. Each line consists of
 
-       o javax.jms.ObjectMessage
+    + name=value
 
-       o javax.jms.StreamMessage
+    where 'name' is the property/attribute name and 'value' is its
+    value.
 
-       o javax.jms.MapMessage
+  - The body of the message depends on the message type. This is
+    described below.
 
-       o javax.jmx.BytesMessage
+  - On both sending and receiving, the HJB message **must** include a
+    specific named parameter (or field-assignment line) containing the
+    JMS class the HJB message represents.
 
-* On receiving multiple messages, e.g., returning the response of
+    + The name of this required field is 'hjb.header.jmsclass' 
+
+    + Its value **must** be the name of the JMS interface class that
+    the message represents. I.e., it should be one of:
+
+      o javax.jms.TextMessage
+
+      o javax.jms.ObjectMessage
+
+      o javax.jms.StreamMessage
+
+      o javax.jms.MapMessage
+
+      o javax.jmx.BytesMessage
+
+* On receiving multiple messages, e.g., in the HTTP response of
   viewing a queue of message, each message is returned in the same
-  format as described above, with each message being separated by a 
+  format as described above, with once separated from the next by
    
-  - %% <CR>
+  - %%<CR>
+
+  where <CR> is a platform specific line separator.
 
 * When sending messages, HJB clients also send the message body as a
   form-encoded parameter, with a specific name
 
   - *message-to-send*
 
-  The different message types have different textual representations,
-  which are described below.
- 
+The different message types have different textual representations for
+their message bodys; these are described below. 
 
 Text Message
-++++++++++++
+------------
 
-* The body of the message is sent as the raw text in the message.
+* The body of the message is sent as the raw text contained in the
+  message.  This makes TextMessage the simplest message to process!
 
-* The value of the header field 'hjb.header.jmsclass' is 
+* The value of the field 'hjb.header.jmsclass' is 
 
   - javax.jms.TextMessage
 
 Object Message
 ++++++++++++++
 
-* The body of the message is the text derived from encoding the
-  byte array representation of the java object using Base64
-  encoding. The encoded output format is S-Expression format HJB uses
-  to represent byte arrays.
+* The body of the message is the text derived from encoding the byte
+  array representation of the java object contained in the Object
+  Message.  The byte array is encoded using Base64 encoding. The
+  encoded message is represented using the S-Expression format HJB
+  uses to represent byte arrays.
 
-* The value of the header field 'hjb.header.jmsclass' is
+* The value of the field 'hjb.header.jmsclass' is
 
- - javax.jms.ObjectMessage
+  - javax.jms.ObjectMessage
 
 Bytes Message
-+++++++++++++
+-------------
 
-* The body of the message is the text derived from treating the entire Bytes
-  message a single byte array, and encoding it to the S-Expression
-  output format HJB uses to represent byte arrays.
+* The body of the message is the text derived from treating the entire
+  Bytes message content as a single byte array, and encoding it using
+  Base64 encoding.  The encoded message is represented using the
+  S-Expression output format HJB uses to represent byte arrays.
+
+* The value of the field 'hjb.header.jmsclass' is
+
+  - javax.jms.BytesMessage
 
 
 Map Message
-+++++++++++
+-----------
 
+* The body of the message consists of a line for each name in the
+  MapMessage. Each line is as follows:
+
+  - name=value<CR>
+
+  where <CR> is a platform specific line separator.  The map values
+  are represented in exactly the same as the way message headers are
+  written.
+
+* The value of the field 'hjb.header.jmsclass' is
+
+  - javax.jms.MapMessage
 
 Stream Message
-++++++++++++++
+--------------
+
+* The body of the message consists of a line for each value read from
+  or written to the Stream Message.  Each line contains an index and
+  an encoded value.  The encoded value is some data that is an actual
+  part of the Stream Message.  The index represents the order in which
+  its corresponding value was read from the message (on receiving) or
+  the order in which it should be written to the message (on
+  sending). Each line is as follows:
+
+  - index=value
+
+* The value of the header field 'hjb.header.jmsclass' is
+
+  - javax.jms.StreamMessage
+
 
 .. [#] `Base64 encoding <http://en.wikipedia.org/wiki/Base64>`_
 
 .. [JMSSpec] `Java Message Service specification 1.1
-  <http://java.sun.com/products/jms/docs.html>`_
+   <http://java.sun.com/products/jms/docs.html>`_ 
