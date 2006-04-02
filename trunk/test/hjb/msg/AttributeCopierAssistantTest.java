@@ -93,7 +93,6 @@ public class AttributeCopierAssistantTest extends MockObjectTestCase {
                                NON_DESTINATION_ATTRIBUTES[j][3],
                                testMessage);
                 fail("should have thrown an exception");
-
             } catch (HJBException e) {}
         }
     }
@@ -151,7 +150,7 @@ public class AttributeCopierAssistantTest extends MockObjectTestCase {
         }
     }
 
-    public void testAddToMessageAddsAsIsForStringAttributeHJBHeaders() {
+    public void testAddToMessageAddsWithNoChangeForStringAttributeHJBHeaders() {
         for (int j = 0; j < JMS_STRING_ATTRIBUTES.length; j++) {
             Mock mockMessage = mock(Message.class, "message" + j);
             String testValue = "testValue" + j;

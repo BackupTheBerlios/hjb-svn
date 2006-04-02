@@ -51,18 +51,6 @@ public class BytesMessageCopierTest extends MockObjectTestCase {
                       new Object());
     }
 
-    public void testCopyToJMSMessageCopiesByteArrayOK() {
-        Mock mockJMSMessage = mock(BytesMessage.class);
-        mockJMSMessage.expects(once()).method("writeBytes").with(eq(YetAnotherBase64Test.DECODED_SOURCE.getBytes()));
-
-        Message testJMSMessage = (BytesMessage) mockJMSMessage.proxy();
-        HJBMessage testHJBMessage = createTestHJBBytesMessage();
-        BytesMessageCopier c = new BytesMessageCopier();
-        c.copyToJMSMessage(testHJBMessage, testJMSMessage);
-
-        verify();
-    }
-    
     public void testCopyToJMSMessageThrowsHJBExceptionOnJMSException() {
         Mock mockJMSMessage = mock(BytesMessage.class);
         mockJMSMessage.stubs().method("writeBytes").will(throwException(new JMSException("thrown as a test")));
@@ -74,6 +62,18 @@ public class BytesMessageCopierTest extends MockObjectTestCase {
             c.copyToJMSMessage(testHJBMessage, testJMSMessage);
             fail("should have thrown an exception");
         } catch (HJBException e) {}
+    }
+    
+    public void testCopyToJMSMessageCopiesByteArrayOK() {
+        Mock mockJMSMessage = mock(BytesMessage.class);
+        mockJMSMessage.expects(once()).method("writeBytes").with(eq(YetAnotherBase64Test.DECODED_SOURCE.getBytes()));
+
+        Message testJMSMessage = (BytesMessage) mockJMSMessage.proxy();
+        HJBMessage testHJBMessage = createTestHJBBytesMessage();
+        BytesMessageCopier c = new BytesMessageCopier();
+        c.copyToJMSMessage(testHJBMessage, testJMSMessage);
+
+        verify();
     }
     
     public void testCopyToHJBMessageThrowsHJBExceptionOnJMSException() {

@@ -20,7 +20,23 @@ USA
 */
 package hjb.msg;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.ObjectMessage;
+
+import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+
+import hjb.misc.HJBException;
+import hjb.msg.codec.ByteArrayCodec;
+import hjb.testsupport.MessageAttributeInvoker;
 
 public class ObjectMessageCopierTest extends MockObjectTestCase {
 
@@ -36,4 +52,87 @@ public class ObjectMessageCopierTest extends MockObjectTestCase {
                       new Object());
     }
 
+    public void testCopyToJMSMessageThrowsHJBExceptionOnJMSException() throws Exception {
+        Mock mockJMSMessage = mock(ObjectMessage.class);
+        mockJMSMessage.stubs().method("setObject").will(throwException(new JMSException("thrown as a test")));
+
+        Message testJMSMessage = (ObjectMessage) mockJMSMessage.proxy();
+        HJBMessage testHJBMessage = createTestHJBObjectMessage();
+        ObjectMessageCopier c = new ObjectMessageCopier();
+        try {
+            c.copyToJMSMessage(testHJBMessage, testJMSMessage);
+            fail("should have thrown an exception");
+        } catch (HJBException e) {}
+    }
+    
+    public void testCopyToJMSMessageCopiesByteArrayOK() throws Exception {
+        Mock mockJMSMessage = mock(ObjectMessage.class);
+        mockJMSMessage.expects(once()).method("setObject").with(eq(getTestSerializable()));
+
+        Message testJMSMessage = (ObjectMessage) mockJMSMessage.proxy();
+        HJBMessage testHJBMessage = createTestHJBObjectMessage();
+        ObjectMessageCopier c = new ObjectMessageCopier();
+        c.copyToJMSMessage(testHJBMessage, testJMSMessage);
+
+        verify();
+    }
+    
+    public void testCopyToHJBMessageThrowsHJBExceptionOnJMSException() {
+        Mock mockJMSMessage = mock(ObjectMessage.class);
+        mockJMSMessage.expects(once()).method("getObject").will(throwException(new JMSException("thrown as a test")));
+        attributeInvoker.stubAllPropertyGettersFor(mockJMSMessage);
+
+        Message testJMSMessage = (ObjectMessage) mockJMSMessage.proxy();
+        HJBMessage testHJBMessage = new HJBMessage(createEmptyHJBObjectMessageHeaders(),
+                                                   "");
+        ObjectMessageCopier c = new ObjectMessageCopier();
+        try {
+            c.copyToHJBMessage(testJMSMessage, testHJBMessage);
+            fail("should have thrown an exception");
+        } catch (HJBException e) {}
+    }
+
+    public void testCopyToHJBMessageCopiesByteArrayCorrectly() throws Exception {
+        Mock mockJMSMessage = mock(ObjectMessage.class);
+        attributeInvoker.stubAllPropertyGettersFor(mockJMSMessage);        
+        mockJMSMessage.stubs().method("getObject").will(returnValue(getTestSerializable()));
+        
+        Message testJMSMessage = (ObjectMessage) mockJMSMessage.proxy();
+        HJBMessage testHJBMessage = new HJBMessage(createEmptyHJBObjectMessageHeaders(),
+                                                   "");
+        ObjectMessageCopier c = new ObjectMessageCopier();
+        c.copyToHJBMessage(testJMSMessage, testHJBMessage);
+        System.err.println(testHJBMessage);
+        assertEquals(createTestHJBObjectMessage().getBody(), testHJBMessage.getBody());        
+    }
+    
+    protected HJBMessage createTestHJBObjectMessage() throws Exception {
+        Date testObject = getTestSerializable();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ObjectOutputStream objectOut = new ObjectOutputStream(out);
+        objectOut.writeObject(testObject);
+        return new HJBMessage(createEmptyHJBObjectMessageHeaders(),
+                              new ByteArrayCodec().encode(out.toByteArray()));
+    }
+
+    protected Date getTestSerializable() {
+        Calendar c = Calendar.getInstance();
+        c.clear();
+        c.set(2005, 6, 6, 11, 30, 0);
+        Date testObject = c.getTime();
+        return testObject;
+    }
+
+    protected Map createEmptyHJBObjectMessageHeaders() {
+        Map headers = new HashMap();
+        headers.put(MessageCopierFactory.HJB_JMS_CLASS,
+                    ObjectMessage.class.getName());
+        return headers;
+    }
+
+    protected void setUp() {
+        attributeInvoker = new MessageAttributeInvoker();
+    }
+
+    private MessageAttributeInvoker attributeInvoker;
 }
