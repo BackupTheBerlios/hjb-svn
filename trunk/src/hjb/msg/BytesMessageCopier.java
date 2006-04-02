@@ -38,7 +38,7 @@ import hjb.msg.codec.ByteArrayCodec;
  * The message body is copied between the JMS and HJB representation by applying
  * Base64 encoding/decoding to the all bytes in the <code>BytesMessage</code>.
  * 
- * TODO write a test case for this class TODO work out how to configure the
+ * TODO work out how to configure the
  * buffer size used when reading bytes from the BytesMessage
  * 
  * @author Tim Emiola
@@ -66,7 +66,7 @@ public class BytesMessageCopier extends PayloadMessageCopier {
                                            BytesMessage target)
             throws HJBException {
         try {
-            target.writeBytes((byte[]) codec.decode(source.getBody()));
+            target.writeBytes((byte[]) getCodec().decode(source.getBody()));
         } catch (JMSException e) {
             String message = strings().getString(HJBStrings.COULD_NOT_WRITE_DECODED_BYTES);
             LOG.error(message, e);
@@ -78,7 +78,7 @@ public class BytesMessageCopier extends PayloadMessageCopier {
                                            HJBMessage target)
             throws HJBException {
         try {
-            target.setEntityBody(codec.encode(readAllBytes(source)));
+            target.setEntityBody(getCodec().encode(readAllBytes(source)));
         } catch (JMSException e) {
             String message = strings().getString(HJBStrings.COULD_NOT_READ_ALL_BYTES);
             LOG.error(message, e);
