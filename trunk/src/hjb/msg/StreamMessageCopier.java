@@ -46,7 +46,7 @@ import hjb.msg.valuecopiers.streammessage.OrderedStreamMessageValueCopier;
  * </pre>
  * 
  * where 'CR' is the platform specific line terminator, and 'pos' is the
- * zero-based index of position of the value
+ * zero-based index of position of the value.
  * 
  * @author Tim Emiola
  */

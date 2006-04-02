@@ -30,6 +30,9 @@ import javax.jms.TextMessage;
  * <code>TextMessageCopier</code> is the <code>MessageCopier</code> for
  * <code>TextMessages</code>.
  * 
+ * <p />
+ * The message body is the value of {@link TextMessage#getText()}.
+ * 
  * @author Tim Emiola
  */
 public class TextMessageCopier extends PayloadMessageCopier {

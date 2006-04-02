@@ -37,7 +37,7 @@ import hjb.msg.valuecopiers.OrderedPropertyValueCopier;
 
 /**
  * <code>NamePropertyCopier</code> is used to convert headers in
- * {@link hjb.msg.HJBMessage}s to the various named properties on a
+ * {@link hjb.msg.HJBMessage}s to the various named properties on
  * {@link javax.jms.Message}s and vice versa.
  * 
  * @author Tim Emiola

@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.msg.codec;
 
 import java.text.MessageFormat;
@@ -27,9 +27,18 @@ import java.util.regex.Pattern;
 import hjb.misc.HJBException;
 
 /**
- * <code>ByteCodec</code> is used to encode/decode between byte property
- * values in JMS {@link javax.jms.Message}s and string values in
- * {@link hjb.msg.HJBMessage}s
+ * <code>ByteCodec</code> is used to encode/decode between byte values in JMS
+ * {@link javax.jms.Message}s and their encoded string versions in
+ * {@link hjb.msg.HJBMessage}s.
+ * 
+ * <p>
+ * An encoded <code>Byte</code> has the following form:
+ * 
+ * <pre>
+ *     (byte [-+]\d+)
+ * </pre>
+ * 
+ * </p>
  * 
  * @author Tim Emiola
  */

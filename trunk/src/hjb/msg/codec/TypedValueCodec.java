@@ -1,31 +1,32 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.msg.codec;
 
 import hjb.misc.HJBException;
 
 /**
  * <code>TypedValueCodec</code> declares methods used to assist translation
- * between the different representation of property/header values in JMS
- * {@link javax.jms.Message}s and {@link hjb.msg.HJBMessage}s.
+ * between the typed property/header/attribute values in JMS
+ * {@link javax.jms.Message}s and their encoded string versions in
+ * {@link hjb.msg.HJBMessage}s.
  * 
  * @author Tim Emiola
  */
@@ -44,25 +45,24 @@ public interface TypedValueCodec {
     public boolean isEncoded(String value);
 
     /**
-     * Decodes <code>value</code> as if it was type corresponding to this
-     * <code>TypedValueCodec</code>.
+     * Decodes <code>value</code> as if it was of the type corresponding to
+     * this <code>TypedValueCodec</code>.
      * 
      * @param value
      *            the value to be decoded.
      * @throws HJBException
-     *             if <code>value</code> cannot be decoded by to this
+     *             if <code>value</code> cannot be decoded by this
      *             <code>TypedValueCodec</code>.
      */
     public Object decode(String value) throws HJBException;
 
     /**
-     * Encodes <code>value</code> if it the type corresponding to this
-     * <code>TypedValueCodec</code>.
+     * Encodes <code>value</code>.
      * 
      * @param value
      *            the value to be encode.
-     * @return applies this <code>TypePropertyCodec</code>'s encoding to
-     *         <code>value<code>
+     * @return the result of applying this <code>TypePropertyCodec's</code>
+     *         encoding to <code>value<code>
      * @throws HJBException if <code>value</code> cannot be encoded by this 
      * <code>TypedValueCodec</code>
      */

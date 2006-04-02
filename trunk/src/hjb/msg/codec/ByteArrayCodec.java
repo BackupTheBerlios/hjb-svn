@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.msg.codec;
 
 import java.text.MessageFormat;
@@ -29,12 +29,22 @@ import hjb.misc.YetAnotherBase64;
 
 /**
  * <code>ByteArrayCodec</code> is used to encode/decode between byte array
- * values in JMS {@link javax.jms.Message}s and string values in
+ * values in JMS {@link javax.jms.Message}s and encoded strings in
  * {@link hjb.msg.HJBMessage}s.
  * 
- * <p />
+ * <p>
  * This is implemented by encoding/decoding the byte array using base64 encoding
  * as described in http://www.ietf.org/rfc/rfc3548.txt.
+ * </p>
+ * 
+ * <p>
+ * An encoded <code>byte[]</code> has the following form:
+ * 
+ * <pre>
+ *   (base64 &lt;encodedarraywithoutnewlines&gt;)
+ * </pre>
+ * 
+ * </p>
  * 
  * @author Tim Emiola
  */

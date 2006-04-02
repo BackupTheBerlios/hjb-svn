@@ -27,6 +27,19 @@ import org.apache.log4j.Logger;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 
+/**
+ * <code>PayloadMessageCopier</code>  is a base class of all the 
+ * <code>XXXMessageCopiers</code> in the <code>hjb.msg</code> package.
+ * 
+ * <p>
+ * It is provides two abtract methods {@link #acceptHJBMessage(HJBMessage)} and
+ * {@link #acceptJMSMessage(Message)} which the base cases implement to
+ * perform validation, and provides various utility methods used in
+ * the concrete implementations of <code>MessageCopier</code>
+ * </p>
+ *
+ * @author Tim Emiola
+ */
 public abstract class PayloadMessageCopier implements MessageCopier {
 
     public PayloadMessageCopier() {

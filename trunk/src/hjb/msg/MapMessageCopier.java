@@ -45,6 +45,8 @@ import hjb.msg.valuecopiers.mapmessage.OrderedMapMessageValueCopier;
  *      fieldName=encodedfieldValue 'CR'
  * </pre>
  * 
+ * where CR is the platform specific carriage return.
+ * 
  * @author Tim Emiola
  */
 public class MapMessageCopier extends PayloadMessageCopier {
