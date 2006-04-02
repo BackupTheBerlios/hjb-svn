@@ -53,13 +53,14 @@ public class OrderedPropertyValueCopier extends BaseEncodedValueCopier {
                                                   new ArrayList(Arrays.asList(orderedCodecs)));
         HJBException e = new HJBException(errorMessage);
         e.fillInStackTrace();
-        handleValueWriteFailure(name, encodedValue, e);
+        handleValueWriteFailure(name, encodedValue, e, message);
     }
 
     public boolean canBeEncoded(String name, Message message)
             throws HJBException {
         EncodedValueCopier[] orderedCopiers = getOrderedValueCopiers();
         for (int i = 0; i < orderedCopiers.length; i++) {
+            System.err.println("Trying canBeEncoded with " + orderedCopiers[i]);
             if (orderedCopiers[i].canBeEncoded(name, message)) return true;
         }
         return false;
@@ -70,15 +71,17 @@ public class OrderedPropertyValueCopier extends BaseEncodedValueCopier {
 
         EncodedValueCopier[] orderedCopiers = getOrderedValueCopiers();
         for (int i = 0; i < orderedCopiers.length; i++) {
-            if (orderedCopiers[i].canBeEncoded(name, message))
+            System.err.println("Trying getAsEncodedValue with " + orderedCopiers[i]);
+            if (orderedCopiers[i].canBeEncoded(name, message)) {
                 return orderedCopiers[i].getAsEncodedValue(name, message);
+            }
         }
         String errorMessage = strings().getString(HJBStrings.COULD_NOT_FIND_CODEC_TO_DECODE,
                                                   "name: " + name,
                                                   new ArrayList(Arrays.asList(orderedCopiers)));
         HJBException e = new HJBException(errorMessage);
         e.fillInStackTrace();
-        handleValueReadFailure(name, e);
+        handleValueReadFailure(name, e, message);
         return null;
     }
 

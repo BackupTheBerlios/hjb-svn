@@ -37,7 +37,7 @@ public class FloatPropertyValueCopier extends BaseEncodedValueCopier {
         try {
             message.setFloatProperty(name, decodeAsFloat(encodedValue));
         } catch (JMSException e) {
-            handleValueWriteFailure(name, encodedValue, e);
+            handleValueWriteFailure(name, encodedValue, e, message);
         }
     }
 
@@ -58,9 +58,9 @@ public class FloatPropertyValueCopier extends BaseEncodedValueCopier {
         try {
             return encode(new Float(message.getFloatProperty(name)));
         } catch (JMSException e) {
-            return handleValueReadFailure(name, e);
+            return handleValueReadFailure(name, e, message);
         } catch (NumberFormatException e) {
-            return handleValueReadFailure(name, e);
+            return handleValueReadFailure(name, e, message);
         }
     }
 

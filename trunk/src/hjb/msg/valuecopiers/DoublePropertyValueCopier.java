@@ -37,7 +37,7 @@ public class DoublePropertyValueCopier extends BaseEncodedValueCopier {
         try {
             message.setDoubleProperty(name, decodeAsDouble(encodedValue));
         } catch (JMSException e) {
-            handleValueWriteFailure(name, encodedValue, e);
+            handleValueWriteFailure(name, encodedValue, e, message);
         }
     }
 
@@ -58,9 +58,9 @@ public class DoublePropertyValueCopier extends BaseEncodedValueCopier {
         try {
             return encode(new Double(message.getDoubleProperty(name)));
         } catch (JMSException e) {
-            return handleValueReadFailure(name, e);
+            return handleValueReadFailure(name, e, message);
         } catch (NumberFormatException e) {
-            return handleValueReadFailure(name, e);
+            return handleValueReadFailure(name, e, message);
         }
     }
 

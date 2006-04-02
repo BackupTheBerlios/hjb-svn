@@ -37,7 +37,7 @@ public class LongPropertyValueCopier extends BaseEncodedValueCopier {
         try {
             message.setLongProperty(name, decodeAsLong(encodedValue));
         } catch (JMSException e) {
-            handleValueWriteFailure(name, encodedValue, e);
+            handleValueWriteFailure(name, encodedValue, e, message);
         }
     }
 
@@ -58,9 +58,9 @@ public class LongPropertyValueCopier extends BaseEncodedValueCopier {
         try {
             return encode(new Long(message.getLongProperty(name)));
         } catch (JMSException e) {
-            return handleValueReadFailure(name, e);
+            return handleValueReadFailure(name, e, message);
         } catch (NumberFormatException e) {
-            return handleValueReadFailure(name, e);
+            return handleValueReadFailure(name, e, message);
         }
     }
 

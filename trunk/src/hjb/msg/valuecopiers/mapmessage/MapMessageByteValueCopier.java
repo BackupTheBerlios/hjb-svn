@@ -37,7 +37,7 @@ public class MapMessageByteValueCopier extends MapMessageValueCopier {
         try {
             asAMapMessage(message).setByte(name, decodeAsByte(encodedValue));
         } catch (JMSException e) {
-            handleValueWriteFailure(name, encodedValue, e);
+            handleValueWriteFailure(name, encodedValue, e, message);
         }
     }
 
@@ -58,9 +58,9 @@ public class MapMessageByteValueCopier extends MapMessageValueCopier {
         try {
             return encode(new Byte(asAMapMessage(message).getByte(name)));
         } catch (JMSException e) {
-            return handleValueReadFailure(name, e);
+            return handleValueReadFailure(name, e, message);
         } catch (NumberFormatException e) {
-            return handleValueReadFailure(name, e);
+            return handleValueReadFailure(name, e, message);
         }
     }
 

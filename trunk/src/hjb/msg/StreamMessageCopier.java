@@ -1,32 +1,31 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.msg;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.*;
 
 import javax.jms.Message;
 import javax.jms.StreamMessage;
 
+import hjb.http.cmd.HJBMessageWriter;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 import hjb.msg.valuecopiers.streammessage.OrderedStreamMessageValueCopier;
@@ -41,10 +40,11 @@ import hjb.msg.valuecopiers.streammessage.OrderedStreamMessageValueCopier;
  * of the <code>HJBMessage</code> as
  * 
  * <pre>
- *      encodedFieldValue 'CR'
+ *       'pos'=encodedFieldValue 'CR'
  * </pre>
  * 
- * TODO write a test case for this class
+ * where 'CR' is the platform specific line terminator, and 'pos' is the
+ * zero-based index of position of the value
  * 
  * @author Tim Emiola
  */
@@ -69,7 +69,9 @@ public class StreamMessageCopier extends PayloadMessageCopier {
         List valuesInMessage = asList(source.getBody());
         for (Iterator i = valuesInMessage.iterator(); i.hasNext();) {
             String encodedValue = (String) i.next();
-            copier.addToMessage(null, encodedValue, target);
+            copier.addToMessage(strings().getString(HJBStrings.NOT_APPLICAPLE),
+                                encodedValue,
+                                target);
         }
     }
 
@@ -80,30 +82,34 @@ public class StreamMessageCopier extends PayloadMessageCopier {
         List encodedValues = new ArrayList();
         while (true) {
             try {
-                encodedValues.add(copier.getAsEncodedValue(null, source));
+                encodedValues.add(copier.getAsEncodedValue(strings().getString(HJBStrings.NOT_APPLICAPLE),
+                                                           source));
             } catch (IllegalStateException e) {
                 break;
             }
         }
-        target.setEntityBody(asText(encodedValues));
+        System.err.println("Encoded values: " + encodedValues);
+        target.setEntityBody(new HJBMessageWriter().asText(asMap(encodedValues)));
     }
 
-    protected String asText(List encodedValues) {
-        StringWriter result = new StringWriter();
-        PrintWriter pw = new PrintWriter(result);
-        for (Iterator i = encodedValues.iterator(); i.hasNext();) {
-            String name = (String) i.next();
-            pw.print(name);
-            pw.println();
+    protected Map asMap(List encodedValues) {
+        Map result = new TreeMap();
+        int count = 0;
+        for (Iterator i = encodedValues.iterator(); i.hasNext(); count++) {
+            result.put("" + count, i.next());
         }
-        return result.toString();
+        return result;
     }
 
     protected List asList(String encodedText) {
-        if (null == encodedText || 0 == encodedText.length())
-            return new ArrayList();
-        String[] lines = encodedText.split("\\n");
-        return Arrays.asList(lines);
+        Map asMap = new HJBMessageWriter().asMap(encodedText);
+        Map orderedMap = new TreeMap();
+        for (Iterator i = asMap.keySet().iterator(); i.hasNext();) {
+            String indexAsText = (String) i.next();
+            Integer index = Integer.valueOf(indexAsText);
+            orderedMap.put(index, asMap.get(indexAsText));
+        }
+        return new ArrayList(orderedMap.values());
     }
 
     protected boolean acceptJMSMessage(Message jmsMessage) throws HJBException {

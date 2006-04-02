@@ -24,6 +24,7 @@ import java.util.LinkedList;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
+import javax.jms.MessageEOFException;
 
 import hjb.misc.HJBException;
 import hjb.msg.codec.ByteCodec;
@@ -39,7 +40,7 @@ public class StreamMessageByteValueCopier extends StreamMessageValueCopier {
         try {
             asAStreamMessage(message).writeByte(decodeAsByte(encodedValue));
         } catch (JMSException e) {
-            handleValueWriteFailure(name, encodedValue, e);
+            handleValueWriteFailure(name, encodedValue, e, message);
         }
     }
 
@@ -50,6 +51,8 @@ public class StreamMessageByteValueCopier extends StreamMessageValueCopier {
             try {
                 values.add(new Byte(asAStreamMessage(message).readByte()));
                 return true;
+            } catch (MessageEOFException e) {
+                throw new IllegalStateException();
             } catch (JMSException e) {
                 return false;
             } catch (NumberFormatException e) {
@@ -69,10 +72,12 @@ public class StreamMessageByteValueCopier extends StreamMessageValueCopier {
                     verifyNextValueIsA(Byte.class);
                     return encode(values.removeFirst());
                 }
+            } catch (MessageEOFException e) {
+                throw new IllegalStateException();
             } catch (JMSException e) {
-                return handleValueReadFailure(name, e);
+                return handleValueReadFailure(name, e, message);
             } catch (NumberFormatException e) {
-                return handleValueReadFailure(name, e);
+                return handleValueReadFailure(name, e, message);
             }
         }
     }

@@ -154,8 +154,6 @@ public class MapMessageCopierTest extends MockObjectTestCase {
 
     protected HJBMessage createTestHJBMapMessage() {
         Map headers = createEmptyHJBMapMessageHeaders();
-        headers.put(MessageCopierFactory.HJB_JMS_CLASS,
-                    MapMessage.class.getName());
         Map encodedValues = new HashMap();
         for (int i = 0; i < ORDERED_MAP_MESSAGE_METHODS.length; i++) {
             String methodName = ORDERED_MAP_MESSAGE_METHODS[i][1];

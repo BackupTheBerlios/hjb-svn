@@ -37,7 +37,7 @@ public class BooleanPropertyValueCopier extends BaseEncodedValueCopier {
         try {
             message.setBooleanProperty(name, decodeAsBoolean(encodedValue));
         } catch (JMSException e) {
-            handleValueWriteFailure(name, encodedValue, e);
+            handleValueWriteFailure(name, encodedValue, e, message);
         }
     }
 
@@ -58,9 +58,9 @@ public class BooleanPropertyValueCopier extends BaseEncodedValueCopier {
         try {
             return encode(new Boolean(message.getBooleanProperty(name)));
         } catch (JMSException e) {
-            return handleValueReadFailure(name, e);
+            return handleValueReadFailure(name, e, message);
         } catch (NumberFormatException e) {
-            return handleValueReadFailure(name, e);
+            return handleValueReadFailure(name, e, message);
         }
     }
 

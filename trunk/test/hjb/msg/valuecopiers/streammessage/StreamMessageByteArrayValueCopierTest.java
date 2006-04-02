@@ -52,7 +52,7 @@ public class StreamMessageByteArrayValueCopierTest extends MockObjectTestCase {
     }
 
     public void testCanBeEncodedThrowsHJBExceptionOnIncorrectMessageType() {
-        messageBuilder = new MockMessageBuilder(this, Message.class);
+        messageBuilder = new MockMessageBuilder(Message.class);
         Message testMessage = messageBuilder.nothingExpected();
         StreamMessageByteArrayValueCopier testCopier = new StreamMessageByteArrayValueCopier(valuesRead);
         try {
@@ -62,7 +62,7 @@ public class StreamMessageByteArrayValueCopierTest extends MockObjectTestCase {
     }
 
     public void testAddToMessageThrowsHJBExceptionOnIncorrectMessageType() {
-        messageBuilder = new MockMessageBuilder(this, Message.class);
+        messageBuilder = new MockMessageBuilder(Message.class);
         Message testMessage = messageBuilder.nothingExpected();
         StreamMessageByteArrayValueCopier testCopier = new StreamMessageByteArrayValueCopier(valuesRead);
         try {
@@ -74,7 +74,7 @@ public class StreamMessageByteArrayValueCopierTest extends MockObjectTestCase {
     }
 
     public void testGetAsEncodedValueThrowsHJBExceptionOnIncorrectMessageType() {
-        messageBuilder = new MockMessageBuilder(this, Message.class);
+        messageBuilder = new MockMessageBuilder(Message.class);
         Message testMessage = messageBuilder.nothingExpected();
         StreamMessageByteArrayValueCopier testCopier = new StreamMessageByteArrayValueCopier(valuesRead);
         try {
@@ -184,7 +184,7 @@ public class StreamMessageByteArrayValueCopierTest extends MockObjectTestCase {
     }
 
     protected void setUp() throws Exception {
-        messageBuilder = new MockMessageBuilder(this, StreamMessage.class);
+        messageBuilder = new MockMessageBuilder(StreamMessage.class);
         valuesRead = new LinkedList();
     }
 

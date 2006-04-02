@@ -38,7 +38,7 @@ public class MapMessageBooleanValueCopier extends MapMessageValueCopier {
             asAMapMessage(message).setBoolean(name,
                                               decodeAsBoolean(encodedValue));
         } catch (JMSException e) {
-            handleValueWriteFailure(name, encodedValue, e);
+            handleValueWriteFailure(name, encodedValue, e, message);
         }
     }
 
@@ -59,9 +59,9 @@ public class MapMessageBooleanValueCopier extends MapMessageValueCopier {
         try {
             return encode(new Boolean(asAMapMessage(message).getBoolean(name)));
         } catch (JMSException e) {
-            return handleValueReadFailure(name, e);
+            return handleValueReadFailure(name, e, message);
         } catch (NumberFormatException e) {
-            return handleValueReadFailure(name, e);
+            return handleValueReadFailure(name, e, message);
         }
     }
 

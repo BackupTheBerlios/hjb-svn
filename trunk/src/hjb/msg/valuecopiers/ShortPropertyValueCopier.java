@@ -37,7 +37,7 @@ public class ShortPropertyValueCopier extends BaseEncodedValueCopier {
         try {
             message.setShortProperty(name, decodeAsShort(encodedValue));
         } catch (JMSException e) {
-            handleValueWriteFailure(name, encodedValue, e);
+            handleValueWriteFailure(name, encodedValue, e, message);
         }
     }
 
@@ -58,9 +58,9 @@ public class ShortPropertyValueCopier extends BaseEncodedValueCopier {
         try {
             return encode(new Short(message.getShortProperty(name)));
         } catch (JMSException e) {
-            return handleValueReadFailure(name, e);
+            return handleValueReadFailure(name, e, message);
         } catch (NumberFormatException e) {
-            return handleValueReadFailure(name, e);
+            return handleValueReadFailure(name, e, message);
         }
     }
 

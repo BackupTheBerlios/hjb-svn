@@ -33,10 +33,6 @@ import hjb.misc.HJBException;
 
 public class MessageCopierFactoryTest extends MockObjectTestCase {
 
-    public MessageCopierFactoryTest() {
-
-    }
-
     public void testMessageCopierFactory() {
         MessageCopierFactory f = new MessageCopierFactory();
         assertNotNull("created OK", f);

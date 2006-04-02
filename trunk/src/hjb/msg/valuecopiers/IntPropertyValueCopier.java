@@ -37,7 +37,7 @@ public class IntPropertyValueCopier extends BaseEncodedValueCopier {
         try {
             message.setIntProperty(name, decodeAsInteger(encodedValue));
         } catch (JMSException e) {
-            handleValueWriteFailure(name, encodedValue, e);
+            handleValueWriteFailure(name, encodedValue, e, message);
         }
     }
 
@@ -58,9 +58,9 @@ public class IntPropertyValueCopier extends BaseEncodedValueCopier {
         try {
             return encode(new Integer(message.getIntProperty(name)));
         } catch (JMSException e) {
-            return handleValueReadFailure(name, e);
+            return handleValueReadFailure(name, e, message);
         } catch (NumberFormatException e) {
-            return handleValueReadFailure(name, e);
+            return handleValueReadFailure(name, e, message);
         }
     }
 

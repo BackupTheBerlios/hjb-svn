@@ -49,7 +49,7 @@ public class MapMessageBooleanValueCopierTest extends MockObjectTestCase {
     }
 
     public void testCanBeEncodedThrowsHJBExceptionOnIncorrectMessageType() {
-        messageBuilder = new MockMessageBuilder(this, Message.class);
+        messageBuilder = new MockMessageBuilder(Message.class);
         Message testMessage = messageBuilder.nothingExpected();
         MapMessageBooleanValueCopier testCopier = new MapMessageBooleanValueCopier();
         try {
@@ -59,7 +59,7 @@ public class MapMessageBooleanValueCopierTest extends MockObjectTestCase {
     }
 
     public void testAddToMessageThrowsHJBExceptionOnIncorrectMessageType() {
-        messageBuilder = new MockMessageBuilder(this, Message.class);
+        messageBuilder = new MockMessageBuilder(Message.class);
         Message testMessage = messageBuilder.nothingExpected();
         MapMessageBooleanValueCopier testCopier = new MapMessageBooleanValueCopier();
         try {
@@ -71,7 +71,7 @@ public class MapMessageBooleanValueCopierTest extends MockObjectTestCase {
     }
 
     public void testGetAsEncodedValueThrowsHJBExceptionOnIncorrectMessageType() {
-        messageBuilder = new MockMessageBuilder(this, Message.class);
+        messageBuilder = new MockMessageBuilder(Message.class);
         Message testMessage = messageBuilder.nothingExpected();
         MapMessageBooleanValueCopier testCopier = new MapMessageBooleanValueCopier();
         try {
@@ -148,7 +148,7 @@ public class MapMessageBooleanValueCopierTest extends MockObjectTestCase {
     }
 
     protected void setUp() throws Exception {
-        messageBuilder = new MockMessageBuilder(this, MapMessage.class);
+        messageBuilder = new MockMessageBuilder(MapMessage.class);
     }
 
     private MockMessageBuilder messageBuilder;

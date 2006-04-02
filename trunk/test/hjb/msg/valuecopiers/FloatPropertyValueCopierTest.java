@@ -119,7 +119,7 @@ public class FloatPropertyValueCopierTest extends MockObjectTestCase {
     }
 
     protected void setUp() throws Exception {
-        messageBuilder = new MockMessageBuilder(this, Message.class);
+        messageBuilder = new MockMessageBuilder(Message.class);
     }
 
     private MockMessageBuilder messageBuilder;

@@ -150,7 +150,7 @@ public class OrderedStreamMessageValueCopierTest extends MockObjectTestCase {
     }
 
     protected void setUp() throws Exception {
-        messageBuilder = new MockMessageBuilder(this, StreamMessage.class);
+        messageBuilder = new MockMessageBuilder(StreamMessage.class);
         valuesRead = new LinkedList();
     }
 

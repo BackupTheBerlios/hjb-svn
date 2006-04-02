@@ -132,7 +132,7 @@ public class OrderedMapMessageValueCopierTest extends MockObjectTestCase {
     }
 
     protected void setUp() throws Exception {
-        messageBuilder = new MockMessageBuilder(this, MapMessage.class);
+        messageBuilder = new MockMessageBuilder(MapMessage.class);
     }
 
     private MockMessageBuilder messageBuilder;

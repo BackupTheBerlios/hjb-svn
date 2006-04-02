@@ -37,7 +37,7 @@ public class MapMessageFloatValueCopier extends MapMessageValueCopier {
         try {
             asAMapMessage(message).setFloat(name, decodeAsFloat(encodedValue));
         } catch (JMSException e) {
-            handleValueWriteFailure(name, encodedValue, e);
+            handleValueWriteFailure(name, encodedValue, e, message);
         }
     }
 
@@ -58,9 +58,9 @@ public class MapMessageFloatValueCopier extends MapMessageValueCopier {
         try {
             return encode(new Float(asAMapMessage(message).getFloat(name)));
         } catch (JMSException e) {
-            return handleValueReadFailure(name, e);
+            return handleValueReadFailure(name, e, message);
         } catch (NumberFormatException e) {
-            return handleValueReadFailure(name, e);
+            return handleValueReadFailure(name, e, message);
         }
     }
 

@@ -24,6 +24,7 @@ import java.util.LinkedList;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
+import javax.jms.MessageEOFException;
 
 import org.apache.log4j.Logger;
 
@@ -42,7 +43,7 @@ public class StreamMessageStringValueCopier extends StreamMessageValueCopier {
         try {
             asAStreamMessage(message).writeString(decodeAsString(encodedValue));
         } catch (JMSException e) {
-            handleValueWriteFailure(name, encodedValue, e);
+            handleValueWriteFailure(name, encodedValue, e, message);
         }
     }
 
@@ -54,6 +55,8 @@ public class StreamMessageStringValueCopier extends StreamMessageValueCopier {
                 String value = asAStreamMessage(message).readString();
                 values.add(value);
                 return (null != value);
+            } catch (MessageEOFException e) {
+                throw new IllegalStateException();
             } catch (JMSException e) {
                 return false;
             } catch (NumberFormatException e) {
@@ -81,10 +84,12 @@ public class StreamMessageStringValueCopier extends StreamMessageValueCopier {
                     verifyNextValueIsA(String.class);
                     return encode(values.removeFirst());
                 }
+            } catch (MessageEOFException e) {
+                throw new IllegalStateException();
             } catch (JMSException e) {
-                return handleValueReadFailure(name, e);
+                return handleValueReadFailure(name, e, message);
             } catch (NumberFormatException e) {
-                return handleValueReadFailure(name, e);
+                return handleValueReadFailure(name, e, message);
             }
         }
     }

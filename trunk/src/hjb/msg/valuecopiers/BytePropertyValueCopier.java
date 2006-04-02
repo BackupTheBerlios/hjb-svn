@@ -37,7 +37,7 @@ public class BytePropertyValueCopier extends BaseEncodedValueCopier {
         try {
             message.setByteProperty(name, decodeAsByte(encodedValue));
         } catch (JMSException e) {
-            handleValueWriteFailure(name, encodedValue, e);
+            handleValueWriteFailure(name, encodedValue, e, message);
         }
     }
 
@@ -58,9 +58,9 @@ public class BytePropertyValueCopier extends BaseEncodedValueCopier {
         try {
             return encode(new Byte(message.getByteProperty(name)));
         } catch (JMSException e) {
-            return handleValueReadFailure(name, e);
+            return handleValueReadFailure(name, e, message);
         } catch (NumberFormatException e) {
-            return handleValueReadFailure(name, e);
+            return handleValueReadFailure(name, e, message);
         }
     }
 
