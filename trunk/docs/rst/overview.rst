@@ -5,7 +5,7 @@ HJB - the HTTP JMS Bridge
 Mission
 -------
 
-HJB provides access to JMS resources via HTTP
+HJB provides access to JMS resources via HTTP.
 
 
 Scope
@@ -13,29 +13,29 @@ Scope
 
 HJB
 
-* will allow the writing of software libraries for communicating with
-  JMS providers in any language with that has libraries for
-  communicating via HTTP.
+* is **language-neutral** : it will allow the writing of software
+  libraries for communicating with JMS providers in any language
+  that has libraries for communicating via HTTP.
 
-* aims to provide a RESTful equivalent to all of the non-optional
-  portions of the JMS API including
+* is **RESTful** : it provides a RESTful equivalent to all of the
+  non-optional portions of the JMS API including
 
   - registration of JNDI configured provider resources
   - connection and session management
-  - sending/receiving of all types of JMS message
+  - sending and receiving all types of JMS message
 
 Implementation overview
 -----------------------
 
 HJB
 
-* is deployed as a servlet (HJBServlet), that can run on compliant
-  Servlet container
+* is deployed as a servlet (HJBServlet), that can run on any Servlet
+  2.4 compliant Servlet container.
 
-* uses standard Java APIs, so as to remain JMS vendor agnostic
+* is JMS vendor agnostic.
 
-* aims to do one thing well and that is act as an HTTP gateway server
-  for JMS resources.  Other potentially useful features are
+* aims to do one thing well. Its role is to act as an HTTP gateway
+  server for JMS resources.  Other potentially useful features are
   deliberately excluded e.g,
 
   - session management
@@ -43,15 +43,15 @@ HJB
   - security 
 
   These can be added by using other HTTP servers in the HTTP request
-  processing chain, e.g, another servlet, Apache, Zope, RubyOnRails....
+  processing chain, e.g, another servlet, Apache, Zope, RubyOnRails.
 
-* is extensively unit tested using `JUnit <http://www.junit.org>`__
-  and `JMock <http://www.jmock.org>`__
+* is extensively unit tested using `JUnit <http://www.junit.org>`_
+  and `JMock <http://www.jmock.org>`_
 
-* aspires to be thin and transparent - it provides detailed messages
-  that are fully internationalized.  All faults on logged on the
-  server, and the status of any request is returned to the HTTP user
-  agent in the response headers.
+* aspires to be thin and transparent. E.g, it provides detailed
+  messages that are fully internationalized, all faults are logged on
+  the server, and the status of any request is returned to the HTTP
+  user agent in the response headers.
 
 
 Related Resources
