@@ -15,7 +15,7 @@ ConnectionFactory . They are used to create `JMS Sessions`_ (see
 Connections in HJB
 ++++++++++++++++++
 
-At runtime in HJB, each Connection
+In HJB, each Connection
 
 * is represented by a HTTP resource whose URL is a child URL of the
   connection-factory used to create the connection.
@@ -48,14 +48,17 @@ What are they?
 ++++++++++++++
 
 A JMS *Session* represents a single-threaded context in which messages
-are sent and/or received. They are created from `JMS Connections`_, which
-serve as a factory for JMS Sessions (see [JMSSpec]_ for a full
+are sent and/or received. They are created from `JMS Connections`_,
+which serve as a factory for JMS Sessions .  Sessions themselves serve
+a factory for MessageProducers, MessageConsumers, QueueBrowsers and
+DurableSubscribers, which are the objects that JMS uses to perform the
+actual sending and receiving of messages (see [JMSSpec]_ for a full
 description).
 
 Sessions in HJB
 +++++++++++++++
 
-At runtime in HJB, each JMS Session
+In HJB, each JMS Session
 
 * is represented by a HTTP resource whose URL is a child URL of the
   connection used to create the session.
@@ -63,13 +66,14 @@ At runtime in HJB, each JMS Session
 * is created by sending a HTTP POST request to the appropriate child
   URL of a connection URL.
 
-* can be created transacted or with a specific acknowledgement mode by
-  including these values as parameters in the creating POST request;
-  these default to 'not transacted' with 'auto-acknowledgement'.
+* can be created either 'transacted' or not 'transacted', and with a
+  specific acknowledgement mode by including these values as
+  parameters in the creating POST request; these default to 'not
+  transacted' with 'auto-acknowledgement'.
 
 * has a URL that it includes its creation index. This is the number of
-  other sessions that had been created by the connection prior to it
-  this one.
+  other sessions that had been created by the connection prior to this
+  one.
 
 * can be removed, rolled back or committed by sending a HTTP request
   to the appropriate child URL.

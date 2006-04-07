@@ -159,7 +159,7 @@ At runtime in HJB, each Durable Subscriber
 
 * can be configured to use a specific Message Selector (see
   [JMSSpec]_) to control which messages are returned by including the
-  message selector as a parameter in the POST request.
+  message selector text as a parameter in the POST request.
 
 * has a URL that includes its creation index, i.e, the number of
   Queue Browsers that have been created by the session so far.

@@ -32,7 +32,7 @@ Common features
 ---------------
 
 All JMS messages have a fixed set of standard header fields, which JMS
-represents as typed attributes of the JMS message class. In addition,
+represents as typed attributes on the JMS message class. In addition,
 they may optionally have application-specific message properties (see
 [JMSSpec]_ for a full description).  
 
@@ -42,27 +42,29 @@ fashion.
 * The header fields are mapped to specific parameter names in a HTTP
   POST request and to field-assignment lines in a HTTP response.  The
   JMS attributes and their corresponding HJB field names are:
+
+  +----------------+--------------------------+
+  |JMSType         |hjb.core.jms.type         |
+  +----------------+--------------------------+
+  |JMSReplyTo      |hjb.core.jms.replyTo      |
+  +----------------+--------------------------+
+  |JMSRedelivered  |hjb.core.jms.redelivered  |
+  +----------------+--------------------------+
+  |JMSPriority     |hjb.core.jms.priority     |
+  +----------------+--------------------------+
+  |JMSMessageID    |hjb.core.jms.messageId    |
+  +----------------+--------------------------+
+  |JMSDestination  |hjb.core.jms.destination  |
+  +----------------+--------------------------+
+  |JMSExpiration   |hjb.core.jms.expiration   |
+  +----------------+--------------------------+
+  |JMSTimestamp    |hjb.core.jms.timestamp    |
+  +----------------+--------------------------+
+  |JMSDeliveryMode |hjb.core.jms.deliveryMode |
+  +----------------+--------------------------+
+  |JMSCorrelationID|hjb.core.jms.correlationId|
+  +----------------+--------------------------+
   
-  - JMSType          == hjb.core.jms.type
-
-  - JMSReplyTo       == hjb.core.jms.replyTo
-
-  - JMSRedelivered   == hjb.core.jms.redelivered
-
-  - JMSPriorty       == hjb.core.jms.priority
-
-  - JMSMessageID     == hjb.core.jms.messageId
-
-  - JMSDestination   == hjb.core.jms.destination
-
-  - JMSExpiration    == hjb.core.jms.expiration
-
-  - JMSTimestamp     == hjb.core.jms.timestamp
-
-  - JMSDeliveryMode  == hjb.core.jms.deliveryMode
-
-  - JMSCorrelationID == hjb.core.jms.correlationId
-
 * The optional application-specific properties are mapped in the same
   way.  They are additional parameters in the HTTP POST request when
   sending a message, and field-assignment lines in a HTTP response.
@@ -136,7 +138,7 @@ fashion.
 
 * On receiving multiple messages, e.g., in the HTTP response of
   viewing a queue of message, each message is returned in the same
-  format as described above, with once separated from the next by
+  format as described above, with each one separated from the next by
    
   - %%<CR>
 
@@ -166,8 +168,8 @@ Object Message
 * The body of the message is the text derived from encoding the byte
   array representation of the java object contained in the Object
   Message.  The byte array is encoded using Base64 encoding. The
-  encoded message is represented using the S-Expression format HJB
-  uses to represent byte arrays.
+  resulting encoded message is in the S-Expression form HJB uses to
+  represent byte arrays.
 
 * The value of the field 'hjb.core.jms-message-class' is
 
@@ -178,8 +180,8 @@ Bytes Message
 
 * The body of the message is the text derived from treating the entire
   Bytes message content as a single byte array, and encoding it using
-  Base64 encoding.  The encoded message is represented using the
-  S-Expression output format HJB uses to represent byte arrays.
+  Base64 encoding.  The resulting encoded message text is in the
+  S-Expression form HJB uses to represent byte arrays.
 
 * The value of the field 'hjb.core.jms-message-class' is
 
