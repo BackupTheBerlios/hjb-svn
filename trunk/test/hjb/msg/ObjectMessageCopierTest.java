@@ -54,6 +54,7 @@ public class ObjectMessageCopierTest extends MockObjectTestCase {
 
     public void testCopyToJMSMessageThrowsHJBExceptionOnJMSException() throws Exception {
         Mock mockJMSMessage = mock(ObjectMessage.class);
+        mockJMSMessage.stubs().method("setStringProperty").with(eq("hjb.core.message-version"), eq("1.0"));
         mockJMSMessage.stubs().method("setObject").will(throwException(new JMSException("thrown as a test")));
 
         Message testJMSMessage = (ObjectMessage) mockJMSMessage.proxy();
@@ -65,8 +66,10 @@ public class ObjectMessageCopierTest extends MockObjectTestCase {
         } catch (HJBException e) {}
     }
     
-    public void testCopyToJMSMessageCopiesByteArrayOK() throws Exception {
+    public void testCopyToJMSMessageCopiesObjectOK() throws Exception {
         Mock mockJMSMessage = mock(ObjectMessage.class);
+        mockJMSMessage.stubs().method("setStringProperty").with(eq("hjb.core.message-version"), eq("1.0"));
+
         mockJMSMessage.expects(once()).method("setObject").with(eq(getTestSerializable()));
 
         Message testJMSMessage = (ObjectMessage) mockJMSMessage.proxy();
@@ -92,7 +95,7 @@ public class ObjectMessageCopierTest extends MockObjectTestCase {
         } catch (HJBException e) {}
     }
 
-    public void testCopyToHJBMessageCopiesByteArrayCorrectly() throws Exception {
+    public void testCopyToHJBMessageCopiesObjectCorrectly() throws Exception {
         Mock mockJMSMessage = mock(ObjectMessage.class);
         attributeInvoker.stubAllPropertyGettersFor(mockJMSMessage);        
         mockJMSMessage.stubs().method("getObject").will(returnValue(getTestSerializable()));

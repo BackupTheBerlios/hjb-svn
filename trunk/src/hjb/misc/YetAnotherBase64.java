@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.misc;
 
 import java.util.Arrays;
@@ -47,17 +47,17 @@ public class YetAnotherBase64 {
         while (index < input.length) {
             int remaining = input.length - index;
             switch (remaining) {
-            case 2:
-                output.append(encode2BytesOnly(input, index));
-                index = input.length;
-                break;
-            case 1:
-                output.append(encode1ByteOnly(input, index));
-                index = input.length;
-                break;
-            default:
-                output.append(encodeFull3Bytes(input, index));
-                index += 3;
+                case 2:
+                    output.append(encode2BytesOnly(input, index));
+                    index = input.length;
+                    break;
+                case 1:
+                    output.append(encode1ByteOnly(input, index));
+                    index = input.length;
+                    break;
+                default:
+                    output.append(encodeFull3Bytes(input, index));
+                    index += 3;
             }
         }
         return output.toString();
@@ -78,7 +78,9 @@ public class YetAnotherBase64 {
                     + result
                     + "] was not modulo 4; input was " + new String(asBytes));
         }
-        LOG.debug("Number of significant octets: " + result);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Number of significant octets: " + result);
+        }
         return result;
     }
 
@@ -97,7 +99,9 @@ public class YetAnotherBase64 {
         for (int i = asBytes.length - 4; i < asBytes.length; i++) {
             if (isPad(asBytes[i])) result++;
         }
-        LOG.debug("Number of pad bytes: " + result);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Number of pad bytes: " + result);
+        }
         return result;
     }
 
@@ -106,7 +110,9 @@ public class YetAnotherBase64 {
         for (int i = 0; i < asBytes.length; i++) {
             if (isIgnored(asBytes[i])) result++;
         }
-        LOG.debug("Number of ignored: " + result);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Number of ignored: " + result);
+        }
         return result;
     }
 

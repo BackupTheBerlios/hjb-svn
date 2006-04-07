@@ -31,34 +31,35 @@ Mapped Types
 The table below shows how all the types present in the various JMS API
 methods are encoded in HJB.
 
-+------------+------------------------------------+
-|Java type   | HJB Encoded form	                  |
-+------------+------------------------------------+
-|Byte	     | (byte *= java:Byte.toString()*)    |
-+------------+------------------------------------+
-|Short       | (short *= java:Short.toString()*)  |
-+------------+------------------------------------+
-|Character   | (char *\uXXXX*)                    |
-+------------+------------------------------------+
-|Integer     | (int *= java:Integer.toString()*)  |
-+------------+------------------------------------+
-|Long        | (long *= java:Long.toString()*)	  |
-+------------+------------------------------------+
-|Float       | (float *= java:Float.toString()*)  |
-+------------+------------------------------------+
-|Double      | (double *= java:Double.toString()*)|
-+------------+------------------------------------+
-|byte[]      | (base64 *base64 encoded bytes*)	  |
-+------------+------------------------------------+
-|String      | as is				  |
-+------------+------------------------------------+
++-------------+-------------------------------------+
+|**Java type**| **HJB Encoded form**                |
+|             |                                     |
++-------------+-------------------------------------+
+|Byte         |(byte = java:Byte.toString())        |
++-------------+-------------------------------------+
+|Short        |(short = java:Short.toString())      |
++-------------+-------------------------------------+
+|Character    |(char \uXXXX)                        |
++-------------+-------------------------------------+
+|Integer      |(int = java:Integer.toString())      |
++-------------+-------------------------------------+
+|Long         |(long = java:Long.toString())        |
++-------------+-------------------------------------+
+|Float        |(float = java:Float.toString())      |
++-------------+-------------------------------------+
+|Double       |(double = java:Double.toString())    |
++-------------+-------------------------------------+
+|byte[]       |(base64 *base64 encoded bytes*)      |
++-------------+-------------------------------------+
+|String       |as is                                |
++-------------+-------------------------------------+
 
-* All the encodings are simple S-Expressions[#]_, and should be
-  relatively simple to parse in any language that needs to interpret
-  them.
+* Aside for the *null* encoding for raw text strings, the encodings
+  are simple S-Expressions[#]_, which should be relatively simple to
+  parse in any language that needs to interpret them.
 
 * The encodings are listed in the order in which HJB attempts to
-  decode data at runtime when it does not know its type beforehand.
+  decode objects at runtime when it does not know its type beforehand.
 
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_

@@ -32,9 +32,9 @@ import hjb.misc.HJBStrings;
 import hjb.misc.MessageProducerArguments;
 
 /**
- * <code>HJBSessionProducers</code> is used to create and maintain JMS
- * Producers using the {@link javax.jms.Session} created by a
- * {@link HJBConnection}.
+ * <code>HJBSessionProducers</code> is used to maintain the JMS
+ * <code>Producers</code> for all the <code>Sessions</code> created by a
+ * <code>HJBConnection</code>.
  * 
  * @author Tim Emiola
  */
@@ -56,21 +56,6 @@ public class HJBSessionProducers extends HJBSessionItems {
         } catch (JMSException e) {
             handleFailure(sessionIndex, HJBStrings.COULD_NOT_CREATE_PRODUCER, e);
             return HJBStrings.INTEGER_NOT_REACHED;
-        }
-    }
-
-    private void configureProducer(MessageProducer producer,
-                                   MessageProducerArguments producerArguments) throws JMSException {
-        producer.setDisableMessageID(producerArguments.isDisableMessageIds());
-        producer.setDisableMessageTimestamp(producerArguments.isDisableTimestamps());
-        if (producerArguments.isDeliveryModeSet()) {
-            producer.setDeliveryMode(producerArguments.getDeliveryMode());
-        }
-        if (producerArguments.isPrioritySet()) {
-            producer.setPriority(producerArguments.getPriority());
-        }
-        if (producerArguments.isTimeToLiveSet()) {
-            producer.setTimeToLive(producerArguments.getTimeToLive());
         }
     }
 
@@ -98,6 +83,22 @@ public class HJBSessionProducers extends HJBSessionItems {
 
     public void removeProducers(int sessionIndex) {
         removeSessionItems(getProducers(), sessionIndex);
+    }
+
+    protected void configureProducer(MessageProducer producer,
+                                     MessageProducerArguments producerArguments)
+            throws JMSException {
+        producer.setDisableMessageID(producerArguments.isDisableMessageIds());
+        producer.setDisableMessageTimestamp(producerArguments.isDisableTimestamps());
+        if (producerArguments.isDeliveryModeSet()) {
+            producer.setDeliveryMode(producerArguments.getDeliveryMode());
+        }
+        if (producerArguments.isPrioritySet()) {
+            producer.setPriority(producerArguments.getPriority());
+        }
+        if (producerArguments.isTimeToLiveSet()) {
+            producer.setTimeToLive(producerArguments.getTimeToLive());
+        }
     }
 
     protected Map getProducers() {

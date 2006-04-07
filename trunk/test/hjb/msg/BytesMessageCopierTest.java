@@ -53,6 +53,7 @@ public class BytesMessageCopierTest extends MockObjectTestCase {
 
     public void testCopyToJMSMessageThrowsHJBExceptionOnJMSException() {
         Mock mockJMSMessage = mock(BytesMessage.class);
+        mockJMSMessage.stubs().method("setStringProperty").with(eq("hjb.core.message-version"), eq("1.0"));
         mockJMSMessage.stubs().method("writeBytes").will(throwException(new JMSException("thrown as a test")));
 
         Message testJMSMessage = (BytesMessage) mockJMSMessage.proxy();
@@ -66,6 +67,7 @@ public class BytesMessageCopierTest extends MockObjectTestCase {
     
     public void testCopyToJMSMessageCopiesByteArrayOK() {
         Mock mockJMSMessage = mock(BytesMessage.class);
+        mockJMSMessage.expects(once()).method("setStringProperty").with(eq("hjb.core.message-version"), eq("1.0"));
         mockJMSMessage.expects(once()).method("writeBytes").with(eq(YetAnotherBase64Test.DECODED_SOURCE.getBytes()));
 
         Message testJMSMessage = (BytesMessage) mockJMSMessage.proxy();

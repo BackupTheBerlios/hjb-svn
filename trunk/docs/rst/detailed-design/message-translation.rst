@@ -107,23 +107,32 @@ fashion.
     described below.
 
   - On both sending and receiving, the HJB message **must** include a
+    specific name parameter (or field) that contains the version of
+    the HJB message.
+
+    + the name of this required field is *hjb.core.version*
+
+    + the value of this field for all HJB messages defined in this
+      document is *1.0*
+
+  - On both sending and receiving, the HJB message **must** include a
     specific named parameter (or field-assignment line) containing the
     JMS class the HJB message represents.
 
-    + The name of this required field is 'hjb.header.jmsclass' 
+    + The name of this required field is *hjb.core.jms-message-class*
 
     + Its value **must** be the name of the JMS interface class that
     the message represents. I.e., it should be one of:
 
-      o javax.jms.TextMessage
+      - javax.jms.TextMessage
 
-      o javax.jms.ObjectMessage
+      - javax.jms.ObjectMessage
 
-      o javax.jms.StreamMessage
+      - javax.jms.StreamMessage
 
-      o javax.jms.MapMessage
+      - javax.jms.MapMessage
 
-      o javax.jmx.BytesMessage
+      - javax.jmx.BytesMessage
 
 * On receiving multiple messages, e.g., in the HTTP response of
   viewing a queue of message, each message is returned in the same
@@ -147,7 +156,7 @@ Text Message
 * The body of the message is sent as the raw text contained in the
   message.  This makes TextMessage the simplest message to process!
 
-* The value of the field 'hjb.header.jmsclass' is 
+* The value of the field 'hjb.core.jms-message-class' is 
 
   - javax.jms.TextMessage
 
@@ -160,7 +169,7 @@ Object Message
   encoded message is represented using the S-Expression format HJB
   uses to represent byte arrays.
 
-* The value of the field 'hjb.header.jmsclass' is
+* The value of the field 'hjb.core.jms-message-class' is
 
   - javax.jms.ObjectMessage
 
@@ -172,7 +181,7 @@ Bytes Message
   Base64 encoding.  The encoded message is represented using the
   S-Expression output format HJB uses to represent byte arrays.
 
-* The value of the field 'hjb.header.jmsclass' is
+* The value of the field 'hjb.core.jms-message-class' is
 
   - javax.jms.BytesMessage
 
@@ -189,7 +198,7 @@ Map Message
   are represented in exactly the same as the way message headers are
   written.
 
-* The value of the field 'hjb.header.jmsclass' is
+* The value of the field 'hjb.core.jms-message-class' is
 
   - javax.jms.MapMessage
 
@@ -206,7 +215,7 @@ Stream Message
 
   - index=value
 
-* The value of the header field 'hjb.header.jmsclass' is
+* The value of the header field 'hjb.core.jms-message-class' is
 
   - javax.jms.StreamMessage
 

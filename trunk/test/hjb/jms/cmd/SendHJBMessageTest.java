@@ -59,9 +59,10 @@ public class SendHJBMessageTest extends MockObjectTestCase {
     }
 
     public void testExecuteSendsAMessage() {
-        Mock mockTextMessage = mock(TextMessage.class);
-        mockTextMessage.expects(once()).method("setText").with(eq("boo!"));
-        Message testMessage = (TextMessage) mockTextMessage.proxy();
+        Mock mockJMSMessage = mock(TextMessage.class);
+        mockJMSMessage.expects(once()).method("setText").with(eq("boo!"));
+        mockJMSMessage.expects(once()).method("setStringProperty").with(eq("hjb.core.message-version"), eq("1.0"));
+        Message testMessage = (TextMessage) mockJMSMessage.proxy();
 
         Mock mockProducer = mock(MessageProducer.class);
         mockProducer.expects(once()).method("send");

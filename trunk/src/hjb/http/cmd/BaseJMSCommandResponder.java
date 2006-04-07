@@ -55,8 +55,8 @@ public abstract class BaseJMSCommandResponder implements JMSCommandResponder {
 
     /**
      * Used by the various methods that write the response to add a custom HJB
-     * header that contains status text representing the status of processing 
-     * the command.
+     * header containing the status message resulting from processing the
+     * command.
      * <p>
      * The name of header is the value of
      * {@link HJBServletConstants#HJB_STATUS_HEADER}.

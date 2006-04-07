@@ -45,6 +45,7 @@ public abstract class PayloadMessageCopier implements MessageCopier {
     public PayloadMessageCopier() {
         attributeCopier = new AttributeCopier();
         propertyCopier = new NamedPropertyCopier();
+        versionCopier = new VersionCopier();
     }
 
     public boolean equals(Object o) {
@@ -61,6 +62,7 @@ public abstract class PayloadMessageCopier implements MessageCopier {
         verifyMessageTypes(source, target);
         getAttributeCopier().copyToJMSMessage(source, target);
         getPropertyCopier().copyToJMSMessage(source, target);
+        getVersionCopier().copyToJMSMessage(source, target);
     }
 
     public void copyToHJBMessage(Message source, HJBMessage target)
@@ -68,6 +70,7 @@ public abstract class PayloadMessageCopier implements MessageCopier {
         verifyJMSMessageType(source);
         getAttributeCopier().copyToHJBMessage(source, target);
         getPropertyCopier().copyToHJBMessage(source, target);
+        getVersionCopier().copyToHJBMessage(source, target);
     }
 
     public String toString() {
@@ -118,6 +121,10 @@ public abstract class PayloadMessageCopier implements MessageCopier {
         return propertyCopier;
     }
 
+    protected VersionCopier getVersionCopier() {
+        return versionCopier;
+    }
+
     protected void handleIllegalJMSMessageType(HJBMessage aMessage)
             throws HJBException {
         handleIllegalJMSMessageType(null == aMessage ? null
@@ -148,6 +155,7 @@ public abstract class PayloadMessageCopier implements MessageCopier {
 
     private NamedPropertyCopier propertyCopier;
     private AttributeCopier attributeCopier;
+    private VersionCopier versionCopier;
 
     private static final Logger LOG = Logger.getLogger(PayloadMessageCopier.class);
     private static final HJBStrings STRINGS = new HJBStrings();

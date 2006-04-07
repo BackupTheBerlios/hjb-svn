@@ -40,26 +40,12 @@ import hjb.misc.HJBStrings;
  */
 public class MessageCopierFactory {
 
-    /**
-     * Constant that holds the name of the property file for listing the
-     * MessageCopier mappings. <p/> The value of this constant is
-     * "message-converters.properties".
-     */
-    public static final String MESSAGE_COPIER_FILE = "message-copiers.properties";
-
-    /**
-     * Constant that holds the name of the header that specifies what JMS class
-     * is contained in a HTTP Mime message. <p/> The value of this constant is
-     * "hjb.header.jmsclass".
-     */
-    public static final String HJB_JMS_CLASS = "hjb.header.jmsclass";
-
     public MessageCopierFactory() {
         initialiseFactory();
     }
 
     public MessageCopier getCopierFor(Message jmsMessage) throws HJBException {
-        return getCopierFor(distinctInterfaceOf(jmsMessage.getClass().getName()));
+        return getCopierFor(distinctJmsMessageInterfaceOf(jmsMessage.getClass().getName()));
     }
 
     public MessageCopier getCopierFor(HJBMessage hjbMessage)
@@ -137,7 +123,7 @@ public class MessageCopierFactory {
         }
     }
 
-    protected String distinctInterfaceOf(String name) {
+    public String distinctJmsMessageInterfaceOf(String name) {
         try {
             Class messageClazz = Class.forName(name);
             List areImplemented = new ArrayList();
@@ -150,16 +136,16 @@ public class MessageCopierFactory {
             if (1 == areImplemented.size()) {
                 return (String) areImplemented.get(0);
             }
-            handleDistinctInterfaceNotFound(name, areImplemented);
+            return handleDistinctInterfaceNotFound(name, areImplemented);
         } catch (ClassNotFoundException e) {
             String message = strings().getString(HJBStrings.COULD_NOT_CREATE_MESSAGE_COPIER,
                                                  name);
             LOG.error(message, e);
+            throw new HJBException(message, e);
         }
-        return null;
     }
 
-    protected void handleDistinctInterfaceNotFound(String name,
+    protected String handleDistinctInterfaceNotFound(String name,
                                                    List areImplemented) {
         if (0 == areImplemented.size()) {
             String message = strings().getString(HJBStrings.IS_NOT_A_JMS_MESSAGE,
@@ -183,16 +169,46 @@ public class MessageCopierFactory {
             String message = strings().getString(HJBStrings.COULD_NOT_CREATE_MESSAGE_COPIER,
                                                  jmsClazz);
             LOG.error(message, e);
+            throw new HJBException(message, e);
         }
-        return null;
     }
 
     protected HJBStrings strings() {
         return STRINGS;
     }
 
-    private static Map messageConverterNames;
+    /**
+     * Constant that holds the name of the property file for listing the
+     * MessageCopier mappings. <p/> The value of this constant is
+     * "message-converters.properties".
+     */
+    public static final String MESSAGE_COPIER_FILE = "message-copiers.properties";
 
+    /**
+     * Constant that holds the name of the header that specifies what JMS class
+     * is contained in a HTTP message.
+     * 
+     * <p/> The value of this constant is "hjb.core.jms-message-class".
+     */
+    public static final String HJB_JMS_CLASS = "hjb.core.jms-message-class";
+    
+    /**
+     * Constant that holds the name of message parameter used to indicate
+     * version of a HJB message
+     * <p />
+     * The value of this constant is "hjb.core.message-version".
+     */
+    public static final String HJB_MESSAGE_VERSION = "hjb.core.message-version";
+    
+    /**
+     * Constant that holds the value of HJB 1.0 message version 
+     * <p />
+     * The value of this constant is "1.0".
+     */
+    public static final String HJB_MESSAGE_VERSION_1_0 = "1.0";
+    
+
+    private static Map messageConverterNames;
     private static final Logger LOG = Logger.getLogger(MessageCopierFactory.class);
     private static final HJBStrings STRINGS = new HJBStrings();
 }

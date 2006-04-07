@@ -77,6 +77,7 @@ public class TextMessageCopierTest extends MockObjectTestCase {
 
     public void testCopyToJMSMessageThrowsHJBExceptionOnJMSException() {
         Mock mockJMSMessage = mock(TextMessage.class);
+        mockJMSMessage.stubs().method("setStringProperty").with(eq("hjb.core.message-version"), eq("1.0"));
         mockJMSMessage.stubs().method("setText").with(eq("test text")).will(throwException(new JMSException("thrown as a test")));
         
         Message testJMSMessage = (TextMessage) mockJMSMessage.proxy();
@@ -91,6 +92,7 @@ public class TextMessageCopierTest extends MockObjectTestCase {
 
     public void testCopyToJMSMessage() {
         Mock mockJMSMessage = mock(TextMessage.class);
+        mockJMSMessage.expects(once()).method("setStringProperty").with(eq("hjb.core.message-version"), eq("1.0"));
         mockJMSMessage.expects(once()).method("setText").with(eq("hjb text"));
         
         Message testJMSMessage = (TextMessage) mockJMSMessage.proxy();
