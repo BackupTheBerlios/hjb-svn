@@ -53,6 +53,10 @@ public class JMSArgumentFinder {
         String messageAsText = findHJBMessageAsText(decodedParameters);
         Map jmsHeaders = new HashMap(decodedParameters);
         jmsHeaders.remove(HJBServletConstants.MESSAGE_TO_SEND);
+        jmsHeaders.remove(HJBServletConstants.DELIVERY_MODE);
+        jmsHeaders.remove(HJBServletConstants.TIME_TO_LIVE);
+        jmsHeaders.remove(HJBServletConstants.DESTINATION_URL);
+        jmsHeaders.remove(HJBServletConstants.PRIORITY);
         return new HJBMessage(jmsHeaders, messageAsText);
     }
 
