@@ -43,7 +43,7 @@ with parameters derived from the request.  The command
 
 * returns the URI of the created connection.
 
-See [JMSSpec]_ for further information on creating JMS Producers,
+Consult [JMSSpec]_ for further information on creating JMS Producers,
 particularly about the meaning of the various optional arguments to
 the command.
 
