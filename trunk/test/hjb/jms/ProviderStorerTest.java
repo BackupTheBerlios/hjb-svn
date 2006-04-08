@@ -91,5 +91,4 @@ public class ProviderStorerTest extends MockObjectTestCase {
     private File testRootPath;
     private MockContextBuilder contextBuilder;
     private SharedMock sharedMock;
-
 }

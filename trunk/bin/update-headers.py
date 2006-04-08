@@ -8,23 +8,47 @@ from cStringIO import StringIO
 from optparse import OptionParser
 
 HJB_PATH = ".."
+HJB_RST_PATH = "../docs/rst/supported-commands"
 HEADER_FILE = join(HJB_PATH, "LICENSE-header.txt")
 JAVA_PATHS = [join(HJB_PATH, "src"), join(HJB_PATH, "test")]
     
-def updateLicenseHeaders():
+def update_license_headers():
     header = file(HEADER_FILE).read()
-    [[updateJavaFileHeaders(path, header, f) for path in JAVA_PATHS] for f in [removeFromFile, addToFile]]
+    [[update_java_file_headers(path, header, f) for path in JAVA_PATHS] for f in [remove_from_file, add_to_file]]
 
-def updateJavaFileHeaders(parent, header, updater):
+MASTER_TEXT = "master command list"
+MASTER_LINK = "master-command-list"
+
+def change_master_command():
+    [update_master_command_list(path, update_master) for path in [HJB_RST_PATH]]
+
+def update_master(filename):
+    inputlines = file(filename, 'r').readlines()
+    outputlines = []
+    for line in inputlines:
+        outputlines.append(line.replace(MASTER_LINK, "index").replace(MASTER_TEXT, "back to commands"))
+    file(filename, 'w').writelines(outputlines)
+
+def update_master_command_list(parent, updater):
+    for path in os.listdir(parent):
+        current = join(parent, path)
+        print "Checking ", current
+        if isdir(current) and -1 == path.find("svn"):
+            update_master_command_list(parent, updater)
+        elif path.endswith(".rst"):
+            print "Updating master command list in ", path
+            updater(current)
+
+def update_java_file_headers(parent, header, updater):
     for path in os.listdir(parent):
         current = join(parent, path)
         if isdir(current):
-            updateJavaFileHeaders(current, header, updater)
+            update_java_file_headers(current, header, updater)
         elif path.endswith(".java"):
             print "Checking for header in " + current,
             updater(header, current)
 
-def removeFromFile(header, filename, checkFirst=10):
+def remove_from_file(header, filename, checkFirst=10):
     firstLine = header.split("\n")[0].strip()
     input = file(filename, 'r')
     for i in range(checkFirst):        
@@ -43,7 +67,7 @@ def removeFromFile(header, filename, checkFirst=10):
         print " : header was not present, skipping"
 
 
-def addToFile(header, filename, checkFirst=10):
+def add_to_file(header, filename, checkFirst=10):
     firstLine = header.split("\n")[0].strip()
     input = file(filename, 'r')
     for i in range(checkFirst):        
@@ -60,7 +84,8 @@ def addToFile(header, filename, checkFirst=10):
     print " : UPDATED"
     
 def main():
-    updateLicenseHeaders()
+    #update_license_headers()
+    change_master_command()
 
 if __name__ == '__main__':
     main()
