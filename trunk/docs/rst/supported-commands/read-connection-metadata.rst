@@ -2,17 +2,13 @@
 Read Connection MetaData
 ========================
 
-`master command list`_
+`back to commands`_
 
-URL-Pattern
+:URL-Pattern: provider-uri/jndi-key/connection-*nnn*/metadata
 
-  PROVIDER_URI/jndi-key/connection-*nnn*/metadata
+:Parameters: None
 
-Expected-Parameters 
-
-  None
-
-Returns 
+:Returns: 
 
   A message of type 'text/plain' containing the metadata the Provider
   supplies about the connection.
@@ -24,6 +20,6 @@ connection with the specified URI.  This command
   and will return the same results.
 
 * returns a message containing the metadata as a list of key-value
-  pairs, in the same format as is used in HJB message headers.
+  pairs, in the same format as is used to display HJB message headers.
 
-.. _master command list: ./master-command-list.html
+.. _back to commands: ./index.html

@@ -2,22 +2,16 @@
 Receive From Consumer
 =====================
 
-`master command list`_
+`back to commands`_
 
-URL-Pattern
+:URL-Pattern: *session-uri*/consumer-*nnn*/receive
 
-  SESSION_URI/consumer-*nnn*/receive
+:Parameters: (optional) timeout
 
-Expected-Parameters 
-
-  (optional) timeout
-
-Returns 
-
-  A single message from the consumer.
+:Returns: A single message from the consumer.
 
 This POST request obtains a single message from a vendor's messaging
-system via JMS consumer.  It is received from HJB encoded as described
+system via a JMS consumer.  It is received from HJB encoded as described
 in `message translation`_.  The command
 
 * times out after the specified number of seconds if the timeout
@@ -28,5 +22,5 @@ in `message translation`_.  The command
 
 * on timing out, the response has a HTTP status of *404 NOT FOUND*
 
-.. _master command list: ./master-command-list.html
+.. _back to commands: ./index.html
 .. _message translation: ../detailed-design/message-translation.html

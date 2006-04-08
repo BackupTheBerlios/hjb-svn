@@ -2,19 +2,17 @@
 Create Session
 ==============
 
-`master command list`_
+`back to commands`_
 
-URL-Pattern
+:URL-Pattern: CONNECTION_URI/create
 
-  CONNECTION_URI/create
-
-Expected-Parameters 
+:Parameters: 
 
   (optional) *transacted* 
   
   (optional *acknowledgement-mode*
 
-Returns
+:Returns:
 
   Location (HTTP header) : the URI of the created session
 
@@ -25,8 +23,8 @@ This POST request creates a new JMS Session.  The command
   necessary parameters are present in the request. See [JMSSpec]_ for
   details of the expected values of thses parameters.
 
-* returns the URI of the created connection.
+* returns the URI of the created session.
 
-.. _master command list: ./master-command-list.html
+.. _back to commands: ./index.html
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_

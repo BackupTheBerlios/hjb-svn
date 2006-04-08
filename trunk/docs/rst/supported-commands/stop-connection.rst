@@ -2,19 +2,13 @@
 Stop Connection
 ===============
 
-`master command list`_
+`back to commands`_
 
-URL-Pattern
+:URL-Pattern: *provider-uri*/jndi-key/connection-*nnn*/stop
 
-  PROVIDER_URI/jndi-key/connection-*nnn*/stop
+:Parameters: None
 
-Expected-Parameters 
-
-  None
-
-Returns 
-
-  N/A
+:Returns: N/A
 
 This GET request stops the connection with the specified URI.  This
 command
@@ -22,4 +16,4 @@ command
 * can be sent more than once to the same URI.  If the connection is
   already stopped, the request is ignored.
 
-.. _master command list: ./master-command-list.html
+.. _back to commands: ./index.html

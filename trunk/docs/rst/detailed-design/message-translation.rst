@@ -43,7 +43,11 @@ fashion.
   POST request and to field-assignment lines in a HTTP response.  The
   JMS attributes and their corresponding HJB field names are:
 
+  .. class:: display-items
+
   +----------------+--------------------------+
+  |Attribute Name  |HJB field name            |
+  +================+==========================+
   |JMSType         |hjb.core.jms.type         |
   +----------------+--------------------------+
   |JMSReplyTo      |hjb.core.jms.replyTo      |
@@ -124,7 +128,7 @@ fashion.
     + The name of this required field is *hjb.core.jms-message-class*
 
     + Its value **must** be the name of the JMS interface class that
-    the message represents. I.e., it should be one of:
+      the message represents. I.e., it should be one of:
 
       - javax.jms.TextMessage
 
@@ -152,6 +156,8 @@ fashion.
 The different message types have different textual representations for
 their message bodys; these are described below. 
 
+.. class:: message_desc
+
 Text Message
 ------------
 
@@ -162,8 +168,10 @@ Text Message
 
   - javax.jms.TextMessage
 
+.. class:: message_desc
+
 Object Message
-++++++++++++++
+--------------
 
 * The body of the message is the text derived from encoding the byte
   array representation of the java object contained in the Object
@@ -174,6 +182,8 @@ Object Message
 * The value of the field 'hjb.core.jms-message-class' is
 
   - javax.jms.ObjectMessage
+
+.. class:: message_desc
 
 Bytes Message
 -------------
@@ -187,6 +197,7 @@ Bytes Message
 
   - javax.jms.BytesMessage
 
+.. class:: message_desc
 
 Map Message
 -----------
@@ -196,13 +207,16 @@ Map Message
 
   - name=value<CR>
 
-  where <CR> is a platform specific line separator.  The map values
-  are represented in exactly the same as the way message headers are
-  written.
+  where <CR> is a platform specific line separator.  The map
+  values are represented in exactly the same as the way message
+  headers are written.
 
 * The value of the field 'hjb.core.jms-message-class' is
 
   - javax.jms.MapMessage
+
+
+.. class:: message_desc
 
 Stream Message
 --------------
@@ -221,6 +235,8 @@ Stream Message
 
   - javax.jms.StreamMessage
 
+Links
+-----
 
 .. [#] `Base64 encoding <http://en.wikipedia.org/wiki/Base64>`_
 

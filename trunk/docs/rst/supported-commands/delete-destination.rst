@@ -2,25 +2,18 @@
 Delete Destination
 ==================
 
-`master command list`_
+`back to commands`_
 
-URL-Pattern
+:URL-Pattern: *provider-uri*/jndi-key
 
-  PROVIDER_URI/jndi-key
+:Parameters: None
 
-Expected-Parameters 
-
-  None
-
-Returns 
-
-  N/A
+:Returns: N/A
 
 This DELETE request removes the registration of the destination with
-specified jndi-key from the HJB runtime.
+specified jndi-key from the HJB runtime.  This command
 
-* can be invoked multiples times - if the destination is no longer
-  registered, the command is ignored.
+* is idempotent, i.e., it can be invoked multiples times - if the
+  destination is no longer registered, the command is ignored.
 
-
-.. _master command list: ./master-command-list.html
+.. _back to commands: ./index.html

@@ -2,28 +2,28 @@
 Delete Connection
 =================
 
-`master command list`_
+`back to commands`_
 
-URL-Pattern
+:URL-Pattern: *provider-uri*/jndi-key/connection-*nnn*
 
-  PROVIDER_URI/jndi-key/connection-*nnn*
+:Parameters: None
 
-Expected-Parameters 
-
-  None
-
-Returns 
-
-  N/A
+:Returns: N/A
 
 This DELETE request stops and deletes the connection with the
 specified URI.  This command
 
-* removes all the sessions created by the connection.  First the
-  sessions are closed and then their JMS objects are removed from the
-  HJB runtime.  Session closure and connection termination are
-  performed in accordance with the guidelines in [JMSSpec]_.
+* removes all the sessions created by the connection.  
 
-.. _master command list: ./master-command-list.html
+    - First the sessions are closed,
+   
+    - then the sessions JMS objects are removed from the HJB runtime,
+
+    - finally the connection is closed, and removed.
+
+    - Session closure and connection termination are performed in
+      accordance with the guidelines in [JMSSpec]_.
+
+.. _back to commands: ./index.html
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_

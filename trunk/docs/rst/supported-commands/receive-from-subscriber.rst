@@ -2,19 +2,13 @@
 Receive From Subscriber
 =======================
 
-`master command list`_
+`back to commands`_
 
-URL-Pattern
+:URL-Pattern: *session-uri*/subscriber-*nnn*/receive
 
-  SESSION_URI/subscriber-*nnn*/receive
+:Parameters: (optional) timeout
 
-Expected-Parameters 
-
-  (optional) timeout
-
-Returns 
-
-  A single message from the subscriber.
+:Returns: A single message from the subscriber.
 
 This POST request obtains a single message from a vendor's messaging
 system via JMS subscriber.  It is received from HJB encoded as
@@ -28,5 +22,5 @@ described in `message translation`_.  The command
 
 * on timing out, the response has a HTTP status of *404 NOT FOUND*
 
-.. _master command list: ./master-command-list.html
+.. _back to commands: ./index.html
 .. _message translation: ../detailed-design/message-translation.html

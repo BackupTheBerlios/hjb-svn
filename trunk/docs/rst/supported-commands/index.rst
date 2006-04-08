@@ -1,73 +1,82 @@
 HJB JMS Commands
 ================
 
-HJB supports these JMS Commands, matching them by using the specified URLs
-and HTTP methods 
- 
-Methods
-  P=POST, G=GET, D=DELETE
-URIs
-  **HJB_ROOT_URI**   is as configured on the servlet container
+URL Patterns
+------------
 
-  **PROVIDER_URI**   is **HJB_ROOT_URI**/*provider-name*
+HJB support the JMS Commands in table below, matching them to the specified URLs
+and HTTP methods
 
-  **FACTORY_URI**    is **PROVIDER_URI**/*factory-jndi-key*
-
-  **CONNECTION_URI** is **FACTORY_URI**/connection-*nnn*
-
-  **SESSION_URI**    is **CONNECTION_URI**/session-*nnn*
-
+  .. class:: display-items
   
 +----------------------------------+--------------------------------------------------------+
-|**JMS Command** (method)          |**URL**                                                 |
+|JMS Command (method)              |URL                                                     |
++==================================+========================================================+
+|`Register Provider`_ (*P*)        |*hjb-root-uri*/*provider-name*/register                 |
 +----------------------------------+--------------------------------------------------------+
-|`Register Provider`_ (*P*)        |**HJB_ROOT_URI**/*provider-name*/register               |
+|`Delete Provider`_ (*D*)          |*hjb-root-uri*/*provider-name*                          |
 +----------------------------------+--------------------------------------------------------+
-|`Delete Provider`_ (*D*)          |**HJB_ROOT_URI**/*provider-name*                        |
+|`Register Destination`_ (*G*)     |*provider-uri*/*jndi-key*/register-destination          |
 +----------------------------------+--------------------------------------------------------+
-|`Register Destination`_ (*G*)     |**PROVIDER_URI**/*jndi-key*/register-destination        |
+|`Delete Destination`_ (*D*)       |*provider-uri*/*destination-jndi-key*                   |
 +----------------------------------+--------------------------------------------------------+
-|`Delete Destination`_ (*D*)       |**PROVIDER_URI**/*destination-jndi-key*                 |
-+----------------------------------+--------------------------------------------------------+
-|`Register Connection Factory`_    |**PROVIDER_URI**/*jndi-key*/register-connection-factory |
+|`Register Connection Factory`_    |*provider-uri*/*jndi-key*/register-connection-factory   |
 |(*G*)                             |                                                        |
 +----------------------------------+--------------------------------------------------------+
-|`Delete Connection Factory`_ (*D*)|**PROVIDER_URI**/*factory-jndi-key*                     |
+|`Delete Connection Factory`_ (*D*)|*provider-uri*/*factory-jndi-key*                       |
 +----------------------------------+--------------------------------------------------------+
-|`Create Connection`_ (*P*)        |**FACTORY_URI**/create                                  |
+|`Create Connection`_ (*P*)        |*factory-uri*/create                                    |
 +----------------------------------+--------------------------------------------------------+
-|`Stop Connection`_ (*G*)          |**FACTORY_URI**/connection-*nnn*/stop                   |
+|`Stop Connection`_ (*G*)          |*factory-uri*/connection-*nnn*/stop                     |
 +----------------------------------+--------------------------------------------------------+
-|`Start Connection`_ (*G*)         |**FACTORY_URI**/connection-*nnn*/start                  |
+|`Start Connection`_ (*G*)         |*factory-uri*/connection-*nnn*/start                    |
 +----------------------------------+--------------------------------------------------------+
-|`Read Connection MetaData`_ (*G*) |**FACTORY_URI**/connection-*nnn*/metadata               |
+|`Read Connection MetaData`_ (*G*) |*factory-uri*/connection-*nnn*/metadata                 |
 +----------------------------------+--------------------------------------------------------+
-|`Delete Connection`_ (*D*)        |**FACTORY_URI**/connection-*nnn*                        |
+|`Delete Connection`_ (*D*)        |*factory-uri*/connection-*nnn*                          |
 +----------------------------------+--------------------------------------------------------+
-|`Create Session`_ (*P*)           |**CONNECTON_URI**/create                                |
+|`Create Session`_ (*P*)           |*connection-uri*/create                                 |
 +----------------------------------+--------------------------------------------------------+
-|`Rollback Session`_ (*G*)         |**CONNECTION_URI**/session-*nnn*/rollback               |
+|`Rollback Session`_ (*G*)         |*connection-uri*/session-*nnn*/rollback                 |
 +----------------------------------+--------------------------------------------------------+
-|`Commit Session`_ (*P*)           |**CONNECTION_URI**/session-*nnn*/commit                 |
+|`Commit Session`_ (*P*)           |*connection-uri*/session-*nnn*/commit                   |
 +----------------------------------+--------------------------------------------------------+
-|`Delete Session`_ (*D*)           |**CONNECTION_URI**/session-*nnn*                        |
+|`Delete Session`_ (*D*)           |*connection-uri*/session-*nnn*                          |
 +----------------------------------+--------------------------------------------------------+
-|`Create Browser`_ (*P*)           |**SESSION_URI**/create-browser                          |
+|`Create Browser`_ (*P*)           |*session-uri*/create-browser                            |
 +----------------------------------+--------------------------------------------------------+
-|`View Queue`_ (*P*)               |**SESSION_URI**/browser-*nnn*/view                      |
+|`View Queue`_ (*P*)               |*session-uri*/browser-*nnn*/view                        |
 +----------------------------------+--------------------------------------------------------+
-|`Create Consumer`_ (*P*)          |**SESSION_URI**/create-consumer                         |
+|`Create Consumer`_ (*P*)          |*session-uri*/create-consumer                           |
 +----------------------------------+--------------------------------------------------------+
-|`Receive From Consumer`_ (*P*)    |**SESSION_URI**/consumer-*nnn*/receive                  |
+|`Receive From Consumer`_ (*P*)    |*session-uri*/consumer-*nnn*/receive                    |
 +----------------------------------+--------------------------------------------------------+
-|`Create Subscriber`_ (*P*)        |**SESSION_URI**/create-durable-subscriber               |
+|`Create Subscriber`_ (*P*)        |*session-uri*/create-durable-subscriber                 |
 +----------------------------------+--------------------------------------------------------+
-|`Receive From Subscriber`_ (*P*)  |**SESSION_URI**/subscriber-*nnn*/receive                |
+|`Receive From Subscriber`_ (*P*)  |*session-uri*/subscriber-*nnn*/receive                  |
 +----------------------------------+--------------------------------------------------------+
-|`Create Producer`_ (*P*)          |**SESSION_URI**/create-producer                         |
+|`Create Producer`_ (*P*)          |*session-uri*/create-producer                           |
 +----------------------------------+--------------------------------------------------------+
-|`Send HJB Message`_ (*P*)         |**SESSION_URI**/producer-*nnn*/send                     |
+|`Send HJB Message`_ (*P*)         |*session-uri*/producer-*nnn*/send                       |
 +----------------------------------+--------------------------------------------------------+
+
+------
+
+Key
+ 
+Methods
+
+- *P* is POST 
+- *G* is GET
+- *D* is DELETE
+
+URIs
+
+- *hjb-root-uri*   is as configured on the servlet container
+- *provider-uri*   is *hjb-root-uri*/*provider-name*
+- *factory-uri*    is *provider-uri*/*factory-jndi-key*
+- *connection-uri* is *factory-uri*/connection-*nnn*
+- *session-uri*    is *connection-uri*/session-*nnn*
 
 .. _Register Provider: ./register-provider.html
 .. _Delete Provider: ./delete-provider.html
@@ -77,7 +86,7 @@ URIs
 .. _Delete Connection Factory: ./delete-connection-factory.html
 .. _Create Connection: ./create-connection.html
 .. _Stop Connection: ./stop-connection.html
-.. _Start Connection: ./start-connnection.html
+.. _Start Connection: ./start-connection.html
 .. _Read Connection MetaData: ./read-connection-metadata.html
 .. _Delete Connection: ./delete-connection.html
 .. _Create Session: ./create-session.html

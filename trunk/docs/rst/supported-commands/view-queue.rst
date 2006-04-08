@@ -2,17 +2,13 @@
 View Queue
 ==========
 
-`master command list`_
+`back to commands`_
 
-URL-Pattern
+:URL-Pattern: *session-uri*/browser-*nnn*/view
 
-  SESSION_URI/browser-*nnn*/view
+:Parameters: None
 
-Expected-Parameters 
-
-  None
-
-Returns 
+:Returns:
 
   A set of HJB encoded messages representing the messages currently on
   the queue.
@@ -20,5 +16,5 @@ Returns
 This POST request accesses a JMS Queue, returning the current set of
 messages on it, encoded as described in `message translation`_.
 
-.. _master command list: ./master-command-list.html
+.. _back to commands: ./index.html
 .. _message translation: ../detailed-design/message-translation.html

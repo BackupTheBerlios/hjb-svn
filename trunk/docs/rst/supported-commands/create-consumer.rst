@@ -1,14 +1,12 @@
-==========================
-Create Durableg Subscriber
-==========================
+===============
+Create Consumer 
+===============
 
-`master command list`_
+`back to commands`_
 
-URL-Pattern
+:URL-Pattern: *session-uri*/create-consumer
 
-  SESSION_URI/create-consumer
-
-Expected-Parameters 
+:Parameters:
 
   (required) *destination-url*
 
@@ -16,7 +14,7 @@ Expected-Parameters
 
   (optional) *message-selector*
   
-Returns
+:Returns:
 
   Location (HTTP header) : the URI of the created durable subscriber
 
@@ -31,12 +29,12 @@ JMS API with parameters derived from the request.  The command
 * the destination-url may refer to either a JMS Topic or a JMS Queue.
 
 * optionally creates the subscriber using the values of *no-local* and
-  *message-selector*.
+  *message-selector* to modify the behaviour of the consumer.
 
-* returns the URI of the created connection.
+* returns the URI of the created consumer.
 
 See [JMSSpec]_ for further information on creating JMS Consumers.
 
-.. _master command list: ./master-command-list.html
+.. _back to commands: ./index.html
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_

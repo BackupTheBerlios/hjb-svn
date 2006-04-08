@@ -1,0 +1,23 @@
+==============
+Delete Session
+==============
+
+`back to commands`_
+
+:URL-Pattern: *session-uri*/session-*nnn*
+
+:Parameters: None
+
+:Returns: N/A
+
+This DELETE request deletes session with the specified URI.  This
+command
+
+* closes the Session and removes its JMS objects from the HJB runtime.
+
+  - Session closure and connection termination are performed in
+    accordance with the guidelines in [JMSSpec]_.
+
+.. _back to commands: ./index.html
+.. [JMSSpec] `Java Message Service specification 1.1
+   <http://java.sun.com/products/jms/docs.html>`_

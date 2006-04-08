@@ -1,14 +1,12 @@
-==========================
-Create Durableg Subscriber
-==========================
+===============
+Create Producer
+===============
 
-`master command list`_
+`back to commands`_
 
-URL-Pattern
+:URL-Pattern: *session-uri*/create-producer
 
-  SESSION_URI/create-producer
-
-Expected-Parameters 
+:Parameters:
 
   (required) *destination-url*
 
@@ -22,7 +20,7 @@ Expected-Parameters
 
   (optional) *priority*
   
-Returns
+:Returns:
 
   Location (HTTP header) : the URI of the created producer
 
@@ -41,12 +39,12 @@ with parameters derived from the request.  The command
   values of *delivery-mode*, *priority*, *time-to-live*,
   *disable-timestamps*, and *disable-messageIds*.
 
-* returns the URI of the created connection.
+* returns the URI of the created producer.
 
 Consult [JMSSpec]_ for further information on creating JMS Producers,
 particularly about the meaning of the various optional arguments to
 the command.
 
-.. _master command list: ./master-command-list.html
+.. _back to commands: ./index.html
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_

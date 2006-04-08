@@ -1,23 +1,24 @@
 HJB Servlet
 ===========
 
-HJB Servlet serves as the access point for HJB requests.  It acts as a
-HTTP gateway server for JMS providers.
+HJB Servlet is the access point for HJB requests, and acts as a HTTP
+gateway server for JMS providers.
 
-Its role can be split into several parts:
+Its plays several roles:
 
 * `Command dispatch`_
 
 * `Maintaining references to JMS objects`_
 
-* `Optional storage of provider details`_
+* `Optional storage of provider configuration`_
 
 
 Command Dispatch
 ----------------
 
 HJB Servlet handles POST, GET and DELETE requests if they match
-specific URL patterns (see *elsewhere* for a list of the URL patterns).  
+specific URL patterns (see the `master command list`_ for all the URL
+patterns).
 
 * On receiving a matching request, if the request URLs does not map to
   JMS objects that are present in the JMS runtime, or if the request
@@ -26,12 +27,10 @@ specific URL patterns (see *elsewhere* for a list of the URL patterns).
 
 * On receiving a request that can be handled, the HJB servlet will
   successfully create a JMS command and schedule its execution. For
-  further details on JMS commands see.
+  further more on JMS commands see `JMS Commands`_.
 
-* TODO link to **elsewhere**.
-
-Maintining references to JMS Objects
-------------------------------------
+Maintaining references to JMS Objects
+-------------------------------------
 
 HJB Servlet allows 
 
@@ -60,11 +59,14 @@ This leads to the URI space in the table below. Note that these URIs
 denote the *conceptual* location of a JMS object in the the HJB
 runtime.  They will not necessarily be URLs that respond to an HTTP
 request - in general, HJB's behaviour is implemented by sending
-requests to child paths of the these URIs.  (see **elsewhere**)
+requests to child paths of the these URIs (cf. see the `master command
+list`_).
+
+.. class:: display-items
 
 +--------------------+----------------------------------------------+
-|**JMS Object**      |**URL**                                       |
-+--------------------+----------------------------------------------+
+|JMS Object          |URL                                           |
++====================+==============================================+
 |Provider            |HJB_ROOT/provider-name                        |
 +--------------------+----------------------------------------------+
 |Destination         |HJB_ROOT/provider-name/destination-jndi-key   |
@@ -89,7 +91,10 @@ requests to child paths of the these URIs.  (see **elsewhere**)
 Optional Storage of Provider configuration
 ------------------------------------------
 
-It will be possible to configure the HJB servlet to remember all the
-JMS Providers that are configured, so that they do not need to
-reregistered each time servlet starts up.  This feature is not
-implemented yet
+It will be possible to configure the HJB servlet to remember any JMS
+Providers that have been configured, so that they do not need to
+re-registered each time the HJB servlet is restarted.  This feature is
+not implemented yet.
+
+.. _master command list: ../supported-commands/index.html
+.. _JMS commands: ./command-dispatch.rst

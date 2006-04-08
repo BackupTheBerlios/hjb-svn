@@ -2,25 +2,20 @@
 Register Destination
 ====================
 
-`master command list`_
+`back to commands`_
 
-URL-Pattern
+:URL-Pattern: *provider-url*/jndi-key/register
 
-  PROVIDER_URI/jndi-key/register
+:Parameters: N/A
 
-Expected-Parameters 
+:Returns: N/A
 
-  N/A
-
-Returns 
-
-  N/A
-
-Looks up the destination identified by jndi-key in providers JNDI
-context and registers it with the HJB runtime. This command
+This GET Request looks up the destination identified by jndi-key 
+in the Provider's JNDI context and registers it with the HJB runtime.
+This command
 
 * can be invoked multiples time with the exactly the same jndi-key;
   after the first successful attempt, HJB ignores subsequent
   invocations.
 
-.. _master command list: ./master-command-list.html
+.. _back to commands: ./index.html

@@ -2,33 +2,33 @@
 Delete Provider
 ===============
 
-`master command list`_
+`back to commands`_
 
-URL-Pattern
+:URL-Pattern: *provider-uri*/jndi-key/register-destination
 
-  PROVIDER_URI/jndi-key/register-destination
+:Parameters: None
 
-Expected-Parameters 
-
-  None
-
-Returns 
-
-  N/A
+:Returns: N/A
 
 This DELETE request triggers shutdown of the provider with the
-specified URI.  This
+specified URI.  This command
 
 * removes all the connection-factories, destinations, connections and
-  sessions supported by the Provider. First the sessions are closed,
-  then the connections are stopped and finally the JMS objects are
-  removed from the HJB runtime.  Session closure and connection
-  termination are performed in accordance with the guidelines in
-  [JMSSpec]_.
+  sessions supported by the Provider. 
 
-* can be invoked multiples times - if the provider is no longer
-  present, the command is ignored.
+    - First the sessions are closed,
+  
+    - then the connections are stopped,
 
-.. _master command list: ./master-command-list.html
+    - finally all the associated JMS objects are removed from the HJB
+      runtime.  
+
+    - Session closure and connection termination are performed in
+      accordance with the guidelines in [JMSSpec]_.
+
+* is idempotent and can be invoked multiples times - if the provider
+  is no longer present, the command is ignored.
+
+.. _back to commands: ./index.html
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_

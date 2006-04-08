@@ -2,19 +2,17 @@
 Create Connection
 =================
 
-`master command list`_
+`back to commands`_
 
-URL-Pattern
+:URL-Pattern: *provider-uri*/connection-factory-jndi-key/create
 
-  PROVIDER_URI/connection-factory-jndi-key/create
-
-Expected-Parameters 
+:Parameters:
 
   (optional) *username* (with *password*)
 
   (optional) *password* (with *username*)
 
-Returns 
+:Returns:
 
   Location (HTTP header) : the URI of the created connection
 
@@ -25,4 +23,4 @@ This POST request creates a new, stopped JMS Connection.  The command
 
 * returns the URI of the created connection
 
-.. _master command list: ./master-command-list.html
+.. _back to commands: ./index.html

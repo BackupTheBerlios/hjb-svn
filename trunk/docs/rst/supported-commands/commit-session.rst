@@ -2,19 +2,13 @@
 Commit Session
 ==============
 
-`master command list`_
+`back to commands`_
 
-URL-Pattern
+:URL-Pattern: *connection-uri*/session-*nnn*/commit
 
-  CONNECTION_URI/session-*nnn*/commit
+:Parameters: None
 
-Expected-Parameters 
-
-  None
-
-Returns 
-
-  N/A
+:Returns: N/A
 
 This GET request commits the transactional session at the specified
 URI.  This command
@@ -24,4 +18,4 @@ URI.  This command
 
 * is ignored by sessions that are not transactional.
 
-.. _master command list: ./master-command-list.html
+.. _back to commands: ./index.html

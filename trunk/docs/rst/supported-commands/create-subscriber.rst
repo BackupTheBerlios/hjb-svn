@@ -23,8 +23,8 @@ Create Durable Subscriber
 This POST request creates a new JMS Durable Subscriber by invoking the
 JMS API with parameters derived from the request.  The command
 
-* constructs a durable subscriber of messages from the supplied
-  subscriber-name and destination-url.
+* constructs a durable subscriber of messages from the Provider's
+  messaging system.
 
 * the destination-url *must* be a destination URI belonging to the
   same Provider as the one in which the subscriber is being created.
