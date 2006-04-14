@@ -61,26 +61,41 @@ public class SendHJBMessageTest extends MockObjectTestCase {
     public void testExecuteSendsAMessage() {
         Mock mockJMSMessage = mock(TextMessage.class);
         mockJMSMessage.expects(once()).method("setText").with(eq("boo!"));
-        mockJMSMessage.expects(once()).method("setStringProperty").with(eq("hjb.core.message-version"), eq("1.0"));
+        mockJMSMessage.expects(once())
+            .method("setStringProperty")
+            .with(eq("hjb.core.message-version"), eq("1.0"));
         Message testMessage = (TextMessage) mockJMSMessage.proxy();
 
         Mock mockProducer = mock(MessageProducer.class);
         mockProducer.expects(once()).method("send");
-        mockProducer.expects(atLeastOnce()).method("setDisableMessageTimestamp");
+        mockProducer.expects(atLeastOnce())
+            .method("setDisableMessageTimestamp");
         mockProducer.expects(atLeastOnce()).method("setDisableMessageID");
-        mockProducer.stubs().method("getTimeToLive").will(returnValue(Message.DEFAULT_TIME_TO_LIVE));
-        mockProducer.stubs().method("getPriority").will(returnValue(Message.DEFAULT_PRIORITY));
-        mockProducer.stubs().method("getDeliveryMode").will(returnValue(Message.DEFAULT_DELIVERY_MODE));
+        mockProducer.stubs()
+            .method("getTimeToLive")
+            .will(returnValue(Message.DEFAULT_TIME_TO_LIVE));
+        mockProducer.stubs()
+            .method("getPriority")
+            .will(returnValue(Message.DEFAULT_PRIORITY));
+        mockProducer.stubs()
+            .method("getDeliveryMode")
+            .will(returnValue(Message.DEFAULT_DELIVERY_MODE));
         MessageProducer testProducer = (MessageProducer) mockProducer.proxy();
 
         Mock mockSession = mock(Session.class);
-        mockSession.stubs().method("createProducer").will(returnValue(testProducer));
-        mockSession.expects(once()).method("createTextMessage").will(returnValue(testMessage));
+        mockSession.stubs()
+            .method("createProducer")
+            .will(returnValue(testProducer));
+        mockSession.expects(once())
+            .method("createTextMessage")
+            .will(returnValue(testMessage));
         Session testSession = (Session) mockSession.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath);
         mockHJB.make1Session(root, testSession, "testProvider", "testFactory");
-        HJBConnection testConnection = root.getProvider("testProvider").getConnectionFactory("testFactory").getConnection(0);
+        HJBConnection testConnection = root.getProvider("testProvider")
+            .getConnectionFactory("testFactory")
+            .getConnection(0);
 
         create1Producer(testConnection);
         SendHJBMessage command = new SendHJBMessage(new HJBMessenger(testConnection,

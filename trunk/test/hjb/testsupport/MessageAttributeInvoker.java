@@ -37,12 +37,16 @@ import hjb.msg.codec.OrderedTypedValueCodec;
 public class MessageAttributeInvoker {
 
     public void invokesGetPropertyNamesReturnsNothing(Mock mockJMSMessage) {
-        mockJMSMessage.stubs().method("getPropertyNames").will(new ReturnStub(Collections.enumeration(new ArrayList())));
+        mockJMSMessage.stubs()
+            .method("getPropertyNames")
+            .will(new ReturnStub(Collections.enumeration(new ArrayList())));
     }
 
     public Map invokesAllAccessors(Mock mockJMSMessage) {
         for (int j = 0; j < NON_DESTINATION_ATTRIBUTES.length; j++) {
-            mockJMSMessage.stubs().method(NON_DESTINATION_ATTRIBUTES[j][1]).will(new ReturnStub(new OrderedTypedValueCodec().decode(NON_DESTINATION_ATTRIBUTES[j][3])));
+            mockJMSMessage.stubs()
+                .method(NON_DESTINATION_ATTRIBUTES[j][1])
+                .will(new ReturnStub(new OrderedTypedValueCodec().decode(NON_DESTINATION_ATTRIBUTES[j][3])));
         }
 
         Map expectedHeaderValues = getOKEncodedPropertyValues();
@@ -50,15 +54,16 @@ public class MessageAttributeInvoker {
             Mock destinationMock = new Mock(Destination.class, "destination"
                     + k);
             Destination testDestination = (Destination) destinationMock.proxy();
-            mockJMSMessage.stubs().method(DESTINATION_ATTRIBUTES[k][1]).will(new ReturnStub(testDestination));
+            mockJMSMessage.stubs()
+                .method(DESTINATION_ATTRIBUTES[k][1])
+                .will(new ReturnStub(testDestination));
             expectedHeaderValues.put(DESTINATION_ATTRIBUTES[k][0],
                                      "destination" + k);
         }
         return expectedHeaderValues;
     }
 
-    public void invokesAccessorsInOrderStoppingAfterN(Mock mockJMSMessage,
-                                                                    int n) {
+    public void invokesAccessorsInOrderStoppingAfterN(Mock mockJMSMessage, int n) {
         for (int i = 0; i < AttributeCopierAssistant.BUILT_IN_HEADERS.length; i++) {
             OrderedTypedValueCodec orderedCodec = new OrderedTypedValueCodec();
 
@@ -71,7 +76,9 @@ public class MessageAttributeInvoker {
                 if (j == n) continue;
 
                 if (AttributeCopierAssistant.BUILT_IN_HEADERS[i].equals(NON_DESTINATION_ATTRIBUTES[j][0])) {
-                    mockJMSMessage.stubs().method(NON_DESTINATION_ATTRIBUTES[j][1]).will(new ReturnStub(orderedCodec.decode(NON_DESTINATION_ATTRIBUTES[j][3])));
+                    mockJMSMessage.stubs()
+                        .method(NON_DESTINATION_ATTRIBUTES[j][1])
+                        .will(new ReturnStub(orderedCodec.decode(NON_DESTINATION_ATTRIBUTES[j][3])));
                     break;
                 }
             }
@@ -82,7 +89,9 @@ public class MessageAttributeInvoker {
                                                     "destination"
                                                             + (n * 100 + k));
                     Destination testDestination = (Destination) destinationMock.proxy();
-                    mockJMSMessage.stubs().method(DESTINATION_ATTRIBUTES[k][1]).will(new ReturnStub(testDestination));
+                    mockJMSMessage.stubs()
+                        .method(DESTINATION_ATTRIBUTES[k][1])
+                        .will(new ReturnStub(testDestination));
                     break;
                 }
             }
@@ -100,19 +109,25 @@ public class MessageAttributeInvoker {
         }
         return result;
     }
-    
+
     public void stubAllPropertyGettersFor(Mock mockJMSMessage) {
         OrderedTypedValueCodec codec = new OrderedTypedValueCodec();
         for (int i = 0; i < NON_DESTINATION_ATTRIBUTES.length; i++) {
-            mockJMSMessage.stubs().method(NON_DESTINATION_ATTRIBUTES[i][1]).will(new ReturnStub(codec.decode(NON_DESTINATION_ATTRIBUTES[i][3])));
+            mockJMSMessage.stubs()
+                .method(NON_DESTINATION_ATTRIBUTES[i][1])
+                .will(new ReturnStub(codec.decode(NON_DESTINATION_ATTRIBUTES[i][3])));
         }
-        
+
         Mock destinationMock = new Mock(Destination.class);
         Destination testDestination = (Destination) destinationMock.proxy();
         for (int i = 0; i < DESTINATION_ATTRIBUTES.length; i++) {
-            mockJMSMessage.stubs().method(DESTINATION_ATTRIBUTES[i][1]).will(new ReturnStub(testDestination));
+            mockJMSMessage.stubs()
+                .method(DESTINATION_ATTRIBUTES[i][1])
+                .will(new ReturnStub(testDestination));
         }
-        mockJMSMessage.stubs().method("getPropertyNames").will(new ReturnStub(Collections.enumeration(Collections.EMPTY_LIST)));
+        mockJMSMessage.stubs()
+            .method("getPropertyNames")
+            .will(new ReturnStub(Collections.enumeration(Collections.EMPTY_LIST)));
     }
 
     public static final String[][] NON_DESTINATION_ATTRIBUTES = AttributeCopierAssistantTest.NON_DESTINATION_ATTRIBUTES;

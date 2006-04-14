@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.testsupport;
 
 import java.util.Hashtable;
@@ -58,9 +58,14 @@ public class MockHJBRuntime {
         updateProvider(root, testEnvironment, providerName);
         root.getProvider(providerName).registerConnectionFactory(factoryName);
         root.getProvider(providerName).registerDestination(destinationName);
-        root.getProvider(providerName).getConnectionFactory(factoryName).createConnection();
-        root.getProvider(providerName).getConnectionFactory(factoryName).getConnection(0).createSession(HJBServletConstants.DEFAULT_TRANSACTED,
-                                                                                                        HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE);
+        root.getProvider(providerName)
+            .getConnectionFactory(factoryName)
+            .createConnection();
+        root.getProvider(providerName)
+            .getConnectionFactory(factoryName)
+            .getConnection(0)
+            .createSession(HJBServletConstants.DEFAULT_TRANSACTED,
+                           HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE);
     }
 
     public void make1SessionAnd1Destination(HJBRoot root,
@@ -88,9 +93,14 @@ public class MockHJBRuntime {
         updateProvider(root, testEnvironment, providerName);
         root.getProvider(providerName).registerConnectionFactory(factoryName);
         root.getProvider(providerName).registerDestination(destinationName);
-        root.getProvider(providerName).getConnectionFactory(factoryName).createConnection();
-        root.getProvider(providerName).getConnectionFactory(factoryName).getConnection(0).createSession(HJBServletConstants.DEFAULT_TRANSACTED,
-                                                                                                        HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE);
+        root.getProvider(providerName)
+            .getConnectionFactory(factoryName)
+            .createConnection();
+        root.getProvider(providerName)
+            .getConnectionFactory(factoryName)
+            .getConnection(0)
+            .createSession(HJBServletConstants.DEFAULT_TRANSACTED,
+                           HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE);
     }
 
     public void make1Destination(HJBRoot root,
@@ -119,8 +129,10 @@ public class MockHJBRuntime {
                              String providerName,
                              String factoryName) {
         make1Connection(root, providerName, factoryName);
-        root.getProvider(providerName).getConnectionFactory(factoryName).getConnection(0).createSession(false,
-                                                                                                        0);
+        root.getProvider(providerName)
+            .getConnectionFactory(factoryName)
+            .getConnection(0)
+            .createSession(false, 0);
     }
 
     public void make1Session(HJBRoot root,
@@ -128,15 +140,19 @@ public class MockHJBRuntime {
                              String providerName,
                              String factoryName) {
         make1Connection(root, testSession, providerName, factoryName);
-        root.getProvider(providerName).getConnectionFactory(factoryName).getConnection(0).createSession(false,
-                                                                                                        0);
+        root.getProvider(providerName)
+            .getConnectionFactory(factoryName)
+            .getConnection(0)
+            .createSession(false, 0);
     }
 
     public void make1Connection(HJBRoot root,
                                 String providerName,
                                 String factoryName) {
         make1Factory(root, providerName, factoryName);
-        root.getProvider(providerName).getConnectionFactory(factoryName).createConnection();
+        root.getProvider(providerName)
+            .getConnectionFactory(factoryName)
+            .createConnection();
     }
 
     public void make1Connection(HJBRoot root,
@@ -145,9 +161,11 @@ public class MockHJBRuntime {
                                 String factoryName) {
         MockConnectionBuilder connectionBuilder = new MockConnectionBuilder();
         Mock mockConnection = connectionBuilder.createMockConnection(testSession);
-        Connection testConnection = (Connection) mockConnection.proxy(); 
+        Connection testConnection = (Connection) mockConnection.proxy();
         make1Factory(root, testConnection, providerName, factoryName);
-        root.getProvider(providerName).getConnectionFactory(factoryName).createConnection();
+        root.getProvider(providerName)
+            .getConnectionFactory(factoryName)
+            .createConnection();
     }
 
     public void make1Connection(HJBRoot root,
@@ -155,7 +173,9 @@ public class MockHJBRuntime {
                                 String providerName,
                                 String factoryName) {
         make1Factory(root, testConnection, providerName, factoryName);
-        root.getProvider(providerName).getConnectionFactory(factoryName).createConnection();
+        root.getProvider(providerName)
+            .getConnectionFactory(factoryName)
+            .createConnection();
     }
 
     public void make1Factory(HJBRoot root,
@@ -191,7 +211,7 @@ public class MockHJBRuntime {
         MockConnectionFactoryBuilder factoryBuilder = new MockConnectionFactoryBuilder();
         Mock mockFactory = factoryBuilder.createMockConnectionFactory();
         ConnectionFactory testFactory = (ConnectionFactory) mockFactory.proxy();
-        
+
         Mock mockDestination = new Mock(Destination.class);
         Destination testDestination = (Destination) mockDestination.proxy();
 

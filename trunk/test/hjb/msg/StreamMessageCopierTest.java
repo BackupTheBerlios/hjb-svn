@@ -58,8 +58,12 @@ public class StreamMessageCopierTest extends MockObjectTestCase {
         for (int i = 0; i < ORDERED_STREAM_MESSAGE_METHODS.length; i++) {
             Mock mockJMSMessage = mock(StreamMessage.class, "test" + i);
             String methodName = ORDERED_STREAM_MESSAGE_METHODS[i][1];
-            mockJMSMessage.stubs().method("setStringProperty").with(eq("hjb.core.message-version"), eq("1.0"));
-            mockJMSMessage.stubs().method(methodName).will(throwException(new JMSException("thrown as a test")));
+            mockJMSMessage.stubs()
+                .method("setStringProperty")
+                .with(eq("hjb.core.message-version"), eq("1.0"));
+            mockJMSMessage.stubs()
+                .method(methodName)
+                .will(throwException(new JMSException("thrown as a test")));
             for (int j = 0; j < ORDERED_STREAM_MESSAGE_METHODS.length; j++) {
                 if (j == i) continue;
                 String okMethod = ORDERED_STREAM_MESSAGE_METHODS[j][1];
@@ -75,14 +79,18 @@ public class StreamMessageCopierTest extends MockObjectTestCase {
             } catch (HJBException e) {}
         }
     }
-    
+
     public void testCopyToJMSMessageCopiesStreamValuesOK() {
         Mock mockJMSMessage = mock(StreamMessage.class);
-        mockJMSMessage.expects(once()).method("setStringProperty").with(eq("hjb.core.message-version"), eq("1.0"));
+        mockJMSMessage.expects(once())
+            .method("setStringProperty")
+            .with(eq("hjb.core.message-version"), eq("1.0"));
         for (int i = 0; i < ORDERED_STREAM_MESSAGE_METHODS.length; i++) {
             String methodName = ORDERED_STREAM_MESSAGE_METHODS[i][1];
             Object expectedValue = ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[i][0];
-            mockJMSMessage.expects(atLeastOnce()).method(methodName).with(eq(expectedValue));
+            mockJMSMessage.expects(atLeastOnce())
+                .method(methodName)
+                .with(eq(expectedValue));
         }
 
         Message testJMSMessage = (StreamMessage) mockJMSMessage.proxy();
@@ -98,7 +106,9 @@ public class StreamMessageCopierTest extends MockObjectTestCase {
         Mock mockJMSMessage = mock(StreamMessage.class);
         for (int i = 0; i < ORDERED_STREAM_MESSAGE_METHODS.length; i++) {
             String methodName = ORDERED_STREAM_MESSAGE_METHODS[i][0];
-            mockJMSMessage.stubs().method(methodName).will(throwException(new JMSException("thrown as a test")));
+            mockJMSMessage.stubs()
+                .method(methodName)
+                .will(throwException(new JMSException("thrown as a test")));
         }
         attributeInvoker.stubAllPropertyGettersFor(mockJMSMessage);
 
@@ -135,11 +145,14 @@ public class StreamMessageCopierTest extends MockObjectTestCase {
                     if ("readBytes".equals(methodName)) {
                         Stub readBytesStub = messageBuilder.updateByteArrayWith((byte[]) methodResult);
                         invocations[j++] = readBytesStub;
-                        // second invocation required to terminating reading of the 
-                        // byte array - this works because the test array's length
-                        // is smaller than the default buffer size used to copy it, 
+                        // second invocation required to terminating reading of
+                        // the
+                        // byte array - this works because the test array's
+                        // length
+                        // is smaller than the default buffer size used to copy
+                        // it,
                         // otherwise further invocations would be needed
-                        invocations[j] = readBytesStub;  
+                        invocations[j] = readBytesStub;
                     } else {
                         invocations[j] = returnValue(methodResult);
                     }
@@ -149,7 +162,9 @@ public class StreamMessageCopierTest extends MockObjectTestCase {
                     invocations[j] = throwException(new JMSException("thrown as a test"));
                 }
             }
-            mockJMSMessage.stubs().method(methodName).will(new StubSequence(invocations));
+            mockJMSMessage.stubs()
+                .method(methodName)
+                .will(new StubSequence(invocations));
             expectedValues.put("" + i, ORDERED_OK_EXPECTED_DECODED_VALUES[i][0]);
         }
 

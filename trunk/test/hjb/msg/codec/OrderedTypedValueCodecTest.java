@@ -62,9 +62,9 @@ public class OrderedTypedValueCodecTest extends MockObjectTestCase {
             for (int i = 0; i < ORDERED_OK_ENCODED_VALUES[k].length; i++) {
                 Object o = testCodec.decode(ORDERED_OK_ENCODED_VALUES[k][i]);
                 assertEquals("object type not correct for "
-                             + ORDERED_OK_ENCODED_VALUES[k][i],
-                     ORDERED_CODEC_CLASSES[k].getName(),
-                     o.getClass().getName());
+                                     + ORDERED_OK_ENCODED_VALUES[k][i],
+                             ORDERED_CODEC_CLASSES[k].getName(),
+                             o.getClass().getName());
                 if (byte[].class != ORDERED_CODEC_CLASSES[k]) {
                     assertEquals("incorrect value retrieved",
                                  ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[k][i],
@@ -80,7 +80,9 @@ public class OrderedTypedValueCodecTest extends MockObjectTestCase {
 
     protected void throwsJMSExceptionOnMethods(Mock aMock, String[] methodNames) {
         for (int i = 0; i < methodNames.length; i++) {
-            aMock.expects(atLeastOnce()).method(methodNames[i]).will(throwException(new JMSException("thrown as a test")));
+            aMock.expects(atLeastOnce())
+                .method(methodNames[i])
+                .will(throwException(new JMSException("thrown as a test")));
         }
     }
 
@@ -101,7 +103,7 @@ public class OrderedTypedValueCodecTest extends MockObjectTestCase {
             byte[].class,
             String.class,
     };
-    
+
     private static final Object[][] ORDERED_EXPECTED_DECODED_VALUES_OBJECTS = CodecTestValues.ORDERED_EXPECTED_DECODED_VALUES_OBJECTS;
     private static final String[][] ORDERED_OK_ENCODED_VALUES = CodecTestValues.ORDERED_OK_ENCODED_VALUES;
 }

@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.msg;
 
 import java.util.HashMap;
@@ -77,7 +77,10 @@ public class AttributeCopierTest extends MockObjectTestCase {
             Map testHeaders = new HashMap();
             testHeaders.put(ALL_ATTRIBUTES[i][0], ALL_ATTRIBUTES[i][3]);
             HJBMessage mimeMessage = new HJBMessage(testHeaders, "test");
-            mockMessage.expects(once()).method(ALL_ATTRIBUTES[i][2]).with(eq(orderedCodec.decode(ALL_ATTRIBUTES[i][3]))).will(throwException(new JMSException("thrown as a test")));
+            mockMessage.expects(once())
+                .method(ALL_ATTRIBUTES[i][2])
+                .with(eq(orderedCodec.decode(ALL_ATTRIBUTES[i][3])))
+                .will(throwException(new JMSException("thrown as a test")));
             Message testMessage = (Message) mockMessage.proxy();
             try {
                 copier.copyToJMSMessage(mimeMessage, testMessage);
@@ -93,7 +96,9 @@ public class AttributeCopierTest extends MockObjectTestCase {
             Map testHeaders = new HashMap();
             testHeaders.put(ALL_ATTRIBUTES[i][0], ALL_ATTRIBUTES[i][3]);
             HJBMessage mimeMessage = new HJBMessage(testHeaders, "test");
-            mockMessage.expects(once()).method(ALL_ATTRIBUTES[i][2]).with(eq(orderedCodec.decode(ALL_ATTRIBUTES[i][3])));
+            mockMessage.expects(once())
+                .method(ALL_ATTRIBUTES[i][2])
+                .with(eq(orderedCodec.decode(ALL_ATTRIBUTES[i][3])));
 
             Message testMessage = (Message) mockMessage.proxy();
             AttributeCopier copier = new AttributeCopier();
@@ -122,8 +127,10 @@ public class AttributeCopierTest extends MockObjectTestCase {
             Mock mockMessage = mock(Message.class, "message" + n);
 
             attributeInvoker.invokesAccessorsInOrderStoppingAfterN(mockMessage,
-                                                                              n);
-            mockMessage.expects(once()).method(ALL_ATTRIBUTES[n][1]).will(throwException(new JMSException("thrown as a test")));
+                                                                   n);
+            mockMessage.expects(once())
+                .method(ALL_ATTRIBUTES[n][1])
+                .will(throwException(new JMSException("thrown as a test")));
             Message testMessage = (Message) mockMessage.proxy();
             try {
                 HJBMessage mimeMessage = new HJBMessage(new HashMap(), "test");

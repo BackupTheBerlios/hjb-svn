@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.jms;
 
 import javax.jms.Connection;
@@ -101,7 +101,9 @@ public class HJBConnectionTest extends MockObjectTestCase {
         Mock mockConnection = connectionBuilder.createMockConnection();
         registerToVerify(mockConnection);
         mockConnection.stubs().method("setExceptionListener");
-        mockConnection.expects(once()).method("createSession").will(throwException(new JMSException("thrown as a test")));
+        mockConnection.expects(once())
+            .method("createSession")
+            .will(throwException(new JMSException("thrown as a test")));
         Connection testConnection = (Connection) mockConnection.proxy();
 
         try {
@@ -126,7 +128,9 @@ public class HJBConnectionTest extends MockObjectTestCase {
         Mock mockConnection = connectionBuilder.createMockConnection();
         registerToVerify(mockConnection);
         mockConnection.stubs().method("setExceptionListener");
-        mockConnection.expects(once()).method("getClientID").will(throwException(new JMSException("thrown as a test")));
+        mockConnection.expects(once())
+            .method("getClientID")
+            .will(throwException(new JMSException("thrown as a test")));
         Connection testConnection = (Connection) mockConnection.proxy();
 
         HJBConnection h = new HJBConnection(testConnection, 0);
@@ -151,7 +155,9 @@ public class HJBConnectionTest extends MockObjectTestCase {
         Mock mockConnection = connectionBuilder.createMockConnection();
         registerToVerify(mockConnection);
         mockConnection.stubs().method("setExceptionListener");
-        mockConnection.expects(once()).method("setClientID").will(throwException(new JMSException("thrown as a test")));
+        mockConnection.expects(once())
+            .method("setClientID")
+            .will(throwException(new JMSException("thrown as a test")));
         Connection testConnection = (Connection) mockConnection.proxy();
 
         HJBConnection h = new HJBConnection(testConnection, 0);
@@ -176,7 +182,9 @@ public class HJBConnectionTest extends MockObjectTestCase {
         Mock mockConnection = connectionBuilder.createMockConnection();
         registerToVerify(mockConnection);
         mockConnection.stubs().method("setExceptionListener");
-        mockConnection.expects(once()).method("getMetaData").will(throwException(new JMSException("thrown as test")));
+        mockConnection.expects(once())
+            .method("getMetaData")
+            .will(throwException(new JMSException("thrown as test")));
         Connection testConnection = (Connection) mockConnection.proxy();
 
         HJBConnection h = new HJBConnection(testConnection, 0);
@@ -203,7 +211,9 @@ public class HJBConnectionTest extends MockObjectTestCase {
         Mock mockConnection = connectionBuilder.createMockConnection();
         registerToVerify(mockConnection);
         mockConnection.stubs().method("setExceptionListener");
-        mockConnection.expects(once()).method("getExceptionListener").will(throwException(new JMSException("thrown as test")));
+        mockConnection.expects(once())
+            .method("getExceptionListener")
+            .will(throwException(new JMSException("thrown as test")));
         Connection testConnection = (Connection) mockConnection.proxy();
 
         HJBConnection h = new HJBConnection(testConnection, 0);
@@ -239,7 +249,9 @@ public class HJBConnectionTest extends MockObjectTestCase {
         Mock mockConnection = connectionBuilder.createMockConnection();
         registerToVerify(mockConnection);
         mockConnection.stubs().method("setExceptionListener");
-        mockConnection.expects(once()).method("start").will(throwException(new JMSException("thrown as test")));
+        mockConnection.expects(once())
+            .method("start")
+            .will(throwException(new JMSException("thrown as test")));
         Connection testConnection = (Connection) mockConnection.proxy();
 
         HJBConnection h = new HJBConnection(testConnection, 0);
@@ -264,7 +276,9 @@ public class HJBConnectionTest extends MockObjectTestCase {
         Mock mockConnection = connectionBuilder.createMockConnection();
         registerToVerify(mockConnection);
         mockConnection.stubs().method("setExceptionListener");
-        mockConnection.expects(once()).method("stop").will(throwException(new JMSException("thrown as test")));
+        mockConnection.expects(once())
+            .method("stop")
+            .will(throwException(new JMSException("thrown as test")));
         Connection testConnection = (Connection) mockConnection.proxy();
 
         HJBConnection h = new HJBConnection(testConnection, 0);
@@ -289,7 +303,9 @@ public class HJBConnectionTest extends MockObjectTestCase {
         Mock mockConnection = connectionBuilder.createMockConnection();
         registerToVerify(mockConnection);
         mockConnection.stubs().method("setExceptionListener");
-        mockConnection.expects(once()).method("close").will(throwException(new JMSException("thrown as test")));
+        mockConnection.expects(once())
+            .method("close")
+            .will(throwException(new JMSException("thrown as test")));
         Connection testConnection = (Connection) mockConnection.proxy();
 
         HJBConnection h = new HJBConnection(testConnection, 0);
@@ -317,7 +333,8 @@ public class HJBConnectionTest extends MockObjectTestCase {
         Mock mockConnection = connectionBuilder.createMockConnection();
         registerToVerify(mockConnection);
         mockConnection.stubs().method("setExceptionListener");
-        mockConnection.expects(never()).method("createDurableConnectionConsumer");
+        mockConnection.expects(never())
+            .method("createDurableConnectionConsumer");
         Connection testConnection = (Connection) mockConnection.proxy();
 
         HJBConnection h = new HJBConnection(testConnection, 0);

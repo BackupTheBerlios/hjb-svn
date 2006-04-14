@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.msg;
 
 import javax.jms.Destination;
@@ -84,7 +84,9 @@ public class AttributeCopierAssistantTest extends MockObjectTestCase {
     public void testAddToMessageThrowsHJBExceptionOnJMSException() {
         for (int j = 0; j < NON_DESTINATION_ATTRIBUTES.length; j++) {
             Mock mockMessage = mock(Message.class, "message" + j);
-            mockMessage.stubs().method(NON_DESTINATION_ATTRIBUTES[j][2]).will(throwException(new JMSException("thrown as test")));
+            mockMessage.stubs()
+                .method(NON_DESTINATION_ATTRIBUTES[j][2])
+                .will(throwException(new JMSException("thrown as test")));
             Message testMessage = (Message) mockMessage.proxy();
 
             AttributeCopierAssistant a = new AttributeCopierAssistant();
@@ -123,7 +125,8 @@ public class AttributeCopierAssistantTest extends MockObjectTestCase {
         };
         Mock mockMessage = mock(Message.class);
         for (int j = 0; j < NON_DESTINATION_ATTRIBUTES.length; j++) {
-            mockMessage.expects(never()).method(NON_DESTINATION_ATTRIBUTES[j][2]);
+            mockMessage.expects(never())
+                .method(NON_DESTINATION_ATTRIBUTES[j][2]);
         }
         Message testMessage = (Message) mockMessage.proxy();
 
@@ -155,7 +158,9 @@ public class AttributeCopierAssistantTest extends MockObjectTestCase {
             Mock mockMessage = mock(Message.class, "message" + j);
             String testValue = "testValue" + j;
 
-            mockMessage.expects(once()).method(JMS_STRING_ATTRIBUTES[j][2]).with(eq(testValue));
+            mockMessage.expects(once())
+                .method(JMS_STRING_ATTRIBUTES[j][2])
+                .with(eq(testValue));
             Message testMessage = (Message) mockMessage.proxy();
 
             AttributeCopierAssistant a = new AttributeCopierAssistant();
@@ -168,7 +173,9 @@ public class AttributeCopierAssistantTest extends MockObjectTestCase {
         boolean testValue = false;
         String encodedTestValue = "(boolean" + testValue + ")";
 
-        mockMessage.expects(once()).method("setJMSRedelivered").with(eq(testValue));
+        mockMessage.expects(once())
+            .method("setJMSRedelivered")
+            .with(eq(testValue));
         Message testMessage = (Message) mockMessage.proxy();
 
         AttributeCopierAssistant a = new AttributeCopierAssistant();
@@ -183,7 +190,9 @@ public class AttributeCopierAssistantTest extends MockObjectTestCase {
             int testValue = j;
             String encodedTestValue = "(int " + j + ")";
 
-            mockMessage.expects(once()).method(JMS_INT_ATTRIBUTES[j][2]).with(eq(testValue));
+            mockMessage.expects(once())
+                .method(JMS_INT_ATTRIBUTES[j][2])
+                .with(eq(testValue));
             Message testMessage = (Message) mockMessage.proxy();
 
             AttributeCopierAssistant a = new AttributeCopierAssistant();
@@ -199,7 +208,9 @@ public class AttributeCopierAssistantTest extends MockObjectTestCase {
             long testValue = j;
             String encodedTestValue = "(long " + j + ")";
 
-            mockMessage.expects(once()).method(JMS_LONG_ATTRIBUTES[j][2]).with(eq(testValue));
+            mockMessage.expects(once())
+                .method(JMS_LONG_ATTRIBUTES[j][2])
+                .with(eq(testValue));
             Message testMessage = (Message) mockMessage.proxy();
 
             AttributeCopierAssistant a = new AttributeCopierAssistant();
@@ -212,7 +223,9 @@ public class AttributeCopierAssistantTest extends MockObjectTestCase {
     public void testGetEncodedValueFromMessageThrowsHJBExceptionOnJMSException() {
         for (int j = 0; j < NON_DESTINATION_ATTRIBUTES.length; j++) {
             Mock mockMessage = mock(Message.class, "message" + j);
-            mockMessage.stubs().method(NON_DESTINATION_ATTRIBUTES[j][1]).will(throwException(new JMSException("thrown as test")));
+            mockMessage.stubs()
+                .method(NON_DESTINATION_ATTRIBUTES[j][1])
+                .will(throwException(new JMSException("thrown as test")));
             Message testMessage = (Message) mockMessage.proxy();
 
             AttributeCopierAssistant a = new AttributeCopierAssistant();
@@ -238,7 +251,9 @@ public class AttributeCopierAssistantTest extends MockObjectTestCase {
             Mock mockDestination = mock(Destination.class, "destination" + j);
             Destination testDestination = (Destination) mockDestination.proxy();
 
-            mockMessage.stubs().method(destinationTypeGetters[j]).will(returnValue(testDestination));
+            mockMessage.stubs()
+                .method(destinationTypeGetters[j])
+                .will(returnValue(testDestination));
             Message testMessage = (Message) mockMessage.proxy();
 
             AttributeCopierAssistant a = new AttributeCopierAssistant();
@@ -254,7 +269,9 @@ public class AttributeCopierAssistantTest extends MockObjectTestCase {
             Mock mockMessage = mock(Message.class, "message" + j);
             String testValue = "testValue" + j;
 
-            mockMessage.stubs().method(JMS_STRING_ATTRIBUTES[j][1]).will(returnValue(testValue));
+            mockMessage.stubs()
+                .method(JMS_STRING_ATTRIBUTES[j][1])
+                .will(returnValue(testValue));
             Message testMessage = (Message) mockMessage.proxy();
 
             AttributeCopierAssistant a = new AttributeCopierAssistant();
@@ -269,7 +286,9 @@ public class AttributeCopierAssistantTest extends MockObjectTestCase {
         Mock mockMessage = mock(Message.class, "message");
         boolean testValue = false;
 
-        mockMessage.stubs().method("getJMSRedelivered").will(returnValue(testValue));
+        mockMessage.stubs()
+            .method("getJMSRedelivered")
+            .will(returnValue(testValue));
         Message testMessage = (Message) mockMessage.proxy();
 
         AttributeCopierAssistant a = new AttributeCopierAssistant();
@@ -284,7 +303,9 @@ public class AttributeCopierAssistantTest extends MockObjectTestCase {
             Mock mockMessage = mock(Message.class, "message" + j);
             long testValue = 10 + j;
 
-            mockMessage.stubs().method(JMS_LONG_ATTRIBUTES[j][1]).will(returnValue(testValue));
+            mockMessage.stubs()
+                .method(JMS_LONG_ATTRIBUTES[j][1])
+                .will(returnValue(testValue));
             Message testMessage = (Message) mockMessage.proxy();
 
             AttributeCopierAssistant a = new AttributeCopierAssistant();
@@ -300,7 +321,9 @@ public class AttributeCopierAssistantTest extends MockObjectTestCase {
             Mock mockMessage = mock(Message.class, "message" + j);
             int testValue = 10 + j;
 
-            mockMessage.stubs().method(JMS_INT_ATTRIBUTES[j][1]).will(returnValue(testValue));
+            mockMessage.stubs()
+                .method(JMS_INT_ATTRIBUTES[j][1])
+                .will(returnValue(testValue));
             Message testMessage = (Message) mockMessage.proxy();
 
             AttributeCopierAssistant a = new AttributeCopierAssistant();
@@ -317,7 +340,8 @@ public class AttributeCopierAssistantTest extends MockObjectTestCase {
         };
         Mock mockMessage = mock(Message.class);
         for (int j = 0; j < NON_DESTINATION_ATTRIBUTES.length; j++) {
-            mockMessage.expects(never()).method(NON_DESTINATION_ATTRIBUTES[j][1]);
+            mockMessage.expects(never())
+                .method(NON_DESTINATION_ATTRIBUTES[j][1]);
         }
         Message testMessage = (Message) mockMessage.proxy();
 

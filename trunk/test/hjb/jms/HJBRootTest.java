@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.jms;
 
 import java.io.File;
@@ -42,15 +42,15 @@ public class HJBRootTest extends MockObjectTestCase {
     public void testCommandRunnerIsActiveOnConstruction() {
         HJBRoot br = new HJBRoot(testRootPath);
         assertNotNull("should be initialised", br.getCommandRunner());
-        assertFalse("should not be terminated",
-                    br.getCommandRunner().isTerminated());
+        assertFalse("should not be terminated", br.getCommandRunner()
+            .isTerminated());
     }
 
     public void testDeletingNonExistentProviderDoesNotThrow() {
         HJBRoot br = new HJBRoot(testRootPath);
-        br.deleteProvider("notPresent");        
+        br.deleteProvider("notPresent");
     }
-    
+
     public void testDeleteProvider() throws Exception {
         HJBRoot br = new HJBRoot(testRootPath);
 
@@ -121,9 +121,8 @@ public class HJBRootTest extends MockObjectTestCase {
         br.addProvider(testEnvironment);
         Map providers = br.getProviders();
         providers.clear();
-        assertEquals("providers() does not return a copy",
-                     1,
-                     br.getProviders().size());
+        assertEquals("providers() does not return a copy", 1, br.getProviders()
+            .size());
     }
 
     protected void setUp() throws Exception {

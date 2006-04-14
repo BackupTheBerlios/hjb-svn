@@ -52,9 +52,13 @@ public class MapMessageCopierTest extends MockObjectTestCase {
     public void testCopyToJMSMessageThrowsHJBExceptionOnJMSException() {
         for (int i = 0; i < ORDERED_MAP_MESSAGE_METHODS.length; i++) {
             Mock mockJMSMessage = mock(MapMessage.class, "test" + i);
-            mockJMSMessage.stubs().method("setStringProperty").with(eq("hjb.core.message-version"), eq("1.0"));
+            mockJMSMessage.stubs()
+                .method("setStringProperty")
+                .with(eq("hjb.core.message-version"), eq("1.0"));
             String methodName = ORDERED_MAP_MESSAGE_METHODS[i][1];
-            mockJMSMessage.stubs().method(methodName).will(throwException(new JMSException("thrown as a test")));
+            mockJMSMessage.stubs()
+                .method(methodName)
+                .will(throwException(new JMSException("thrown as a test")));
             for (int j = 0; j < ORDERED_MAP_MESSAGE_METHODS.length; j++) {
                 if (j == i) continue;
                 String okMethod = ORDERED_MAP_MESSAGE_METHODS[j][1];
@@ -74,13 +78,15 @@ public class MapMessageCopierTest extends MockObjectTestCase {
 
     public void testCopyToJMSMessagesCopiesMapValuesOK() {
         Mock mockJMSMessage = mock(MapMessage.class);
-        mockJMSMessage.expects(once()).method("setStringProperty").with(eq("hjb.core.message-version"), eq("1.0"));
+        mockJMSMessage.expects(once())
+            .method("setStringProperty")
+            .with(eq("hjb.core.message-version"), eq("1.0"));
         for (int i = 0; i < ORDERED_MAP_MESSAGE_METHODS.length; i++) {
             String methodName = ORDERED_MAP_MESSAGE_METHODS[i][1];
             Object expectedValue = ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[i][0];
-            mockJMSMessage.expects(atLeastOnce()).method(methodName).with(eq("test-"
-                                                                                  + methodName),
-                                                                          eq(expectedValue));
+            mockJMSMessage.expects(atLeastOnce())
+                .method(methodName)
+                .with(eq("test-" + methodName), eq(expectedValue));
         }
 
         Message testJMSMessage = (MapMessage) mockJMSMessage.proxy();
@@ -96,12 +102,16 @@ public class MapMessageCopierTest extends MockObjectTestCase {
         Mock mockJMSMessage = mock(MapMessage.class);
         for (int i = 0; i < ORDERED_MAP_MESSAGE_METHODS.length; i++) {
             String methodName = ORDERED_MAP_MESSAGE_METHODS[i][0];
-            mockJMSMessage.stubs().method(methodName).will(throwException(new JMSException("thrown as a test")));
+            mockJMSMessage.stubs()
+                .method(methodName)
+                .will(throwException(new JMSException("thrown as a test")));
         }
         Enumeration anyNameEnumeration = Collections.enumeration(Arrays.asList(new String[] {
             "testMapName"
         }));
-        mockJMSMessage.stubs().method("getMapNames").will(returnValue(anyNameEnumeration));
+        mockJMSMessage.stubs()
+            .method("getMapNames")
+            .will(returnValue(anyNameEnumeration));
         attributeInvoker.stubAllPropertyGettersFor(mockJMSMessage);
 
         try {
@@ -123,12 +133,20 @@ public class MapMessageCopierTest extends MockObjectTestCase {
             String methodName = ORDERED_MAP_MESSAGE_METHODS[i][0];
             Object methodResult = ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[i][0];
             String keyName = "test-" + methodName;
-            mockJMSMessage.stubs().method(methodName).with(eq(keyName)).will(returnValue(methodResult));
-            mockJMSMessage.stubs().method(methodName).with(not(eq(keyName))).will(throwException(new JMSException("thrown as a test")));
+            mockJMSMessage.stubs()
+                .method(methodName)
+                .with(eq(keyName))
+                .will(returnValue(methodResult));
+            mockJMSMessage.stubs()
+                .method(methodName)
+                .with(not(eq(keyName)))
+                .will(throwException(new JMSException("thrown as a test")));
             expectedValues.put(keyName,
                                ORDERED_OK_EXPECTED_DECODED_VALUES[i][0]);
         }
-        mockJMSMessage.stubs().method("getMapNames").will(returnValue(Collections.enumeration(expectedValues.keySet())));
+        mockJMSMessage.stubs()
+            .method("getMapNames")
+            .will(returnValue(Collections.enumeration(expectedValues.keySet())));
 
         MapMessage testJMSMessage = (MapMessage) mockJMSMessage.proxy();
         HJBMessage testHJBMessage = createTestHJBMapMessage();
@@ -163,7 +181,8 @@ public class MapMessageCopierTest extends MockObjectTestCase {
             String keyName = "test-" + methodName;
             encodedValues.put(keyName, methodResult);
         }
-        return new HJBMessage(headers, new HJBMessageWriter().asText(encodedValues));
+        return new HJBMessage(headers,
+                              new HJBMessageWriter().asText(encodedValues));
     }
 
     protected void setUp() {

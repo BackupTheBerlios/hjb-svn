@@ -50,7 +50,9 @@ public class MockMessageBuilder {
 
     public void throwsJMSExceptionOnMethods(Mock aMock, String[] methodNames) {
         for (int i = 0; i < methodNames.length; i++) {
-            aMock.expects(new InvokeAtLeastOnceMatcher()).method(methodNames[i]).will(new ThrowStub(new JMSException("thrown as a test")));
+            aMock.expects(new InvokeAtLeastOnceMatcher())
+                .method(methodNames[i])
+                .will(new ThrowStub(new JMSException("thrown as a test")));
         }
     }
 
@@ -61,7 +63,8 @@ public class MockMessageBuilder {
 
     public Message throwsJMSMessageOnAnyMethod() {
         Mock mockMessage = new Mock(mockedClazz);
-        mockMessage.stubs().will(new ThrowStub(new JMSException("thrown as a test")));
+        mockMessage.stubs()
+            .will(new ThrowStub(new JMSException("thrown as a test")));
         return (Message) mockMessage.proxy();
     }
 
@@ -70,7 +73,10 @@ public class MockMessageBuilder {
                                                        String arg1,
                                                        Object returnValue) {
         Mock mockMessage = new Mock(mockedClazz, mockName);
-        mockMessage.expects(new InvokeAtLeastOnceMatcher()).method(methodName).with(new IsEqual(arg1)).will(new ReturnStub(returnValue));
+        mockMessage.expects(new InvokeAtLeastOnceMatcher())
+            .method(methodName)
+            .with(new IsEqual(arg1))
+            .will(new ReturnStub(returnValue));
         return (Message) mockMessage.proxy();
     }
 
@@ -78,7 +84,9 @@ public class MockMessageBuilder {
                                                        String mockName,
                                                        Object returnValue) {
         Mock mockMessage = new Mock(mockedClazz, mockName);
-        mockMessage.expects(new InvokeAtLeastOnceMatcher()).method(methodName).will(new ReturnStub(returnValue));
+        mockMessage.expects(new InvokeAtLeastOnceMatcher())
+            .method(methodName)
+            .will(new ReturnStub(returnValue));
         return (Message) mockMessage.proxy();
     }
 
@@ -86,7 +94,9 @@ public class MockMessageBuilder {
                                                 String mockName,
                                                 byte[] someBytes) {
         Mock mockMessage = new Mock(mockedClazz, mockName);
-        mockMessage.expects(new InvokeAtLeastOnceMatcher()).method(methodName).will(updateByteArrayWith(someBytes));
+        mockMessage.expects(new InvokeAtLeastOnceMatcher())
+            .method(methodName)
+            .will(updateByteArrayWith(someBytes));
         return (Message) mockMessage.proxy();
     }
 
@@ -96,7 +106,9 @@ public class MockMessageBuilder {
                                                 List toThrowOn) {
         Mock mockMessage = new Mock(mockedClazz, mockName);
         throwsJMSExceptionOnMethods(mockMessage, new ArrayList(toThrowOn));
-        mockMessage.expects(new InvokeAtLeastOnceMatcher()).method(methodName).will(updateByteArrayWith(someBytes));
+        mockMessage.expects(new InvokeAtLeastOnceMatcher())
+            .method(methodName)
+            .will(updateByteArrayWith(someBytes));
         return (Message) mockMessage.proxy();
     }
 
@@ -111,7 +123,10 @@ public class MockMessageBuilder {
                                 List toThrowOn) {
         Mock mockMessage = new Mock(mockedClazz, mockName);
         throwsJMSExceptionOnMethods(mockMessage, new ArrayList(toThrowOn));
-        mockMessage.expects(new InvokeAtLeastOnceMatcher()).method(methodName).with(new IsEqual(arg1)).will(new ReturnStub(returnValue));
+        mockMessage.expects(new InvokeAtLeastOnceMatcher())
+            .method(methodName)
+            .with(new IsEqual(arg1))
+            .will(new ReturnStub(returnValue));
         return (Message) mockMessage.proxy();
     }
 
@@ -121,7 +136,9 @@ public class MockMessageBuilder {
                                                                  List toThrowOn) {
         Mock mockMessage = new Mock(mockedClazz, mockName);
         throwsJMSExceptionOnMethods(mockMessage, new ArrayList(toThrowOn));
-        mockMessage.expects(new InvokeAtLeastOnceMatcher()).method(methodName).will(new ReturnStub(returnValue));
+        mockMessage.expects(new InvokeAtLeastOnceMatcher())
+            .method(methodName)
+            .will(new ReturnStub(returnValue));
         return (Message) mockMessage.proxy();
     }
 
@@ -130,8 +147,9 @@ public class MockMessageBuilder {
                                                 String arg1,
                                                 Object arg2) {
         Mock mockMessage = new Mock(mockedClazz, mockName);
-        mockMessage.expects(new InvokeOnceMatcher()).method(methodName).with(new IsEqual(arg1),
-                                                                 new IsEqual(arg2));
+        mockMessage.expects(new InvokeOnceMatcher())
+            .method(methodName)
+            .with(new IsEqual(arg1), new IsEqual(arg2));
         return (Message) mockMessage.proxy();
     }
 
@@ -139,7 +157,9 @@ public class MockMessageBuilder {
                                                 String mockName,
                                                 Object arg1) {
         Mock mockMessage = new Mock(mockedClazz, mockName);
-        mockMessage.expects(new InvokeOnceMatcher()).method(methodName).with(new IsEqual(arg1));
+        mockMessage.expects(new InvokeOnceMatcher())
+            .method(methodName)
+            .with(new IsEqual(arg1));
         return (Message) mockMessage.proxy();
     }
 
@@ -151,7 +171,9 @@ public class MockMessageBuilder {
     public Message throwsJMSMessageOnMethodNamed(String methodName) {
         if (null == methodName) return throwsJMSMessageOnAnyMethod();
         Mock mockMessage = new Mock(mockedClazz);
-        mockMessage.stubs().method(methodName).will(new ThrowStub(new JMSException("thrown as a test")));
+        mockMessage.stubs()
+            .method(methodName)
+            .will(new ThrowStub(new JMSException("thrown as a test")));
         return (Message) mockMessage.proxy();
     }
 

@@ -48,7 +48,9 @@ public class HJBSessionProducersTest extends MockObjectTestCase {
     public void testCreateProducerThrowsIfSessionIsNotThere() throws Exception {
         Mock mockProducer = mock(MessageProducer.class);
         MessageProducer testProducer = (MessageProducer) mockProducer.proxy();
-        mockSession.stubs().method("createProducer").will(returnValue(testProducer));
+        mockSession.stubs()
+            .method("createProducer")
+            .will(returnValue(testProducer));
         HJBSessionProducers producers = new HJBSessionProducers(testConnection);
         try {
             producers.createProducer(0,
@@ -85,8 +87,11 @@ public class HJBSessionProducersTest extends MockObjectTestCase {
     public void testCreateProducerIsInvokedOnCorrectSession() throws Exception {
         Mock mockProducer = mock(MessageProducer.class);
         MessageProducer testProducer = (MessageProducer) mockProducer.proxy();
-        mockSession.stubs().method("createProducer").will(returnValue(testProducer));
-        mockProducer.expects(atLeastOnce()).method("setDisableMessageTimestamp");
+        mockSession.stubs()
+            .method("createProducer")
+            .will(returnValue(testProducer));
+        mockProducer.expects(atLeastOnce())
+            .method("setDisableMessageTimestamp");
         mockProducer.expects(atLeastOnce()).method("setDisableMessageID");
         registerToVerify(mockSession);
         testSession = (Session) mockSession.proxy();
@@ -137,9 +142,13 @@ public class HJBSessionProducersTest extends MockObjectTestCase {
     public void testGetProducerThrowsForInvalidProducer() throws Exception {
         Mock mockMessageProducer = new Mock(MessageProducer.class);
         MessageProducer testMessageProducer = (MessageProducer) mockMessageProducer.proxy();
-        mockSession.stubs().method("createProducer").will(returnValue(testMessageProducer));
-        mockMessageProducer.expects(atLeastOnce()).method("setDisableMessageTimestamp");
-        mockMessageProducer.expects(atLeastOnce()).method("setDisableMessageID");
+        mockSession.stubs()
+            .method("createProducer")
+            .will(returnValue(testMessageProducer));
+        mockMessageProducer.expects(atLeastOnce())
+            .method("setDisableMessageTimestamp");
+        mockMessageProducer.expects(atLeastOnce())
+            .method("setDisableMessageID");
 
         HJBSessionProducers producers = new HJBSessionProducers(testConnection);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
@@ -157,9 +166,13 @@ public class HJBSessionProducersTest extends MockObjectTestCase {
     public void testGetProducerReturnsCreatedProducers() throws Exception {
         Mock mockMessageProducer = new Mock(MessageProducer.class);
         MessageProducer testMessageProducer = (MessageProducer) mockMessageProducer.proxy();
-        mockSession.stubs().method("createProducer").will(returnValue(testMessageProducer));
-        mockMessageProducer.expects(atLeastOnce()).method("setDisableMessageTimestamp");
-        mockMessageProducer.expects(atLeastOnce()).method("setDisableMessageID");
+        mockSession.stubs()
+            .method("createProducer")
+            .will(returnValue(testMessageProducer));
+        mockMessageProducer.expects(atLeastOnce())
+            .method("setDisableMessageTimestamp");
+        mockMessageProducer.expects(atLeastOnce())
+            .method("setDisableMessageID");
 
         HJBSessionProducers producers = new HJBSessionProducers(testConnection);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);

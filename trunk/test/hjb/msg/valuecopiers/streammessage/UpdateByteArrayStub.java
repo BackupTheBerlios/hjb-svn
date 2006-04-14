@@ -16,11 +16,7 @@ public class UpdateByteArrayStub implements Stub {
         if (numberCopied <= 0) {
             return new Integer(-1);
         } else {
-            System.arraycopy(getBytesToAdd(),
-                             0,
-                             original,
-                             0,
-                             numberCopied);
+            System.arraycopy(getBytesToAdd(), 0, original, 0, numberCopied);
             int remainingBytes = getBytesToAdd().length - numberCopied;
             if (remainingBytes <= 0) {
                 setBytesToAdd(new byte[0]);
@@ -48,6 +44,6 @@ public class UpdateByteArrayStub implements Stub {
     protected void setBytesToAdd(byte[] bytesToAdd) {
         this.bytesToAdd = bytesToAdd;
     }
-    
+
     private byte[] bytesToAdd;
 }

@@ -87,8 +87,8 @@ public class StreamMessageByteArrayValueCopierTest extends MockObjectTestCase {
         byte[] reallyBig = new byte[65536 * 8];
         Arrays.fill(reallyBig, (byte) 20);
         Message testMessage = messageBuilder.updatesMessageUsingByteArray("readBytes",
-                                                                              "testMessage",
-                                                                              reallyBig);
+                                                                          "testMessage",
+                                                                          reallyBig);
         StreamMessageByteArrayValueCopier testCopier = new StreamMessageByteArrayValueCopier(valuesRead);
         assertTrue(testCopier.canBeEncoded("testName", testMessage));
         assertEquals("number of valuesRead was incorrect",
@@ -98,8 +98,8 @@ public class StreamMessageByteArrayValueCopierTest extends MockObjectTestCase {
 
     public void testCanBeEncodedAddsToValuesRead() {
         Message testMessage = messageBuilder.updatesMessageUsingByteArray("readBytes",
-                                                                              "testMessage",
-                                                                              EXPECTED_DECODED_BARRAYS[0]);
+                                                                          "testMessage",
+                                                                          EXPECTED_DECODED_BARRAYS[0]);
         StreamMessageByteArrayValueCopier testCopier = new StreamMessageByteArrayValueCopier(valuesRead);
         assertEquals("number of valuesRead was incorrect", 0, valuesRead.size());
         assertTrue(testCopier.canBeEncoded("testName", testMessage));
@@ -116,9 +116,9 @@ public class StreamMessageByteArrayValueCopierTest extends MockObjectTestCase {
         StreamMessageByteArrayValueCopier testCopier = new StreamMessageByteArrayValueCopier(valuesRead);
         for (int i = 0; i < EXPECTED_DECODED_BARRAYS.length; i++) {
             Message testMessage = messageBuilder.updatesMessageUsingByteArray("readBytes",
-                                                                                  "testMessage"
-                                                                                          + i,
-                                                                                  EXPECTED_DECODED_BARRAYS[i]);
+                                                                              "testMessage"
+                                                                                      + i,
+                                                                              EXPECTED_DECODED_BARRAYS[i]);
 
             assertTrue("should be true " + EXPECTED_DECODED_BARRAYS[i],
                        testCopier.canBeEncoded("testName", testMessage));
@@ -160,8 +160,8 @@ public class StreamMessageByteArrayValueCopierTest extends MockObjectTestCase {
 
     public void testGetAsEncodedValueReadsFromValuesReadFirst() {
         Message testMessage = messageBuilder.updatesMessageUsingByteArray("readBytes",
-                                                                              "testMessage",
-                                                                              EXPECTED_DECODED_BARRAYS[0]);
+                                                                          "testMessage",
+                                                                          EXPECTED_DECODED_BARRAYS[0]);
         StreamMessageByteArrayValueCopier testCopier = new StreamMessageByteArrayValueCopier(valuesRead);
         valuesRead.add(EXPECTED_DECODED_BARRAYS[1]);
         assertTrue(testCopier.canBeEncoded("testName", testMessage));
@@ -174,9 +174,9 @@ public class StreamMessageByteArrayValueCopierTest extends MockObjectTestCase {
         StreamMessageByteArrayValueCopier testCopier = new StreamMessageByteArrayValueCopier(valuesRead);
         for (int i = 0; i < EXPECTED_DECODED_BARRAYS.length; i++) {
             Message testMessage = messageBuilder.updatesMessageUsingByteArray("readBytes",
-                                                                                  "testMessage"
-                                                                                          + i,
-                                                                                  EXPECTED_DECODED_BARRAYS[i]);
+                                                                              "testMessage"
+                                                                                      + i,
+                                                                              EXPECTED_DECODED_BARRAYS[i]);
             assertEquals("retrieved property was encoded correctly",
                          OK_EXPECTED_DECODED_BARRAYS[i],
                          testCopier.getAsEncodedValue("testName", testMessage));

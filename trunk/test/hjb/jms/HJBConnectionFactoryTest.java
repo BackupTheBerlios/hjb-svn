@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.jms;
 
 import java.util.Map;
@@ -54,48 +54,44 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
             throws Exception {
         HJBConnectionFactory rcf = new HJBConnectionFactory(testConnectionFactory);
         rcf.createConnection();
-        assertEquals("should be one connection",
-                     1,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be one connection", 1, rcf.getActiveConnections()
+            .size());
         rcf.createConnection("testUser", "testPassword");
-        assertEquals("should be two connections",
-                     2,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be two connections", 2, rcf.getActiveConnections()
+            .size());
     }
 
     public void testCreateHJBConnectionAddsToConnectionsOnSuccess()
             throws Exception {
         HJBConnectionFactory rcf = new HJBConnectionFactory(testConnectionFactory);
         assertEquals("index should be 0", 0, rcf.createHJBConnection());
-        assertEquals("should be one connection",
-                     1,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be one connection", 1, rcf.getActiveConnections()
+            .size());
         assertEquals("index should be 1",
                      1,
                      rcf.createHJBConnection("testUser", "testPassword"));
-        assertEquals("should be two connections",
-                     2,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be two connections", 2, rcf.getActiveConnections()
+            .size());
     }
 
     public void testGetConnectionsIsACopy() throws Exception {
         HJBConnectionFactory rcf = new HJBConnectionFactory(testConnectionFactory);
         rcf.createConnection();
-        assertEquals("should be one connection",
-                     1,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be one connection", 1, rcf.getActiveConnections()
+            .size());
         Map savedConnections = rcf.getActiveConnections();
         rcf.createConnection("testUser", "testPassword");
         assertEquals("should be one connection", 1, savedConnections.size());
-        assertEquals("should be two connections",
-                     2,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be two connections", 2, rcf.getActiveConnections()
+            .size());
     }
 
     public void testCreateConnectionThrowsHJBExceptionOnJMSException()
             throws Exception {
         Mock mockFactory = mock(ConnectionFactory.class);
-        mockFactory.stubs().method("createConnection").will(throwException(new JMSException("thrown as a test")));
+        mockFactory.stubs()
+            .method("createConnection")
+            .will(throwException(new JMSException("thrown as a test")));
         testConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(testConnectionFactory);
@@ -103,30 +99,26 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
             rcf.createConnection();
             fail("Expected JMS exception was not thrown");
         } catch (HJBException hjbe) {}
-        assertEquals("should be no connections",
-                     0,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be no connections", 0, rcf.getActiveConnections()
+            .size());
         try {
             rcf.createConnection("testUser", "testPassword");
             fail("Expected JMS exception was not thrown");
         } catch (HJBException hjbe) {}
-        assertEquals("should be no connections",
-                     0,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be no connections", 0, rcf.getActiveConnections()
+            .size());
         try {
             rcf.createHJBConnection();
             fail("Expected JMS exception was not thrown");
         } catch (HJBException hjbe) {}
-        assertEquals("should be no connections",
-                     0,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be no connections", 0, rcf.getActiveConnections()
+            .size());
         try {
             rcf.createHJBConnection("testUser", "testPassword");
             fail("Expected JMS exception was not thrown");
         } catch (HJBException hjbe) {}
-        assertEquals("should be no connections",
-                     0,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be no connections", 0, rcf.getActiveConnections()
+            .size());
     }
 
     public void testRemoveConnectionsStopsAndClosesThem() throws Exception {
@@ -140,13 +132,11 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory);
         rcf.createConnection("testUser", "testPassword");
-        assertEquals("should be one connection",
-                     1,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be one connection", 1, rcf.getActiveConnections()
+            .size());
         rcf.removeConnections();
-        assertEquals("should be no connections",
-                     0,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be no connections", 0, rcf.getActiveConnections()
+            .size());
     }
 
     public void testDeleteConnectionStopsAndClosesThem() throws Exception {
@@ -160,13 +150,11 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory);
         rcf.createConnection("testUser", "testPassword");
-        assertEquals("should be one connection",
-                     1,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be one connection", 1, rcf.getActiveConnections()
+            .size());
         rcf.deleteConnection(0);
-        assertEquals("should be no connections",
-                     0,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be no connections", 0, rcf.getActiveConnections()
+            .size());
     }
 
     public void testStartConnection() throws Exception {
@@ -179,9 +167,8 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory);
         rcf.createConnection("testUser", "testPassword");
-        assertEquals("should be one connection",
-                     1,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be one connection", 1, rcf.getActiveConnections()
+            .size());
         rcf.startConnection(0);
     }
 
@@ -204,9 +191,8 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
         } catch (HJBException hjbe) {}
 
         rcf.createConnection("testUser", "testPassword");
-        assertEquals("should be one connection",
-                     1,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be one connection", 1, rcf.getActiveConnections()
+            .size());
         try {
             rcf.startConnection(1);
             fail("should have thrown an exception");
@@ -222,9 +208,8 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory);
         rcf.createConnection("testUser", "testPassword");
-        assertEquals("should be one connection",
-                     1,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be one connection", 1, rcf.getActiveConnections()
+            .size());
         try {
             rcf.startConnection(0);
             fail("should have thrown an exception");
@@ -241,9 +226,8 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory);
         rcf.createConnection("testUser", "testPassword");
-        assertEquals("should be one connection",
-                     1,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be one connection", 1, rcf.getActiveConnections()
+            .size());
         rcf.stopConnection(0);
     }
 
@@ -266,9 +250,8 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
         } catch (HJBException hjbe) {}
 
         rcf.createConnection("testUser", "testPassword");
-        assertEquals("should be one connection",
-                     1,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be one connection", 1, rcf.getActiveConnections()
+            .size());
         try {
             rcf.stopConnection(1);
             fail("should have thrown an exception");
@@ -285,9 +268,8 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory);
         rcf.createConnection("testUser", "testPassword");
-        assertEquals("should be one connection",
-                     1,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be one connection", 1, rcf.getActiveConnections()
+            .size());
         rcf.getConnectionMetaData(0);
     }
 
@@ -300,9 +282,8 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory);
         rcf.createConnection("testUser", "testPassword");
-        assertEquals("should be one connection",
-                     1,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be one connection", 1, rcf.getActiveConnections()
+            .size());
         try {
             rcf.stopConnection(0);
             fail("should have thrown an exception");
@@ -344,9 +325,8 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory);
         rcf.createConnection("testUser", "testPassword");
-        assertEquals("should be one connection",
-                     1,
-                     rcf.getActiveConnections().size());
+        assertEquals("should be one connection", 1, rcf.getActiveConnections()
+            .size());
         try {
             rcf.getConnectionMetaData(0);
             fail("should have thrown an exception");
@@ -357,7 +337,8 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
         super.setUp();
         connectionBuilder = new MockConnectionBuilder();
         factoryBuilder = new MockConnectionFactoryBuilder();
-        testConnectionFactory = (ConnectionFactory) factoryBuilder.createMockConnectionFactory().proxy();
+        testConnectionFactory = (ConnectionFactory) factoryBuilder.createMockConnectionFactory()
+            .proxy();
     }
 
     private MockConnectionBuilder connectionBuilder;

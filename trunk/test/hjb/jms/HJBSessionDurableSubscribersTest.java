@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.jms;
 
 import javax.jms.Connection;
@@ -156,7 +156,8 @@ public class HJBSessionDurableSubscribersTest extends MockObjectTestCase {
         } catch (HJBException hjbe) {}
     }
 
-    public void testGetSubscribersReturnsEmptyForNewEmptySessions() throws Exception {
+    public void testGetSubscribersReturnsEmptyForNewEmptySessions()
+            throws Exception {
         HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testConnection);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         assertEquals(0, subscribers.getSubscribers(0).length);
@@ -182,7 +183,9 @@ public class HJBSessionDurableSubscribersTest extends MockObjectTestCase {
     public void testGetSubscriberThrowsForInvalidSubscriber() throws Exception {
         Mock mockTopic = new Mock(TopicSubscriber.class);
         TopicSubscriber testTopicSubscriber = (TopicSubscriber) mockTopic.proxy();
-        mockSession.stubs().method("createDurableSubscriber").will(returnValue(testTopicSubscriber));
+        mockSession.stubs()
+            .method("createDurableSubscriber")
+            .will(returnValue(testTopicSubscriber));
 
         HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testConnection);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
@@ -196,7 +199,9 @@ public class HJBSessionDurableSubscribersTest extends MockObjectTestCase {
     public void testGetSubscriberReturnsCreatedSubscribers() throws Exception {
         Mock mockTopic = new Mock(TopicSubscriber.class);
         TopicSubscriber testTopicSubscriber = (TopicSubscriber) mockTopic.proxy();
-        mockSession.stubs().method("createDurableSubscriber").will(returnValue(testTopicSubscriber));
+        mockSession.stubs()
+            .method("createDurableSubscriber")
+            .will(returnValue(testTopicSubscriber));
 
         HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testConnection);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);

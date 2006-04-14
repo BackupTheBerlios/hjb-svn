@@ -19,6 +19,7 @@
 
  */
 package hjb.jms;
+
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -39,13 +40,15 @@ public class HJBProviderTest extends MockObjectTestCase {
         contextBuilder = new MockContextBuilder();
         sharedMock = SharedMock.getInstance();
     }
-    public void testCannotRegisterDestinationThatIsNotInTheContext() throws Exception {
+
+    public void testCannotRegisterDestinationThatIsNotInTheContext()
+            throws Exception {
         try {
             testProvider.registerDestination("foo");
             fail("Allowed the registration of a destination that does not exist");
-        } catch (HJBException hjbe) {
-        }
+        } catch (HJBException hjbe) {}
     }
+
     public void testCanRegisterDestinationThatIsInTheContext() {
         Mock destinationMock = new Mock(Destination.class, "testdestination");
         Destination destination = (Destination) destinationMock.proxy();
@@ -60,8 +63,9 @@ public class HJBProviderTest extends MockObjectTestCase {
         }
         assertTrue("testdestination should be registered",
                    testProvider.getDestinations()
-                               .containsKey("testdestination"));
+                       .containsKey("testdestination"));
     }
+
     public void testGetDestinationsReturnsACopy() {
         Mock destinationMock = new Mock(Destination.class, "testdestination");
         Destination destination = (Destination) destinationMock.proxy();
@@ -74,8 +78,9 @@ public class HJBProviderTest extends MockObjectTestCase {
         destinations.clear();
         assertTrue("testdestination should still be registered",
                    testProvider.getDestinations()
-                               .containsKey("testdestination"));
+                       .containsKey("testdestination"));
     }
+
     public void testGetDestination() {
         Mock destinationMock = new Mock(Destination.class, "testdestination");
         Destination destination = (Destination) destinationMock.proxy();
@@ -89,6 +94,7 @@ public class HJBProviderTest extends MockObjectTestCase {
         assertNotNull("should exist",
                       testProvider.getDestination("testdestination"));
     }
+
     public void testGetConnectionFactoriesReturnsACopy() {
         Mock connectionFactoryMock = new Mock(ConnectionFactory.class,
                                               "testfactory");
@@ -102,8 +108,9 @@ public class HJBProviderTest extends MockObjectTestCase {
         factories.clear();
         assertTrue("testfactory should still be registered",
                    testProvider.getConnectionFactories()
-                               .containsKey("testfactory"));
+                       .containsKey("testfactory"));
     }
+
     public void testGetConnectionFactory() {
         Mock connectionFactoryMock = new Mock(ConnectionFactory.class,
                                               "testfactory");
@@ -118,7 +125,9 @@ public class HJBProviderTest extends MockObjectTestCase {
         assertNotNull("should exist",
                       testProvider.getConnectionFactory("testfactory"));
     }
-    public void testCannotRegisterDestinationWhenLookupThrows() throws Exception {
+
+    public void testCannotRegisterDestinationWhenLookupThrows()
+            throws Exception {
         Mock destinationMock = new Mock(Destination.class, "testdestination");
         Destination destination = (Destination) destinationMock.proxy();
         Mock newMock = contextBuilder.lookupThrowsNamingException(testEnvironment,
@@ -128,20 +137,23 @@ public class HJBProviderTest extends MockObjectTestCase {
         try {
             testProvider.registerDestination("testdestination");
             fail("Allowed the registration of a destination when lookup throws");
-        } catch (HJBException hjbe) {
-        }
+        } catch (HJBException hjbe) {}
         assertFalse("testdestination should not be registered",
                     testProvider.getConnectionFactories()
-                                .containsKey("testdestination"));
+                        .containsKey("testdestination"));
     }
-    public void testCanDeleteDestinationThatIsNotInTheContext() throws Exception {
+
+    public void testCanDeleteDestinationThatIsNotInTheContext()
+            throws Exception {
         assertFalse("foo should not be registered",
                     testProvider.getDestinations().containsKey("foo"));
         testProvider.deleteDestination("foo");
         assertFalse("foo should not be registered",
                     testProvider.getDestinations().containsKey("foo"));
     }
-    public void testDeletingNonExistentDestinationDoesNotThrow() throws Exception {
+
+    public void testDeletingNonExistentDestinationDoesNotThrow()
+            throws Exception {
         Mock DestinationMock = new Mock(Destination.class, "testdestination");
         Destination mockFactory = (Destination) DestinationMock.proxy();
         Mock newMock = contextBuilder.lookupReturnsDestination(testEnvironment,
@@ -156,16 +168,19 @@ public class HJBProviderTest extends MockObjectTestCase {
         }
         assertFalse("testdestination should not be registered",
                     testProvider.getConnectionFactories()
-                                .containsKey("testdestination"));
+                        .containsKey("testdestination"));
     }
-    public void testCannotRegisterConnectionFactoryThatIsNotInTheContext() throws Exception {
+
+    public void testCannotRegisterConnectionFactoryThatIsNotInTheContext()
+            throws Exception {
         try {
             testProvider.registerConnectionFactory("foo");
             fail("Allowed the registration of a connection factory that does not exist");
-        } catch (HJBException hjbe) {
-        }
+        } catch (HJBException hjbe) {}
     }
-    public void testCanRegisterConnectionFactoryThatIsInTheContext() throws Exception {
+
+    public void testCanRegisterConnectionFactoryThatIsInTheContext()
+            throws Exception {
         Mock connectionFactoryMock = new Mock(ConnectionFactory.class,
                                               "testfactory");
         ConnectionFactory mockFactory = (ConnectionFactory) connectionFactoryMock.proxy();
@@ -180,9 +195,11 @@ public class HJBProviderTest extends MockObjectTestCase {
         }
         assertTrue("testfactory should be registered",
                    testProvider.getConnectionFactories()
-                               .containsKey("testfactory"));
+                       .containsKey("testfactory"));
     }
-    public void testCannotRegisterConnectionFactoryWhenLookupThrows() throws Exception {
+
+    public void testCannotRegisterConnectionFactoryWhenLookupThrows()
+            throws Exception {
         Mock connectionFactoryMock = new Mock(ConnectionFactory.class,
                                               "testfactory");
         ConnectionFactory mockFactory = (ConnectionFactory) connectionFactoryMock.proxy();
@@ -193,20 +210,23 @@ public class HJBProviderTest extends MockObjectTestCase {
         try {
             testProvider.registerConnectionFactory("testfactory");
             fail("Allowed the registration of a connection factory when lookup throws");
-        } catch (HJBException hjbe) {
-        }
+        } catch (HJBException hjbe) {}
         assertFalse("testfactory should not be registered",
                     testProvider.getConnectionFactories()
-                                .containsKey("testfactory"));
+                        .containsKey("testfactory"));
     }
-    public void testDeletingNonExistConnectionFactoryDoesNotThrow() throws Exception {
+
+    public void testDeletingNonExistConnectionFactoryDoesNotThrow()
+            throws Exception {
         assertFalse("foo should not be registered",
                     testProvider.getConnectionFactories().containsKey("foo"));
         testProvider.deleteConnectionFactory("foo");
         assertFalse("foo should not be registered",
                     testProvider.getConnectionFactories().containsKey("foo"));
     }
-    public void testCanDeleteConnectionFactoryThatIsInTheContext() throws Exception {
+
+    public void testCanDeleteConnectionFactoryThatIsInTheContext()
+            throws Exception {
         Mock connectionFactoryMock = new Mock(ConnectionFactory.class,
                                               "testfactory");
         ConnectionFactory mockFactory = (ConnectionFactory) connectionFactoryMock.proxy();
@@ -222,8 +242,9 @@ public class HJBProviderTest extends MockObjectTestCase {
         }
         assertFalse("testfactory should not be registered",
                     testProvider.getConnectionFactories()
-                                .containsKey("testfactory"));
+                        .containsKey("testfactory"));
     }
+
     /*
      * Test method for 'hjb.jms.Provider.getEnvironment()'
      */
@@ -235,6 +256,7 @@ public class HJBProviderTest extends MockObjectTestCase {
         assertFalse("Providers share their copies of their environments",
                     aProvider.getEnvironment() == environment);
     }
+
     /*
      * Test method for 'hjb.jms.Provider.equals(Object)'
      */
@@ -258,6 +280,7 @@ public class HJBProviderTest extends MockObjectTestCase {
         assertFalse("Providers with the same names but different environments should not be equal",
                     aProvider.equals(anotherProvider));
     }
+
     protected void setUp() throws Exception {
         testEnvironment = new Hashtable();
         testEnvironment.put(Context.INITIAL_CONTEXT_FACTORY,
@@ -266,6 +289,7 @@ public class HJBProviderTest extends MockObjectTestCase {
         testEnvironment.put(HJBProvider.HJB_PROVIDER_NAME, "testProvider");
         testProvider = new ProviderBuilder(testEnvironment).createProvider();
     }
+
     protected void tearDown() throws Exception {
         testEnvironment.clear();
     }

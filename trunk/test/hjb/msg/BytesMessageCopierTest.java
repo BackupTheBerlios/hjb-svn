@@ -53,8 +53,12 @@ public class BytesMessageCopierTest extends MockObjectTestCase {
 
     public void testCopyToJMSMessageThrowsHJBExceptionOnJMSException() {
         Mock mockJMSMessage = mock(BytesMessage.class);
-        mockJMSMessage.stubs().method("setStringProperty").with(eq("hjb.core.message-version"), eq("1.0"));
-        mockJMSMessage.stubs().method("writeBytes").will(throwException(new JMSException("thrown as a test")));
+        mockJMSMessage.stubs()
+            .method("setStringProperty")
+            .with(eq("hjb.core.message-version"), eq("1.0"));
+        mockJMSMessage.stubs()
+            .method("writeBytes")
+            .will(throwException(new JMSException("thrown as a test")));
 
         Message testJMSMessage = (BytesMessage) mockJMSMessage.proxy();
         HJBMessage testHJBMessage = createTestHJBBytesMessage();
@@ -64,11 +68,15 @@ public class BytesMessageCopierTest extends MockObjectTestCase {
             fail("should have thrown an exception");
         } catch (HJBException e) {}
     }
-    
+
     public void testCopyToJMSMessageCopiesByteArrayOK() {
         Mock mockJMSMessage = mock(BytesMessage.class);
-        mockJMSMessage.expects(once()).method("setStringProperty").with(eq("hjb.core.message-version"), eq("1.0"));
-        mockJMSMessage.expects(once()).method("writeBytes").with(eq(YetAnotherBase64Test.DECODED_SOURCE.getBytes()));
+        mockJMSMessage.expects(once())
+            .method("setStringProperty")
+            .with(eq("hjb.core.message-version"), eq("1.0"));
+        mockJMSMessage.expects(once())
+            .method("writeBytes")
+            .with(eq(YetAnotherBase64Test.DECODED_SOURCE.getBytes()));
 
         Message testJMSMessage = (BytesMessage) mockJMSMessage.proxy();
         HJBMessage testHJBMessage = createTestHJBBytesMessage();
@@ -77,10 +85,12 @@ public class BytesMessageCopierTest extends MockObjectTestCase {
 
         verify();
     }
-    
+
     public void testCopyToHJBMessageThrowsHJBExceptionOnJMSException() {
         Mock mockJMSMessage = mock(BytesMessage.class);
-        mockJMSMessage.expects(once()).method("readBytes").will(throwException(new JMSException("thrown as a test")));
+        mockJMSMessage.expects(once())
+            .method("readBytes")
+            .will(throwException(new JMSException("thrown as a test")));
         attributeInvoker.stubAllPropertyGettersFor(mockJMSMessage);
 
         Message testJMSMessage = (BytesMessage) mockJMSMessage.proxy();
@@ -92,20 +102,23 @@ public class BytesMessageCopierTest extends MockObjectTestCase {
             fail("should have thrown an exception");
         } catch (HJBException e) {}
     }
-    
+
     public void testCopyToHJBMessageCopiesByteArrayCorrectly() {
         Mock mockJMSMessage = mock(BytesMessage.class);
-        attributeInvoker.stubAllPropertyGettersFor(mockJMSMessage);        
+        attributeInvoker.stubAllPropertyGettersFor(mockJMSMessage);
         byte[] testBytes = YetAnotherBase64Test.DECODED_SOURCE.getBytes();
-        mockJMSMessage.stubs().method("readBytes").will(messageBuilder.updateByteArrayWith(testBytes));
-        
+        mockJMSMessage.stubs()
+            .method("readBytes")
+            .will(messageBuilder.updateByteArrayWith(testBytes));
+
         Message testJMSMessage = (BytesMessage) mockJMSMessage.proxy();
         HJBMessage testHJBMessage = new HJBMessage(createEmptyHJBBytesMessageHeaders(),
                                                    "");
         BytesMessageCopier c = new BytesMessageCopier();
         c.copyToHJBMessage(testJMSMessage, testHJBMessage);
         System.err.println(testHJBMessage);
-        assertEquals(new ByteArrayCodec().encode(testBytes), testHJBMessage.getBody());        
+        assertEquals(new ByteArrayCodec().encode(testBytes),
+                     testHJBMessage.getBody());
     }
 
     protected HJBMessage createTestHJBBytesMessage() {

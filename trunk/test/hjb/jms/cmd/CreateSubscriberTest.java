@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.jms.cmd;
 
 import java.io.File;
@@ -45,7 +45,9 @@ public class CreateSubscriberTest extends MockObjectTestCase {
 
         HJBRoot root = new HJBRoot(testRootPath);
         mockHJB.make1Connection(root, "testProvider", "testFactory");
-        HJBConnection testConnection = root.getProvider("testProvider").getConnectionFactory("testFactory").getConnection(0);
+        HJBConnection testConnection = root.getProvider("testProvider")
+            .getConnectionFactory("testFactory")
+            .getConnection(0);
         HJBSessionDurableSubscribers sessionSubscribers = new HJBSessionDurableSubscribers(testConnection);
         try {
             new CreateSubscriber(sessionSubscribers, 1, null, "testSelector");
@@ -56,16 +58,18 @@ public class CreateSubscriberTest extends MockObjectTestCase {
     public void testExecuteCreatesANewSubscriber() {
         HJBRoot root = new HJBRoot(testRootPath);
         mockHJB.make1Session(root, "testProvider", "testFactory");
-        HJBConnection testConnection = root.getProvider("testProvider").getConnectionFactory("testFactory").getConnection(0);
+        HJBConnection testConnection = root.getProvider("testProvider")
+            .getConnectionFactory("testFactory")
+            .getConnection(0);
         HJBSessionDurableSubscribers sessionSubscribers = testConnection.getSessionSubscribers();
         Mock mockTopic = mock(Topic.class);
         Topic testTopic = (Topic) mockTopic.proxy();
 
         assertEquals(0, sessionSubscribers.getSubscribers(0).length);
         CreateSubscriber command = new CreateSubscriber(sessionSubscribers,
-                                                    0,
-                                                    testTopic,
-                                                    "*");
+                                                        0,
+                                                        testTopic,
+                                                        "*");
         command.execute();
         assertEquals(1, sessionSubscribers.getSubscribers(0).length);
         assertTrue(command.isExecutedOK());

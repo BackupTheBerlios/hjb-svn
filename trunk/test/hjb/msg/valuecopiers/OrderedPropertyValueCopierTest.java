@@ -69,10 +69,11 @@ public class OrderedPropertyValueCopierTest extends MockObjectTestCase {
                                                                   "testName",
                                                                   ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[i][j],
                                                                   throwsOn);
-                assertTrue("should be true " + ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[i][j],
+                assertTrue("should be true "
+                                   + ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[i][j],
                            testCopier.canBeEncoded("testName", testMessage));
             }
-            throwsOn.add(PROPERTY_METHODS[i][0]);            
+            throwsOn.add(PROPERTY_METHODS[i][0]);
         }
     }
 
@@ -100,7 +101,7 @@ public class OrderedPropertyValueCopierTest extends MockObjectTestCase {
                 testCopier.addToMessage("testName",
                                         ORDERED_OK_ENCODED_VALUES[k][i],
                                         testMessage);
-            }            
+            }
         }
     }
 
@@ -126,10 +127,11 @@ public class OrderedPropertyValueCopierTest extends MockObjectTestCase {
                                                                   throwsOn);
                 assertEquals("retrieved property was encoded correctly",
                              ORDERED_OK_EXPECTED_DECODED_VALUES[i][j],
-                             testCopier.getAsEncodedValue("testName", testMessage));
+                             testCopier.getAsEncodedValue("testName",
+                                                          testMessage));
             }
             throwsOn.add(PROPERTY_METHODS[i][0]);
-        }        
+        }
     }
 
     protected void setUp() throws Exception {
@@ -137,7 +139,6 @@ public class OrderedPropertyValueCopierTest extends MockObjectTestCase {
     }
 
     private MockMessageBuilder messageBuilder;
-
 
     public static final String[][] PROPERTY_METHODS = {
             new String[] {

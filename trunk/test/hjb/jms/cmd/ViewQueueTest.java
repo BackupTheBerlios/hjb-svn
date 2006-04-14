@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.jms.cmd;
 
 import java.io.File;
@@ -60,21 +60,27 @@ public class ViewQueueTest extends MockObjectTestCase {
 
     public void testExecuteReceivesAMessage() {
         Mock mockTextMessage = mock(TextMessage.class);
-        mockTextMessage.expects(once()).method("getText").will(returnValue("boo!"));
+        mockTextMessage.expects(once())
+            .method("getText")
+            .will(returnValue("boo!"));
         MessageAttributeInvoker attributeInvoker = new MessageAttributeInvoker();
         attributeInvoker.invokesAllAccessors(mockTextMessage);
         attributeInvoker.invokesGetPropertyNamesReturnsNothing(mockTextMessage);
 
         Message testMessage = (TextMessage) mockTextMessage.proxy();
-        
+
         List testMessages = new ArrayList();
         testMessages.add(testMessage);
         Mock mockBrowser = mock(QueueBrowser.class);
-        mockBrowser.expects(once()).method("getEnumeration").will(returnValue(Collections.enumeration(testMessages)));
+        mockBrowser.expects(once())
+            .method("getEnumeration")
+            .will(returnValue(Collections.enumeration(testMessages)));
         QueueBrowser testBrowser = (QueueBrowser) mockBrowser.proxy();
 
         Mock mockSession = mock(Session.class);
-        mockSession.stubs().method("createBrowser").will(returnValue(testBrowser));
+        mockSession.stubs()
+            .method("createBrowser")
+            .will(returnValue(testBrowser));
         Session testSession = (Session) mockSession.proxy();
 
         Mock mockQueue = mock(Queue.class);
@@ -87,7 +93,9 @@ public class ViewQueueTest extends MockObjectTestCase {
                                             "testFactory",
                                             "testDestination",
                                             testQueue);
-        HJBConnection testConnection = root.getProvider("testProvider").getConnectionFactory("testFactory").getConnection(0);
+        HJBConnection testConnection = root.getProvider("testProvider")
+            .getConnectionFactory("testFactory")
+            .getConnection(0);
 
         create1Browser(testConnection);
         ViewQueue command = new ViewQueue(new HJBMessenger(testConnection, 0),
