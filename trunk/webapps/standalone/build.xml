@@ -57,6 +57,13 @@
       </jar>
   </target>
 
+  <target name="deploy" depends="dist" 
+	  description="Copy standalone HJB to deployment directory, and erase the previous expanded war if necessary">
+    <fail unless="war.deployment.dir">The WAR directory path property 'war.deployment.dir' has not been set</fail>
+    <delete dir="${war.deployment.dir}/${webapp.name}" failonerror="false"/>
+    <copy file="${webapps.dist}/${webapp.name}.war" todir="${war.deployment.dir}"/>
+  </target>
+
   <target name="dist.clean">
     <deltree dir="${dist.dir}/${webapp.name}"/>
   </target>

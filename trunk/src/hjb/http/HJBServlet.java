@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.http;
 
 import java.io.File;
@@ -59,7 +59,8 @@ public class HJBServlet extends HttpServlet {
         super.init();
         try {
             String hjbRootPath = getServletConfig().getInitParameter(HJBServletConstants.ROOT_PATH_CONFIG);
-            Long commandTimeout = new Long(MILLISECONDS * Long.parseLong(getServletConfig().getInitParameter(HJBServletConstants.COMMAND_TIMEOUT_CONFIG)));
+            Long commandTimeout = new Long(MILLISECONDS
+                    * Long.parseLong(getServletConfig().getInitParameter(HJBServletConstants.COMMAND_TIMEOUT_CONFIG)));
             HJBRoot root = new HJBRoot(new File(hjbRootPath));
             getServletContext().setAttribute(HJBServletConstants.HJB_ROOT_ATTRIBUTE,
                                              root);
@@ -72,7 +73,8 @@ public class HJBServlet extends HttpServlet {
         } catch (Exception e) {
             getServletContext().log(strings().getString(HJBStrings.COULD_NOT_INITIALISE_HJB_SERVLET),
                                     e);
-            LOG.error(strings().getString(HJBStrings.COULD_NOT_INITIALISE_HJB_SERVLET), e);
+            LOG.error(strings().getString(HJBStrings.COULD_NOT_INITIALISE_HJB_SERVLET),
+                      e);
             throw new ServletException(e);
         }
     }
@@ -84,10 +86,11 @@ public class HJBServlet extends HttpServlet {
     public synchronized void destroy() {
         try {
             findHJBRoot().shutdown();
-            findTimer().cancel();            
+            findTimer().cancel();
         } catch (ServletException e) {
             LOG.error(strings().getString(HJBStrings.SHUTDOWN_NOT_SMOOTH), e);
-            getServletContext().log(strings().getString(HJBStrings.SHUTDOWN_NOT_SMOOTH), e);
+            getServletContext().log(strings().getString(HJBStrings.SHUTDOWN_NOT_SMOOTH),
+                                    e);
         }
     }
 
@@ -138,14 +141,18 @@ public class HJBServlet extends HttpServlet {
         try {
             for (int i = 0; i < generators.length; i++) {
                 if (generators[i].matches(request.getPathInfo())) {
-                    LOG.info(strings().getString(HJBStrings.HANDLING_REQUEST, request.getPathInfo(), generators[i]));
+                    LOG.info(strings().getString(HJBStrings.HANDLING_REQUEST,
+                                                 request.getMethod(),
+                                                 request.getPathInfo(),
+                                                 generators[i]));
                     handleUsingSelectedGenerator(generators[i],
                                                  request,
                                                  response);
                     return;
                 }
             }
-            LOG.info(strings().getString(HJBStrings.NOT_MATCHED, request.getPathInfo()));
+            LOG.info(strings().getString(HJBStrings.NOT_MATCHED,
+                                         request.getPathInfo()));
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         } catch (RuntimeException e) {
             getServletContext().log(e.getMessage(), e);
@@ -200,52 +207,77 @@ public class HJBServlet extends HttpServlet {
                 // timer to time it out
                 generator.getAssignedCommandRunner().schedule(generatedCommand);
                 commandTimer.schedule(timeIsUp, commandTimeout.longValue());
-
                 while (!generatedCommand.isComplete()) {
                     // N.B. for this to work, JMSCommand#setComplete MUST be
                     // synchronized (and they all are! see
                     // BaseJMSCommand#completed)
                     generatedCommand.wait(commandTimeout.longValue());
                     if (timeIsUp.barIsClosed()) {
-                        // Instruct the command runner to ignore the command
-                        // The command runner **will** log the instruction
-                        // If the command has not run yet (i.e, the
-                        // timeout occurred while the command was waiting to be
-                        // run), the command runner will discard the ignored
-                        // command
-                        // Otherwise, at least both HJB and the HTTP user agent
-                        // will have a message showing that something went wrong...
-                        generator.getAssignedCommandRunner().ignore(generatedCommand);
-                        String message = strings().getString(HJBStrings.COMMAND_EXECUTION_TIMED_OUT,
-                                                             generatedCommand.getDescription(),
-                                                             commandTimeout);
-                        getServletContext().log(message);
-                        LOG.error(message);
-                        HJBException fault = new HJBException(message);
-                        fault.fillInStackTrace();
-                        new RuntimeExceptionHandler().sendHJBFault(response,
-                                                                   fault);
+                        handleCommandExecutionWasTimedOut(generator,
+                                                          response,
+                                                          commandTimeout,
+                                                          generatedCommand);
                         return;
                     }
                 }
             } catch (InterruptedException e) {
-                String message = strings().getString(HJBStrings.COMMAND_EXECUTION_WAS_INTERRUPTED,
-                                                     generatedCommand);
-                getServletContext().log(message, e);
-                LOG.error(message, e);
-                new RuntimeExceptionHandler().sendHJBFault(response,
-                                                           new HJBException(message,
-                                                                            e));
+                handleExecutionThreadWasInterrupted(response,
+                                                    generatedCommand,
+                                                    e);
                 return;
             } finally {
                 timeIsUp.cancel();
             }
         }
-        if (! generatedCommand.isExecutedOK()) {
-            getServletContext().log(generatedCommand.getStatusMessage(), generatedCommand.getFault());
-            LOG.error(generatedCommand.getStatusMessage(), generatedCommand.getFault());
+        if (!generatedCommand.isExecutedOK()) {
+            handleExecutionWasNotOk(generatedCommand);
         }
         generator.sendResponse(response);
+    }
+
+    protected void handleCommandExecutionWasTimedOut(JMSCommandGenerator generator,
+                                                     HttpServletResponse response,
+                                                     Long commandTimeout,
+                                                     JMSCommand generatedCommand)
+            throws HJBException, IOException {
+        // Instruct the command runner to ignore the command
+        // The command runner **will** log the instruction
+        // If the command has not run yet (i.e, the
+        // timeout occurred while the command was waiting to be
+        // run), the command runner will discard the ignored
+        // command
+        // Otherwise, at least both HJB and the HTTP user agent
+        // will have a message showing that something went
+        // wrong...
+        generator.getAssignedCommandRunner().ignore(generatedCommand);
+        String message = strings().getString(HJBStrings.COMMAND_EXECUTION_TIMED_OUT,
+                                             generatedCommand.getDescription(),
+                                             commandTimeout);
+        getServletContext().log(message);
+        LOG.error(message);
+        HJBException fault = new HJBException(message);
+        fault.fillInStackTrace();
+        new RuntimeExceptionHandler().sendHJBFault(response, fault);
+    }
+
+    protected void handleExecutionThreadWasInterrupted(HttpServletResponse response,
+                                                       JMSCommand generatedCommand,
+                                                       InterruptedException e)
+            throws IOException {
+        String message = strings().getString(HJBStrings.COMMAND_EXECUTION_WAS_INTERRUPTED,
+                                             generatedCommand);
+        getServletContext().log(message, e);
+        LOG.error(message, e);
+        new RuntimeExceptionHandler().sendHJBFault(response,
+                                                   new HJBException(message, e));
+    }
+
+    protected void handleExecutionWasNotOk(JMSCommand generatedCommand)
+            throws HJBException {
+        getServletContext().log(generatedCommand.getStatusMessage(),
+                                generatedCommand.getFault());
+        LOG.error(generatedCommand.getStatusMessage(),
+                  generatedCommand.getFault());
     }
 
     protected Timer findTimer() throws ServletException {

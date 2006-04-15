@@ -76,9 +76,11 @@ public class HJBProvider {
         synchronized (factories) {
             ConnectionFactory f = (ConnectionFactory) locate(name);
             if (factories.containsKey(name)) {
-                String message = strings().getString(HJBStrings.REGISTRATION_IGNORED,
-                                                     "factory " + name);
-                LOG.info(message);
+                if (LOG.isDebugEnabled()) {
+                    String message = strings().getString(HJBStrings.REGISTRATION_IGNORED,
+                                                         "factory " + name);
+                    LOG.debug(message);
+                }
             } else {
                 factories.put(name, new HJBConnectionFactory(f));
             }
@@ -89,9 +91,11 @@ public class HJBProvider {
         synchronized (destinations) {
             Destination d = (Destination) locate(name);
             if (destinations.containsKey(name)) {
-                String message = strings().getString(HJBStrings.REGISTRATION_IGNORED,
-                                                     "destination " + name);
-                LOG.info(message);
+                if (LOG.isDebugEnabled()) {
+                    String message = strings().getString(HJBStrings.REGISTRATION_IGNORED,
+                                                         "destination " + name);
+                    LOG.debug(message);
+                }
             } else {
                 destinations.put(name, d);
             }
@@ -102,7 +106,8 @@ public class HJBProvider {
         Object tobeRemoved = factories.remove(factoryName);
         if (null == tobeRemoved) {
             String message = strings().getString(HJBStrings.NOT_REMOVED,
-                                                 "Connection Factory " + factoryName);
+                                                 "Connection Factory "
+                                                         + factoryName);
             LOG.warn(message);
             return;
         }
@@ -114,7 +119,8 @@ public class HJBProvider {
         Object tobeRemoved = destinations.remove(destinationName);
         if (null == tobeRemoved) {
             String message = strings().getString(HJBStrings.NOT_REMOVED,
-                                                 "Destination " + destinationName);
+                                                 "Destination "
+                                                         + destinationName);
             LOG.warn(message);
         }
     }
@@ -150,7 +156,7 @@ public class HJBProvider {
     public boolean equals(Object obj) {
         if (!(obj instanceof HJBProvider)) return false;
         return ((HJBProvider) obj).getEnvironment()
-                                  .equals(this.getEnvironment());
+            .equals(this.getEnvironment());
     }
 
     /**
@@ -176,8 +182,7 @@ public class HJBProvider {
                     // destinations, so deleting from destinations is safe
                     // while iterating through it
                     deleteDestination((String) i.next());
-                } catch (HJBException e) {
-                }
+                } catch (HJBException e) {}
                 // ok to handle the exception in this way - it is logged
                 // when it is created, and we don't want to stop until all the
                 // destinations are removed
@@ -193,8 +198,7 @@ public class HJBProvider {
                     // factories, so deleting from factories is safe
                     // while iterating through it
                     deleteConnectionFactory((String) i.next());
-                } catch (HJBException e) {
-                }
+                } catch (HJBException e) {}
                 // ok to handle the exception in this way - it is logged
                 // when it is created, and we don't want to stop until all the
                 // factories are removed

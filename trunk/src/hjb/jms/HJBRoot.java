@@ -68,8 +68,7 @@ public class HJBRoot {
                     // providers, so deleting from providers is safe
                     // while iterating through it
                     deleteProvider((String) i.next());
-                } catch (HJBException e) {
-                }
+                } catch (HJBException e) {}
                 // ok to handle the exception in this way, as it is logged on
                 // when it is created, and we don't want top until all providers
                 // are removed
@@ -86,9 +85,11 @@ public class HJBRoot {
         synchronized (providers) {
             HJBProvider provider = new ProviderBuilder(environment).createProvider();
             if (isTheSameProviderAlreadyRegistered(provider)) {
-                String message = strings().getString(HJBStrings.PROVIDER_ALREADY_REGISTERED,
-                                                     provider.getName());
-                LOG.warn(message);
+                if (LOG.isDebugEnabled()) {
+                    String message = strings().getString(HJBStrings.PROVIDER_ALREADY_REGISTERED,
+                                                         provider.getName());
+                    LOG.debug(message);
+                }
                 return;
             }
             assertThatProviderIsUnique(provider);
@@ -135,9 +136,9 @@ public class HJBRoot {
 
     protected void storagePathIsValid(File storagePath) {
         if (null == storagePath || !storagePath.isDirectory()
-            || !storagePath.canWrite()) {
+                || !storagePath.canWrite()) {
             String message = "Directory " + storagePath
-                             + " can not be accessed";
+                    + " can not be accessed";
             LOG.error(message);
             throw new HJBException(message);
         }

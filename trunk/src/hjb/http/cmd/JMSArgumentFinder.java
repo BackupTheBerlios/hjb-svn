@@ -117,11 +117,13 @@ public class JMSArgumentFinder {
             case DeliveryMode.NON_PERSISTENT:
                 return (Integer) rawValue;
             default:
-                String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
-                                                     "delivery mode",
-                                                     rawValue,
-                                                     null);
-                LOG.warn(message);
+                if (LOG.isDebugEnabled()) {
+                    String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
+                                                         "delivery mode",
+                                                         rawValue,
+                                                         null);
+                    LOG.debug(message);
+                }
                 return null;
         }
     }
@@ -134,11 +136,13 @@ public class JMSArgumentFinder {
         if (null == rawValue) return null;
         if (rawValue.intValue() < MINIMUM_PRIORITY
                 || rawValue.intValue() > MAXIMUM_PRIORITY) {
-            String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
-                                                 "priority",
-                                                 rawValue,
-                                                 null);
-            LOG.warn(message);
+            if (LOG.isDebugEnabled()) {
+                String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
+                                                     "priority",
+                                                     rawValue,
+                                                     null);
+                LOG.debug(message);
+            }
             return null;
         }
         return (Integer) rawValue;
@@ -180,11 +184,13 @@ public class JMSArgumentFinder {
             case Session.SESSION_TRANSACTED:
                 return rawValue.intValue();
             default:
-                String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
-                                                     "acknowledgement mode",
-                                                     rawValue,
-                                                     new Integer(HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE));
-                LOG.warn(message);
+                if (LOG.isDebugEnabled()) {
+                    String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
+                                                         "acknowledgement mode",
+                                                         rawValue,
+                                                         new Integer(HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE));
+                    LOG.debug(message);
+                }
                 return HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE;
         }
     }
@@ -242,25 +248,44 @@ public class JMSArgumentFinder {
 
     public Destination findRequiredDestination(Map decodedParameters,
                                                HJBRoot root,
-                                               String sessionProviderName) {
+                                               String sessionProviderName,
+                                               boolean throwOnFailure) {
         Object rawValue = decodedParameters.get(HJBServletConstants.DESTINATION_URL);
-        assertIsValidDestinationURL(rawValue);
+        if (! assertIsValidDestinationURL(rawValue, throwOnFailure)) {
+            return null;
+        }
         String destinationURL = (String) rawValue;
         Matcher m = getDestinationPathMatcher().matcher(destinationURL);
         m.matches();
 
         String destinationProviderName = m.group(1);
         String destinationName = applyURLDecoding(m.group(2));
-        assertIsSameProvider(sessionProviderName, destinationProviderName);
-        HJBTreeWalker walker = new HJBTreeWalker(root, destinationURL);
+        assertIsSameProvider(sessionProviderName,
+                             destinationProviderName,
+                             throwOnFailure);
+        HJBTreeWalker walker = new HJBTreeWalker(root,
+                                                 destinationURL,
+                                                 throwOnFailure);
         return walker.findDestination(destinationProviderName, destinationName);
+    }
+
+    public Destination findRequiredDestination(Map decodedParameters,
+                                               HJBRoot root,
+                                               String sessionProviderName) {
+        return findRequiredDestination(decodedParameters,
+                                       root,
+                                       sessionProviderName,
+                                       true);
     }
 
     public Destination findOptionalDestination(Map decodedParameters,
                                                HJBRoot root,
                                                String sessionProviderName) {
         try {
-            return findRequiredDestination(decodedParameters, root, sessionProviderName);
+            return findRequiredDestination(decodedParameters,
+                                           root,
+                                           sessionProviderName,
+                                           false);
         } catch (HJBNotFoundException e) {
             return null;
         }
@@ -272,11 +297,14 @@ public class JMSArgumentFinder {
                                   Object defaultValue) {
         Object rawValue = decodedParameters.get(key);
         if (!(rawValue instanceof Integer)) {
-            String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
-                                                 name,
-                                                 rawValue,
-                                                 defaultValue);
-            LOG.warn(message);
+            if (LOG.isDebugEnabled()) {
+                String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
+                                                     name,
+                                                     rawValue,
+                                                     defaultValue);
+                LOG.debug(message);
+            }
+            rawValue = defaultValue;
         }
         return (Integer) rawValue;
     }
@@ -287,11 +315,14 @@ public class JMSArgumentFinder {
                                   Object defaultValue) {
         Object rawValue = decodedParameters.get(key);
         if (!(rawValue instanceof Boolean)) {
-            String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
-                                                 name,
-                                                 rawValue,
-                                                 defaultValue);
-            LOG.warn(message);
+            if (LOG.isDebugEnabled()) {
+                String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
+                                                     name,
+                                                     rawValue,
+                                                     defaultValue);
+                LOG.debug(message);
+            }
+            rawValue = defaultValue;
         }
         return (Boolean) rawValue;
     }
@@ -302,11 +333,14 @@ public class JMSArgumentFinder {
                             Object defaultValue) {
         Object rawValue = decodedParameters.get(key);
         if (!(rawValue instanceof Long)) {
-            String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
-                                                 name,
-                                                 rawValue,
-                                                 defaultValue);
-            LOG.warn(message);
+            if (LOG.isDebugEnabled()) {
+                String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
+                                                     name,
+                                                     rawValue,
+                                                     defaultValue);
+                LOG.debug(message);
+            }
+            rawValue = defaultValue;
         }
         return (Long) rawValue;
     }
@@ -323,25 +357,42 @@ public class JMSArgumentFinder {
     }
 
     protected void assertIsSameProvider(String sessionProviderName,
-                                        String destinationProviderName)
+                                        String destinationProviderName,
+                                        boolean throwOnFailure)
             throws HJBClientException {
         if (!destinationProviderName.equals(sessionProviderName)) {
-            String message = strings().getString(HJBStrings.CAN_NOT_USE_DESTINATION,
-                                                 destinationProviderName,
-                                                 sessionProviderName);
-            LOG.error(message);
-            throw new HJBClientException(message);
+            if (throwOnFailure) {
+                String message = strings().getString(HJBStrings.CAN_NOT_USE_DESTINATION,
+                                                     destinationProviderName,
+                                                     sessionProviderName);
+                LOG.error(message);
+                throw new HJBClientException(message);
+            } else if (LOG.isDebugEnabled()) {
+                String message = strings().getString(HJBStrings.CAN_NOT_USE_DESTINATION,
+                                                     destinationProviderName,
+                                                     sessionProviderName);
+                LOG.debug(message);
+            }
         }
     }
 
-    protected void assertIsValidDestinationURL(Object rawDestinationURL)
+    protected boolean assertIsValidDestinationURL(Object rawDestinationURL,
+                                               boolean throwOnFailure)
             throws HJBClientException {
-        if (!(rawDestinationURL instanceof String)) {
+        if (rawDestinationURL instanceof String) {
+            return true;
+        }
+        if (throwOnFailure) {
             String message = strings().getString(HJBStrings.INVALID_DESTINATION_URL,
                                                  rawDestinationURL);
             LOG.error(message);
             throw new HJBNotFoundException(message);
+        } else if (LOG.isDebugEnabled()) {
+            String message = strings().getString(HJBStrings.INVALID_DESTINATION_URL,
+                                                 rawDestinationURL);
+            LOG.debug(message);
         }
+        return false;
     }
 
     protected String applyURLDecoding(String s) {

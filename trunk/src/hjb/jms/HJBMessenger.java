@@ -64,6 +64,9 @@ public class HJBMessenger {
                 findMessageCopierFor(asJMS).copyToHJBMessage(asJMS, asHJB);
                 result.add(asHJB);
             }
+            String message = strings().getString(HJBStrings.FOUND_N_MESSAGES,
+                                                 new Integer(result.size()));
+            LOG.info(message);
             return (HJBMessage[]) result.toArray(new HJBMessage[result.size()]);
         } catch (JMSException e) {
             String message = strings().getString(HJBStrings.COULD_NOT_BROWSE_QUEUE,
@@ -190,7 +193,8 @@ public class HJBMessenger {
             asJMS.acknowledge();
             HJBMessage result = createHJBMessageFor(asJMS);
             findMessageCopierFor(asJMS).copyToHJBMessage(asJMS, result);
-            LOG.info("Created HJB message: " + result);
+            String message = strings().getString(HJBStrings.RECEIVED_HJB_MESSAGE, result);
+            LOG.info(message);
             return result;
         } catch (JMSException e) {
             return handleReceiptFailure();

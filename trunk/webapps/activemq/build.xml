@@ -23,25 +23,25 @@
   <target name="copy.files" depends="init">
     <copy todir="${webapps.build}/${webapp.name}/WEB-INF/lib">
       <fileset dir="${activemq.lib.dir}">
-        <include name="**/*.jar"/>
+	<include name="**/*.jar"/>
       </fileset>          
     </copy>
     <copy todir="${webapps.build}/${webapp.name}/WEB-INF/lib">
       <fileset dir="${webapps.lib}">
-        <include name="**/jms.jar"/>
-        <include name="**/log4j*.jar"/>
+	<include name="**/jms.jar"/>
+	<include name="**/log4j*.jar"/>
       </fileset>          
     </copy>
     <copy todir="${webapps.build}/${webapp.name}/WEB-INF/lib" file="${webapps.dist}/${dist.jar.name}"/>
     <copy todir="${webapps.build}/${webapp.name}">
       <fileset dir=".">
-        <exclude name="build.*"/>
+	<exclude name="build.*"/>
       </fileset>
     </copy>
   </target>
 
   <target name="all" depends="clean,copy.files"
-   description="Clean and build hjb activemq webapp"/>
+	  description="Clean and build hjb activemq webapp"/>
 
 
   <target name="clean">
@@ -53,15 +53,22 @@
   </target>
 
   <target name="dist" depends="all,dist.prepare"
-   description="Create activemq HJB webapp binary distribution">
-      <jar   jarfile="${webapps.dist}/${webapp.name}.war"
-             basedir="${webapps.build}/${webapp.name}" includes="**">
-	<manifest>
-          <attribute name="Implementation-Title" value="HJB ActiveMQ WAR"/>
-          <attribute name="Implementation-Version" value="${version}"/> 
-          <attribute name="Implementation-Vendor" value="The HJB Developers"/>
-        </manifest>
-      </jar>
+	  description="Create activemq HJB webapp binary distribution">
+    <jar   jarfile="${webapps.dist}/${webapp.name}.war"
+	   basedir="${webapps.build}/${webapp.name}" includes="**">
+      <manifest>
+	<attribute name="Implementation-Title" value="HJB ActiveMQ WAR"/>
+	<attribute name="Implementation-Version" value="${version}"/> 
+	<attribute name="Implementation-Vendor" value="The HJB Developers"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="deploy" depends="dist" 
+	  description="Copy activemq HJB to deployment directory, and erase the previous expanded war if necessary">
+    <fail unless="war.deployment.dir">The WAR directory path property 'war.deployment.dir' has not been set</fail>
+    <delete dir="${war.deployment.dir}/${webapp.name}" failonerror="false"/>
+    <copy file="${webapps.dist}/${webapp.name}.war" todir="${war.deployment.dir}"/>
   </target>
 
   <target name="dist.clean">
@@ -69,6 +76,6 @@
   </target>
 
   <target name="all.clean" depends="clean,dist.clean"
-   description="Clean build and dist directories"/>
+	  description="Clean build and dist directories"/>
 
 </project>

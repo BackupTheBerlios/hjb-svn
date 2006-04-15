@@ -96,10 +96,18 @@
     <ant dir="${basedir}/webapps/standalone" target="dist"/>
   </target>
 
+  <target name="deploy.webapp.standalone">
+    <ant dir="${basedir}/webapps/standalone" target="deploy"/>
+  </target>
+  
   <target name="dist.webapp.activemq">
     <ant dir="${basedir}/webapps/activemq" target="dist"/>
   </target>
 
+  <target name="deploy.webapp.activemq">
+    <ant dir="${basedir}/webapps/activemq" target="deploy"/>
+  </target>
+  
   <target name="dist.doc" depends="javadoc" description="creates the HJB documentation distribution">
     <delete file="${dist.dir}/lib/${doc.dist.jar.name}" failonerror="false"/>
     <jar jarfile="${dist.dir}/lib/${doc.dist.jar.name}" basedir="${javadoc.dir}">
