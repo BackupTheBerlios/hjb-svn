@@ -57,7 +57,7 @@ public class CreateProducer extends BaseJMSCommand {
                                                            getDestination(),
                                                            getProducerArguments()));
         } catch (RuntimeException e) {
-            setFault(e);
+            recordFault(e);
         }
         completed();
     }

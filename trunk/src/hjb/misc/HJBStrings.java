@@ -432,4 +432,6 @@ public final class HJBStrings {
     public static final String FOUND_N_MESSAGES = "found.n.messages";
 
     public static final String RECEIVED_HJB_MESSAGE = "received.hjb.message";
+
+    public static final String ABOUT_TO_SEND = "about.to.send";
 }

@@ -36,7 +36,7 @@ public class RegisterDestination extends ProviderCommand {
         try {
             getProvider().registerDestination(getName());
         } catch (RuntimeException e) {
-            setFault(e);
+            recordFault(e);
         }
         completed();
     }

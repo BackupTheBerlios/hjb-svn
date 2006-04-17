@@ -36,7 +36,7 @@ public class RegisterConnectionFactory extends ProviderCommand {
         try {
             getProvider().registerConnectionFactory(getName());
         } catch (RuntimeException e) {
-            setFault(e);
+            recordFault(e);
         }
         completed();
     }

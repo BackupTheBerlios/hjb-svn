@@ -37,7 +37,7 @@ public class DeleteSession extends ConnectionCommand {
         try {
             getTheConnection().deleteSession(getSessionIndex());
         } catch (RuntimeException e) {
-            setFault(e);
+            recordFault(e);
         }
         completed();
     }

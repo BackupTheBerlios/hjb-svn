@@ -36,15 +36,15 @@ public class DeleteConnection extends ConnectionFactoryCommand {
         try {
             getTheFactory().deleteConnection(connectionIndex);
         } catch (RuntimeException e) {
-            setFault(e);
+            recordFault(e);
         }
         completed();
     }
 
     public String getDescription() {
         return strings().getString(HJBStrings.DESCRIPTION_OF_DELETE_COMMANDS,
-                                   HJBConnection.class.getName(),
-                                   new Integer(getConnectionIndex()));
+                                   new Integer(getConnectionIndex()),
+                                   HJBConnection.class.getName());
     }
 
     public String getStatusMessage() {

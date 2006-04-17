@@ -20,10 +20,7 @@
  */
 package hjb.http.cmd;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.log4j.Logger;
 
@@ -41,6 +38,18 @@ import hjb.msg.codec.OrderedTypedValueCodec;
  */
 public class ParameterMapDecoder {
 
+    public ParameterMapDecoder(String[] compulsoryDecodings) {
+        if (null != compulsoryDecodings) {
+            this.compulsoryDecodings = compulsoryDecodings;
+        } else {
+            this.compulsoryDecodings = new String[0];
+        }
+    }
+
+    public ParameterMapDecoder() {
+        this(MUST_BE_DECODED);
+    }
+
     /**
      * Decodes the values in <code>parameterMap</code>.
      * <p />
@@ -50,11 +59,11 @@ public class ParameterMapDecoder {
      * <li>Only the first element of the array value (the input map's values
      * are <code>String</code> arrays) is relevant, (because the other value
      * <em>must</em> have been sent by mistake!)</li>
-     * <li>The value may be encoded, and require decoding using a
+     * <li>The value will be encoded, and may require decoding using a
      * {@link hjb.msg.codec.TypedValueCodec}</li>
-     * <li>The value of the parameter
-     * {@link hjb.http.HJBServletConstants#MESSAGE_TO_SEND} is never decoded, as
-     * an encoding it may have is handled by the target JMS Command</li>
+     * <li>Only the value of the parameters returned by
+     * {@link #getCompulsoryDecodings()} are decoded. The others as passed
+     * through as-is.
      * </ul>
      * 
      * @param parameterMap
@@ -66,15 +75,16 @@ public class ParameterMapDecoder {
     public Map decode(Map parameterMap) {
         Map result = new HashMap();
         if (null == parameterMap) return Collections.unmodifiableMap(result);
+        List toBeDecoded = getCompulsoryDecodings();
         for (Iterator i = parameterMap.keySet().iterator(); i.hasNext();) {
             Object next = i.next();
             try {
                 String parameterName = (String) next;
                 String[] value = (String[]) parameterMap.get(next);
-                if (HJBServletConstants.MESSAGE_TO_SEND.equals(parameterName)) {
-                    result.put(parameterName, value[0]);
-                } else {
+                if (toBeDecoded.contains(parameterName)) {
                     result.put(parameterName, getCodec().decode(value[0]));
+                } else {
+                    result.put(parameterName, value[0]);
                 }
             } catch (ClassCastException e) {
                 LOG.warn(strings().getString(HJBStrings.BAD_VALUES_IN_PARAMETER_MAP));
@@ -111,6 +121,23 @@ public class ParameterMapDecoder {
         return STRINGS;
     }
 
+    protected List getCompulsoryDecodings() {
+        return Arrays.asList(compulsoryDecodings);
+    }
+
+    public static String[] MUST_BE_DECODED = new String[] {
+            HJBServletConstants.CONSUMER_NOLOCAL,
+            HJBServletConstants.DELIVERY_MODE,
+            HJBServletConstants.DISABLE_TIMESTAMPS,
+            HJBServletConstants.DISABLE_MESSAGE_IDS,
+            HJBServletConstants.PRIORITY,
+            HJBServletConstants.SESSION_ACKNOWLEDGEMENT_MODE,
+            HJBServletConstants.SESSION_TRANSACTED,
+            HJBServletConstants.TIME_TO_LIVE,
+            HJBServletConstants.TIMEOUT,
+    };
+
+    private String[] compulsoryDecodings;
     private static OrderedTypedValueCodec CODEC = new OrderedTypedValueCodec();
     private static final Logger LOG = Logger.getLogger(ParameterMapDecoder.class);
     private static final HJBStrings STRINGS = new HJBStrings();

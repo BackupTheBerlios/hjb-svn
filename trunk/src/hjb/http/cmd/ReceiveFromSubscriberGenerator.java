@@ -69,7 +69,7 @@ public class ReceiveFromSubscriberGenerator extends
                                                          factoryName,
                                                          connectionIndex);
         Map decodedParameters = getDecoder().decode(request.getParameterMap());
-        Integer timeout = getFinder().findTimeout(decodedParameters);
+        Long timeout = getFinder().findTimeout(decodedParameters);
         if (null == timeout) {
             this.generatedCommand = new ReceiveFromSubscriber(new HJBMessenger(connection,
                                                                                sessionIndex),
@@ -78,7 +78,7 @@ public class ReceiveFromSubscriberGenerator extends
             this.generatedCommand = new ReceiveFromSubscriber(new HJBMessenger(connection,
                                                                                sessionIndex),
                                                               subscriberIndex,
-                                                              timeout.intValue());
+                                                              timeout.longValue());
         }
         setAssignedCommandRunner(connection.getSessionCommandRunner(sessionIndex));
     }

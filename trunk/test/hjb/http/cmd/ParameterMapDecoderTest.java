@@ -80,7 +80,7 @@ public class ParameterMapDecoderTest extends TestCase {
         assertEquals(expectedMap, decoder.decode(testMap));
     }
 
-    public void testDecoderDecodesValues() {
+    public void testDecoderDecodesRequiredValues() {
         Map testMap = new HashMap();
         testMap.put("byte", new String[] {
             "(byte 1)"
@@ -123,8 +123,20 @@ public class ParameterMapDecoderTest extends TestCase {
         expectedMap.put("string", "foobarbaz");
         expectedMap.put("byteArray", "TEST".getBytes());
         expectedMap.put("char", new Character('\u0061'));
-
-        ParameterMapDecoder decoder = new ParameterMapDecoder();
+                
+        String[] compulsoryDecodings = new String[] {
+            "byte",
+            "int",
+            "short",
+            "long",
+            "double",
+            "float",
+            "boolean",
+            "string",
+            "byteArray",
+            "char",                                                    
+        };
+        ParameterMapDecoder decoder = new ParameterMapDecoder(compulsoryDecodings);
         Map actualMap = new HashMap(decoder.decode(testMap));
         // check the byte array on its own
         assertEquals("TEST", new String((byte[]) actualMap.get("byteArray")));

@@ -20,6 +20,8 @@
  */
 package hjb.jms.cmd;
 
+import org.apache.log4j.Logger;
+
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 
@@ -63,8 +65,9 @@ public abstract class BaseJMSCommand implements JMSCommand {
         notifyAll();
     }
 
-    protected void setFault(RuntimeException fault) {
+    protected void recordFault(RuntimeException fault) {
         this.fault = fault;
+        LOG.error(fault);
     }
 
     protected HJBStrings strings() {
@@ -82,4 +85,5 @@ public abstract class BaseJMSCommand implements JMSCommand {
     private RuntimeException fault;
     private boolean complete;
     private static final HJBStrings STRINGS = new HJBStrings();
+    private static final Logger LOG = Logger.getLogger(BaseJMSCommand.class);
 }

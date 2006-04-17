@@ -42,7 +42,7 @@ public class CreateSession extends ConnectionCommand {
             setSessionIndex(getTheConnection().createSessionAndReturnItsIndex(isTransacted(),
                                                                               getAcknowledgementMode()));
         } catch (RuntimeException e) {
-            setFault(e);
+            recordFault(e);
         }
         completed();
     }

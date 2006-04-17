@@ -22,8 +22,6 @@ package hjb.jms.cmd;
 
 import javax.jms.JMSException;
 
-import org.apache.log4j.Logger;
-
 import hjb.jms.HJBConnection;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
@@ -39,10 +37,9 @@ public class StartConnection extends ConnectionCommand {
         try {
             getTheConnection().start();
         } catch (RuntimeException e) {
-            setFault(e);
+            recordFault(e);
         } catch (JMSException e) {
-            LOG.error(e);
-            setFault(new HJBException(e));
+            recordFault(new HJBException(e));
         }
         completed();
     }
@@ -58,6 +55,4 @@ public class StartConnection extends ConnectionCommand {
             return getFault().getMessage();
         }
     }
-
-    private static final Logger LOG = Logger.getLogger(StartConnection.class);
 }

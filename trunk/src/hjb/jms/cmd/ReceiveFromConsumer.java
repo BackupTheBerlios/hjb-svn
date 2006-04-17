@@ -43,7 +43,7 @@ public class ReceiveFromConsumer extends MessengerCommand {
         try {
             receiveMessage();
         } catch (RuntimeException e) {
-            setFault(e);
+            recordFault(e);
         }
         completed();
     }

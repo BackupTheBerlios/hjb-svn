@@ -44,7 +44,9 @@ public class HJBTreeWalker {
         this(root, requestPath, true);
     }
 
-    public HJBTreeWalker(HJBRoot root, String requestPath, boolean failOnMissingComponent) {
+    public HJBTreeWalker(HJBRoot root,
+                         String requestPath,
+                         boolean failOnMissingComponent) {
         if (null == root) {
             throw new IllegalArgumentException(strings().needsANonNull(HJBRoot.class));
         }
@@ -85,12 +87,19 @@ public class HJBTreeWalker {
     public HJBConnection findConnection(String providerName,
                                         String factoryName,
                                         int connectionIndex) {
-        HJBConnection result = findConnectionFactory(providerName, factoryName).getConnection(connectionIndex);
-        if (null == result) {
+        try {
+            HJBConnection result = findConnectionFactory(providerName,
+                                                         factoryName).getConnection(connectionIndex);
+            if (null == result) {
+                handleMissingComponent("" + PathNaming.CONNECTION + ""
+                        + connectionIndex);
+            }
+            return result;
+        } catch (IndexOutOfBoundsException e) {
             handleMissingComponent("" + PathNaming.CONNECTION + ""
                     + connectionIndex);
+            return null;
         }
-        return result;
     }
 
     protected void handleMissingComponent(String component) throws HJBException {
@@ -99,7 +108,7 @@ public class HJBTreeWalker {
                                                  getRequestPath(),
                                                  component);
             LOG.error(message);
-            throw new HJBNotFoundException(message);            
+            throw new HJBNotFoundException(message);
         } else {
             if (LOG.isDebugEnabled()) {
                 String message = strings().getString(HJBStrings.ALLOWED_PATH_NOT_FOUND,
@@ -107,7 +116,7 @@ public class HJBTreeWalker {
                                                      component);
                 LOG.debug(message);
             }
-        }        
+        }
     }
 
     protected String getRequestPath() {
@@ -117,7 +126,7 @@ public class HJBTreeWalker {
     protected HJBRoot getRoot() {
         return root;
     }
-    
+
     protected boolean failsOnMissingComponent() {
         return failOnMissingComponent;
     }

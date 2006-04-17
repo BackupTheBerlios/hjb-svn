@@ -44,7 +44,7 @@ public class CreateConnection extends ConnectionFactoryCommand {
         try {
             createConnectionAndReturnItsIndex();
         } catch (RuntimeException e) {
-            setFault(e);
+            recordFault(e);
         }
         completed();
     }

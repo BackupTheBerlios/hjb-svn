@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.http;
 
 import javax.jms.Session;
@@ -122,17 +122,17 @@ public final class HJBServletConstants {
 
     /**
      * Constant that holds the name of the request parameter that HJB uses to
-     * determine if message Ids should be disabled for use in configuration of a JMS
-     * <code>MessageProducer</code>
+     * determine if message Ids should be disabled for use in configuration of a
+     * JMS <code>MessageProducer</code>
      * <p />
      * The value of this constant is "disable-message-ids".
      */
     public static final String DISABLE_MESSAGE_IDS = "disable-message-ids";
-    
+
     /**
      * Constant that holds the name of the request parameter that HJB uses to
-     * determine if timestamps should be disabled for use in configuration of a JMS
-     * <code>MessageProducer</code>
+     * determine if timestamps should be disabled for use in configuration of a
+     * JMS <code>MessageProducer</code>
      * <p />
      * The value of this constant is "acknowledgement-mode".
      */
@@ -202,7 +202,7 @@ public final class HJBServletConstants {
 
     /**
      * Constant that holds the name of the request parameter that HJB uses to
-     * identify the no-local flag for use in configuration of various JMS
+     * identify the no-local flag for use in the configuration of JMS
      * <code>MessageConsumers</code>
      * <p />
      * The value of this constant is "no-local".
@@ -211,8 +211,8 @@ public final class HJBServletConstants {
 
     /**
      * Constant that holds the name of the request parameter that HJB uses to
-     * identify the timeout flag for use in configuration of JMS
-     * <code>MessageProducers</code>
+     * identify the timeout period in milliseconds for use in the configuration
+     * of JMS <code>MessageConsumers</code>
      * <p />
      * The value of this constant is "timeout".
      */

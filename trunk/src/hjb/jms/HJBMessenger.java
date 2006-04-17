@@ -26,10 +26,7 @@ import javax.jms.*;
 
 import org.apache.log4j.Logger;
 
-import hjb.misc.HJBException;
-import hjb.misc.HJBStrings;
-import hjb.misc.MessageProducerArguments;
-import hjb.misc.MessagingTimeoutConfiguration;
+import hjb.misc.*;
 import hjb.msg.HJBMessage;
 import hjb.msg.MessageCopier;
 import hjb.msg.MessageCopierFactory;
@@ -93,7 +90,12 @@ public class HJBMessenger {
                 LOG.warn(message);
                 return;
             }
-            LOG.info("About to send HJB message: " + asHJB);
+            String message = strings().getString(HJBStrings.ABOUT_TO_SEND, asHJB);
+            //TODO remove this info before release
+            LOG.info(message);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug(message);
+            }
             Message asJMS = createJMSMessageFor(asHJB);
             findMessageCopierFor(asHJB).copyToJMSMessage(asHJB, asJMS);
             sendJMSMessage(asJMS, destination, producerArguments, index);
@@ -187,14 +189,18 @@ public class HJBMessenger {
             if (null == asJMS) {
                 String message = strings().getString(HJBStrings.NO_MESSAGE_AVAILABLE,
                                                      new Integer(getSessionIndex()));
-                LOG.error(message);
-                throw new HJBException(message);
+                LOG.warn(message);
+                throw new HJBClientException(message);
             }
             asJMS.acknowledge();
             HJBMessage result = createHJBMessageFor(asJMS);
             findMessageCopierFor(asJMS).copyToHJBMessage(asJMS, result);
-            String message = strings().getString(HJBStrings.RECEIVED_HJB_MESSAGE, result);
+            String message = strings().getString(HJBStrings.RECEIVED_HJB_MESSAGE, result);            
+            // TODO remove this info before release
             LOG.info(message);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug(message);
+            }
             return result;
         } catch (JMSException e) {
             return handleReceiptFailure();

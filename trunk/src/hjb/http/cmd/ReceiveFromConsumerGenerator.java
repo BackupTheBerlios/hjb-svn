@@ -69,7 +69,7 @@ public class ReceiveFromConsumerGenerator extends
                                                          connectionIndex);
 
         Map decodedParameters = getDecoder().decode(request.getParameterMap());
-        Integer timeout = getFinder().findTimeout(decodedParameters);
+        Long timeout = getFinder().findTimeout(decodedParameters);
         if (null == timeout) {
             this.generatedCommand = new ReceiveFromConsumer(new HJBMessenger(connection,
                                                                              sessionIndex),
@@ -78,7 +78,7 @@ public class ReceiveFromConsumerGenerator extends
             this.generatedCommand = new ReceiveFromConsumer(new HJBMessenger(connection,
                                                                              sessionIndex),
                                                             consumerIndex,
-                                                            timeout.intValue());
+                                                            timeout.longValue());
         }
         setAssignedCommandRunner(connection.getSessionCommandRunner(sessionIndex));
     }

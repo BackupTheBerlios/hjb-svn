@@ -38,7 +38,7 @@ public class DeleteProvider extends RootCommand {
         try {
             getRoot().deleteProvider(getName());
         } catch (RuntimeException e) {
-            setFault(e);
+            recordFault(e);
         }
         completed();
     }

@@ -58,7 +58,7 @@ public class CreateSubscriber extends BaseJMSCommand {
         try {
             createDurableSubscriberAndSaveItsIndex();
         } catch (RuntimeException e) {
-            setFault(e);
+            recordFault(e);
         }
         completed();
     }

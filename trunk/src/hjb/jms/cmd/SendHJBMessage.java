@@ -47,7 +47,7 @@ public class SendHJBMessage extends MessengerCommand {
         try {
             sendTheMessage();
         } catch (RuntimeException e) {
-            setFault(e);
+            recordFault(e);
         }
         completed();
     }

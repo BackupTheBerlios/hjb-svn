@@ -54,7 +54,7 @@ public class CreateBrowser extends BaseJMSCommand {
         try {
             createBrowserAndSaveItsIndex();
         } catch (RuntimeException e) {
-            setFault(e);
+            recordFault(e);
         }
         completed();
     }

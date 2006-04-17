@@ -154,6 +154,8 @@ public class HJBServlet extends HttpServlet {
             LOG.info(strings().getString(HJBStrings.NOT_MATCHED,
                                          request.getPathInfo()));
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        } catch (HJBException e) {
+            new RuntimeExceptionHandler().sendHJBFault(response, e);
         } catch (RuntimeException e) {
             getServletContext().log(e.getMessage(), e);
             LOG.error(e);
@@ -229,8 +231,9 @@ public class HJBServlet extends HttpServlet {
                 timeIsUp.cancel();
             }
         }
-        if (!generatedCommand.isExecutedOK()) {
-            handleExecutionWasNotOk(generatedCommand);
+        if (! generatedCommand.isExecutedOK()) {
+            getServletContext().log(generatedCommand.getStatusMessage(), 
+                                    generatedCommand.getFault());            
         }
         generator.sendResponse(response);
     }
@@ -239,7 +242,7 @@ public class HJBServlet extends HttpServlet {
                                                      HttpServletResponse response,
                                                      Long commandTimeout,
                                                      JMSCommand generatedCommand)
-            throws HJBException, IOException {
+            throws IOException {
         // Instruct the command runner to ignore the command
         // The command runner **will** log the instruction
         // If the command has not run yet (i.e, the
@@ -270,14 +273,6 @@ public class HJBServlet extends HttpServlet {
         LOG.error(message, e);
         new RuntimeExceptionHandler().sendHJBFault(response,
                                                    new HJBException(message, e));
-    }
-
-    protected void handleExecutionWasNotOk(JMSCommand generatedCommand)
-            throws HJBException {
-        getServletContext().log(generatedCommand.getStatusMessage(),
-                                generatedCommand.getFault());
-        LOG.error(generatedCommand.getStatusMessage(),
-                  generatedCommand.getFault());
     }
 
     protected Timer findTimer() throws ServletException {

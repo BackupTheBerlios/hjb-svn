@@ -36,7 +36,7 @@ public class ViewQueue extends MessengerCommand {
         try {
             messagesOnQueue = getMessenger().viewQueue(getBrowserIndex());
         } catch (RuntimeException e) {
-            setFault(e);
+            recordFault(e);
         }
         completed();
     }

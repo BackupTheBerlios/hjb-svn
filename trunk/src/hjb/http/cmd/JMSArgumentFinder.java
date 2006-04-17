@@ -148,11 +148,11 @@ public class JMSArgumentFinder {
         return (Integer) rawValue;
     }
 
-    public Integer findTimeout(Map decodedParameters) {
-        return findInteger(decodedParameters,
-                           HJBServletConstants.TIMEOUT,
-                           "timeout",
-                           null);
+    public Long findTimeout(Map decodedParameters) {
+        return findLong(decodedParameters,
+                        HJBServletConstants.TIMEOUT,
+                        "timeout",
+                        null);
     }
 
     public Long findTimeToLive(Map decodedParameters) {

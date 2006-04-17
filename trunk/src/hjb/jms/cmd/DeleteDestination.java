@@ -36,7 +36,7 @@ public class DeleteDestination extends ProviderCommand {
         try {
             getProvider().deleteDestination(getName());
         } catch (RuntimeException e) {
-            setFault(e);
+            recordFault(e);
         }
         completed();
     }

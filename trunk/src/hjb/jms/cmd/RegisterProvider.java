@@ -41,7 +41,7 @@ public class RegisterProvider extends RootCommand {
         try {
             getRoot().addProvider(getEnvironment());
         } catch (RuntimeException e) {
-            setFault(e);
+            recordFault(e);
         }
         completed();
     }

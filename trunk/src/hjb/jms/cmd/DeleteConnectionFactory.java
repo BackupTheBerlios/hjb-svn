@@ -36,7 +36,7 @@ public class DeleteConnectionFactory extends ProviderCommand {
         try {
             getProvider().deleteConnectionFactory(getName());
         } catch (RuntimeException e) {
-            setFault(e);
+            recordFault(e);
         }
         completed();
     }

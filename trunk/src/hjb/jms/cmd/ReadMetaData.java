@@ -22,8 +22,6 @@ package hjb.jms.cmd;
 
 import javax.jms.JMSException;
 
-import org.apache.log4j.Logger;
-
 import hjb.jms.HJBConnection;
 import hjb.jms.MetadataReaderAssistant;
 import hjb.misc.HJBException;
@@ -41,10 +39,9 @@ public class ReadMetaData extends ConnectionCommand {
         try {
             setMetaDataAsText(assistant.asText(getTheConnection().getMetaData()));
         } catch (RuntimeException e) {
-            setFault(e);
+            recordFault(e);
         } catch (JMSException e) {
-            LOG.error(e);
-            setFault(new HJBException(e));
+            recordFault(new HJBException(e));
         }
         completed();
     }
@@ -71,5 +68,4 @@ public class ReadMetaData extends ConnectionCommand {
 
     private String metaDataAsText;
     private MetadataReaderAssistant assistant;
-    private static final Logger LOG = Logger.getLogger(ReadMetaData.class);
 }

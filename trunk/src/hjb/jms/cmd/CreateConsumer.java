@@ -62,7 +62,7 @@ public class CreateConsumer extends BaseJMSCommand {
         try {
             createConsumerAndSaveItsIndex();
         } catch (RuntimeException e) {
-            setFault(e);
+            recordFault(e);
         }
         completed();
     }

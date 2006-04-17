@@ -22,8 +22,6 @@ package hjb.jms.cmd;
 
 import javax.jms.JMSException;
 
-import org.apache.log4j.Logger;
-
 import hjb.jms.HJBConnection;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
@@ -40,10 +38,9 @@ public class CommitSession extends ConnectionCommand {
         try {
             getTheConnection().getSession(getSessionIndex()).commit();
         } catch (RuntimeException e) {
-            setFault(e);
+            recordFault(e);
         } catch (JMSException e) {
-            LOG.error(e);
-            setFault(new HJBException(e));
+            recordFault(new HJBException(e));
         }
         completed();
     }
@@ -71,5 +68,4 @@ public class CommitSession extends ConnectionCommand {
     }
 
     private int sessionIndex;
-    private static final Logger LOG = Logger.getLogger(CommitSession.class);
 }
