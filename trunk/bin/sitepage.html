@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<?python
+?>
+<html xmlns:py='http://purl.org/kid/ns#' py:layout="'layout.html'">
+
+  <link py:def="page_css" py:replace="XML(rst_stylesheet)"/>
+
+  <meta py:def="page_meta" py:replace="XML(rst_meta)"/>
+
+  <title py:match="item.tag == 'title'">${rst_title}</title>
+
+  <h2 py:match="item.tag == 'rst-title'" class="Content3Column">${rst_title}</h2>
+  
+  <div py:match="item.tag == 'rst-body'" class="Content3Column" id="center">
+    ${XML(rst_body)}
+    ${XML(rst_footer)}
+  </div>
+
+</html>

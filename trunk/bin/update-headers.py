@@ -3,7 +3,7 @@
 import sys
 import os
 from os import listdir
-from os.path import isdir, join
+from os.path import isdir, join, walk
 from cStringIO import StringIO
 from optparse import OptionParser
 
@@ -39,14 +39,19 @@ def update_master_command_list(parent, updater):
             print "Updating master command list in ", path
             updater(current)
 
-def update_java_file_headers(parent, header, updater):
-    for path in os.listdir(parent):
-        current = join(parent, path)
-        if isdir(current):
-            update_java_file_headers(current, header, updater)
-        elif path.endswith(".java"):
-            print "Checking for header in " + current,
-            updater(header, current)
+
+def update_java_file_headers(top, header, updater):
+    def update_headers_in_dir(ignored, dir_path, file_names):
+        """Updates the headers of java files in a directory"""
+        for f in [join(dir_path, f) for f in file_names]:
+            if isdir(f) or not f.endswith(".java"):
+                continue
+            else:
+                print "Checking for header in " + f,
+                updater(header, f)
+                
+    walk(top, update_headers_in_dir, None)
+                
 
 def remove_from_file(header, filename, checkFirst=10):
     firstLine = header.split("\n")[0].strip()
