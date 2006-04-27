@@ -2,11 +2,12 @@
 <project name="HJB" default="test" basedir=".">
 
   <description>
-  The build file used to build the HJB project.
+    The build file used to build the HJB project.
   </description>
 
   <property file="${user.dir}/build.properties"/>
   <property file="build.properties"/>
+  <property file="${hjb.deploy.properties}"/>
 
   <patternset id="java.sources">
     <include name="**/*.java"/>
@@ -14,7 +15,7 @@
 
   <path id="java.libs">
     <fileset dir="${lib.dir}">
-        <include name="**/*.jar"/>
+      <include name="**/*.jar"/>
     </fileset>
   </path>
 
@@ -27,18 +28,18 @@
 
   <target name="compile" depends="init" description="compiles the java source code">
     <javac 
-      srcdir="${src.dir}:${test.dir}" 
-      destdir="${build.dir}/classes" 
-      deprecation="true"
-      debug="on"
-    >
+	srcdir="${src.dir}:${test.dir}" 
+	destdir="${build.dir}/classes" 
+	deprecation="true"
+	debug="on"
+	>
       <patternset refid="java.sources"/>
       <classpath refid="java.libs"/>
     </javac>
 
     <copy todir="${build.dir}/classes">
       <fileset dir="${src.dir}">
-        <include name="**/*.properties"/>
+	<include name="**/*.properties"/>
       </fileset>
     </copy>
   </target>
@@ -47,15 +48,15 @@
 
     <junit printsummary="yes" haltonfailure="yes">
       <classpath>
-        <pathelement location="${build.dir}/classes"/>
-        <path refid="java.libs"/>
+	<pathelement location="${build.dir}/classes"/>
+	<path refid="java.libs"/>
       </classpath>
       <formatter type="plain"/>
 
       <batchtest fork="yes" todir="${reports.tests}">
-        <fileset dir="${test.dir}">
-          <include name="**/*Test.java"/>
-        </fileset>
+	<fileset dir="${test.dir}">
+	  <include name="**/*Test.java"/>
+	</fileset>
       </batchtest>
     </junit>
   </target>
@@ -66,55 +67,49 @@
     </delete>
     <mkdir dir="${javadoc.dir}"/>
     <javadoc 
-      sourcepath="${src.dir}" 
-      destdir="${javadoc.dir}"
-      packagenames="hjb.*"
-      classpathref="java.libs"
-      link=""
-      package="true"
-      author="true"
-      overview="overview.html"
-      windowtitle="HJB Project API Documentation"
-    >
+	sourcepath="${src.dir}" 
+	destdir="${javadoc.dir}"
+	packagenames="hjb.*"
+	classpathref="java.libs"
+	link=""
+	package="true"
+	author="true"
+	overview="overview.html"
+	windowtitle="HJB Project API Documentation"
+	>
       <link href="http://java.sun.com/j2se/1.4/docs/api"/>
       <link href="http://java.sun.com/j2ee/1.4/docs/api"/>
     </javadoc>
   </target>
 
-  <target name="dist.src" depends="dist.jar, dist.doc, dist.webapp.standalone, clean" description="creates the full source HJB distribution">
+  <target name="dist.main" 
+	  depends="dist.jar, dist.doc, clean" 
+	  description="creates the full source HJB distribution">
     <delete file="${dist.dir}/lib/${src.dist.jar.name}" failonerror="false"/>
     <jar jarfile="${dist.dir}/lib/${src.dist.jar.name}" basedir=".">
       <manifest>
-        <attribute name="Implementation-Title" value="HJB Full Source"/>
-        <attribute name="Implementation-Version" value="${version}"/> 
-        <attribute name="Implementation-Vendor" value="The HJB Developers"/>
+	<attribute name="Implementation-Title" value="HJB Full Distribution"/>
+	<attribute name="Implementation-Version" value="${version}"/> 
+	<attribute name="Implementation-Vendor" value="The HJB Developers"/>
       </manifest>
     </jar>
   </target>
 
-  <target name="dist.webapp.standalone">
-    <ant dir="${basedir}/webapps/standalone" target="dist"/>
+  <target name="dist.webapp">
+    <ant dir="${basedir}/webapps/default" target="dist"/>
   </target>
 
-  <target name="deploy.webapp.standalone">
-    <ant dir="${basedir}/webapps/standalone" target="deploy"/>
-  </target>
-  
-  <target name="dist.webapp.activemq">
-    <ant dir="${basedir}/webapps/activemq" target="dist"/>
+  <target name="deploy.webapp">
+    <ant dir="${basedir}/webapps/default" target="deploy"/>
   </target>
 
-  <target name="deploy.webapp.activemq">
-    <ant dir="${basedir}/webapps/activemq" target="deploy"/>
-  </target>
-  
   <target name="dist.doc" depends="javadoc" description="creates the HJB documentation distribution">
     <delete file="${dist.dir}/lib/${doc.dist.jar.name}" failonerror="false"/>
     <jar jarfile="${dist.dir}/lib/${doc.dist.jar.name}" basedir="${javadoc.dir}">
       <manifest>
-        <attribute name="Implementation-Title" value="HJB Documenation"/>
-        <attribute name="Implementation-Version" value="${version}"/> 
-        <attribute name="Implementation-Vendor" value="The HJB Developers"/>
+	<attribute name="Implementation-Title" value="HJB Documenation"/>
+	<attribute name="Implementation-Version" value="${version}"/> 
+	<attribute name="Implementation-Vendor" value="The HJB Developers"/>
       </manifest>
     </jar>
   </target>
@@ -123,12 +118,12 @@
     <delete file="${dist.dir}/lib/${dist.jar.name}" failonerror="false"/>
     <jar jarfile="${dist.dir}/lib/${dist.jar.name}">
       <fileset dir="${build.dir}/classes"
-               excludes="**/Test.class"
-      />
+	       excludes="**/Test.class"
+	       />
       <manifest>
-        <attribute name="Implementation-Title" value="HJB"/>
-        <attribute name="Implementation-Version" value="${version}"/> 
-        <attribute name="Implementation-Vendor" value="HJB Developers"/>
+	<attribute name="Implementation-Title" value="HJB"/>
+	<attribute name="Implementation-Version" value="${version}"/> 
+	<attribute name="Implementation-Vendor" value="HJB Developers"/>
       </manifest>
     </jar>
   </target>

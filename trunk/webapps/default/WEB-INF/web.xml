@@ -6,29 +6,29 @@
 
 <web-app>
 
-  <display-name>HJB Standalone Web application</display-name>
+  <display-name>@hjb.deploy.servlet.display.name@</display-name>
   <description>
     A standalone web application containing the HJB servlet.
   </description>
 
   <!-- Define the HJB Servlet mapping -->
   <servlet>
-    <servlet-name>HJB</servlet-name>
+    <servlet-name>@hjb.deploy.servlet.name@</servlet-name>
     <servlet-class>hjb.http.HJBServlet</servlet-class>
     <init-param>
       <param-name>hjb.config.rootpath</param-name>
-      <param-value>/home/tbe/tmp/hjb</param-value>
+      <param-value>@hjb.config.rootpath@</param-value>
     </init-param>
     <init-param>
       <param-name>hjb.config.command.timeout</param-name>
-      <param-value>30</param-value>
+      <param-value>@hjb.config.command.timeout@</param-value>
     </init-param>
   </servlet>
 
   <!-- Define the HJB Servlet Mapping -->
   <servlet-mapping>
-    <servlet-name>HJB</servlet-name>
-    <url-pattern>/hjb/*</url-pattern>
+    <servlet-name>@hjb.deploy.servlet.name@</servlet-name>
+    <url-pattern>@hjb.deploy.servlet.pattern@</url-pattern>
   </servlet-mapping>
 
 </web-app>

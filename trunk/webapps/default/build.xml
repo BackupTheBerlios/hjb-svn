@@ -1,0 +1,111 @@
+<project name="hjb-standalone" default="dist" basedir=".">
+
+  <property file="build.properties"/>
+  <property file="../../build.properties"/>
+  <property file="${user.home}/build.properties"/>
+
+  <property name="nag" value="has not been set, please add a value for it to hjb_deploy.properties"/>
+  <property name="webapps.build"  value="../../build"/>
+  <property name="webapps.dist"   value="../../dist/lib"/>
+  <property name="webapps.lib"    value="../../lib"/>
+
+  <target name="init">
+    <fail unless="hjb.deploy.webapp.name">hjb.deploy.webapp.name ${nag}</fail>
+    <echo message="Creating web application ${hjb.deploy.webapp.name} using values in ${hjb.deploy.properties}"/>
+    <mkdir dir="${webapps.build}"/>
+    <mkdir dir="${webapps.build}/${hjb.deploy.webapp.name}"/>
+    <mkdir dir="${webapps.build}/${hjb.deploy.webapp.name}/WEB-INF"/>
+    <mkdir dir="${webapps.build}/${hjb.deploy.webapp.name}/WEB-INF/classes"/>
+    <mkdir dir="${webapps.build}/${hjb.deploy.webapp.name}/WEB-INF/lib"/>
+  </target>
+
+  <target name="copy.files" depends="init">
+
+    <fail unless="hjb.deploy.provider.lib.dir">hjb.deploy.provider.lib.dir ${nag}</fail>
+    <echo message="Looking for jars in ${hjb.deploy.provider.lib.dir}"/>
+
+    <copy todir="${webapps.build}/${hjb.deploy.webapp.name}/WEB-INF/lib"
+	  verbose="true">
+      <fileset dir="${hjb.deploy.provider.lib.dir}">
+	<include name="**/*.jar"/>
+      </fileset>
+    </copy>
+
+    <copy todir="${webapps.build}/${hjb.deploy.webapp.name}/WEB-INF/lib" 
+	  file="${webapps.dist}/${dist.jar.name}"
+	  verbose="true"/>
+
+    <fail unless="hjb.deploy.jms.jar">hjb.deploy.jms.jar ${nag}</fail>
+    <copy file="${hjb.deploy.jms.jar}"
+	  todir="${webapps.build}/${hjb.deploy.webapp.name}/WEB-INF/lib"/>
+    <copy todir="${webapps.build}/${hjb.deploy.webapp.name}/WEB-INF/lib"
+	  verbose="true">
+      <fileset dir="${webapps.lib}">
+	<include name="**/log4j*.jar"/>
+      </fileset>          
+    </copy>
+
+    
+    <fail unless="hjb.deploy.servlet.name">hjb.deploy.servlet.name ${nag}</fail>
+    <fail unless="hjb.deploy.servlet.display.name">hjb.deploy.servlet.display.name ${nag}</fail>
+    <fail unless="hjb.deploy.servlet.mapping">hjb.deploy.servlet.mapping ${nag}</fail>
+
+    <fail unless="hjb.config.rootpath">hjb.config.rootpath ${nag}</fail>
+    <fail unless="hjb.config.command.timeout">hjb.config.command.timeout ${nag}</fail>
+
+    <filter token="hjb.deploy.servlet.display.name" value="${hjb.deploy.servlet.display.name}"/>
+    <filter token="hjb.deploy.servlet.name" value="${hjb.deploy.servlet.name}"/>
+    <filter token="hjb.deploy.servlet.pattern" value="${hjb.deploy.servlet.pattern}"/>
+    <filter token="hjb.deploy.config.command.timeout" value="${hjb.deploy.config.command.timeout}"/>
+    <filter token="hjb.deploy.config.rootpath" value="${hjb.deploy.config.rootpath}"/>
+
+    <copy todir="${webapps.build}/${hjb.deploy.webapp.name}" 
+	  verbose="true"
+	  filtering="true">
+      <fileset dir=".">
+	<exclude name="build.*"/>
+      </fileset>
+    </copy>
+
+  </target>
+
+  <target name="all" depends="clean,copy.files"
+	  description="Clean and build hjb standalone webapp"/>
+
+  <target name="clean">
+    <delete dir="${webapps.build}/${hjb.deploy.webapp.name}"/>
+  </target>
+
+  <target name="dist.prepare">
+    <mkdir dir="${webapps.dist}"/>
+  </target>
+
+  <target name="dist" depends="all,dist.prepare"
+	  description="Create standalone HJB webapp binary distribution">
+    <jar   jarfile="${webapps.dist}/${hjb.deploy.webapp.name}.war"
+	   basedir="${webapps.build}/${hjb.deploy.webapp.name}" includes="**">
+      <manifest>
+	<attribute name="Implementation-Title" value="${hjb.deploy.servlet.display.name}"/>
+	<attribute name="Implementation-Version" value="${version}"/> 
+	<attribute name="Implementation-Vendor" value="The HJB Developers"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="deploy" depends="dist" 
+	  description="Copy standalone HJB to deployment directory, and erase the previous expanded war if necessary">
+    <fail unless="hjb.deploy.container.webapp.dir">hjb.deploy.container.webapp.dir ${nag}</fail>
+    <delete dir="${hjb.deploy.container.webapp.dir}/${hjb.deploy.webapp.name}" failonerror="false"/>
+    <copy file="${webapps.dist}/${hjb.deploy.webapp.name}.war" 
+	  todir="${hjb.deploy.container.webapp.dir}"
+	  verbose="true" />
+  </target>
+
+  <target name="dist.clean">
+    <deltree dir="${dist.dir}/${hjb.deploy.webapp.name}"/>
+  </target>
+
+  <target name="all.clean" depends="clean,dist.clean"
+	  description="Clean build and dist directories"/>
+
+</project>
