@@ -17,9 +17,13 @@
     <fileset dir="${lib.dir}">
       <include name="**/*.jar"/>
     </fileset>
+    <pathelement location="${jms.jar}"/>
   </path>
 
   <target name="init">
+    <fail unless="jms.jar">The jms.jar property is not set</fail>
+    <available file="${jms.jar}" property="jms.jar.present"/>
+    <fail unless="jms.jar.present">Could not locate jms jar at ${jms.jar}</fail>
     <tstamp/>
     <mkdir dir="${build.dir}/classes"/>
     <mkdir dir="${dist.dir}/lib"/>
@@ -86,7 +90,22 @@
 	  depends="dist.jar, dist.doc, clean" 
 	  description="creates the full source HJB distribution">
     <delete file="${dist.dir}/lib/${src.dist.jar.name}" failonerror="false"/>
-    <jar jarfile="${dist.dir}/lib/${src.dist.jar.name}" basedir=".">
+    <jar jarfile="${dist.dir}/lib/${src.dist.jar.name}" basedir="."
+	 excludes="www/**/*">
+      <manifest>
+	<attribute name="Implementation-Title" value="HJB Full Distribution"/>
+	<attribute name="Implementation-Version" value="${version}"/> 
+	<attribute name="Implementation-Vendor" value="The HJB Developers"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="dist.bin" 
+	  depends="dist.jar, clean" 
+	  description="creates the binary HJB distribution">
+    <delete file="${dist.dir}/lib/${bin.dist.jar.name}" failonerror="false"/>
+    <jar destfile="${dist.dir}/lib/${bin.dist.jar.name}" basedir="." 
+         includes="${dist.dir}/lib/${dist.jar.name} lib/**/* webapps/**/* build.* *.properties* *.txt">
       <manifest>
 	<attribute name="Implementation-Title" value="HJB Full Distribution"/>
 	<attribute name="Implementation-Version" value="${version}"/> 

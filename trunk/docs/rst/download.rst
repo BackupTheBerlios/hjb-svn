@@ -11,12 +11,16 @@ HJB 0.8 Beta
  
 * Download javadocs_.
 
-* Access the source_
+* `View javadocs online`_.
 
-.. _binary distribution: http://hjb.tigris.org/to/be/done
+* Access the source_ repository.
 
-.. _source distribution: http://hjb.tigris.org/to/be/done
+.. _binary distribution: http://hjb.tigris.org/files/documents/3759/31730/hjb-bin-0.8beta.jar
 
-.. _javadocs: http://hjb.tigris.org/to/be/done
+.. _source distribution: http://hjb.tigris.org/files/documents/3759/31728/hjb-src-0.8beta.jar
+
+.. _javadocs: http://hjb.tigris.org/files/documents/3759/31729/hjb-docs-0.8beta.jar
+
+.. _view javadocs online: http://hjb.tigris.org/to/be/done
 
 .. _source: ./repository.html

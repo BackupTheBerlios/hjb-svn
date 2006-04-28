@@ -17,4 +17,4 @@ This POST request accesses a JMS Queue, returning the current set of
 messages on it, encoded as described in `message translation`_.
 
 .. _back to commands: ./command-list.html
-.. _message translation: ../detailed-design/message-translation.html
+.. _message translation: ../message-translation.html

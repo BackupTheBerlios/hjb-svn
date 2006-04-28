@@ -2,7 +2,7 @@
 Installing HJB
 ==============
 
-* Ensure that all the `prerequisites are met`_.
+* Ensure that all the `installation prerequisites`_ are met.
 
 * For a source install, get the source from either the anonymous
   subversion repository or by `downloading`_ the source distribution
@@ -41,7 +41,7 @@ Installing HJB
 
 * Test the installation using one of the `HJB client libraries`_.
 
-.. _prerequisites are met: ./prerequisites.html
+.. _installation prerequisites: ./prerequisites.html
 
 .. _anonymous subversion: http://hjb.tigris.org/source/browse/hjb
 

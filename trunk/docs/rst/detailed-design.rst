@@ -6,7 +6,7 @@ So, how does HJB work?
 
 * HJB is Java Servlet called the HJBServlet_.
 
-* HJBServlet_ provides access to various JMS objects, in particular
+* HJBServlet_ provides access to JMS objects, in particular
 
   - `JMS Administered Objects`_,
 
@@ -21,7 +21,8 @@ So, how does HJB work?
 
 * HJB achieves language-neutrality by `converting`_ between the Java
   native types that the JMS API uses and a simple textual
-  representation suitable for transmission via HTTP.
+  representation that preserves the type information that is suitable
+  for transmission via HTTP.
 
 There is not much to it really ;-)
 

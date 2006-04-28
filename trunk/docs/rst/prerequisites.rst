@@ -21,6 +21,8 @@ Running the HJB servlet requires
 
  * the JMS jars specific to the messaging provider you want to access.
 
+Most these items are required_ as is described below.  There are some
+useful optional_ items are well.
 
 Required
 --------
@@ -31,10 +33,10 @@ Java SDK 1.4 or later
 HJB is coded using the Java SDK 1.4.  If you are thinking of hacking
 HJB, get an the SDK for your platform.
 
-**N.B.** At moment, the project does **not** use any features of
-Java5. This is done purposefully, to allow HJB to be extended entirely
-within a Java 1.4 development environment if this is the only way
-available.
+**N.B.** At the moment, the project does **not** use any features of
+Java 5. This is done purposefully, to allow HJB to be extended
+entirely within development teams that are constrained to using Java
+1.4,as is still quite common.
 
 
 Ant 1.6.5 or later
@@ -62,8 +64,8 @@ servlet.  The HJB distribution includes has an ant task that
 simplifies this procedure.
 
 
-Servlet Container
-*****************
+A Servlet Container
+*******************
 
 HJB can be deployed against any servlet container, and there are a
 quite of few good ones available! During development, it was tested
@@ -72,17 +74,19 @@ using the excellent open-source `Tomcat`_ servlet container.
 Optional
 --------
 
-Subversion
-**********
+Subversion Clients
+******************
 
 The latest HJB source can be retrieved and viewed via anonymous
-`Subversion access`_.
+`Subversion access`_, a good `subversion client`_ allows you to view the
+latest, greatest version of the source code. Read the `subversion
+book`_ for advice on using subversion.
 
 Eclipse
 *******
 
 Most of HJB development has been performed using the `Eclipse
-SDK`_. The Eclipse project file and settings are included in the
+SDK`_. HJB's eclipse project file and settings are included in the
 subversion repository.
 
 .. _Subversion access: ./repository.html
@@ -96,3 +100,7 @@ subversion repository.
 .. _Tomcat: http://tomcat.apache.org
 
 .. _Sun website: http://java.sun.com/products/jms/docs.html
+
+.. _subversion client: http://hjb.tigris.org/servlets/ProjectSource
+
+.. _subversion book: http://svnbook.red-bean.com/
