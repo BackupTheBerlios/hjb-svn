@@ -146,7 +146,7 @@ th.Row {
 }
 
 table.field-list {
-    background-color: white; 
+    background-color: #BBBBBB; 
     background-image: none;
     border-style: dashed;
     border-width: 1px;
@@ -154,7 +154,7 @@ table.field-list {
 }
 
 table.display-items {
-    background-color: white; 
+    background-color: #BBBBBB; 
     background-image: none;
     border-width: 1px;
     border-color: #black;

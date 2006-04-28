@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 """
 Uses kid and docutils to construct the website from its rst source
 
@@ -89,7 +90,7 @@ def parts_of(rst_file):
         destination_path = rst_file[:-4] + ".html",
         writer_name = 'html',
         settings_overrides = {
-            'initial_header_level': 3,
+            'initial_header_level': 2,
             'stylesheet_path': get_stylesheet_path(),
             'stylesheet': None,
             'generator': True,

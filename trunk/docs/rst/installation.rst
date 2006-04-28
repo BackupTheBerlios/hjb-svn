@@ -41,7 +41,7 @@ Installing HJB
 
 * Test the installation using one of the `HJB client libraries`_.
 
-.. _prerequisites are met: ./prerequisites.rst
+.. _prerequisites are met: ./prerequisites.html
 
 .. _anonymous subversion: http://hjb.tigris.org/source/browse/hjb
 
@@ -49,4 +49,4 @@ Installing HJB
 
 .. _binary archive: http://hjb.tigris.org/to/be/done
 
-.. _HJB client libraries: ./client.rst
+.. _HJB client libraries: ./hjb-clients.html

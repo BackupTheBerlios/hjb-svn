@@ -2,12 +2,24 @@
 Prerequisites
 =============
 
-HJB is a Java Servlet.  It runs in a servlet container, and to develop
-or extend it requires a Java SDK, a copy of Sun's JMS 1.1 library
-(jms.jar) and a number of well-known open-source Java tools.
+HJB is a Java Servlet.  It runs in a servlet container; and to develop
+or extend it requires 
 
-Running the servlet requires a Java runtime environment, a servlet
-container, jms.jar and the jar(s) specific to the messaging provider.
+ * a Java SDK, 
+
+ * a copy of Sun's JMS 1.1 library (jms.jar) and
+
+ * a number of well-known open-source Java tools.
+
+Running the HJB servlet requires 
+
+ * a Java runtime environment, 
+
+ * a servlet container, 
+
+ * jms.jar and 
+
+ * the JMS jars specific to the messaging provider you want to access.
 
 
 Required
@@ -73,7 +85,7 @@ Most of HJB development has been performed using the `Eclipse
 SDK`_. The Eclipse project file and settings are included in the
 subversion repository.
 
-.. _Subversion access: ./repository.rst
+.. _Subversion access: ./repository.html
 
 .. _Ant: http://ant.apache.org
 

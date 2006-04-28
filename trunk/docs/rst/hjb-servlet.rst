@@ -2,10 +2,10 @@
 HJB Servlet
 ===========
 
-HJB Servlet is the access point for HJB requests, and acts as a HTTP
+HJB Servlet is the access point for HJB requests - it acts as a HTTP
 gateway server for JMS providers.
 
-Its plays several roles:
+It plays several roles:
 
 * `Command dispatch`_
 
@@ -18,7 +18,7 @@ Command Dispatch
 ----------------
 
 HJB Servlet handles POST, GET and DELETE requests if they match
-specific URL patterns (see the `master command list`_ for all the URL
+specific URL patterns (see the `JMS command list`_ for all the URL
 patterns).
 
 * On receiving a matching request, if the request URLs does not map to
@@ -60,8 +60,7 @@ This leads to the URI space in the table below. Note that these URIs
 denote the *conceptual* location of a JMS object in the the HJB
 runtime.  They will not necessarily be URLs that respond to an HTTP
 request - in general, HJB's behaviour is implemented by sending
-requests to child paths of the these URIs (cf. see the `master command
-list`_).
+requests to child paths of the these URIs (cf. `JMS command list`_).
 
 .. class:: display-items
 
@@ -97,5 +96,5 @@ Providers that have been configured, so that they do not need to
 re-registered each time the HJB servlet is restarted.  This feature is
 not implemented yet.
 
-.. _master command list: ../command-list.html
-.. _JMS commands: ./command-dispatch.rst
+.. _JMS command list: ./command-list.html
+.. _JMS commands: ./command-dispatch.html

@@ -21,7 +21,7 @@ This POST request creates a new JMS Session.  The command
 * can create Sessions that are either transacted or not transacted,
   and use a specific acknowledgement mode, depending on whether the
   necessary parameters are present in the request. See [JMSSpec]_ for
-  details of the expected values of thses parameters.
+  details of the expected values of these parameters.
 
 * returns the URI of the created session.
 

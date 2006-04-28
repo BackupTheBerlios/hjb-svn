@@ -19,7 +19,8 @@ connection with the specified URI.  This command
 * is idempotent, i.e, it can be sent more than once to the same URI,
   and will return the same results.
 
-* returns a message containing the metadata as a list of key-value
-  pairs, in the same format as is used to display HJB message headers.
+* returns a HTTP response containing the metadata as a list of
+  key-value pairs, in the same format as is used to display HJB
+  message headers.
 
 .. _back to commands: ./command-list.html

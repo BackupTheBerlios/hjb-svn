@@ -6,8 +6,8 @@ What are they?
 
 JMS Session objects are the actual java class instances used to send
 and receive messages by a JMS messaging application like HJB.  They
-are created by a JMS Session instance. The four distinct types
-supported by HJB are
+are created by a JMS Session instance. The four distinct JMS types
+are all supported by HJB; they are
 
 * `Message Consumers`_
 
@@ -21,16 +21,14 @@ supported by HJB are
 Message Consumers
 -----------------
 
-What are they?
-++++++++++++++
 
 A *Message Consumer* is used to receive messages from a Destination
-([JMSSpec]_).
+(see [JMSSpec]_ for a full description of Message Consumers).
 
 Message Consumers in HJB
 ++++++++++++++++++++++++
 
-At runtime in HJB, each Message Consumer
+In HJB, each Message Consumer
 
 * is represented by a HTTP resource whose URL is a child URL of the
   the session used to create it.
@@ -58,16 +56,13 @@ At runtime in HJB, each Message Consumer
 Message Producers
 -----------------
 
-What are they?
-++++++++++++++
-
-A *Message Producer* is used to send messages to a Destination
-([JMSSpec]_).
+A *Message Producer* is used to send messages to a Destination (see
+[JMSSpec]_ for a full description of Message Producers).
 
 Message Producers in HJB
 ++++++++++++++++++++++++
 
-At runtime in HJB, each Message Producer
+In HJB, each Message Producer
 
 * is represented by a HTTP resource whose URL is a child URL of the
   the session used to create it.
@@ -91,9 +86,6 @@ At runtime in HJB, each Message Producer
 Durable Subscribers
 -------------------
 
-What are they?
-++++++++++++++
-
 A *Durable Subscriber* is used to receive messages from a Topic when
 it is necessary for all messages received on that Topic to be
 received.  A Topic is a Destination specific to the Publish/Subscribe
@@ -105,7 +97,7 @@ two messaging domains.
 Durable Subscribers in HJB
 ++++++++++++++++++++++++++
 
-At runtime in HJB, each Durable Subscriber
+In HJB, each Durable Subscriber
 
 * is represented by a HTTP resource whose URL is a child URL of the
   session used to create it.
@@ -132,9 +124,6 @@ At runtime in HJB, each Durable Subscriber
 Queue Browsers
 --------------
 
-What are they?
-++++++++++++++
-
 A *Queue Browser* is used to look at messages on a Queue without
 retrieving them.  A Queue is a Destination specific to the
 Point-To-Point messaging domain; Queues always retain messages until a
@@ -145,7 +134,7 @@ two messaging domains.
 Queue Browsers in HJB
 +++++++++++++++++++++
 
-At runtime in HJB, each Durable Subscriber
+In HJB, each Durable Subscriber
 
 * is represented by a HTTP resource whose URL is a child URL of the
   session used to create it.
