@@ -18,4 +18,4 @@ This command
   after the first successful attempt, HJB ignores subsequent
   invocations.
 
-.. _back to commands: ./index.html
+.. _back to commands: ./command-list.html

@@ -1,3 +1,4 @@
+===========
 HJB Servlet
 ===========
 
@@ -96,5 +97,5 @@ Providers that have been configured, so that they do not need to
 re-registered each time the HJB servlet is restarted.  This feature is
 not implemented yet.
 
-.. _master command list: ../supported-commands/index.html
+.. _master command list: ../command-list.html
 .. _JMS commands: ./command-dispatch.rst

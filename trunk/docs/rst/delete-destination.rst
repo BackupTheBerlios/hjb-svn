@@ -16,4 +16,4 @@ specified jndi-key from the HJB runtime.  This command
 * is idempotent, i.e., it can be invoked multiples times - if the
   destination is no longer registered, the command is ignored.
 
-.. _back to commands: ./index.html
+.. _back to commands: ./command-list.html

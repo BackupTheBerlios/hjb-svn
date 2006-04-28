@@ -28,7 +28,7 @@ with the specified URI from the HJB runtime. This command
 * can be invoked multiples times - if the connection factory is no
   longer registered, the command is ignored.
 
-.. _back to commands: ./index.html
+.. _back to commands: ./command-list.html
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_
 

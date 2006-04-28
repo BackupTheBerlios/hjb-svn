@@ -29,6 +29,6 @@ specified URI.  This command
 * is idempotent and can be invoked multiples times - if the provider
   is no longer present, the command is ignored.
 
-.. _back to commands: ./index.html
+.. _back to commands: ./command-list.html
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_

@@ -7,7 +7,6 @@ Mission
 
 HJB provides access to JMS resources via HTTP.
 
-
 Scope
 -----
 

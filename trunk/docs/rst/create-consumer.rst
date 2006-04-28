@@ -35,6 +35,6 @@ JMS API with parameters derived from the request.  The command
 
 See [JMSSpec]_ for further information on creating JMS Consumers.
 
-.. _back to commands: ./index.html
+.. _back to commands: ./command-list.html
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_

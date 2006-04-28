@@ -4,33 +4,29 @@ JMS Providers and Administered Objects
 JMS Providers
 -------------
 
-What is a Provider?
-+++++++++++++++++++
-
 A *JMS Provider* is a messaging system that implements the JMS API
-(see [JMSSpec]_).  A messaging system vendor provides access to the
-Provider by means of a Java library, packaged as a set of one or more
-library jars.  JMS programs make use of a JMS Provider's services to
-create and process messages.
+(see [JMSSpec]_).  From Java, the Provider is accessed by means of a
+Java library, packaged in one or more library jars.  JMS programs make
+use of a JMS Provider's services to create and process messages.
 
 Often it is possible for JMS programs to access a Provider using
 vendor-specific APIs included in a vendor's library jars. However,
-this approach is not portable - the portable approach is to access all
-Provider objects via JNDI.  Vendors support this by including custom
-JNDI context implementations in their library jars.  In a way these
-custom JNDI contexts *define* the different Providers, as different
-providers have different custom JNDI contexts.
+this approach is external to JMS and not portable.  The portable
+approach is to access all Provider objects via JNDI.  Vendors support
+this by including custom JNDI context implementations in their library
+jars.  In a way these custom JNDI contexts *define* the different
+Providers, as different providers have different custom JNDI contexts.
 
 Providers in HJB
 ++++++++++++++++
 
-HJB *always* accesses the Provider using JNDI. JNDI allows the
+HJB *always* accesses the Provider using JNDI.  JNDI allows the
 provider's initial context to be configured using a hashtable of
-simple type values; HJB allows these values to be supplied in a HTTP
+native type values; HJB allows these values to be supplied in a HTTP
 requests, so the presence of vendor's library jars on the classpath is
 HJB's only dependency on any given vendor.
 
-At runtime in HJB, each Provider
+In HJB, each Provider
 
 * has a unique name (the name has the same constraints a valid java
   identifier).
@@ -53,9 +49,6 @@ At runtime in HJB, each Provider
 
 JMS Administered Objects
 ------------------------
-
-What are they?
-++++++++++++++
 
 A JMS *Administered Object* represents the configurable resources
 hosted by a JMS Provider that are used by a message application.
@@ -80,7 +73,7 @@ the object using JNDI.  That is what HJB does.
 Administered Objects in HJB
 +++++++++++++++++++++++++++
 
-At runtime in HJB, each Administered Object
+In HJB, each Administered Object
 
 * is represented by a HTTP resource whose URL is the child URL
   obtained by combining the Provider's resource name and the actual

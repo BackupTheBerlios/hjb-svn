@@ -46,7 +46,7 @@ Consult [JMSSpec]_ for further information on sending JMS messages,
 particularly about the use of the various optional arguments to the
 command.
 
-.. _back to commands: ./index.html
-.. _message translation: ../detailed-design/message-translation.html
+.. _back to commands: ./command-list.html
+.. _message translation: ./message-translation.html
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_

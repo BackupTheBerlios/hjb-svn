@@ -1,15 +1,13 @@
+============================
 JMS Connections and Sessions
 ============================
 
 JMS Connections
 ---------------
 
-What are they?
-++++++++++++++
-
 A *JMS Connection* represents an instance of a transport endpoint that
 a Provider uses for messaging.  JMS applications create them using a
-ConnectionFactory . They are used to create `JMS Sessions`_ (see
+ConnectionFactory . They are subsequently used to create `JMS Sessions`_ (see
 [JMSSpec]_ for further information).
 
 Connections in HJB
@@ -23,12 +21,11 @@ In HJB, each Connection
 * is created by sending a HTTP POST message to the appropriate child URL
   of a connection-factory URL.
 
-* can accept logon identification data on creation as parameters in
+* can accept logon credentials on creation as parameters in
   the creating HTTP POST request.
 
 * has a URL that includes its creation index. This is the number of
-  connections that had been created by the connection factory when the
-  connection was created.
+  connections that had been created by the connection factory prior to this one.
 
 * can be stopped, started and removed by sending HTTP POST/GET requests
   to the appropriate child URL of the Connection URL.
@@ -43,9 +40,6 @@ In HJB, each Connection
 
 JMS Sessions
 ------------
-
-What are they?
-++++++++++++++
 
 A JMS *Session* represents a single-threaded context in which messages
 are sent and/or received. They are created from `JMS Connections`_,
@@ -69,7 +63,7 @@ In HJB, each JMS Session
 * can be created either 'transacted' or not 'transacted', and with a
   specific acknowledgement mode by including these values as
   parameters in the creating POST request; these default to 'not
-  transacted' with 'auto-acknowledgement'.
+  transacted' with 'auto-acknowledgement'. ([JMSSpec]_ explains these terms in more detail)
 
 * has a URL that it includes its creation index. This is the number of
   other sessions that had been created by the connection prior to this

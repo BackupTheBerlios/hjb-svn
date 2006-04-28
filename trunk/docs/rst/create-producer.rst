@@ -45,6 +45,6 @@ Consult [JMSSpec]_ for further information on creating JMS Producers,
 particularly about the meaning of the various optional arguments to
 the command.
 
-.. _back to commands: ./index.html
+.. _back to commands: ./command-list.html
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_

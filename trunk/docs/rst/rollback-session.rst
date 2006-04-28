@@ -18,4 +18,4 @@ URI.  This command
 
 * is ignored by sessions that are not transacted.
 
-.. _back to commands: ./index.html
+.. _back to commands: ./command-list.html

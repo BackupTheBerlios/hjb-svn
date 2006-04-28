@@ -16,4 +16,4 @@ command
 * can be sent more than once to the same URI.  If the connection is
   already stopped, the request is ignored.
 
-.. _back to commands: ./index.html
+.. _back to commands: ./command-list.html

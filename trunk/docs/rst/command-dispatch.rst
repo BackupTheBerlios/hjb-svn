@@ -1,3 +1,4 @@
+================
 Command Dispatch
 ================
 
@@ -7,16 +8,16 @@ JMS Commands
 The JMS API defines several interfaces and classes.  These types
 contain various methods, each of which specifies it own set of
 arguments. JMS vendors typically implement most of this API, though
-it has some optional parts that vendors are not obliged to support.
+it has optional parts that vendors are not obliged to support.
 
 Some JMS methods imply specific timing constraints, others must be run
 on specific threads at specific points in their lifecycle.
 
-HJB attempts support as much of the non-optional JMS API as possible.
+HJB attempts to support as much of the non-optional JMS API as possible.
 To allow the methods in the JMS API to invoked via HTTP in a uniform
-fashion, and to support additional functional constraints on some of
+fashion, and to support additional operational constraints on some of
 the API methods, HJB decouples invocation of the JMS API methods from
-the processing the HTTP request using *JMSCommands*.
+the processing of the HTTP request using *JMSCommands*.
 
 JMS Commands
 
@@ -43,7 +44,7 @@ JMS Commands
   required by JMS Sessions once message processing begins, see
   [JMSSpec]_).
 
-* are an instance of the Command Pattern (cf [DesignPatterns]_).
+* are an example of using the Command Pattern (cf [DesignPatterns]_).
 
 
 JMS Command Generators
@@ -59,19 +60,19 @@ Generators. The Generator
 * determines whether a specified URL is a match for its associated JMS
   Command.
 
-* constructs the JMS Command by 
+* constructs a JMS Command by 
 
-  - finding any JMS objects it references.
+  - finds any JMS objects it references.
 
-  - collecting any invocation parameters from the HTTP request.
+  - collects any command invocation parameters from the HTTP request.
 
-  - uses JMS objects in the HJB runtime and invocation parameters to
+  - uses the JMS objects and invocation parameters to
     create a new JMSCommand instance.
 
 * determines the thread on which the command should be executed.
 
-* once the JMS Command is executed, it is used to construct the HTTP
-  response representing the state of the executed command.
+* once the JMS Command is executed, is used to construct the HTTP
+  response containing the status and result of the executed command.
 
 HJBServlet and Command Dispatch
 -------------------------------
@@ -92,7 +93,7 @@ together. It
   specific execution thread.
 
 * once execution is complete, it uses the Command Generator to send a
-  response based on the final state of the Command.
+  response based on the final stateOB of the Command.
 
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_

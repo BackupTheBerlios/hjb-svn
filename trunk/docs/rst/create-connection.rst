@@ -23,4 +23,4 @@ This POST request creates a new, stopped JMS Connection.  The command
 
 * returns the URI of the created connection
 
-.. _back to commands: ./index.html
+.. _back to commands: ./command-list.html

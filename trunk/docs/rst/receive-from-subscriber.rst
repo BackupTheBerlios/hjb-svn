@@ -22,5 +22,5 @@ described in `message translation`_.  The command
 
 * on timing out, the response has a HTTP status of *404 NOT FOUND*
 
-.. _back to commands: ./index.html
+.. _back to commands: ./command-list.html
 .. _message translation: ../detailed-design/message-translation.html

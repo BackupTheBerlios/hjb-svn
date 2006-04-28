@@ -22,4 +22,4 @@ connection with the specified URI.  This command
 * returns a message containing the metadata as a list of key-value
   pairs, in the same format as is used to display HJB message headers.
 
-.. _back to commands: ./index.html
+.. _back to commands: ./command-list.html
