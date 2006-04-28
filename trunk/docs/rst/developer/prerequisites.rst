@@ -28,9 +28,9 @@ available.
 Ant 1.6.5 or later
 ******************
 
-The HJB project is built, tested and deployed using `Ant`. Download it
+The HJB project is built, tested and deployed using `Ant`_. Download it
 and set it up as described on the `ant website installation
-page`. Note that `Ant` is required even with the binary-only HJB
+page`_. Note that `Ant`_ is required even with the binary-only HJB
 distribution, to support a number of deployment related targets.    
 
 Library Jars
@@ -39,7 +39,7 @@ Library Jars
 Most of the jars required for developing/extending HJB are included in
 the source distribution or via anonymous SVN.  The only one not
 present is jms.jar, which cannot be distributed with HJB.  It can be
-downloaded from the `Sun website`.
+downloaded from the `Sun website`_.
 
 For HJB to communicate with a particular vendors's JMS provider
 requires the vendor's JMS library jars.  The vendor's documentataion
@@ -55,7 +55,7 @@ Servlet Container
 
 HJB can be deployed against any servlet container, and there are a
 quite of few good ones available! During development, it was tested
-using the excellent open-source `Tomcat` servlet container.
+using the excellent open-source `Tomcat`_ servlet container.
 
 Optional
 --------
@@ -64,13 +64,13 @@ Subversion
 **********
 
 The latest HJB source can be retrieved and viewed via anonymous
-`Subversion access`.
+`Subversion access`_.
 
 Eclipse
 *******
 
 Most of HJB development has been performed using the `Eclipse
-SDK`. The Eclipse project file and settings are included in the
+SDK`_. The Eclipse project file and settings are included in the
 subversion repository.
 
 .. _Subversion access: ./repository.rst

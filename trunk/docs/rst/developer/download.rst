@@ -5,11 +5,11 @@ Downloads
 HJB 0.8 Beta
 ------------
 
- * Download the HJB `binary distribution`.
+ * Download the HJB `binary distribution`_.
 
- * Download the full HJB `source disribution`.
+ * Download the full HJB `source distribution`_.
  
- * Download `javadocs`.
+ * Download `javadocs`_.
 
 .. _binary distribution: http://hjb.tigris.org/to/be/done
 
