@@ -13,7 +13,7 @@ if there is something that is missing.
 
 * `Design notes`_
 
-* `Javadocs (online)`_
+* Javadocs (online) *20060428 disabled*
 
 * `Javadocs (download)`_ 
 
