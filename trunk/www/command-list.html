@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>HJB JMS Commands</title>
+    <link href="hjb_v1.css" type="text/css" rel="stylesheet">
+    </link>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    </meta>
+<meta content="Docutils 0.3.7: http://docutils.sourceforge.net/" name="generator">
+</meta>
+  </head>
+  <body align="center">
+    <div class="outer-body">
+    <div class="hjb-title">
+      <h2 class="hjb-title">HJB (HTTP JMS Bridge)</h2>
+     </div>
+   <div class="navigation-bar">
+     <table align="center" class="navigation-bar">
+       <tbody>
+	 <tr>
+	   <td>
+	   <a href="index.html">Home</a></td>
+	   <td>
+	   <a href="download.html">Download</a></td>
+	   <td>
+	   <a href="doc.html">Documentation</a></td>
+	   <td>
+	   <a href="detailed-design.html">Design</a></td>
+	   <td>
+	   <a href="mailto:users@hjb.tigris.org">Support</a></td>
+	 </tr>
+       </tbody>
+     </table>
+   </div>
+   
+   <div>
+    
+     <div class="inner-body">
+      <h2>HJB JMS Commands</h2>
+      <p>HJB support the JMS Commands in table below, matching them to the specified URLs
+and HTTP methods</p>
+<blockquote>
+</blockquote>
+<table border="1" class="display-items docutils">
+<colgroup>
+<col width="38%">
+</col>
+<col width="62%">
+</col>
+</colgroup>
+<thead valign="bottom">
+<tr>
+<th>JMS Command (method)</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>
+<a href="./register-provider.html" class="reference">Register Provider</a> (<em>P</em>)</td>
+<td>
+<em>hjb-root-uri</em>/<em>provider-name</em>/register</td>
+</tr>
+<tr>
+<td>
+<a href="./delete-provider.html" class="reference">Delete Provider</a> (<em>D</em>)</td>
+<td>
+<em>hjb-root-uri</em>/<em>provider-name</em></td>
+</tr>
+<tr>
+<td>
+<a href="./register-destination.html" class="reference">Register Destination</a> (<em>G</em>)</td>
+<td>
+<em>provider-uri</em>/<em>jndi-key</em>/register-destination</td>
+</tr>
+<tr>
+<td>
+<a href="./delete-destination.html" class="reference">Delete Destination</a> (<em>D</em>)</td>
+<td>
+<em>provider-uri</em>/<em>destination-jndi-key</em></td>
+</tr>
+<tr>
+<td>
+<a href="./register-connection-factory.html" class="reference">Register Connection Factory</a>
+(<em>G</em>)</td>
+<td>
+<em>provider-uri</em>/<em>jndi-key</em>/register-connection-factory</td>
+</tr>
+<tr>
+<td>
+<a href="./delete-connection-factory.html" class="reference">Delete Connection Factory</a> (<em>D</em>)</td>
+<td>
+<em>provider-uri</em>/<em>factory-jndi-key</em></td>
+</tr>
+<tr>
+<td>
+<a href="./create-connection.html" class="reference">Create Connection</a> (<em>P</em>)</td>
+<td>
+<em>factory-uri</em>/create</td>
+</tr>
+<tr>
+<td>
+<a href="./stop-connection.html" class="reference">Stop Connection</a> (<em>G</em>)</td>
+<td>
+<em>factory-uri</em>/connection-<em>nnn</em>/stop</td>
+</tr>
+<tr>
+<td>
+<a href="./start-connection.html" class="reference">Start Connection</a> (<em>G</em>)</td>
+<td>
+<em>factory-uri</em>/connection-<em>nnn</em>/start</td>
+</tr>
+<tr>
+<td>
+<a href="./read-connection-metadata.html" class="reference">Read Connection MetaData</a> (<em>G</em>)</td>
+<td>
+<em>factory-uri</em>/connection-<em>nnn</em>/metadata</td>
+</tr>
+<tr>
+<td>
+<a href="./delete-connection.html" class="reference">Delete Connection</a> (<em>D</em>)</td>
+<td>
+<em>factory-uri</em>/connection-<em>nnn</em></td>
+</tr>
+<tr>
+<td>
+<a href="./create-session.html" class="reference">Create Session</a> (<em>P</em>)</td>
+<td>
+<em>connection-uri</em>/create</td>
+</tr>
+<tr>
+<td>
+<a href="./rollback-session.html" class="reference">Rollback Session</a> (<em>G</em>)</td>
+<td>
+<em>connection-uri</em>/session-<em>nnn</em>/rollback</td>
+</tr>
+<tr>
+<td>
+<a href="./commit-session.html" class="reference">Commit Session</a> (<em>P</em>)</td>
+<td>
+<em>connection-uri</em>/session-<em>nnn</em>/commit</td>
+</tr>
+<tr>
+<td>
+<a href="./delete-session.html" class="reference">Delete Session</a> (<em>D</em>)</td>
+<td>
+<em>connection-uri</em>/session-<em>nnn</em></td>
+</tr>
+<tr>
+<td>
+<a href="./create-browser.html" class="reference">Create Browser</a> (<em>P</em>)</td>
+<td>
+<em>session-uri</em>/create-browser</td>
+</tr>
+<tr>
+<td>
+<a href="./view-queue.html" class="reference">View Queue</a> (<em>P</em>)</td>
+<td>
+<em>session-uri</em>/browser-<em>nnn</em>/view</td>
+</tr>
+<tr>
+<td>
+<a href="./create-consumer.html" class="reference">Create Consumer</a> (<em>P</em>)</td>
+<td>
+<em>session-uri</em>/create-consumer</td>
+</tr>
+<tr>
+<td>
+<a href="./receive-from-consumer.html" class="reference">Receive From Consumer</a> (<em>P</em>)</td>
+<td>
+<em>session-uri</em>/consumer-<em>nnn</em>/receive</td>
+</tr>
+<tr>
+<td>
+<a href="./create-subscriber.html" class="reference">Create Subscriber</a> (<em>P</em>)</td>
+<td>
+<em>session-uri</em>/create-durable-subscriber</td>
+</tr>
+<tr>
+<td>
+<a href="./receive-from-subscriber.html" class="reference">Receive From Subscriber</a> (<em>P</em>)</td>
+<td>
+<em>session-uri</em>/subscriber-<em>nnn</em>/receive</td>
+</tr>
+<tr>
+<td>
+<a href="./create-producer.html" class="reference">Create Producer</a> (<em>P</em>)</td>
+<td>
+<em>session-uri</em>/create-producer</td>
+</tr>
+<tr>
+<td>
+<a href="./send-hjb-message.html" class="reference">Send HJB Message</a> (<em>P</em>)</td>
+<td>
+<em>session-uri</em>/producer-<em>nnn</em>/send</td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils">
+</hr>
+<p>Key</p>
+<p>Methods</p>
+<ul class="simple">
+<li>
+<em>P</em> is POST</li>
+<li>
+<em>G</em> is GET</li>
+<li>
+<em>D</em> is DELETE</li>
+</ul>
+<p>URIs</p>
+<ul class="simple">
+<li>
+<em>hjb-root-uri</em>   is as configured on the servlet container</li>
+<li>
+<em>provider-uri</em>   is <em>hjb-root-uri</em>/<em>provider-name</em></li>
+<li>
+<em>factory-uri</em>    is <em>provider-uri</em>/<em>factory-jndi-key</em></li>
+<li>
+<em>connection-uri</em> is <em>factory-uri</em>/connection-<em>nnn</em></li>
+<li>
+<em>session-uri</em>    is <em>connection-uri</em>/session-<em>nnn</em></li>
+</ul>
+      <hr class="docutils footer">
+      </hr>
+<div class="footer">
+<a href="command-list.rst" class="reference">View document source</a>.
+Generated by <a href="http://docutils.sourceforge.net/" class="reference">Docutils</a> from <a href="http://docutils.sourceforge.net/rst.html" class="reference">reStructuredText</a> source.
+</div>
+    </div>
+  </div>
+   </div>
+   
+  </body>
+</html>

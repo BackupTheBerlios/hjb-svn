@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Encoding/Decoding</title>
+    <link href="hjb_v1.css" type="text/css" rel="stylesheet">
+    </link>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    </meta>
+<meta content="Docutils 0.3.7: http://docutils.sourceforge.net/" name="generator">
+</meta>
+  </head>
+  <body align="center">
+    <div class="outer-body">
+    <div class="hjb-title">
+      <h2 class="hjb-title">HJB (HTTP JMS Bridge)</h2>
+     </div>
+   <div class="navigation-bar">
+     <table align="center" class="navigation-bar">
+       <tbody>
+	 <tr>
+	   <td>
+	   <a href="index.html">Home</a></td>
+	   <td>
+	   <a href="download.html">Download</a></td>
+	   <td>
+	   <a href="doc.html">Documentation</a></td>
+	   <td>
+	   <a href="detailed-design.html">Design</a></td>
+	   <td>
+	   <a href="mailto:users@hjb.tigris.org">Support</a></td>
+	 </tr>
+       </tbody>
+     </table>
+   </div>
+   
+   <div>
+    
+     <div class="inner-body">
+      <h2>Encoding/Decoding</h2>
+      <div class="section" id="why-encode-decode">
+<h2>
+<a name="why-encode-decode">Why encode/decode?</a></h2>
+<p>The JMS API gives access to various pieces of data that HJB clients
+might want to use. These include</p>
+<ul class="simple">
+<li>JMS messages themselves, which consist of<ul>
+<li>the message headers</li>
+<li>the message body</li>
+</ul>
+</li>
+<li>the metadata associated with a open JMS connection</li>
+<li>the parameters used to configure a JMS Provider</li>
+</ul>
+<p>HJB uses HTTP, the text-based protocol of the WWW, to ensure that
+it is language-neutral.</p>
+<p>The JMS API is defined in terms of methods that accept Java types, so
+any system that interacts with it needs to handle the data in manner
+that preserves this type information.</p>
+<p>Actually, many JMS API methods actually depend on Java's small set of
+native types, rather than more complex object types, so the task or
+preserving type information does not require the need of complex
+deserialization or marshalling protocol.</p>
+<p>The simplest way to preserve the Java type information in HTTP's text
+messages is to provide a textual mapping for each type in the set of
+native types present in the JMS API.  This approach allows all typed
+data in the JMS API to be encoded as strings in the HTTP requests and
+responses handled by HJB.</p>
+</div>
+<div class="section" id="mapped-types">
+<h2>
+<a name="mapped-types">Mapped Types</a></h2>
+<p>The table below shows how all the native Java types used in the
+various JMS API methods are encoded in HJB.</p>
+<table border="1" class="display-items docutils">
+<colgroup>
+<col width="18%">
+</col>
+<col width="55%">
+</col>
+<col width="27%">
+</col>
+</colgroup>
+<thead valign="bottom">
+<tr>
+<th>Java type</th>
+<th>HJB Encoded form</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr>
+<td>Byte</td>
+<td>(byte <em>like java:Byte.toString()</em>)</td>
+<td>(byte 20)</td>
+</tr>
+<tr>
+<td>Short</td>
+<td>(short <em>like java:Short.toString()</em>)</td>
+<td>(short 23456)</td>
+</tr>
+<tr>
+<td>Character</td>
+<td>(char <em>\uXXXX</em>)</td>
+<td>(char \u0061)</td>
+</tr>
+<tr>
+<td>Integer</td>
+<td>(int <em>like java:Integer.toString()</em>)</td>
+<td>(int 65536)</td>
+</tr>
+<tr>
+<td>Long</td>
+<td>(long <em>like java:Long.toString()</em>)</td>
+<td>(long 200000l)</td>
+</tr>
+<tr>
+<td>Float</td>
+<td>(float <em>like java:Float.toString()</em>)</td>
+<td>(float 1.567E01)</td>
+</tr>
+<tr>
+<td>Double</td>
+<td>(double <em>like java:Double.toString()</em>)</td>
+<td>(double 2678.8704)</td>
+</tr>
+<tr>
+<td>byte[]</td>
+<td>(base64 <em>as base64 encoded bytes</em>)</td>
+<td>(base64 VEVTVA==)</td>
+</tr>
+<tr>
+<td>String</td>
+<td>as is</td>
+<td>foobarbaz</td>
+</tr>
+</tbody>
+</table>
+<p>Note that aside from the null encoding for raw text strings, the
+encodings are simple S-Expressions <a href="#id2" id="id1" name="id1" class="footnote-reference">[1]</a>.  These should be relatively
+simple to parse in any language.</p>
+<table rules="none" frame="void" class="docutils citation" id="jmsspec">
+<colgroup>
+<col class="label">
+</col>
+<col>
+</col>
+</colgroup>
+<tbody valign="top">
+<tr>
+<td class="label">
+<a name="jmsspec">[JMSSpec]</a></td><td><a href="http://java.sun.com/products/jms/docs.html" class="reference">Java Message Service specification 1.1</a></td></tr>
+</tbody>
+</table>
+<table rules="none" frame="void" class="docutils footnote" id="id2">
+<colgroup>
+<col class="label">
+</col>
+<col>
+</col>
+</colgroup>
+<tbody valign="top">
+<tr>
+<td class="label">
+<a href="#id1" class="fn-backref" name="id2">[1]</a></td><td><a href="http://en.wikipedia.org/wiki/S_expression" class="reference">S-Expressions</a></td></tr>
+</tbody>
+</table>
+</div>
+      <hr class="docutils footer">
+      </hr>
+<div class="footer">
+<a href="codec.rst" class="reference">View document source</a>.
+Generated by <a href="http://docutils.sourceforge.net/" class="reference">Docutils</a> from <a href="http://docutils.sourceforge.net/rst.html" class="reference">reStructuredText</a> source.
+</div>
+    </div>
+  </div>
+   </div>
+   
+  </body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>JMS Providers and Administered Objects</title>
+    <link href="hjb_v1.css" type="text/css" rel="stylesheet">
+    </link>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    </meta>
+<meta content="Docutils 0.3.7: http://docutils.sourceforge.net/" name="generator">
+</meta>
+  </head>
+  <body align="center">
+    <div class="outer-body">
+    <div class="hjb-title">
+      <h2 class="hjb-title">HJB (HTTP JMS Bridge)</h2>
+     </div>
+   <div class="navigation-bar">
+     <table align="center" class="navigation-bar">
+       <tbody>
+	 <tr>
+	   <td>
+	   <a href="index.html">Home</a></td>
+	   <td>
+	   <a href="download.html">Download</a></td>
+	   <td>
+	   <a href="doc.html">Documentation</a></td>
+	   <td>
+	   <a href="detailed-design.html">Design</a></td>
+	   <td>
+	   <a href="mailto:users@hjb.tigris.org">Support</a></td>
+	 </tr>
+       </tbody>
+     </table>
+   </div>
+   
+   <div>
+    
+     <div class="inner-body">
+      <h2>JMS Providers and Administered Objects</h2>
+      <div class="section" id="jms-providers">
+<h2>
+<a name="jms-providers">JMS Providers</a></h2>
+<p>A <em>JMS Provider</em> is a messaging system that implements the JMS API
+(see <a href="#jmsspec" id="id1" name="id1" class="citation-reference">[JMSSpec]</a>).  From Java, the Provider is accessed by means of a
+Java library, packaged in one or more library jars.  JMS programs make
+use of a JMS Provider's services to create and process messages.</p>
+<p>Often it is possible for JMS programs to access a Provider using
+vendor-specific APIs included in a vendor's library jars. However,
+this approach is external to JMS and not portable.  The portable
+approach is to access all Provider objects via JNDI.  Vendors support
+this by including custom JNDI context implementations in their library
+jars.  In a way these custom JNDI contexts <em>define</em> the different
+Providers, as different providers have different custom JNDI contexts.</p>
+<div class="section" id="providers-in-hjb">
+<h3>
+<a name="providers-in-hjb">Providers in HJB</a></h3>
+<p>HJB <em>always</em> accesses the Provider using JNDI.  JNDI allows the
+provider's initial context to be configured using a hashtable of
+native type values; HJB allows these values to be supplied in a HTTP
+requests, so the presence of vendor's library jars on the classpath is
+HJB's only dependency on any given vendor.</p>
+<p>In HJB, each Provider</p>
+<ul class="simple">
+<li>has a unique name (the name has the same constraints a valid java
+identifier).</li>
+<li>is represented by a HTTP resource whose URL corresponds to the
+combination of the HJB runtime root URL and its name.</li>
+<li>is registered by sending a HTTP POST request to a registration
+URL. The registration URL is a child URL of the Provider resource
+URL The request's parameters are the values used to initialise the
+Provider's JNDI context.</li>
+<li>is uniquely identified by the combination of the values used to
+create its JNDI environment.</li>
+<li>can be removed from the HJB runtime by sending HTTP DELETE request
+to the Provider's resource URL.  This will have the effect of
+stopping any activity on the Provider's connections, and then
+removing the Provider and any Administered Objects it has created.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="jms-administered-objects">
+<h2>
+<a name="jms-administered-objects">JMS Administered Objects</a></h2>
+<p>A JMS <em>Administered Object</em> represents the configurable resources
+hosted by a JMS Provider that are used by a message application.
+(<a href="#jmsspec" id="id2" name="id2" class="citation-reference">[JMSSpec]</a>).</p>
+<p>There are two kinds of Administered Object:</p>
+<dl class="docutils">
+<dt>Connection Factories</dt>
+<dd>These create connections that the Provider uses as a transport for
+sending messages.</dd>
+<dt>Destinations</dt>
+<dd>These are sources and sinks from/to which messages are sent and
+received.</dd>
+</dl>
+<p>Administered objects are so called because they are typically set up
+by an messaging system administrator.  Often, the library jars
+supplied by a vendor will provide a custom API for gaining access to
+the these objects. However, the portable way of doing this to lookup
+the object using JNDI.  That is what HJB does.</p>
+<div class="section" id="administered-objects-in-hjb">
+<h3>
+<a name="administered-objects-in-hjb">Administered Objects in HJB</a></h3>
+<p>In HJB, each Administered Object</p>
+<ul class="simple">
+<li>is represented by a HTTP resource whose URL is the child URL
+obtained by combining the Provider's resource name and the actual
+JNDI name of the object.</li>
+<li>is added to the HJB runtime by sending a HTTP POST request to the
+registration URL for the administered object. The two different
+types administered objects have different registration URLs. The
+registration URL is a child URL of the object's resource URL.</li>
+<li>can be removed from the HJB runtime by sending a HTTP DELETE request
+to the resource URL.</li>
+</ul>
+<table rules="none" frame="void" class="docutils citation" id="jmsspec">
+<colgroup>
+<col class="label">
+</col>
+<col>
+</col>
+</colgroup>
+<tbody valign="top">
+<tr>
+<td class="label">
+<a name="jmsspec">[JMSSpec]</a></td><td><em>(<a href="#id1" class="fn-backref">1</a>, <a href="#id2" class="fn-backref">2</a>)</em> <a href="http://java.sun.com/products/jms/docs.html" class="reference">Java Message Service specification 1.1</a></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+      <hr class="docutils footer">
+      </hr>
+<div class="footer">
+<a href="administered-objects.rst" class="reference">View document source</a>.
+Generated by <a href="http://docutils.sourceforge.net/" class="reference">Docutils</a> from <a href="http://docutils.sourceforge.net/rst.html" class="reference">reStructuredText</a> source.
+</div>
+    </div>
+  </div>
+   </div>
+   
+  </body>
+</html>

@@ -45,8 +45,8 @@ Installing HJB
 
 .. _anonymous subversion: http://hjb.tigris.org/source/browse/hjb
 
-.. _downloading: http://hjb.tigris.org/source/to/be/done
+.. _downloading: http://hjb.tigris.org/files/documents/3759/31728/hjb-src-0.8beta.jar
 
-.. _binary archive: http://hjb.tigris.org/to/be/done
+.. _binary archive: http://hjb.tigris.org/files/documents/3759/31728/hjb-bin-0.8beta.jar
 
 .. _HJB client libraries: ./hjb-clients.html

@@ -70,7 +70,7 @@ Related Resources
 * `JMS specification 1.1
   <http://java.sun.com/products/jms/docs.html>`_
 
-* `JMS documentatation downloads"
+* `JMS documentatation downloads
   <http://java.sun.com/products/jms/docs.html>`_
 
 * `Java Servlet specification 2.4

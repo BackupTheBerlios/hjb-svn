@@ -86,6 +86,15 @@
     </javadoc>
   </target>
 
+  <target name="javadoc.to.web" depends="javadoc">
+    <delete failonerror="false">
+      <fileset dir="${javadoc.web.dir}" includes="**/*" />
+    </delete>
+    <copy todir="${javadoc.web.dir}">
+      <fileset dir="${javadoc.dir}"/>
+    </copy>
+  </target>
+
   <target name="dist.main" 
 	  depends="dist.jar, dist.doc, clean" 
 	  description="creates the full source HJB distribution">

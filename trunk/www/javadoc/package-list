@@ -1,0 +1,10 @@
+hjb.http
+hjb.http.cmd
+hjb.jms
+hjb.jms.cmd
+hjb.misc
+hjb.msg
+hjb.msg.codec
+hjb.msg.valuecopiers
+hjb.msg.valuecopiers.mapmessage
+hjb.msg.valuecopiers.streammessage

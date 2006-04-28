@@ -79,8 +79,12 @@ def sitepath_of(filename,
 
 
 def get_stylesheet_path():
-    return abspath(join_path(rst_doc_root, "hjb_v1.css"))
+    return abspath(join_path(site_root, "hjb_v1.css"))
 
+def update_css():
+    original_css_path = abspath(join_path(rst_doc_root, "hjb_v1.css"))
+    site_css_path = abspath(join_path(site_root, "hjb_v1.css"))
+    copy_file(original_css_path, site_css_path)
 
 def parts_of(rst_file):
     """Get the docutils parts map from rst_file."""
@@ -99,6 +103,7 @@ def parts_of(rst_file):
 
 
 def main():
+    update_css()
     generate_site()
 
 
