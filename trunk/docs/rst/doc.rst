@@ -7,7 +7,7 @@ bit behind its development!
 
 However, there is quite bit of it available, and most of the
 information you'll need to get started is here. Please `get in touch`_
-if there is something that is missing.
+if there is something that is missing.  
 
 * `Installation guide`_
 
