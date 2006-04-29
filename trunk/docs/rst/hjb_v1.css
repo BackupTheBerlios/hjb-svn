@@ -143,7 +143,6 @@ table.display-items td, tr, th {
   border-style: groove;
   border-color: black;
   font-size: 14px;
-
 }
 
 table.footnote th, td, tr {
@@ -152,6 +151,11 @@ table.footnote th, td, tr {
 }
 
 table.citation th, td, tr {
+  padding: 0.5em 0.5em 0 0;
+  border-style: none;
+}
+
+table.field-list th, td, tr {
   padding: 0.5em 0.5em 0 0;
   border-style: none;
 }
