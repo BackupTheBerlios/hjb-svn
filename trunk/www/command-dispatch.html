@@ -70,15 +70,17 @@ in the HTTP response, e.g, a received message, or a  retained fault.</li>
 in execution at any time. (This resolves the threading constraint
 required of JMS Sessions once message processing begins as described
 in <a href="#jmsspec" id="id1" name="id1" class="citation-reference">[JMSSpec]</a>).</li>
-<li>are inspired by the Command Pattern (cf <a href="#designpatterns" id="id2" name="id2" class="citation-reference">[DesignPatterns]</a>).</li>
+<li>are inspired by the Command Pattern (cf <a href="#designpatterns" id="id2" name="id2" class="citation-reference">[DesignPatterns]</a>) as known
+its known in good OO circles, or by first-class functions, as its
+known in functional programming!</li>
 </ul>
 </div>
 <div class="section" id="jms-command-generators">
 <h2>
 <a name="jms-command-generators">JMS Command Generators</a></h2>
 <p>If <a href="#jms-commands" class="reference">JMS Commands</a> are the JMS-facing part of the processing of a HTTP
-request by HJB, then <em>JMS Command Generators</em> are the HTTP-facing
-portion.</p>
+request by HJB, then <em>JMS Command Generators</em> are the corresponding
+HTTP-facing part.</p>
 <p>There is a one-one relationship between JMS Commands and JMS Command
 Generators. Each Generator is tightly coupled to the corresponding JMS
 command and</p>

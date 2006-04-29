@@ -46,15 +46,17 @@ JMS Commands
   required of JMS Sessions once message processing begins as described
   in [JMSSpec]_).
 
-* are inspired by the Command Pattern (cf [DesignPatterns]_).
+* are inspired by the Command Pattern (cf [DesignPatterns]_) as known
+  its known in good OO circles, or by first-class functions, as its
+  known in functional programming!
 
 
 JMS Command Generators
 ----------------------
 
 If `JMS Commands`_ are the JMS-facing part of the processing of a HTTP
-request by HJB, then *JMS Command Generators* are the HTTP-facing
-portion.
+request by HJB, then *JMS Command Generators* are the corresponding
+HTTP-facing part.
 
 There is a one-one relationship between JMS Commands and JMS Command
 Generators. Each Generator is tightly coupled to the corresponding JMS

@@ -11,7 +11,7 @@ Receive From Subscriber
 :Returns: A single message from the subscriber.
 
 This POST request obtains a single message from a vendor's messaging
-system via JMS subscriber.  It is received from HJB encoded as
+system via a JMS subscriber.  It is received from HJB encoded as
 described in `message translation`_.  The command
 
 * times out after the specified number of seconds if the timeout
