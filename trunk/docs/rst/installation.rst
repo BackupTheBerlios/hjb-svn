@@ -23,8 +23,8 @@ Installing HJB
   build to generate the WebARchive file.
 
   - Use the distributed file hjb_deploy.properties.template as an
-    example. It is used to produce it contains comments explaining
-    what each property is used for and whether why they are required.
+    example. It contains comments explaining what each property is
+    used for and whether or not they are required.
 
 * If necessary, stop HJB's servlet container.
 
