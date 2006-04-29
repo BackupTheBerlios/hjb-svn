@@ -210,7 +210,7 @@ Map Message
 * The body of the message consists of a line for each name in the
   MapMessage. Each line is as follows:
 
-  - name=value<CR>
+  name=value<CR>
 
   where <CR> is a platform specific line separator.  The map
   values are represented in exactly the same as the way message
@@ -234,7 +234,7 @@ Stream Message
   the order in which it should be written to the message (on
   sending). Each line is as follows:
 
-  - index=value
+  index=value<CR>
 
 * The value of the header field 'hjb.core.jms-message-class' is
 
