@@ -56,15 +56,15 @@ it is language-neutral.</p>
 <p>The JMS API is defined in terms of methods that accept Java types, so
 any system that interacts with it needs to handle the data in manner
 that preserves this type information.</p>
-<p>Actually, many JMS API methods actually depend on Java's small set of
-native types, rather than more complex object types, so the task or
-preserving type information does not require the need of complex
-deserialization or marshalling protocol.</p>
-<p>The simplest way to preserve the Java type information in HTTP's text
-messages is to provide a textual mapping for each type in the set of
-native types present in the JMS API.  This approach allows all typed
-data in the JMS API to be encoded as strings in the HTTP requests and
-responses handled by HJB.</p>
+<p>Actually, many JMS API methods depend on Java's small set of native
+types, rather than more sophisticated Java object types, so the task
+or preserving type information does not require the need of a complex
+object serialization or marshalling protocol.</p>
+<p>The simplest way to preserve the Java type information in HTTP's
+request and response messages is to provide a textual mapping for each
+type in the set of native types present in the JMS API.  This allows
+all typed data in the JMS API to be transmitted as text in the HTTP
+requests and responses.</p>
 </div>
 <div class="section" id="mapped-types">
 <h2>
@@ -135,9 +135,9 @@ various JMS API methods are encoded in HJB.</p>
 </tr>
 </tbody>
 </table>
-<p>Note that aside from the null encoding for raw text strings, the
-encodings are simple S-Expressions <a href="#id2" id="id1" name="id1" class="footnote-reference">[1]</a>.  These should be relatively
-simple to parse in any language.</p>
+<p>Note that aside from the <em>null</em> encoding of Strings, the encodings are
+simple S-Expressions <a href="#id2" id="id1" name="id1" class="footnote-reference">[1]</a>.  These should be relatively simple to parse
+in any language.</p>
 <table rules="none" frame="void" class="docutils citation" id="jmsspec">
 <colgroup>
 <col class="label">

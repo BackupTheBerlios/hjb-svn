@@ -25,16 +25,16 @@ The JMS API is defined in terms of methods that accept Java types, so
 any system that interacts with it needs to handle the data in manner
 that preserves this type information. 
 
-Actually, many JMS API methods actually depend on Java's small set of
-native types, rather than more complex object types, so the task or
-preserving type information does not require the need of complex
-deserialization or marshalling protocol.
+Actually, many JMS API methods depend on Java's small set of native
+types, rather than more sophisticated Java object types, so the task
+or preserving type information does not require the need of a complex
+object serialization or marshalling protocol.
 
-The simplest way to preserve the Java type information in HTTP's text
-messages is to provide a textual mapping for each type in the set of
-native types present in the JMS API.  This approach allows all typed
-data in the JMS API to be encoded as strings in the HTTP requests and
-responses handled by HJB.
+The simplest way to preserve the Java type information in HTTP's
+request and response messages is to provide a textual mapping for each
+type in the set of native types present in the JMS API.  This allows
+all typed data in the JMS API to be transmitted as text in the HTTP
+requests and responses.
 
 Mapped Types
 ------------
@@ -66,9 +66,9 @@ various JMS API methods are encoded in HJB.
 |String       |as is                                  |foobarbaz          |
 +-------------+---------------------------------------+-------------------+
 
-Note that aside from the null encoding for raw text strings, the
-encodings are simple S-Expressions [#]_.  These should be relatively
-simple to parse in any language.
+Note that aside from the *null* encoding of Strings, the encodings are
+simple S-Expressions [#]_.  These should be relatively simple to parse
+in any language.
 
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_
