@@ -39,7 +39,7 @@
       <h2>HJB's Design Overview</h2>
       <p>So, how does HJB work?</p>
 <ul class="simple">
-<li>HJB is Java Servlet called the <a href="./hjb-servlet.html" class="reference">HJBServlet</a>.</li>
+<li>HJB is a Java Servlet called the <a href="./hjb-servlet.html" class="reference">HJBServlet</a>.</li>
 <li>
 <a href="./hjb-servlet.html" class="reference">HJBServlet</a> provides access to JMS objects, in particular<ul>
 <li>
@@ -57,8 +57,8 @@ them as <a href="./command-list.html" class="reference">JMS commands</a>.  Some 
 administration commands, others send and receive <a href="./message-translation.html" class="reference">JMS messages</a>.</li>
 <li>HJB achieves language-neutrality by <a href="./codec.html" class="reference">converting</a> between the Java
 native types that the JMS API uses and a simple textual
-representation that preserves the type information that is suitable
-for transmission via HTTP.</li>
+representation suitable for transmission via HTTP that preserves
+Java type information.</li>
 </ul>
 <p>There is not much to it really ;-)</p>
       <hr class="docutils footer">

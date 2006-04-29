@@ -22,7 +22,7 @@ from kid import Template
 rst_doc_root = "../docs/rst"
 site_root = "../www"
 
-main_page_template = "sitepage.html"
+main_page_template = "sitepage.kid"
 _template = Template(file=main_page_template)
 
 def generate_site(doc_root=rst_doc_root):

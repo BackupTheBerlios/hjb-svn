@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <?python?>
-<html xmlns:py='http://purl.org/kid/ns#' py:layout="'layout.html'">
+<html xmlns:py='http://purl.org/kid/ns#' py:layout="'layout.kid'">
 
   <link py:def="page_css" py:replace="XML(rst_stylesheet)"/>
   <meta py:def="page_meta" py:replace="XML(rst_meta)"/>
