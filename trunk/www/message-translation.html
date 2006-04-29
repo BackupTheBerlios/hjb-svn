@@ -325,9 +325,7 @@ S-Expression form HJB uses to represent byte arrays.</li>
 <li>
 <p class="first">The body of the message consists of a line for each name in the
 MapMessage. Each line is as follows:</p>
-<ul class="simple">
-<li>name=value&lt;CR></li>
-</ul>
+<p>name=value&lt;CR></p>
 <p>where &lt;CR> is a platform specific line separator.  The map
 values are represented in exactly the same as the way message
 headers are written.</p>
@@ -343,18 +341,20 @@ headers are written.</p>
 <div class="message-desc section" id="stream-message">
 <h2>
 <a name="stream-message">Stream Message</a></h2>
-<ul class="simple">
-<li>The body of the message consists of a line for each value read from
+<ul>
+<li>
+<p class="first">The body of the message consists of a line for each value read from
 or written to the Stream Message.  Each line contains an index and
 an encoded value.  The encoded value is some data that is an actual
 part of the Stream Message.  The index represents the order in which
 its corresponding value was read from the message (on receiving) or
 the order in which it should be written to the message (on
-sending). Each line is as follows:<ul>
-<li>index=value</li>
-</ul>
+sending). Each line is as follows:</p>
+<p>index=value&lt;CR></p>
 </li>
-<li>The value of the header field 'hjb.core.jms-message-class' is<ul>
+<li>
+<p class="first">The value of the header field 'hjb.core.jms-message-class' is</p>
+<ul class="simple">
 <li>javax.jms.StreamMessage</li>
 </ul>
 </li>
