@@ -144,14 +144,13 @@ fashion.
 
     + javax.jmx.BytesMessage
 
-* On both sending and receiving, the HJB message **must** include a
-  specific name parameter (or field) that contains the version of the
-  HJB message.
+* On both sending and receiving, the HJB message **must** include the
+  version parameter and value HJB message.
 
-  - the field's name is *hjb.core.version*
+  - the version parameter name is *hjb.core.version*
 
-  - the field's value for HJB messages as defined in this document is
-    *1.0*
+  - the version parameter value for HJB messages as defined in this
+    document is *1.0*
 
 Message Bodies
 --------------
