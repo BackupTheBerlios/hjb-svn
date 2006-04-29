@@ -72,90 +72,92 @@ fashion.
   
 * The optional application-specific properties are mapped in the same
   way.  They are additional parameters in the HTTP POST request when
-  sending a message, and field-assignment lines in a HTTP response.
-  No special transformation is required of the parameter/field names.
+  sending a message, and 'field-assignment' lines in a HTTP response.
+  No special transformation is required of the application property
+  names.
 
 * The Java type of the message attributes and properties is preserved
-  by ensuring that the values are encoded using HJB's text codec
-  rules.
+  by ensuring that the values are `HJB-encoded`_.
 
 * If a message attribute is encoded as the wrong type, it is ignored.
 
 * When sending messages, HJB clients *must* put attribute values and
-  application-specific properties in the HTTP POST request as
-  form-encoded parameters. HJB decodes the parameters and places them
-  into a real JMS message, then sends it.
+  application-specific properties in the HTTP POST request as HTTP
+  form-encoded parameters whose values are `HJB-encoded`_. HJB decodes
+  the parameters, places them into a real JMS message, then sends
+  it.
 
 * On receiving messages, the JMS message attributes, its optional
   properties and the mmessage body are all included in the response as
   text. The message attributes and properties are **not** mapped to
   HTTP response headers.  The message attributes, properties and the
-  actual returned message are organised in a simple textual format
-  viz:
+  actual returned message are organised in a simple textual format, as
+  follows:
 
   - The message is in two sections. The message attributes and
     properties form the first section of the output, the body of the
     message forms the other section. The two sections are separated by
     a
 
-    + %<CR> 
+    %<CR> 
 
     where <CR> is a platform specific line separator.
 
   - The message attributes and optional properties are placed on
     sequential lines. Each line consists of
 
-    + name=value
+    name=value
 
     where 'name' is the property/attribute name and 'value' is its
     value.
 
-  - The body of the message depends on the message type. This is
-    described below.
-
-  - On both sending and receiving, the HJB message **must** include a
-    specific name parameter (or field) that contains the version of
-    the HJB message.
-
-    + the name of this required field is *hjb.core.version*
-
-    + the value of this field for all HJB messages defined in this
-      document is *1.0*
-
-  - On both sending and receiving, the HJB message **must** include a
-    specific named parameter (or field-assignment line) containing the
-    JMS class the HJB message represents.
-
-    + The name of this required field is *hjb.core.jms-message-class*
-
-    + Its value **must** be the name of the JMS interface class that
-      the message represents. I.e., it should be one of:
-
-      - javax.jms.TextMessage
-
-      - javax.jms.ObjectMessage
-
-      - javax.jms.StreamMessage
-
-      - javax.jms.MapMessage
-
-      - javax.jmx.BytesMessage
+  - The body of the message depends on the message type. These are
+    described in section.
 
 * On receiving multiple messages, e.g., in the HTTP response of
-  viewing a queue of message, each message is returned in the same
+  viewing a queue of messages, each message is returned in the same
   format as described above, with each one separated from the next by
    
-  - %%<CR>
-
-  where <CR> is a platform specific line separator.
+  %%<CR>
 
 * When sending messages, HJB clients also send the message body as a
-  form-encoded parameter, with a specific name
+  form-encoded parameter, named
 
-  - *message-to-send*
+  *message-to-send*
+
+* On both sending and receiving, the HJB message **must** include a
+  specific named parameter (or field-assignment line) containing the
+  JMS class the HJB message represents.
+
+  - The name of this required field is *hjb.core.jms-message-class*
+
+  - Its value **must** be the name of the JMS interface class that the
+    message represents. I.e., it should be one of:
+
+    + javax.jms.TextMessage
+
+    + javax.jms.ObjectMessage
+
+    + javax.jms.StreamMessage
+
+    + javax.jms.MapMessage
+
+    + javax.jmx.BytesMessage
+
+* On both sending and receiving, the HJB message **must** include a
+  specific name parameter (or field) that contains the version of the
+  HJB message.
+
+  - the field's name is *hjb.core.version*
+
+  - the field's value for HJB messages as defined in this document is
+    *1.0*
+
+Message Bodies
+--------------
 
 The different message types have different textual representations for
-their message bodys; these are described below. 
+their message bodies; these are described in the following sections. 
 
 .. class:: message_desc
 
@@ -164,6 +166,8 @@ Text Message
 
 * The body of the message is sent as the raw text contained in the
   message.  This makes TextMessage the simplest message to process!
+  N.B., TextMessages are probably the most widely used JMS message as
+  they allow transmission of XML.
 
 * The value of the field 'hjb.core.jms-message-class' is 
 
@@ -243,3 +247,5 @@ Links
 
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_ 
+
+.. _HJB-encoded: ./codec.rst

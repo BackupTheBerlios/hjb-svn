@@ -181,63 +181,64 @@ JMS attributes and their corresponding HJB field names are:</p>
 <li>
 <p class="first">The optional application-specific properties are mapped in the same
 way.  They are additional parameters in the HTTP POST request when
-sending a message, and field-assignment lines in a HTTP response.
-No special transformation is required of the parameter/field names.</p>
+sending a message, and 'field-assignment' lines in a HTTP response.
+No special transformation is required of the application property
+names.</p>
 </li>
 <li>
 <p class="first">The Java type of the message attributes and properties is preserved
-by ensuring that the values are encoded using HJB's text codec
-rules.</p>
+by ensuring that the values are <a href="./codec.rst" class="reference">HJB-encoded</a>.</p>
 </li>
 <li>
 <p class="first">If a message attribute is encoded as the wrong type, it is ignored.</p>
 </li>
 <li>
 <p class="first">When sending messages, HJB clients <em>must</em> put attribute values and
-application-specific properties in the HTTP POST request as
-form-encoded parameters. HJB decodes the parameters and places them
-into a real JMS message, then sends it.</p>
+application-specific properties in the HTTP POST request as HTTP
+form-encoded parameters whose values are <a href="./codec.rst" class="reference">HJB-encoded</a>. HJB decodes
+the parameters, places them into a real JMS message, then sends
+it.</p>
 </li>
 <li>
 <p class="first">On receiving messages, the JMS message attributes, its optional
 properties and the mmessage body are all included in the response as
 text. The message attributes and properties are <strong>not</strong> mapped to
 HTTP response headers.  The message attributes, properties and the
-actual returned message are organised in a simple textual format
-viz:</p>
+actual returned message are organised in a simple textual format, as
+follows:</p>
 <ul>
 <li>
 <p class="first">The message is in two sections. The message attributes and
 properties form the first section of the output, the body of the
 message forms the other section. The two sections are separated by
 a</p>
-<ul class="simple">
-<li>%&lt;CR></li>
-</ul>
+<p>%&lt;CR></p>
 <p>where &lt;CR> is a platform specific line separator.</p>
 </li>
 <li>
 <p class="first">The message attributes and optional properties are placed on
 sequential lines. Each line consists of</p>
-<ul class="simple">
-<li>name=value</li>
-</ul>
+<p>name=value</p>
 <p>where 'name' is the property/attribute name and 'value' is its
 value.</p>
 </li>
 <li>
-<p class="first">The body of the message depends on the message type. This is
-described below.</p>
+<p class="first">The body of the message depends on the message type. These are
+described in section.</p>
+</li>
+</ul>
 </li>
 <li>
-<p class="first">On both sending and receiving, the HJB message <strong>must</strong> include a
-specific name parameter (or field) that contains the version of
-the HJB message.</p>
-<ul class="simple">
-<li>the name of this required field is <em>hjb.core.version</em></li>
-<li>the value of this field for all HJB messages defined in this
-document is <em>1.0</em></li>
-</ul>
+<p class="first">On receiving multiple messages, e.g., in the HTTP response of
+viewing a queue of messages, each message is returned in the same
+format as described above, with each one separated from the next by</p>
+<p>%%&lt;CR></p>
+</li>
+<li>
+<p class="first">When sending messages, HJB clients also send the message body as a
+form-encoded parameter, named</p>
+<p>
+<em>message-to-send</em></p>
 </li>
 <li>
 <p class="first">On both sending and receiving, the HJB message <strong>must</strong> include a
@@ -245,8 +246,8 @@ specific named parameter (or field-assignment line) containing the
 JMS class the HJB message represents.</p>
 <ul class="simple">
 <li>The name of this required field is <em>hjb.core.jms-message-class</em></li>
-<li>Its value <strong>must</strong> be the name of the JMS interface class that
-the message represents. I.e., it should be one of:<ul>
+<li>Its value <strong>must</strong> be the name of the JMS interface class that the
+message represents. I.e., it should be one of:<ul>
 <li>javax.jms.TextMessage</li>
 <li>javax.jms.ObjectMessage</li>
 <li>javax.jms.StreamMessage</li>
@@ -256,35 +257,32 @@ the message represents. I.e., it should be one of:<ul>
 </li>
 </ul>
 </li>
-</ul>
-</li>
 <li>
-<p class="first">On receiving multiple messages, e.g., in the HTTP response of
-viewing a queue of message, each message is returned in the same
-format as described above, with each one separated from the next by</p>
+<p class="first">On both sending and receiving, the HJB message <strong>must</strong> include a
+specific name parameter (or field) that contains the version of the
+HJB message.</p>
 <ul class="simple">
-<li>%%&lt;CR></li>
-</ul>
-<p>where &lt;CR> is a platform specific line separator.</p>
-</li>
-<li>
-<p class="first">When sending messages, HJB clients also send the message body as a
-form-encoded parameter, with a specific name</p>
-<ul class="simple">
-<li>
-<em>message-to-send</em></li>
+<li>the field's name is <em>hjb.core.version</em></li>
+<li>the field's value for HJB messages as defined in this document is
+<em>1.0</em></li>
 </ul>
 </li>
 </ul>
+</div>
+<div class="section" id="message-bodies">
+<h2>
+<a name="message-bodies">Message Bodies</a></h2>
 <p>The different message types have different textual representations for
-their message bodys; these are described below.</p>
+their message bodies; these are described in the following sections.</p>
 </div>
 <div class="message-desc section" id="text-message">
 <h2>
 <a name="text-message">Text Message</a></h2>
 <ul class="simple">
 <li>The body of the message is sent as the raw text contained in the
-message.  This makes TextMessage the simplest message to process!</li>
+message.  This makes TextMessage the simplest message to process!
+N.B., TextMessages are probably the most widely used JMS message as
+they allow transmission of XML.</li>
 <li>The value of the field 'hjb.core.jms-message-class' is<ul>
 <li>javax.jms.TextMessage</li>
 </ul>
