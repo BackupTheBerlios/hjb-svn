@@ -2,12 +2,14 @@
 <project name="HJB" default="test" basedir=".">
 
   <description>
-    The build file used to build the HJB project.
+    The build file used to build and deploy the HJB project.
   </description>
 
   <property file="${user.dir}/build.properties"/>
   <property file="build.properties"/>
   <property file="${hjb.deploy.properties}"/>
+
+  <import file="./instr.xml"/>
 
   <patternset id="java.sources">
     <include name="**/*.java"/>
@@ -35,7 +37,8 @@
 	srcdir="${src.dir}:${test.dir}" 
 	destdir="${build.dir}/classes" 
 	deprecation="true"
-	debug="on"
+	debug="${emma.enabled}"
+        debuglevel="lines,vars,source"
 	>
       <patternset refid="java.sources"/>
       <classpath refid="java.libs"/>
@@ -146,7 +149,7 @@
     <delete file="${dist.dir}/lib/${dist.jar.name}" failonerror="false"/>
     <jar jarfile="${dist.dir}/lib/${dist.jar.name}">
       <fileset dir="${build.dir}/classes"
-	       excludes="**/Test.class"
+	       excludes="**/*Test.class **/testsupport/**/*"
 	       />
       <manifest>
 	<attribute name="Implementation-Title" value="HJB"/>

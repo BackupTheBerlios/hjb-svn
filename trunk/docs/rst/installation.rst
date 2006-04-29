@@ -35,7 +35,7 @@ Installing HJB
 
   - $ cd ${HJB_ROOT}
 
-  - $ ant deploy.webapp -Dhjbdeploy.file=/path/to/hjb_deploy.properties
+  - $ ant deploy.webapp -Dhjb.deploy.properties=/path/to/hjb_deploy.properties
 
 * If necessary, restart HJB's servlet container.
 
