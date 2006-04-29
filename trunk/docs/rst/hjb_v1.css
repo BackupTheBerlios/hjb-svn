@@ -31,7 +31,7 @@ h1, h2, h3 {
 
 ul, ol {
   margin-left: 0px;
-  padding: 0.25em 1em 0.25em 1em;
+  padding: 0 1em 0 1em;
 }
 
 li {
