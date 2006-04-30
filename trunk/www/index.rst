@@ -54,10 +54,11 @@ HJB
   be a thin, transparent layer so that there is very little obtruding
   between HJB client code and JMS. E.g,
 
-  - success or failure of each request is indicated by the HTTP response code,
+  - success or failure of each request is indicated by the HTTP
+    response code,
 
-  - a descriptive status of any request is returned to the HTTP user agent in
-    a response headers,
+  - a descriptive status of each request is returned to the HTTP user
+    agent in the response header,
 
   - status messages are detailed, clear and fully internationalized, 
 
