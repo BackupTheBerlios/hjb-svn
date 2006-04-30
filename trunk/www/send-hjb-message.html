@@ -64,23 +64,23 @@ properties</p>
 </tr>
 </tbody>
 </table>
-<p>This POST request sends a single message through a vendor's messaging
+<p>This <strong>POST</strong> request sends a single message through a vendor's messaging
 system via JMS producer.  When received by HJB, the message is encoded
 as described in <a href="./message-translation.html" class="reference">message translation</a>.  The command</p>
 <ul class="simple">
 <li>should include a message, and a parameter indicating what type of
 JMS message is being sent.</li>
 <li>optionally changes the default 'send' behaviour of the producer,
-using the values of the <em>delivery-mode</em>, <em>priority</em>, <em>time-to-live</em>
-and <em>destination-url</em> parameters.</li>
+depending on the values of the <em>delivery-mode</em>, <em>priority</em>,
+<em>time-to-live</em> and <em>destination-url</em>.</li>
 <li>converts any recognised JMS header parameters in the request into
 attributes of the JMS message.</li>
 <li>converts any other parameters in the request into application
 properties of the JMS message.</li>
 </ul>
 <p>Consult <a href="#jmsspec" id="id1" name="id1" class="citation-reference">[JMSSpec]</a> for further information on sending JMS messages,
-particularly about the use of the various optional arguments to the
-command.</p>
+particularly about the usage of the various optional arguments that
+this command takes.</p>
 <table rules="none" frame="void" class="docutils citation" id="jmsspec">
 <colgroup>
 <col class="label">

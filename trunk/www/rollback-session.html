@@ -56,11 +56,11 @@
 </tr>
 </tbody>
 </table>
-<p>This GET request rolls back the transactional session at the specified
+<p>This <strong>GET</strong> request rolls back the transactional session at the specified
 URI.  This command</p>
 <ul class="simple">
-<li>is idempotent, i.e, if sent to a a transactional session that is
-already rolled back, it is ignored.</li>
+<li>is idempotent, during the lifetime of the session, i.e, if sent to a a transactional session that is
+already rolled back, it is ignored.  If the session is no longer present, it responds with a <em>404 Not Found</em> response.</li>
 <li>is ignored by sessions that are not transacted.</li>
 </ul>
       <hr class="docutils footer">

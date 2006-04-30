@@ -56,15 +56,16 @@
 </tr>
 </tbody>
 </table>
-<p>This POST request obtains a single message from a vendor's messaging
-system via a JMS consumer.  It is received from HJB encoded as described
-in <a href="../message-translation.html" class="reference">message translation</a>.  The command</p>
+<p>This <strong>POST</strong> request obtains a single message from a vendor's
+messaging system via a JMS consumer.  It is returned in the response
+encoded as described in <a href="../message-translation.html" class="reference">message translation</a>.  The command</p>
 <ul class="simple">
 <li>times out after the specified number of seconds if the timeout
 parameter is supplied.</li>
-<li>times out after a HJB preset timeout period if the timeout is not
+<li>times out after the HJB Servlet timeout period if the timeout is not
 specified.</li>
-<li>on timing out, the response has a HTTP status of <em>404 NOT FOUND</em></li>
+<li>on timing out, the response returns with a HTTP status of <em>404 Not
+Found</em></li>
 </ul>
       <hr class="docutils footer">
       </hr>

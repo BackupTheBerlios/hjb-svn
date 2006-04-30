@@ -58,20 +58,19 @@
 </tr>
 </tbody>
 </table>
-<p>This POST request creates a new JMS Queue Browser by invoking the
+<p>This <strong>POST</strong> request creates a new JMS Queue Browser by invoking the
 JMS API with parameters derived from the request.  The command</p>
 <ul class="simple">
-<li>constructs a queue browser that access the queue described by
+<li>constructs a queue browser that access the queue with URI
 destination-url.</li>
 <li>the destination-url <em>must</em> be a destination URI belonging to the
 same Provider as the one in which the subscriber is being created.</li>
-<li>the destination-url <em>must</em> refer to a JMS Queue, it must not be a
+<li>the destination-url <em>must</em> refer to a JMS Queue - it must not be a
 JMS Topic.</li>
-<li>optionally creates the browser using the value of
-message-selector</li>
+<li>optionally creates the browser using the value of message-selector.</li>
 <li>returns the URI of the created browser.</li>
 </ul>
-<p>See <a href="#jmsspec" id="id1" name="id1" class="citation-reference">[JMSSpec]</a> for further information on creating JMS Queue Browsers.</p>
+<p>See <a href="#jmsspec" id="id1" name="id1" class="citation-reference">[JMSSpec]</a> for further information about JMS Queue Browsers.</p>
 <table rules="none" frame="void" class="docutils citation" id="jmsspec">
 <colgroup>
 <col class="label">

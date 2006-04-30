@@ -56,11 +56,13 @@
 </tr>
 </tbody>
 </table>
-<p>This GET request starts the connection with the specified URI.  This
-command</p>
+<p>This <strong>GET</strong> request starts the connection with the specified URI.
+This command</p>
 <ul class="simple">
-<li>can be sent more than once to the same URI.  If the connection is
-already started, the request is ignored.</li>
+<li>is idempotent during the lifetime of a connection and can be sent
+more than once to the same URI.  If the connection is already
+started, the request is ignored. If the connection is no longer
+present, it results in a <em>404 Not Found</em> response.</li>
 </ul>
       <hr class="docutils footer">
       </hr>

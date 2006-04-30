@@ -18,8 +18,8 @@ Create Consumer
 
   Location (HTTP header) : the URI of the created durable subscriber
 
-This POST request creates a new JMS Durable Subscriber by invoking the
-JMS API with parameters derived from the request.  The command
+This **POST** request creates a new JMS Durable Subscriber by invoking
+the JMS API with parameters derived from the request.  The command
 
 * constructs a consumer of messages from the supplied destination-url.
 

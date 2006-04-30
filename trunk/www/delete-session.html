@@ -56,7 +56,7 @@
 </tr>
 </tbody>
 </table>
-<p>This DELETE request deletes session with the specified URI.  This
+<p>This <strong>DELETE</strong> request deletes session with the specified URI.  This
 command</p>
 <ul class="simple">
 <li>closes the Session and removes its JMS objects from the HJB runtime.<ul>
@@ -64,6 +64,10 @@ command</p>
 accordance with the guidelines in <a href="#jmsspec" id="id1" name="id1" class="citation-reference">[JMSSpec]</a>.</li>
 </ul>
 </li>
+<li>is idempotent during the lifetime of the session's connection.  Once
+deleted further requests to the same url are ignored.  If the
+connection is no longer present, it returns a <em>404 Not Found</em>
+response.</li>
 </ul>
 <table rules="none" frame="void" class="docutils citation" id="jmsspec">
 <colgroup>

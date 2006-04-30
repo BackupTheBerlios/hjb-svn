@@ -25,7 +25,7 @@ Send HJB Message
 
 :Returns: N/A
 
-This POST request sends a single message through a vendor's messaging
+This **POST** request sends a single message through a vendor's messaging
 system via JMS producer.  When received by HJB, the message is encoded
 as described in `message translation`_.  The command
 
@@ -33,8 +33,8 @@ as described in `message translation`_.  The command
   JMS message is being sent.
 
 * optionally changes the default 'send' behaviour of the producer,
-  using the values of the *delivery-mode*, *priority*, *time-to-live*
-  and *destination-url* parameters.
+  depending on the values of the *delivery-mode*, *priority*,
+  *time-to-live* and *destination-url*.
 
 * converts any recognised JMS header parameters in the request into
   attributes of the JMS message.
@@ -43,10 +43,12 @@ as described in `message translation`_.  The command
   properties of the JMS message.
 
 Consult [JMSSpec]_ for further information on sending JMS messages,
-particularly about the use of the various optional arguments to the
-command.
+particularly about the usage of the various optional arguments that
+this command takes.
 
 .. _back to commands: ./command-list.html
+
 .. _message translation: ./message-translation.html
+
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_

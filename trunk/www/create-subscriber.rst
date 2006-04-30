@@ -20,7 +20,7 @@ Create Durable Subscriber
 
   Location (HTTP header) : the URI of the created durable subscriber
 
-This POST request creates a new JMS Durable Subscriber by invoking the
+This **POST** request creates a new JMS Durable Subscriber by invoking the
 JMS API with parameters derived from the request.  The command
 
 * constructs a durable subscriber of messages from the Provider's

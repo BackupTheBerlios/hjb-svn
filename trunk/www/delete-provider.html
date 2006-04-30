@@ -56,27 +56,21 @@
 </tr>
 </tbody>
 </table>
-<p>This DELETE request triggers shutdown of the provider with the
+<p>This <strong>DELETE</strong> request triggers shutdown of the provider with the
 specified URI.  This command</p>
-<ul>
-<li>
-<p class="first">removes all the connection-factories, destinations, connections and
-sessions supported by the Provider.</p>
-<blockquote>
 <ul class="simple">
-<li>First the sessions are closed,</li>
-<li>then the connections are stopped,</li>
-<li>finally all the associated JMS objects are removed from the HJB
-runtime.</li>
-<li>Session closure and connection termination are performed in
+<li>removes all the connection-factories, destinations, connections and
+sessions supported by the Provider.<ul>
+<li>First the sessions are closed;</li>
+<li>then, the connections are stopped;</li>
+<li>finally, all JMS objects associated with the provider are
+removed from the HJB runtime.</li>
+<li>Session closure and connection termination are performed in 
 accordance with the guidelines in <a href="#jmsspec" id="id1" name="id1" class="citation-reference">[JMSSpec]</a>.</li>
 </ul>
-</blockquote>
 </li>
-<li>
-<p class="first">is idempotent and can be invoked multiples times - if the provider
-is no longer present, the command is ignored.</p>
-</li>
+<li>is idempotent and can be invoked multiple times - if the provider
+is no longer present, the command is ignored.</li>
 </ul>
 <table rules="none" frame="void" class="docutils citation" id="jmsspec">
 <colgroup>

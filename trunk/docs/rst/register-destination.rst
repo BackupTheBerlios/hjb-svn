@@ -10,7 +10,7 @@ Register Destination
 
 :Returns: N/A
 
-This GET Request looks up the destination identified by jndi-key 
+This **GET** Request looks up the destination identified by jndi-key 
 in the Provider's JNDI context and registers it with the HJB runtime.
 This command
 

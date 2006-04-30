@@ -10,7 +10,7 @@ Register Connection Factory
 
 :Returns: N/A
 
-This GET request looks up the connection-factory identified by 
+This **GET** request looks up the connection-factory identified by 
 jndi-key in the Provider's JNDI context and registers it with 
 the HJB runtime. This command
 

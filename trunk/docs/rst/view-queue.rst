@@ -13,8 +13,9 @@ View Queue
   A set of HJB encoded messages representing the messages currently on
   the queue.
 
-This POST request accesses a JMS Queue, returning the current set of
+This **POST** request accesses a JMS Queue, returning the current set of
 messages on it, encoded as described in `message translation`_.
 
 .. _back to commands: ./command-list.html
+
 .. _message translation: ../message-translation.html

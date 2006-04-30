@@ -79,9 +79,9 @@ appropriate (i.e, when the Message Consumer is a Topic Subscriber),
 they can also be configured to ignore messages broadcast by the same
 connection using a noLocal parameter.</li>
 <li>has a URL that includes its creation index, i.e, the number of
-Message Consumers that have been created by the session so far.</li>
-<li>returns an HJB-encoded JMS message in the response on receiving a
-HTTP POST request on its 'receive' child URL.</li>
+Message Consumers that the session created prior to this one.</li>
+<li>may return an HJB-encoded JMS message in the HTTP response when a
+HTTP POST request is made to its 'receive' child URL.</li>
 </ul>
 </div>
 </div>
@@ -105,7 +105,7 @@ request.  Other parameters are also recognised, including
 time to live, priority and delivery mode, disable timestamps and
 disable message Ids</li>
 <li>has a URL that includes its creation index, i.e, the number of
-Message Consumers that have been created by the session so far.</li>
+Message Consumers the session created prior to this one.</li>
 <li>decodes and sends HJB-encoded JMS message on receiving a HTTP POST
 request containing the message as a parameter on the 'send' child
 URL.</li>
@@ -116,12 +116,13 @@ URL.</li>
 <h2>
 <a name="durable-subscribers">Durable Subscribers</a></h2>
 <p>A <em>Durable Subscriber</em> is used to receive messages from a Topic when
-it is necessary for all messages received on that Topic to be
-received.  A Topic is a Destination specific to the Publish/Subscribe
-messaging domain; normally Topic Subscribers are Message Consumers
-that only receive messages that are sent when they active. See
-(<a href="#jmsspec" id="id4" name="id4" class="citation-reference">[JMSSpec]</a>) for a detailed description of the differences between the
-two messaging domains.</p>
+it is necessary for any messages sent to a Topic to be received, even
+when the subscriber is not currently running.  A Topic is a
+Destination specific to the Publish/Subscribe messaging domain;
+normally Topic Subscribers are Message Consumers that only receive
+messages that are sent when they are active. See (<a href="#jmsspec" id="id4" name="id4" class="citation-reference">[JMSSpec]</a>) for a
+detailed description of the differences between the two messaging
+domains.</p>
 <div class="section" id="durable-subscribers-in-hjb">
 <h3>
 <a name="durable-subscribers-in-hjb">Durable Subscribers in HJB</a></h3>
@@ -140,7 +141,7 @@ message selector as a parameter in the POST request. When it is
 appropriate, they can also be configured to ignore messages
 broadcast by the same connection using a noLocal parameter.</li>
 <li>has a URL that includes its creation index, i.e, the number of
-Durable Subscribers that have been created by the session so far.</li>
+Durable Subscribers that the session created prior to this one.</li>
 <li>returns an HJB-encoded JMS message in the response on receiving a
 HTTP POST request on its 'receive' child URL.</li>
 </ul>
@@ -158,7 +159,7 @@ two messaging domains.</p>
 <div class="section" id="queue-browsers-in-hjb">
 <h3>
 <a name="queue-browsers-in-hjb">Queue Browsers in HJB</a></h3>
-<p>In HJB, each Durable Subscriber</p>
+<p>In HJB, each Queue Browser</p>
 <ul class="simple">
 <li>is represented by a HTTP resource whose URL is a child URL of the
 session used to create it.</li>
@@ -167,11 +168,12 @@ of a session URL.</li>
 <li>is configured to receive messages from a specific Queue. The URL of
 the destination is included in the parameters of the creating POST
 request.</li>
-<li>can be configured to use a specific Message Selector (see
-<a href="#jmsspec" id="id7" name="id7" class="citation-reference">[JMSSpec]</a>) to control which messages are returned by including the
-message selector text as a parameter in the POST request.</li>
-<li>has a URL that includes its creation index, i.e, the number of
-Queue Browsers that have been created by the session so far.</li>
+<li>can be configured to use a specific Message Selector (see <a href="#jmsspec" id="id7" name="id7" class="citation-reference">[JMSSpec]</a>
+for details for message selectors) to control which messages are
+returned by including the message selector text as a parameter in
+the POST request.</li>
+<li>has a URL that includes its creation index, i.e, the number of Queue
+Browsers that the session created prior to this one.</li>
 <li>returns a set of HJB-encoded JMS message in the response on
 receiving a HTTP POST request on its 'receive' child URL.</li>
 </ul>

@@ -20,7 +20,9 @@ HJB
   non-optional portions of the JMS API including
 
   - registration of JNDI configured provider resources
+
   - connection and session management
+
   - sending and receiving all types of JMS message
 
 Implementation overview
@@ -28,8 +30,8 @@ Implementation overview
 
 HJB
 
-* is deployed as a servlet (HJBServlet), that can run on any Servlet
-  2.4 compliant Servlet container.
+* is deployed as a servlet (HJBServlet), that can run on any compliant
+  Servlet specification 2.4 container.
 
 * is JMS vendor agnostic.
 
@@ -42,15 +44,22 @@ HJB
   - security 
 
   These can be added by using other HTTP servers in the HTTP request
-  processing chain, e.g, another servlet, Apache, Zope, RubyOnRails.
+  processing chain, e.g, another servlet, Apache httpd, Zope, RubyOnRails.
 
 * is extensively unit tested using `JUnit <http://www.junit.org>`_
   and `JMock <http://www.jmock.org>`_
 
-* aspires to be thin and transparent. E.g, it provides detailed
-  messages that are fully internationalized, all faults are logged on
-  the server, and the status of any request is returned to the HTTP
-  user agent in the response headers.
+* aspires to be thin and transparent, so that there is very little
+  obtruding between HJB client code and JMS. E.g,
+
+  - success for failure of request is indicated by the HTTP response code,
+
+  - it provides detailed, clear messages that are fully internationalized, 
+
+  - all faults are logged on the server,
+
+  - a descriptive status of any request is returned to the HTTP user agent in
+    the response headers.
 
 
 Related Resources

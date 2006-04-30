@@ -56,11 +56,11 @@
 </tr>
 </tbody>
 </table>
-<p>This GET request commits the transactional session at the specified
+<p>This <em>GET</em> request commits a transactional session at the specified
 URI.  This command</p>
 <ul class="simple">
-<li>is idempotent, i.e, if sent to a a transactional session that is
-already committed, it is ignored.</li>
+<li>is idempotent during the lifetime of the session, i.e, if sent to a a transactional session that is
+already committed, it is ignored. If the session is no longer present, it returns a <em>404 Not Found</em> response</li>
 <li>is ignored by sessions that are not transactional.</li>
 </ul>
       <hr class="docutils footer">

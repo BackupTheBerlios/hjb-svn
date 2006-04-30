@@ -52,9 +52,9 @@ provides access to them via URIs that have particular patterns.
 
 * Where the an object's creator or registrar can create several
   instances of the object, the object's URI is suffixed with its
-  creation index.  The creation index is the number of instances at
+  creation index.  The creation index is the number of instances
   created/registered by its creator/registrar at the time it was
-  created/registered.
+  created/register.
 
 This leads to the URI space in the table below. Note that these URIs
 denote the *conceptual* location of a JMS object in the the HJB

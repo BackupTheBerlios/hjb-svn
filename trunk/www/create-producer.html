@@ -62,22 +62,22 @@
 </tr>
 </tbody>
 </table>
-<p>This POST request creates a new JMS Producer by invoking the JMS API
-with parameters derived from the request.  The command</p>
+<p>This <strong>POST</strong> request creates a new JMS Producer by invoking the JMS
+API with the parameters derived from the request.  The command</p>
 <ul class="simple">
 <li>constructs a producer for sending messages to the supplied
 destination-url.</li>
 <li>the destination-url <em>must</em> be a destination URI belonging to the
 same Provider as the one in which the consumer is being created.</li>
 <li>the destination-url may refer to either a JMS Topic or a JMS Queue.</li>
-<li>optionally creates the producer and modifies its behaviour using the
-values of <em>delivery-mode</em>, <em>priority</em>, <em>time-to-live</em>,
-<em>disable-timestamps</em>, and <em>disable-messageIds</em>.</li>
+<li>optionally modifies its behaviour using the values of
+<em>delivery-mode</em>, <em>priority</em>, <em>time-to-live</em>, <em>disable-timestamps</em>,
+and <em>disable-messageIds</em>.</li>
 <li>returns the URI of the created producer.</li>
 </ul>
-<p>Consult <a href="#jmsspec" id="id1" name="id1" class="citation-reference">[JMSSpec]</a> for further information on creating JMS Producers,
+<p>Consult <a href="#jmsspec" id="id1" name="id1" class="citation-reference">[JMSSpec]</a> for about JMS Producers and their creation,
 particularly about the meaning of the various optional arguments to
-the command.</p>
+this command.</p>
 <table rules="none" frame="void" class="docutils citation" id="jmsspec">
 <colgroup>
 <col class="label">

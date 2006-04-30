@@ -20,8 +20,8 @@ Create Durable Subscriber
 
   Location (HTTP header) : the URI of the created durable subscriber
 
-This POST request creates a new JMS Durable Subscriber by invoking the
-JMS API with parameters derived from the request.  The command
+This **POST** request creates a new JMS Durable Subscriber by invoking
+the JMS API with parameters derived from the request.  The command
 
 * constructs a durable subscriber of messages from the supplied
   subscriber-name and destination-url.
@@ -37,8 +37,9 @@ JMS API with parameters derived from the request.  The command
 
 * returns the URI of the created connection.
 
-See [JMSSpec]_ for further information on creating JMS Durable Subscribers.
+See [JMSSpec]_ for further information about JMS Durable Subscribers.
 
 .. _back to commands: ./command-list.html
+
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_

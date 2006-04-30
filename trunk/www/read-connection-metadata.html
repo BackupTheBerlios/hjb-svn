@@ -57,11 +57,13 @@ supplies about the connection.</td>
 </tr>
 </tbody>
 </table>
-<p>This GET request retrieves the provider-supplied metadata about the
-connection with the specified URI.  This command</p>
+<p>This <strong>GET</strong> request retrieves the provider-supplied metadata about
+the connection with the specified URI.  This command</p>
 <ul class="simple">
-<li>is idempotent, i.e, it can be sent more than once to the same URI,
-and will return the same results.</li>
+<li>is idempotent during the lifetime of a connection, i.e, it can be
+sent more than once to the same URI, and will return the same
+results.  If the connection is no longer present it responds with a
+<em>404 Not Found</em> response.</li>
 <li>returns a HTTP response containing the metadata as a list of
 key-value pairs, in the same format as is used to display HJB
 message headers.</li>

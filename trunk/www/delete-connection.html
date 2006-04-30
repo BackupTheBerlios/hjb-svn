@@ -56,20 +56,16 @@
 </tr>
 </tbody>
 </table>
-<p>This DELETE request stops and deletes the connection with the
+<p>This <strong>DELETE</strong> request stops and deletes the connection with the
 specified URI.  This command</p>
-<ul>
-<li>
-<p class="first">removes all the sessions created by the connection.</p>
-<blockquote>
 <ul class="simple">
-<li>First the sessions are closed,</li>
-<li>then the sessions JMS objects are removed from the HJB runtime,</li>
-<li>finally the connection is closed, and removed.</li>
+<li>removes all the sessions created by the connection.<ul>
+<li>First the sessions are closed;</li>
+<li>then, the sessions JMS objects are removed from the HJB runtime;</li>
+<li>finally, the connection is closed and removed.</li>
 <li>Session closure and connection termination are performed in
 accordance with the guidelines in <a href="#jmsspec" id="id1" name="id1" class="citation-reference">[JMSSpec]</a>.</li>
 </ul>
-</blockquote>
 </li>
 </ul>
 <table rules="none" frame="void" class="docutils citation" id="jmsspec">

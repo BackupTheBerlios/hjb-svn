@@ -48,10 +48,10 @@ In HJB, each Message Consumer
   connection using a noLocal parameter.
 
 * has a URL that includes its creation index, i.e, the number of
-  Message Consumers that have been created by the session so far.
+  Message Consumers that the session created prior to this one.
 
-* returns an HJB-encoded JMS message in the response on receiving a
-  HTTP POST request on its 'receive' child URL.
+* may return an HJB-encoded JMS message in the HTTP response when a
+  HTTP POST request is made to its 'receive' child URL.
 
 Message Producers
 -----------------
@@ -77,7 +77,7 @@ In HJB, each Message Producer
   disable message Ids
 
 * has a URL that includes its creation index, i.e, the number of
-  Message Consumers that have been created by the session so far.
+  Message Consumers the session created prior to this one.
 
 * decodes and sends HJB-encoded JMS message on receiving a HTTP POST
   request containing the message as a parameter on the 'send' child
@@ -87,12 +87,13 @@ Durable Subscribers
 -------------------
 
 A *Durable Subscriber* is used to receive messages from a Topic when
-it is necessary for all messages received on that Topic to be
-received.  A Topic is a Destination specific to the Publish/Subscribe
-messaging domain; normally Topic Subscribers are Message Consumers
-that only receive messages that are sent when they active. See
-([JMSSpec]_) for a detailed description of the differences between the
-two messaging domains.
+it is necessary for any messages sent to a Topic to be received, even
+when the subscriber is not currently running.  A Topic is a
+Destination specific to the Publish/Subscribe messaging domain;
+normally Topic Subscribers are Message Consumers that only receive
+messages that are sent when they are active. See ([JMSSpec]_) for a
+detailed description of the differences between the two messaging
+domains.
 
 Durable Subscribers in HJB
 ++++++++++++++++++++++++++
@@ -116,7 +117,7 @@ In HJB, each Durable Subscriber
   broadcast by the same connection using a noLocal parameter.
 
 * has a URL that includes its creation index, i.e, the number of
-  Durable Subscribers that have been created by the session so far.
+  Durable Subscribers that the session created prior to this one.
 
 * returns an HJB-encoded JMS message in the response on receiving a
   HTTP POST request on its 'receive' child URL.
@@ -134,7 +135,7 @@ two messaging domains.
 Queue Browsers in HJB
 +++++++++++++++++++++
 
-In HJB, each Durable Subscriber
+In HJB, each Queue Browser
 
 * is represented by a HTTP resource whose URL is a child URL of the
   session used to create it.
@@ -146,12 +147,13 @@ In HJB, each Durable Subscriber
   the destination is included in the parameters of the creating POST
   request.
 
-* can be configured to use a specific Message Selector (see
-  [JMSSpec]_) to control which messages are returned by including the
-  message selector text as a parameter in the POST request.
+* can be configured to use a specific Message Selector (see [JMSSpec]_
+  for details for message selectors) to control which messages are
+  returned by including the message selector text as a parameter in
+  the POST request.
 
-* has a URL that includes its creation index, i.e, the number of
-  Queue Browsers that have been created by the session so far.
+* has a URL that includes its creation index, i.e, the number of Queue
+  Browsers that the session created prior to this one.
 
 * returns a set of HJB-encoded JMS message in the response on
   receiving a HTTP POST request on its 'receive' child URL.

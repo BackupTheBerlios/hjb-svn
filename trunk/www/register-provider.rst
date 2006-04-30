@@ -10,8 +10,7 @@ Register Provider
 
 :Returns: N/A
 
-Uses the parameters in a POST request to register a Provider with
-HJB. This command
+This **POST** request registers a Provider with HJB. This command
 
 * uses the parameters to populate the Hashtable that configures
   the Provider's JNDI Initial Context.

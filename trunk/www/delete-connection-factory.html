@@ -56,26 +56,22 @@
 </tr>
 </tbody>
 </table>
-<p>This DELETE request removes the registration of the connection factory
-with the specified URI from the HJB runtime. This command</p>
-<ul>
-<li>
-<p class="first">removes all the connections and sessions created by the connection
-factory.</p>
-<blockquote>
+<p>This <strong>DELETE</strong> request removes the registration of the connection
+factory with the specified URI from the HJB runtime. This command</p>
 <ul class="simple">
-<li>First the sessions are closed,</li>
-<li>then the connections are stopped,</li>
-<li>finally the JMS objects are removed from the HJB runtime.</li>
+<li>removes all the connections and sessions created by the connection
+factory.<ul>
+<li>First the sessions are closed;</li>
+<li>then, the connections are stopped;</li>
+<li>finally, the JMS objects are removed from the HJB runtime.</li>
 <li>Session closure and connection termination are performed in
 accordance with the guidelines in <a href="#jmsspec" id="id1" name="id1" class="citation-reference">[JMSSpec]</a>.</li>
 </ul>
-</blockquote>
 </li>
-<li>
-<p class="first">can be invoked multiples times - if the connection factory is no
-longer registered, the command is ignored.</p>
-</li>
+<li>is idempotent during the lifetime of its provider and can be invoked
+multiples times - if the connection factory is no longer registered,
+the command is ignored. If its provider is no longer present, it
+returns a <em>404 Not Found</em> response.</li>
 </ul>
 <table rules="none" frame="void" class="docutils citation" id="jmsspec">
 <colgroup>

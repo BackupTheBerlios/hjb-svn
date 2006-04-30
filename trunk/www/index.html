@@ -65,8 +65,8 @@ non-optional portions of the JMS API including<ul>
 <p>HJB</p>
 <ul>
 <li>
-<p class="first">is deployed as a servlet (HJBServlet), that can run on any Servlet
-2.4 compliant Servlet container.</p>
+<p class="first">is deployed as a servlet (HJBServlet), that can run on any compliant
+Servlet specification 2.4 container.</p>
 </li>
 <li>
 <p class="first">is JMS vendor agnostic.</p>
@@ -81,17 +81,22 @@ deliberately excluded e.g,</p>
 <li>security</li>
 </ul>
 <p>These can be added by using other HTTP servers in the HTTP request
-processing chain, e.g, another servlet, Apache, Zope, RubyOnRails.</p>
+processing chain, e.g, another servlet, Apache httpd, Zope, RubyOnRails.</p>
 </li>
 <li>
 <p class="first">is extensively unit tested using <a href="http://www.junit.org" class="reference">JUnit</a>
 and <a href="http://www.jmock.org" class="reference">JMock</a></p>
 </li>
 <li>
-<p class="first">aspires to be thin and transparent. E.g, it provides detailed
-messages that are fully internationalized, all faults are logged on
-the server, and the status of any request is returned to the HTTP
-user agent in the response headers.</p>
+<p class="first">aspires to be thin and transparent, so that there is very little
+obtruding between HJB client code and JMS. E.g,</p>
+<ul class="simple">
+<li>success for failure of request is indicated by the HTTP response code,</li>
+<li>it provides detailed, clear messages that are fully internationalized,</li>
+<li>all faults are logged on the server,</li>
+<li>a descriptive status of any request is returned to the HTTP user agent in
+the response headers.</li>
+</ul>
 </li>
 </ul>
 </div>
