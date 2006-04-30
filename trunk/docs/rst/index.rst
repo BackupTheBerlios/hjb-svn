@@ -39,9 +39,9 @@ HJB
   server for JMS resources.  Other potentially useful features are
   deliberately excluded, e.g,
 
-  - session management
-  - authentication
-  - security 
+  - HTTP session management
+
+  - authentication and authorization
 
   These can be added by using other HTTP servers in the HTTP request
   processing chain, e.g, another servlet, `Apache httpd`_, Zope_,
