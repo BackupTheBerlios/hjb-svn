@@ -5,8 +5,8 @@ HJB JMS Commands
 URL Patterns
 ------------
 
-HJB support the JMS Commands in table below, matching them to the specified URLs
-and HTTP methods
+HJB recognises the JMS Commands in the table below, matching them to the
+specified URLs and HTTP request methods.
 
   .. class:: display-items
   
