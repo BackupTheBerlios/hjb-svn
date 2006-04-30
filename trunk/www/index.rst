@@ -50,17 +50,19 @@ HJB
 * is extensively unit tested using `JUnit <http://www.junit.org>`_
   and `JMock <http://www.jmock.org>`_
 
-* aspires to be thin and transparent, so that there is very little
-  obtruding between HJB client code and JMS. E.g,
+* aspires to make the best possible use of the HTTP protocol, and to
+  be a thin, transparent layer so that there is very little obtruding
+  between HJB client code and JMS. E.g,
 
-  - success for failure of request is indicated by the HTTP response code,
-
-  - it provides detailed, clear messages that are fully internationalized, 
-
-  - all faults are logged on the server,
+  - success or failure of each request is indicated by the HTTP response code,
 
   - a descriptive status of any request is returned to the HTTP user agent in
-    the response headers.
+    a response headers,
+
+  - status messages are detailed, clear and fully internationalized, 
+
+  - all faults are logged on the server and match the status messages
+    returned to the user agent.
 
 
 Related Resources
