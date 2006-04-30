@@ -17,14 +17,15 @@ Installing HJB
 
   - $ cd ${HJB_ROOT}
 
-  - $ ant dist.main
+  - $ ant dist.bin
 
 * Create the hjb_deploy.properties file that will be used by the ant
   build to generate the WebARchive file.
 
-  - Use the distributed file hjb_deploy.properties.template as an
-    example. It contains comments explaining what each property is
-    used for and whether or not they are required.
+  - **IMPORTANT** - this is used to generate a WAR file specific to
+    the JMS provider you are using.  Use the distribution file
+    hjb_deploy.properties.template as an example. It contains comments
+    explaining what each property is used for.
 
 * If necessary, stop HJB's servlet container.
 

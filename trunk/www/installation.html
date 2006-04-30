@@ -48,14 +48,16 @@ be referred to as <em>${HJB_ROOT}</em>.</li>
 <li>For a source install, use ant to build the hjb distributables that
 are available in the binary distribution<ul>
 <li>$ cd ${HJB_ROOT}</li>
-<li>$ ant dist.main</li>
+<li>$ ant dist.bin</li>
 </ul>
 </li>
 <li>Create the hjb_deploy.properties file that will be used by the ant
 build to generate the WebARchive file.<ul>
-<li>Use the distributed file hjb_deploy.properties.template as an
-example. It contains comments explaining what each property is
-used for and whether or not they are required.</li>
+<li>
+<strong>IMPORTANT</strong> - this is used to generate a WAR file specific to
+the JMS provider you are using.  Use the distribution file
+hjb_deploy.properties.template as an example. It contains comments
+explaining what each property is used for.</li>
 </ul>
 </li>
 <li>If necessary, stop HJB's servlet container.</li>
