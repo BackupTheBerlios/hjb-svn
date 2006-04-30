@@ -14,7 +14,7 @@ might want to use. These include
 
   - the message body
 
-* the metadata associated with a open JMS connection
+* the metadata associated with an open JMS connection
 
 * the parameters used to configure a JMS Provider 
 
@@ -26,21 +26,21 @@ any system that interacts with it needs to handle the data in manner
 that preserves this type information. 
 
 Actually, many JMS API methods depend on Java's small set of native
-types, rather than more sophisticated Java object types, so the task
-or preserving type information does not require the need of a complex
-object serialization or marshalling protocol.
+types, rather than more sophisticated Java object types. This means
+the task of preserving type information does not require the need of a
+complex object serialization or marshalling protocol.
 
-The simplest way to preserve the Java type information in HTTP's
-request and response messages is to provide a textual mapping for each
-type in the set of native types present in the JMS API.  This allows
-all typed data in the JMS API to be transmitted as text in the HTTP
-requests and responses.
+Therefore, HJB uses the simplest way to preserve the Java type
+information in HTTP's request and response messages - it provides a
+textual mapping for each type in the set of Java native types present
+in the JMS API.  This allows all typed data in the JMS API to be
+transmitted as text in the HTTP requests and responses.
 
 Mapped Types
 ------------
 
-The table below shows how all the native Java types used in the
-various JMS API methods are encoded in HJB.
+The table below shows how the native Java types used in the various
+JMS API methods are encoded in HJB.
 
 .. class:: display-items
 
@@ -66,9 +66,9 @@ various JMS API methods are encoded in HJB.
 |String       |as is                                  |foobarbaz          |
 +-------------+---------------------------------------+-------------------+
 
-Note that aside from the *null* encoding of Strings, the encodings are
-simple S-Expressions [#]_.  These should be relatively simple to parse
-in any language.
+Note that aside from the 'pass through' encoding of Strings, the
+encodings are simple S-Expressions [#]_.  These should be relatively
+simple to parse in any language.
 
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_
