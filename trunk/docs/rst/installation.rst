@@ -7,6 +7,7 @@ Installing HJB
 * For a source install, get the source from either the anonymous
   subversion repository or by `downloading`_ the source distribution
   and unpacking it.
+
 * For a binary install, download the `binary archive`_ and unzip it.
 
 * The top level directory of the downloaded/unpacked distribution will

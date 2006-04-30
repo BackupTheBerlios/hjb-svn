@@ -12,18 +12,18 @@ Scope
 
 HJB
 
-* is **language-neutral** : it will allow the writing of software
+* is **language-neutral**: it will allow the writing of software
   libraries for communicating with JMS providers in any language
-  that has libraries for communicating via HTTP.
+  that has libraries for communicating over HTTP.
 
-* is **RESTful** : it provides a RESTful equivalent to all of the
+* is **RESTful**: it provides a RESTful equivalent to all of the
   non-optional portions of the JMS API including
 
-  - registration of JNDI configured provider resources
+  - registration of resources administered by the messaging provider
 
   - connection and session management
 
-  - sending and receiving all types of JMS message
+  - sending and receipt of all types of JMS message
 
 Implementation overview
 -----------------------
@@ -37,7 +37,7 @@ HJB
 
 * aims to do one thing well. Its role is to act as an HTTP gateway
   server for JMS resources.  Other potentially useful features are
-  deliberately excluded e.g,
+  deliberately excluded, e.g,
 
   - session management
   - authentication
