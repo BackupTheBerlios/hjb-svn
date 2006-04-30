@@ -25,4 +25,4 @@ if there is something that is missing.
 
 .. _Design notes: ./detailed-design.html
 
-.. _get in touch: ./mailto:users:hjb.tigris.org
+.. _get in touch: mailto:users@hjb.tigris.org
