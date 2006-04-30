@@ -81,6 +81,10 @@ command and
   result of the executed command, once the JMS command has been
   executed.
 
+The 'Command' - 'Command Generator' pairing is inspired by the
+pattern-matching style of logic common in many functional programming
+languages e.g., Haskell, Ocaml.
+
 HJBServlet and Command Dispatch
 -------------------------------
 
