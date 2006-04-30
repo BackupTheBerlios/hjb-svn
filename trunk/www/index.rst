@@ -44,7 +44,8 @@ HJB
   - security 
 
   These can be added by using other HTTP servers in the HTTP request
-  processing chain, e.g, another servlet, Apache httpd, Zope, RubyOnRails.
+  processing chain, e.g, another servlet, `Apache httpd`_, Zope_,
+  RubyOnRails_, AddYourFavouriteWebServer here.
 
 * is extensively unit tested using `JUnit <http://www.junit.org>`_
   and `JMock <http://www.jmock.org>`_
@@ -84,3 +85,9 @@ Related Resources
 
 * `Java Servlet specification 2.4
   <http://java.sun.com/products/servlet/download.html#specs>`_
+
+.. _`Apache httpd`: http://httpd.apache.org
+
+.. _`Zope`: http://www.zope.org
+
+.. _`RubyOnRails`: http://www.rubyonrails.org

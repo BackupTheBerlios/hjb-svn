@@ -130,7 +130,7 @@ retrieving them.  A Queue is a Destination specific to the
 Point-To-Point messaging domain; Queues always retain messages until a
 client retrieves them, even if the client is not active.  See
 ([JMSSpec]_) for a detailed description of the differences between the
-two messaging domains.
+Point-To-Point and Publish-Subscribe messaging domains.
 
 Queue Browsers in HJB
 +++++++++++++++++++++
@@ -147,10 +147,10 @@ In HJB, each Queue Browser
   the destination is included in the parameters of the creating POST
   request.
 
-* can be configured to use a specific Message Selector (see [JMSSpec]_
-  for details for message selectors) to control which messages are
-  returned by including the message selector text as a parameter in
-  the POST request.
+* can be configured to use a specific Message Selector to control
+  which messages are returned by including the message selector text
+  as a parameter in the POST request (see [JMSSpec]_ for more
+  information about message selectors).
 
 * has a URL that includes its creation index, i.e, the number of Queue
   Browsers that the session created prior to this one.
