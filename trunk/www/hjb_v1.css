@@ -87,6 +87,15 @@ div.navigation-bar {
   border: 2px solid black;
 }
 
+hr.footer {
+  margin: 0em;
+}
+
+div.small-print {
+  padding: 0.25em 0 0.25em 0;
+  font-size: 65%;
+}
+
 div.footer {
   font-size: 80%;
 }

@@ -12,6 +12,9 @@
       <h2>${rst_title}</h2>
       ${XML(rst_body)}
       ${XML(rst_footer)}
+      <div class="small-print">
+	Copyright &#169; 2006 Tim Emiola. All rights reserved.
+      </div>
     </div>
 
   </div>
