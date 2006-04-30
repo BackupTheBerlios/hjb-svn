@@ -33,7 +33,7 @@ HJB
 * is deployed as a servlet (HJBServlet), that can run on any compliant
   Servlet specification 2.4 container.
 
-* is JMS vendor agnostic.
+* will work with any messaging vendor that provides a JMS interface.
 
 * aims to do one thing well. Its role is to act as an HTTP gateway
   server for JMS resources.  Other potentially useful features are
@@ -52,7 +52,7 @@ HJB
 
 * aspires to make the best possible use of the HTTP protocol, and to
   be a thin, transparent layer so that there is very little obtruding
-  between HJB client code and JMS. E.g,
+  between HJB client code and the JMS API. E.g,
 
   - success or failure of each request is indicated by the HTTP
     response code,
