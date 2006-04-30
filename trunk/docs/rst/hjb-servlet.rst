@@ -21,10 +21,10 @@ HJB Servlet handles POST, GET and DELETE requests if they match
 specific URL patterns (see `the JMS command list`_ for all the URL
 patterns).
 
-* On receiving a matching request, if the request URLs does not map to
-  JMS objects that are present in the JMS runtime, or if the request
-  cannot be otherwise handled, the servlet responds with *404 NOT
-  FOUND*.
+* On receiving a matching request, if the request's URL does not map
+  to a JMS object that is present in the JMS runtime, or if HJB
+  servlet cannot handle it in another way, the servlet responds with
+  *404 Not Found*.
 
 * On receiving a request that can be handled, the HJB servlet will
   successfully create a JMS command and schedule its execution. See
