@@ -28,7 +28,7 @@ patterns).
 
 * On receiving a request that can be handled, the HJB servlet will
   successfully create a JMS command and schedule its execution. See
-  `JMS Commands`_ for further information about JMS commands.
+  `JMS Commands`_ for further information.
 
 Maintaining references to JMS Objects
 -------------------------------------

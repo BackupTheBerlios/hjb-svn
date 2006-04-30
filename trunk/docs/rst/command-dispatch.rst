@@ -5,21 +5,22 @@ Command Dispatch
 JMS Commands
 ------------
 
-The JMS API defines several interfaces and classes.  These types
-contain various methods, each of which specifies it own set of
-arguments. JMS vendors typically implement most of this API, though
-it has optional parts that vendors are not obliged to support.
+The JMS API defines several interfaces and classes.  These type
+descriptions contain various methods, each of which specifies it own
+set of arguments. JMS vendors typically implement most of this API,
+though it has optional parts that vendors are not obliged to support.
 
-These methods sometimes have particular constaints on how they are
-used at runtime.  Some JMS methods imply specific timing constraints,
-others must be run on specific threads at specific points in their
-lifecycle.
+Some methods in the API sometimes specific constaints on how they are
+used at runtime.  E.g., some JMS methods imply specific timing
+constraints, others must be run on specific threads at specific points
+in a JMS object's lifecycle.
 
 HJB attempts to support as much of the non-optional JMS API as
 possible.  To allow the methods in the JMS API to be invoked via HTTP
 in a uniform fashion, and to support additional runtime constraints on
-some of the API methods, HJB decouples invocation of the JMS API
-methods from the processing of the HTTP request using *JMSCommands*.
+those API methods that need it, HJB decouples invocation of the JMS
+API methods from the processing of the HTTP request using
+*JMS Commands*.
 
 JMS Commands
 
@@ -46,8 +47,8 @@ JMS Commands
   required of JMS Sessions once message processing begins as described
   in [JMSSpec]_).
 
-* are inspired by the Command Pattern (cf [DesignPatterns]_) as known
-  its known in good OO circles, or by first-class functions, as its
+* are inspired by the Command Pattern (cf [DesignPatterns]_), as known
+  known in good OO circles, or by first-class functions/closures, as
   known in functional programming!
 
 
@@ -76,8 +77,9 @@ command and
 
 * determines the thread on which the command should be executed.
 
-* once the JMS Command is executed, is used to construct the HTTP
-  response containing the status and result of the executed command.
+* is used to construct the HTTP response containing the status and
+  result of the executed command, once the JMS command has been
+  executed.
 
 HJBServlet and Command Dispatch
 -------------------------------
