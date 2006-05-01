@@ -89,7 +89,8 @@
     </javadoc>
   </target>
 
-  <target name="javadoc.to.web" depends="javadoc">
+  <target name="javadoc.to.web" depends="javadoc, only.javadoc.to.web"/>
+  <target name="only.javadoc.to.web">
     <delete failonerror="false">
       <fileset dir="${javadoc.web.dir}" includes="**/*" />
     </delete>

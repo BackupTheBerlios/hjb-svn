@@ -2,27 +2,32 @@
 Documentation
 =============
 
-As with any open source project, HJB's documentation lags a little
-bit behind its development!
+As with any open source project, HJB's documentation lags a little bit
+behind its development!
 
-However, there is quite bit of it available, and most of the
+However, there is quite bit of it available -  most of the
 information you'll need to get started is here. Please `get in touch`_
-if there is something that is missing.  
+if there is something that is missing, particularly if you feel like
+adding it ...  
 
 * `Installation guide`_
 
 * `Design notes`_
 
-* Javadocs (online) *20060428 disabled*
+* `Javadocs (online)`_
 
 * `Javadocs (download)`_ 
 
+* `Test Coverage report (online)`_
+
 .. _Installation guide: ./installation.html
 
-.. _Javadocs (online): http://hjb.tigris.org/javadoc/index.html
+.. _Javadocs (online): ./javadoc/index.html
 
-.. _Javadocs (download): http://hjb.tigris.org/files/documents/3759/31729/hjb-docs-0.8beta.jar
+.. _Test Coverage report (online): ./instr/coverage.html
 
 .. _Design notes: ./detailed-design.html
+
+.. _Javadocs (download): http://hjb.tigris.org/files/documents/3759/31729/hjb-docs-0.8beta.jar
 
 .. _get in touch: mailto:users@hjb.tigris.org

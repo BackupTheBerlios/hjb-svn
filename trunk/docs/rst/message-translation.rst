@@ -23,8 +23,8 @@ types.
 
 HJB clients can send or receive textual representations of any of
 these message types.  When sent, the message is contained in the
-parameters of a the sending POST request.  When received, the message
-is part of the body of a HTTP response.
+parameters of the sending POST request.  When received, the message is
+part of the body of a HTTP response.
 
 The following sections describe how the parts of each of these JMS
 message types is transformed into text in a HTTP request or response.

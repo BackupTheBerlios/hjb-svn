@@ -51,7 +51,7 @@ JMS Administered Objects
 ------------------------
 
 A JMS *Administered Object* represents the configurable resources
-hosted by a JMS Provider that are used by a message application.
+hosted by a JMS Provider that are used by a messaging application.
 ([JMSSpec]_).
 
 There are two kinds of Administered Object:

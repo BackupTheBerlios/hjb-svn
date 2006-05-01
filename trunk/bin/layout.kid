@@ -28,9 +28,9 @@ page_mate = empty()
 	  <tbody>
 	    <tr>
 	      <td><a href="index.html">Home</a></td>
-	      <td><a href="download.html">Download</a></td>
-	      <td><a href="doc.html">Documentation</a></td>
-	      <td><a href="detailed-design.html">Design</a></td>
+	      <td><a href="http://hjb.berlios.de/download.html">Download</a></td>
+	      <td><a href="http://hjb.berlios.de/doc.html">Documentation</a></td>
+	      <td><a href="http://hjb.berlios.de/detailed-design.html">Design</a></td>
 	      <td><a href="mailto:users@hjb.tigris.org">Support</a></td>
 	    </tr>
 	  </tbody>

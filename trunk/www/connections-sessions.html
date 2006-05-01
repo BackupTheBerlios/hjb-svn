@@ -21,11 +21,11 @@
 	      <td>
 	      <a href="index.html">Home</a></td>
 	      <td>
-	      <a href="download.html">Download</a></td>
+	      <a href="http://hjb.berlios.de/download.html">Download</a></td>
 	      <td>
-	      <a href="doc.html">Documentation</a></td>
+	      <a href="http://hjb.berlios.de/doc.html">Documentation</a></td>
 	      <td>
-	      <a href="detailed-design.html">Design</a></td>
+	      <a href="http://hjb.berlios.de/detailed-design.html">Design</a></td>
 	      <td>
 	      <a href="mailto:users@hjb.tigris.org">Support</a></td>
 	    </tr>
@@ -73,10 +73,10 @@ retrieved using HTTP GET on the appropriate child URL.</li>
 <p>A JMS <em>Session</em> represents a single-threaded context in which messages
 are sent and/or received. They are created from <a href="#jms-connections" class="reference">JMS Connections</a>,
 which serve as a factory for JMS Sessions .  Sessions themselves serve
-a factory for MessageProducers, MessageConsumers, QueueBrowsers and
-DurableSubscribers, which are the objects that JMS uses to perform the
-actual sending and receiving of messages (see <a href="#jmsspec" id="id2" name="id2" class="citation-reference">[JMSSpec]</a> for a full
-description).</p>
+a factory for <a href="./session-objects.rst" class="reference">session objects</a>: MessageProducers, MessageConsumers,
+QueueBrowsers and DurableSubscribers, which are the objects that JMS
+uses to perform the actual sending and receiving of messages (see
+<a href="#jmsspec" id="id2" name="id2" class="citation-reference">[JMSSpec]</a> for a full description).</p>
 <div class="section" id="sessions-in-hjb">
 <h3>
 <a name="sessions-in-hjb">Sessions in HJB</a></h3>
@@ -89,7 +89,8 @@ URL of a connection URL.</li>
 <li>can be created either 'transacted' or not 'transacted', and with a
 specific acknowledgement mode by including these values as
 parameters in the creating POST request; these default to 'not
-transacted' with 'auto-acknowledgement'. (<a href="#jmsspec" id="id3" name="id3" class="citation-reference">[JMSSpec]</a> explains these terms in more detail)</li>
+transacted' with 'auto-acknowledgement'. (<a href="#jmsspec" id="id3" name="id3" class="citation-reference">[JMSSpec]</a> explains these
+terms in more detail)</li>
 <li>has a URL that it includes its creation index. This is the number of
 other sessions that had been created by the connection prior to this
 one.</li>

@@ -44,10 +44,10 @@ JMS Sessions
 A JMS *Session* represents a single-threaded context in which messages
 are sent and/or received. They are created from `JMS Connections`_,
 which serve as a factory for JMS Sessions .  Sessions themselves serve
-a factory for MessageProducers, MessageConsumers, QueueBrowsers and
-DurableSubscribers, which are the objects that JMS uses to perform the
-actual sending and receiving of messages (see [JMSSpec]_ for a full
-description).
+a factory for `session objects`_: MessageProducers, MessageConsumers,
+QueueBrowsers and DurableSubscribers, which are the objects that JMS
+uses to perform the actual sending and receiving of messages (see
+[JMSSpec]_ for a full description).
 
 Sessions in HJB
 +++++++++++++++
@@ -63,7 +63,8 @@ In HJB, each JMS Session
 * can be created either 'transacted' or not 'transacted', and with a
   specific acknowledgement mode by including these values as
   parameters in the creating POST request; these default to 'not
-  transacted' with 'auto-acknowledgement'. ([JMSSpec]_ explains these terms in more detail)
+  transacted' with 'auto-acknowledgement'. ([JMSSpec]_ explains these
+  terms in more detail)
 
 * has a URL that it includes its creation index. This is the number of
   other sessions that had been created by the connection prior to this
@@ -78,3 +79,5 @@ In HJB, each JMS Session
 
 .. [JMSSpec] `Java Message Service specification 1.1
   <http://java.sun.com/products/jms/docs.html>`_
+
+.. _session objects: ./session-objects.rst

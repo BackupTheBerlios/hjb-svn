@@ -13,18 +13,28 @@ python sitebuilder.py
 from os import makedirs
 from os.path import walk, splitext, dirname, abspath
 from os.path import join as join_path, exists as path_exists
+from time import time, strftime, gmtime
+
 from shutil import copy as copy_file
+from distutils.archive_util import make_archive
 from docutils import core, frontend
 from docutils.writers import html4css1
 
 from kid import Template
 
 rst_doc_root = "../docs/rst"
-site_root = "../www"
+site_root = "../pub/www"
 
 main_page_template = "sitepage.kid"
 _template = Template(file=main_page_template)
 
+def archive_site(root=site_root):
+    generate_site()
+    make_archive(strftime("../hjb_web_site_%Y%m%d_%H%M%S", gmtime(time())),
+                 "gztar",
+                 abspath(site_root),
+                 ".")    
+    
 def generate_site(doc_root=rst_doc_root):
     """
     Generate the site.
@@ -68,7 +78,6 @@ def find_rst_files_in(root):
     walk(root, find_rst_files, rst_paths)
     return rst_paths
 
-
 def sitepath_of(filename,
                 with_extension=".html",
                 site_root=site_root,
@@ -104,7 +113,7 @@ def parts_of(rst_file):
 
 def main():
     update_css()
-    generate_site()
+    archive_site()
 
 
 if __name__ == '__main__':
