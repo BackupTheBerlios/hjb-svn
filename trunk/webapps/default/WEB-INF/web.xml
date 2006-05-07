@@ -28,7 +28,7 @@
   <!-- Define the HJB Servlet Mapping -->
   <servlet-mapping>
     <servlet-name>@hjb.deploy.servlet.name@</servlet-name>
-    <url-pattern>@hjb.deploy.servlet.pattern@</url-pattern>
+    <url-pattern>@hjb.deploy.servlet.mapping@</url-pattern>
   </servlet-mapping>
 
 </web-app>

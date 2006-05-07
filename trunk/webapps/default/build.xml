@@ -55,9 +55,10 @@
 
     <filter token="hjb.deploy.servlet.display.name" value="${hjb.deploy.servlet.display.name}"/>
     <filter token="hjb.deploy.servlet.name" value="${hjb.deploy.servlet.name}"/>
-    <filter token="hjb.deploy.servlet.pattern" value="${hjb.deploy.servlet.pattern}"/>
-    <filter token="hjb.deploy.config.command.timeout" value="${hjb.deploy.config.command.timeout}"/>
-    <filter token="hjb.deploy.config.rootpath" value="${hjb.deploy.config.rootpath}"/>
+    <filter token="hjb.deploy.servlet.mapping" value="${hjb.deploy.servlet.mapping}"/>
+
+    <filter token="hjb.config.command.timeout" value="${hjb.config.command.timeout}"/>
+    <filter token="hjb.config.rootpath" value="${hjb.config.rootpath}"/>
 
     <copy todir="${webapps.build}/${hjb.deploy.webapp.name}" 
 	  verbose="true"
