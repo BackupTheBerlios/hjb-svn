@@ -31,7 +31,7 @@ Java SDK 1.4 or later
 *********************
 
 HJB is coded using the Java SDK 1.4.  If you are thinking of hacking
-HJB, get an the SDK for your platform.
+HJB, get the SDK for your platform.
 
 **N.B.** At the moment, the project does **not** use any features of
 Java 5. This is done purposefully, to allow HJB to be extended
@@ -59,9 +59,9 @@ For HJB to communicate with a particular vendors's JMS provider
 requires the vendor's JMS library jars.  The vendor's documentataion
 should indicate how to obtain these.
 
-Once obtained, these vendor jars will need to be deployed in the HJB
-servlet.  The HJB distribution includes has an ant task that
-simplifies this procedure.
+Once obtained, the vendor jars will need to be deployed with the HJB
+servlet.  The HJB distribution includes a build file that contains an
+ant task that simplifies this procedure.
 
 
 A Servlet Container

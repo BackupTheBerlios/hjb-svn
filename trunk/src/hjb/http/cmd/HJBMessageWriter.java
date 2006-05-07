@@ -36,27 +36,32 @@ import hjb.msg.HJBMessage;
  * <code>HJBMessage</code>s to text.
  * 
  * <p />
- * A single HJBMessage is represented as follows:<br />
- * All the headers are written as follows, where <code>CR</code> indicates the
- * platform-specific end-of-line character sequence
- * 
+ * A single HJBMessage is represented as follows which <code>&lt;CR&gt;</code> indicates the
+ * platform-specific end-of-line character sequence<br />
+ * All the headers are written first on separate lines, next a '%' is written by itself,
+ * and finally the message body is written. 
  * <pre>
- *         headerName=headerValue CR
+ *  header1=headerValue1&lt;CR&gt;
+ *  header2=headerValue2&lt;CR&gt;
+ *  header3=headerValue3&lt;CR&gt;
+ *  ...
+ *  headerN=headerValueN&lt;CR&gt;
+ *  %&lt;CR&gt;
+ *  ... insert message body here ...
  * </pre>
- * 
- * Then a '%' is written by itself:
- * 
- * <pre>
- *          % CR
- * </pre>
- * 
- * Finally, the message body is written.
+ *  
  * <p />
  * When multiple messages are written at once, each message is written as above,
- * and a '%% ' is used to separate each one.
+ * and with a '%%' is used to separate each one:
  * 
  * <pre>
- *          % CR
+ * message1
+ *  %%&lt;CR&gt;
+ * message2
+ *  %%&lt;CR&gt;
+ * ....
+ * messageN
+  *  %%&lt;CR&gt;
  * </pre>
  * 
  * @author Tim Emiola
