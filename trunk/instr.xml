@@ -22,9 +22,7 @@
 	  depends="dist.jar, only.instrument.jar"/>
 
   <target name="only.instrument.jar">
-    <delete failonerror="false">
-      <fileset dir="${instr.dir}" includes="**/*" />
-    </delete>
+    <delete dir="${instr.dir}" failonerror="false"/>
 
     <emma enabled="${emma.enabled}" >
       <instr mode="fullcopy"
@@ -71,9 +69,7 @@
     </junit>
 
     <!-- ***** Produce the EMMA Report ***** --> 
-    <delete failonerror="false">
-      <fileset dir="${instr.doc.dir}" includes="**/*" />
-    </delete>
+    <delete dir="${instr.doc.dir}" failonerror="false"/>
     <mkdir dir="${instr.doc.dir}"/>
     <emma enabled="${emma.enabled}"> 
       <report sourcepath="${src.dir}"> 
