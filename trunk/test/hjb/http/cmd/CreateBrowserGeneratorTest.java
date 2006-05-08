@@ -44,31 +44,31 @@ public class CreateBrowserGeneratorTest extends BaseJMSCommandGeneratorTestCase 
         assertFalse(generator.matches("/foo/"));
         assertFalse(generator.matches("/foo/bar/connection-1/session-0/createconsumer"));
         assertTrue(generator.matches("/foo/bar/connection-1/session-0/create-browser"));
-        assertTrue(generator.matches("/foo/baz/connection-5/session-4/create-browser"));
+        assertTrue(generator.matches("/foo/baz/multiple/slashes/connection-5/session-4/create-browser"));
     }
 
     public void testJMSCommandAndItsRunnerAreGeneratedCorrectly() {
         Mock mockRequest = generateMockRequest();
         mockRequest.stubs()
             .method("getPathInfo")
-            .will(returnValue("/testProvider/testFactory/connection-0/session-0/create-browser"));
+            .will(returnValue("/testProvider/testFactory/slash/connection-0/session-0/create-browser"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath);
         mockHJB.make1SessionAnd1Destination(root,
                                             "testProvider",
-                                            "testFactory",
-                                            "testDestination",
+                                            "testFactory/slash",
+                                            "testDestination/with/slashes",
                                             createMockDestination());
 
         CreateBrowserGenerator generator = new CreateBrowserGenerator();
         generator.generateCommand(testRequest, root);
         assertSame(root.getProvider("testProvider")
-            .getConnectionFactory("testFactory")
+            .getConnectionFactory("testFactory/slash")
             .getConnection(0)
             .getSessionCommandRunner(0), generator.getAssignedCommandRunner());
         assertTrue(generator.getGeneratedCommand() instanceof CreateBrowser);
-        assertEquals("hjb/testProvider/testFactory/connection-0/session-0/browser-{0}",
+        assertEquals("hjb/testProvider/testFactory/slash/connection-0/session-0/browser-{0}",
                      generator.getCreatedLocationFormatter().toPattern());
     }
 
@@ -78,7 +78,7 @@ public class CreateBrowserGeneratorTest extends BaseJMSCommandGeneratorTestCase 
             "*"
         });
         parameterMap.put(HJBServletConstants.DESTINATION_URL, new String[] {
-            "/context/servlet/testProvider/testDestination"
+            "/context/servlet/testProvider/testDestination/with/slashes"
         });
         return Collections.unmodifiableMap(parameterMap);
     }

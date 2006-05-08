@@ -110,7 +110,7 @@ public class CreateSubscriberGenerator extends PatternMatchingCommandGenerator {
     private transient MessageFormat createdLocationFormat;
     private transient CreateSubscriber generatedCommand;
 
-    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/"
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/(.+)/"
             + PathNaming.CONNECTION
             + "-(\\d+)/"
             + PathNaming.SESSION

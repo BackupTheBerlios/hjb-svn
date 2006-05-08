@@ -21,8 +21,8 @@ Running the HJB servlet requires
 
  * the JMS jars specific to the messaging provider you want to access.
 
-Most these items are required_ as is described below.  There are some
-useful optional_ items are well.
+In addition to these items, all of which are required_, there are some
+useful optional_.
 
 Required
 --------
@@ -33,35 +33,38 @@ Java SDK 1.4 or later
 HJB is coded using the Java SDK 1.4.  If you are thinking of hacking
 HJB, get the SDK for your platform.
 
-**N.B.** At the moment, the project does **not** use any features of
-Java 5. This is done purposefully, to allow HJB to be extended
-entirely within development teams that are constrained to using Java
-1.4,as is still quite common.
+**N.B.** At the moment, the project purposefully used Java 1.4.  It
+does **not** use any features of Java 5, but is 'future compatible'
+with it. This is to allow HJB to be extended entirely within
+development teams that are constrained to using Java 1.4, a situation
+which is still quite common.
 
 
 Ant 1.6.5 or later
 ******************
 
-The HJB project is built, tested and deployed using `Ant`_. Download it
-and set it up as described on the `ant website installation
-page`_. Note that `Ant`_ is required even with the binary-only HJB
-distribution, to support a number of deployment related targets.    
+The HJB project is built, tested and deployed using Ant_. Ant should
+be downloaded and installed as described on the `ant website
+installation page`_. Note that Ant is required for both the source and
+binary HJB installations of HJB.  This is because it is used
+post-installation task of building war files specific to messaging
+providers.
 
 Library Jars
 ************
 
 Most of the jars required for developing/extending HJB are included in
-the source distribution or via anonymous SVN.  The only one not
-present is jms.jar, which cannot be distributed with HJB.  It can be
-downloaded from the `Sun website`_.
+the source distribution or are available via anonymous SVN.  The only
+one not present is jms.jar, which cannot be distributed with HJB.  It
+can be downloaded from the `Sun website`_.
 
 For HJB to communicate with a particular vendors's JMS provider
 requires the vendor's JMS library jars.  The vendor's documentataion
 should indicate how to obtain these.
 
 Once obtained, the vendor jars will need to be deployed with the HJB
-servlet.  The HJB distribution includes a build file that contains an
-ant task that simplifies this procedure.
+servlet.  Both the HJB source and binary distributions include a build
+file that contains an ant task that simplifies this procedure.
 
 
 A Servlet Container
@@ -69,7 +72,7 @@ A Servlet Container
 
 HJB can be deployed against any servlet container, and there are a
 quite of few good ones available! During development, it was tested
-using the excellent open-source `Tomcat`_ servlet container.
+using the excellent open-source Tomcat_ servlet container.
 
 Optional
 --------

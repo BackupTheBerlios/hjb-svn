@@ -139,6 +139,11 @@ public class HJBServlet extends HttpServlet {
                                                 HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug(strings().getString(HJBStrings.REQUEST_METHOD_AND_PATH,
+                                              request.getMethod(),
+                                              request.getPathInfo()));
+            }
             for (int i = 0; i < generators.length; i++) {
                 if (generators[i].matches(request.getPathInfo())) {
                     LOG.info(strings().getString(HJBStrings.HANDLING_REQUEST,
@@ -231,9 +236,9 @@ public class HJBServlet extends HttpServlet {
                 timeIsUp.cancel();
             }
         }
-        if (! generatedCommand.isExecutedOK()) {
-            getServletContext().log(generatedCommand.getStatusMessage(), 
-                                    generatedCommand.getFault());            
+        if (!generatedCommand.isExecutedOK()) {
+            getServletContext().log(generatedCommand.getStatusMessage(),
+                                    generatedCommand.getFault());
         }
         generator.sendResponse(response);
     }

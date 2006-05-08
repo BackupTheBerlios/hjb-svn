@@ -43,27 +43,27 @@ public class SendHJBMessageGeneratorTest extends
         assertFalse(generator.matches("/foo/"));
         assertFalse(generator.matches("/foo/bar/connection-1/session-0/createconsumer"));
         assertTrue(generator.matches("/foo/bar/connection-1/session-0/producer-0/send"));
-        assertTrue(generator.matches("/foo/baz/connection-5/session-4/producer-5/send"));
+        assertTrue(generator.matches("/foo/baz/multiple/slashes/connection-5/session-4/producer-5/send"));
     }
 
     public void testJMSCommandAndItsRunnerAreGeneratedCorrectly() {
         Mock mockRequest = generateMockRequest();
         mockRequest.stubs()
             .method("getPathInfo")
-            .will(returnValue("/testProvider/testFactory/connection-0/session-0/producer-0/send"));
+            .will(returnValue("/testProvider/testFactory/with/slash/connection-0/session-0/producer-0/send"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath);
         mockHJB.make1SessionAnd1Destination(root,
                                             "testProvider",
-                                            "testFactory",
+                                            "testFactory/with/slash",
                                             "testDestination",
                                             createMockDestination());
 
         JMSCommandGenerator generator = new SendHJBMessageGenerator();
         generator.generateCommand(testRequest, root);
         assertSame(root.getProvider("testProvider")
-            .getConnectionFactory("testFactory")
+            .getConnectionFactory("testFactory/with/slash")
             .getConnection(0)
             .getSessionCommandRunner(0), generator.getAssignedCommandRunner());
         assertTrue(generator.getGeneratedCommand() instanceof SendHJBMessage);

@@ -43,7 +43,7 @@ public class CreateConsumerGeneratorTest extends
         assertFalse(generator.matches("/foo/"));
         assertFalse(generator.matches("/foo/bar/connection-1/session-0/createconsumer"));
         assertTrue(generator.matches("/foo/bar/connection-1/session-0/create-consumer"));
-        assertTrue(generator.matches("/foo/baz/connection-5/session-4/create-consumer"));
+        assertTrue(generator.matches("/foo/baz/multiple/slashes/connection-5/session-4/create-consumer"));
     }
 
     public void testJMSCommandAndItsRunnerAreGeneratedCorrectly() {
@@ -51,25 +51,25 @@ public class CreateConsumerGeneratorTest extends
 
         mockRequest.expects(atLeastOnce())
             .method("getPathInfo")
-            .will(returnValue("/testProvider/testFactory/connection-0/session-0/create-consumer"));
+            .will(returnValue("/testProvider/testFactory/slash/connection-0/session-0/create-consumer"));
 
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath);
         mockHJB.make1SessionAnd1Destination(root,
                                             "testProvider",
-                                            "testFactory",
-                                            "testDestination",
+                                            "testFactory/slash",
+                                            "testDestination/with/slashes",
                                             createMockDestination());
 
         CreateConsumerGenerator generator = new CreateConsumerGenerator();
         generator.generateCommand(testRequest, root);
         assertSame(root.getProvider("testProvider")
-            .getConnectionFactory("testFactory")
+            .getConnectionFactory("testFactory/slash")
             .getConnection(0)
             .getSessionCommandRunner(0), generator.getAssignedCommandRunner());
         assertTrue(generator.getGeneratedCommand() instanceof CreateConsumer);
-        assertEquals("hjb/testProvider/testFactory/connection-0/session-0/consumer-{0}",
+        assertEquals("hjb/testProvider/testFactory/slash/connection-0/session-0/consumer-{0}",
                      generator.getCreatedLocationFormatter().toPattern());
     }
 
@@ -82,7 +82,7 @@ public class CreateConsumerGeneratorTest extends
             "(boolean false)"
         });
         parameterMap.put(HJBServletConstants.DESTINATION_URL, new String[] {
-            "/context/servlet/testProvider/testDestination"
+            "/context/servlet/testProvider/testDestination/with/slashes"
         });
         return Collections.unmodifiableMap(parameterMap);
     }

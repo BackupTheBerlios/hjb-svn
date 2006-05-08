@@ -32,6 +32,9 @@ public class JMSCommandGeneratorFactory {
     /**
      * Returns the set of <code>JMSCommandGenerator</code> instances that
      * match all expected DELETE requests.
+     *
+     * <strong>N.B</strong> the order in which the generators are returned <strong>is</strong> is significant
+     * as multiple generators may match the same URL.
      * 
      * @return an array containing new instances of
      *         <code>JMSCommandGenerator</code> to be used to process HJB
@@ -51,6 +54,9 @@ public class JMSCommandGeneratorFactory {
     /**
      * Returns the set of <code>JMSCommandGenerator</code> instances that
      * match all expected GET requests.
+     *
+     * <strong>N.B</strong> the order in which the generators are returned <strong>is</strong> is significant
+     * as multiple generators may match the same URL.
      * 
      * @return an array containing new instances of
      *         <code>JMSCommandGenerator</code> to be used to process HJB GET
@@ -73,6 +79,9 @@ public class JMSCommandGeneratorFactory {
      * Returns the set of <code>JMSCommandGenerator</code> instances that
      * match all expected POST requests.
      * 
+     * <strong>N.B</strong> the order in which the generators are returned <strong>is</strong> is significant
+     * as multiple generators may match the same URL.
+     * 
      * @return an array containing new instances of
      *         <code>JMSCommandGenerator</code> to be used to process HJB POST
      *         requests.
@@ -80,8 +89,6 @@ public class JMSCommandGeneratorFactory {
     public JMSCommandGenerator[] getPostGenerators() {
         JMSCommandGenerator[] result = new JMSCommandGenerator[] {
                 new RegisterProviderGenerator(),
-                new CreateConnectionGenerator(),
-                new CreateSessionGenerator(),
                 new CreateConsumerGenerator(),
                 new ReceiveFromConsumerGenerator(),
                 new CreateSubscriberGenerator(),
@@ -90,6 +97,8 @@ public class JMSCommandGeneratorFactory {
                 new SendHJBMessageGenerator(),
                 new CreateBrowserGenerator(),
                 new ViewQueueGenerator(),
+                new CreateSessionGenerator(),
+                new CreateConnectionGenerator(),
         };
         return result;
     }

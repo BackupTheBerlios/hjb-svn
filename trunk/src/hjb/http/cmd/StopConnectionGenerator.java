@@ -70,6 +70,6 @@ public class StopConnectionGenerator extends PatternMatchingCommandGenerator {
 
     private transient StopConnection generatedCommand;
 
-    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/"
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/(.+)/"
             + PathNaming.CONNECTION + "-(\\d+)/stop$");
 }

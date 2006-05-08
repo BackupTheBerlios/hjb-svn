@@ -5,7 +5,7 @@
 # The path used by HJB to persist the values used to configure
 # providers.
 
-hjb.config.rootpath=/tmp/hjb_providers.txt
+hjb.config.rootpath=/home/tbe/tmp/hjb
 
 # The timeout (in seconds) on any HJB command
 
@@ -43,7 +43,7 @@ hjb.deploy.provider.lib.dir=/home/tbe/activemq/lib
 
 # The name of the web application 
 
-hjb.deploy.webapp.name=hjbactivemq
+hjb.deploy.webapp.name=hjb-activemq
 
 # The directory to which the built Web ARchive file is copied
 

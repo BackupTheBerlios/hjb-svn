@@ -68,5 +68,5 @@ public class RegisterConnectionFactoryGenerator extends
 
     private transient RegisterConnectionFactory generatedCommand;
 
-    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/register-connection-factory$");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/(.+)/register-connection-factory$");
 }

@@ -97,7 +97,7 @@ public class CreateSessionGenerator extends PatternMatchingCommandGenerator {
     private transient MessageFormat createdLocationFormat;
     private transient CreateSession generatedCommand;
 
-    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/"
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/(.+)/"
             + PathNaming.CONNECTION + "-(\\d+)/create$");
     private static final MessageFormat FORMATTER_GENERATOR = new MessageFormat("{0}{1}/{2}/{3}/"
             + PathNaming.CONNECTION + "-{4}/" + PathNaming.SESSION + "-'{0}'");

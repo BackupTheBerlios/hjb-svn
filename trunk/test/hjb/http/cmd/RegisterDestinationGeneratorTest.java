@@ -37,7 +37,7 @@ public class RegisterDestinationGeneratorTest extends
         assertFalse(generator.matches("///"));
         assertFalse(generator.matches("/foo/"));
         assertFalse(generator.matches("/foo/bar/register-connnection-factory"));
-        assertTrue(generator.matches("/foo/bar/register-destination"));
+        assertTrue(generator.matches("/foo/bar/multiple/slash/jndi-key/register-destination"));
         assertTrue(generator.matches("/foo/baz/register-destination"));
     }
 
@@ -45,7 +45,7 @@ public class RegisterDestinationGeneratorTest extends
         Mock mockRequest = generateMockRequest();
         mockRequest.expects(atLeastOnce())
             .method("getPathInfo")
-            .will(returnValue("/testProvider/testDestination/register-destination"));
+            .will(returnValue("/testProvider/testDestination/with/slashes/register-destination"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath);
@@ -60,6 +60,6 @@ public class RegisterDestinationGeneratorTest extends
                            + " should contain testDestination",
                    -1 != generator.getGeneratedCommand()
                        .getDescription()
-                       .indexOf("testDestination"));
+                       .indexOf("testDestination/with/slashes"));
     }
 }

@@ -36,20 +36,20 @@ public class DeleteConnectionGeneratorTest extends
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
         assertFalse(generator.matches("/foo/"));
-        assertFalse(generator.matches("/foo/bar/connection-134d"));
-        assertTrue(generator.matches("/foo/bar/connection-124"));
-        assertTrue(generator.matches("/foo/bar/connection-1/"));
+        assertFalse(generator.matches("/foo/bar/multiple/slashes/connection-534d"));
+        assertTrue(generator.matches("/foo/bar/multiple/slashes/connection-524"));
+        assertTrue(generator.matches("/foo/bar/multiple/slashes/connection-5/"));
     }
 
     public void testJMSCommandAndItsRunnerAreGeneratedCorrectly() {
         Mock mockRequest = generateMockRequest();
         mockRequest.expects(atLeastOnce())
             .method("getPathInfo")
-            .will(returnValue("/testProvider/testFactory/connection-0"));
+            .will(returnValue("/testProvider/testFactory/with/slash/connection-0"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath);
-        mockHJB.make1Session(root, "testProvider", "testFactory");
+        mockHJB.make1Session(root, "testProvider", "testFactory/with/slash");
 
         JMSCommandGenerator generator = new DeleteConnectionGenerator();
         generator.generateCommand(testRequest, root);

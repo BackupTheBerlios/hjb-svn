@@ -36,20 +36,20 @@ public class DeleteConnectionFactoryGeneratorTest extends
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
         assertFalse(generator.matches("/foo/"));
-        assertFalse(generator.matches("/foo/bar/baz"));
+        assertTrue(generator.matches("/foo/bar/baz"));
         assertTrue(generator.matches("/foo/bar/"));
-        assertTrue(generator.matches("/foo/bar"));
+        assertTrue(generator.matches("/foo/bar/multiple/slashes/"));
     }
 
     public void testJMSCommandAndItsRunnerAreGeneratedCorrectly() {
         Mock mockRequest = generateMockRequest();
         mockRequest.expects(atLeastOnce())
             .method("getPathInfo")
-            .will(returnValue("/testProvider/testFactory"));
+            .will(returnValue("/testProvider/testFactory/with/slash"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath);
-        mockHJB.make1Session(root, "testProvider", "testFactory");
+        mockHJB.make1Session(root, "testProvider", "testFactory/with/slash");
 
         JMSCommandGenerator generator = new DeleteConnectionFactoryGenerator();
         generator.generateCommand(testRequest, root);
@@ -57,10 +57,10 @@ public class DeleteConnectionFactoryGeneratorTest extends
                    generator.getAssignedCommandRunner());
         assertTrue(generator.getGeneratedCommand() instanceof DeleteConnectionFactory);
         assertTrue("" + generator.getGeneratedCommand().getDescription()
-                           + " should contain testFactory",
+                           + " should contain testFactory/with/slash",
                    -1 != generator.getGeneratedCommand()
                        .getDescription()
-                       .indexOf("testFactory"));
+                       .indexOf("testFactory/with/slash"));
     }
 
 }

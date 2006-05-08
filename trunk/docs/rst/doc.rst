@@ -3,12 +3,12 @@ Documentation
 =============
 
 As with any open source project, HJB's documentation lags a little bit
-behind its development!
+behind its development.
 
-However, there is quite bit of it available -  most of the
-information you'll need to get started is here. Please `get in touch`_
-if there is something that is missing, particularly if you feel like
-adding it ...  
+However, there is quite bit of it available - most of the information
+you'll need to get started with HJB is online. Please `get in touch`_
+if there is something that is missing, especially if you feel like
+adding it yourself!
 
 * `Installation guide`_
 

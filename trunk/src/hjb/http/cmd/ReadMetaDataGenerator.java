@@ -76,6 +76,6 @@ public class ReadMetaDataGenerator extends PatternMatchingCommandGenerator {
 
     private transient ReadMetaData generatedCommand;
 
-    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/"
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/(.+)/"
             + PathNaming.CONNECTION + "-(\\d+)/metadata$");
 }

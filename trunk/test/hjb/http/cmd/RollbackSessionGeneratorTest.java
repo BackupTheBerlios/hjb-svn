@@ -38,23 +38,23 @@ public class RollbackSessionGeneratorTest extends
         assertFalse(generator.matches("/foo/"));
         assertFalse(generator.matches("/foo/bar/connection-1/sesssion0/rooollback"));
         assertTrue(generator.matches("/foo/bar/connection-1/session-1/rollback"));
-        assertTrue(generator.matches("/foo/bar/connection-5/session-50/rollback"));
+        assertTrue(generator.matches("/foo/bar/multiple/slashes/connection-5/session-50/rollback"));
     }
 
     public void testJMSCommandAndItsRunnerAreGeneratedCorrectly() {
         Mock mockRequest = generateMockRequest();
         mockRequest.expects(atLeastOnce())
             .method("getPathInfo")
-            .will(returnValue("/testProvider/testFactory/connection-0/session-0/rollback"));
+            .will(returnValue("/testProvider/testFactory/with/slash/connection-0/session-0/rollback"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath);
-        mockHJB.make1Session(root, "testProvider", "testFactory");
+        mockHJB.make1Session(root, "testProvider", "testFactory/with/slash");
 
         JMSCommandGenerator generator = new RollbackSessionGenerator();
         generator.generateCommand(testRequest, root);
         assertSame(root.getProvider("testProvider")
-            .getConnectionFactory("testFactory")
+            .getConnectionFactory("testFactory/with/slash")
             .getConnection(0)
             .getSessionCommandRunner(0), generator.getAssignedCommandRunner());
         assertTrue(generator.getGeneratedCommand() instanceof RollbackSession);

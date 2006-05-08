@@ -36,16 +36,16 @@ public class DeleteDestinationGeneratorTest extends
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
         assertFalse(generator.matches("/foo/"));
-        assertFalse(generator.matches("/foo/bar/baz"));
+        assertTrue(generator.matches("/foo/bar/baz"));
         assertTrue(generator.matches("/foo/bar/"));
-        assertTrue(generator.matches("/foo/bar"));
+        assertTrue(generator.matches("/foo/bar/multiple/slash/jndi-key"));
     }
 
     public void testJMSCommandAndItsRunnerAreGeneratedCorrectly() {
         Mock mockRequest = generateMockRequest();
         mockRequest.expects(atLeastOnce())
             .method("getPathInfo")
-            .will(returnValue("/testProvider/testDestination"));
+            .will(returnValue("/testProvider/testDestination/with/slash"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath);
@@ -57,9 +57,9 @@ public class DeleteDestinationGeneratorTest extends
                    generator.getAssignedCommandRunner());
         assertTrue(generator.getGeneratedCommand() instanceof DeleteDestination);
         assertTrue("" + generator.getGeneratedCommand().getDescription()
-                           + " should contain testDestination",
+                           + " should contain testDestination/with/slash",
                    -1 != generator.getGeneratedCommand()
                        .getDescription()
-                       .indexOf("testDestination"));
+                       .indexOf("testDestination/with/slash"));
     }
 }

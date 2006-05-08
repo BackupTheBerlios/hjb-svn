@@ -37,18 +37,18 @@ public class DeleteSessionGeneratorTest extends BaseJMSCommandGeneratorTestCase 
         assertFalse(generator.matches("/foo/"));
         assertFalse(generator.matches("/foo/bar/connection-1/sesssion0"));
         assertTrue(generator.matches("/foo/bar/connection-1/session-1"));
-        assertTrue(generator.matches("/foo/bar/connection-5/session-50/"));
+        assertTrue(generator.matches("/foo/bar/multiple/slashes/connection-5/session-50/"));
     }
 
     public void testJMSCommandAndItsRunnerAreGeneratedCorrectly() {
         Mock mockRequest = generateMockRequest();
         mockRequest.expects(atLeastOnce())
             .method("getPathInfo")
-            .will(returnValue("/testProvider/testFactory/connection-0/session-0"));
+            .will(returnValue("/testProvider/testFactory/with/slash/connection-0/session-0"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath);
-        mockHJB.make1Session(root, "testProvider", "testFactory");
+        mockHJB.make1Session(root, "testProvider", "testFactory/with/slash");
 
         JMSCommandGenerator generator = new DeleteSessionGenerator();
         generator.generateCommand(testRequest, root);

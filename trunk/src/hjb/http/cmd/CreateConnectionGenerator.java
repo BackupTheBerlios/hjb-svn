@@ -102,7 +102,7 @@ public class CreateConnectionGenerator extends PatternMatchingCommandGenerator {
 
     private transient MessageFormat createdLocationFormat;
     private transient CreateConnection generatedCommand;
-    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/create$");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/(.+)/create$");
     private static final MessageFormat FORMATTER_GENERATOR = new MessageFormat("{0}{1}/{2}/{3}/"
             + PathNaming.CONNECTION + "-'{0}'");
 }

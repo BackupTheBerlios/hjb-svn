@@ -37,7 +37,7 @@ public class StartConnectionGeneratorTest extends
         assertFalse(generator.matches("///"));
         assertFalse(generator.matches("/foo/"));
         assertFalse(generator.matches("/foo/bar/connection-134d-start"));
-        assertTrue(generator.matches("/foo/bar/connection-124/start"));
+        assertTrue(generator.matches("/foo/bar/multiple/slashes/connection-124/start"));
         assertTrue(generator.matches("/foo/bar/connection-1/start"));
     }
 
@@ -45,11 +45,11 @@ public class StartConnectionGeneratorTest extends
         Mock mockRequest = generateMockRequest();
         mockRequest.expects(atLeastOnce())
             .method("getPathInfo")
-            .will(returnValue("/testProvider/testFactory/connection-0/start"));
+            .will(returnValue("/testProvider/testFactory/with/slash/connection-0/start"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath);
-        mockHJB.make1Session(root, "testProvider", "testFactory");
+        mockHJB.make1Session(root, "testProvider", "testFactory/with/slash");
 
         JMSCommandGenerator generator = new StartConnectionGenerator();
         generator.generateCommand(testRequest, root);

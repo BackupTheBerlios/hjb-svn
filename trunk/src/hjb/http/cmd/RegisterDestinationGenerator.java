@@ -67,5 +67,5 @@ public class RegisterDestinationGenerator extends
 
     private transient RegisterDestination generatedCommand;
 
-    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/([^/]+)/register-destination$");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/(.+)/register-destination$");
 }

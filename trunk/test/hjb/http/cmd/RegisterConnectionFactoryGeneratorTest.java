@@ -38,14 +38,14 @@ public class RegisterConnectionFactoryGeneratorTest extends
         assertFalse(generator.matches("/foo/"));
         assertFalse(generator.matches("/foo/bar/baz"));
         assertTrue(generator.matches("/foo/bar/register-connection-factory"));
-        assertTrue(generator.matches("/foo/baz/register-connection-factory"));
+        assertTrue(generator.matches("/foo/baz/with/slashes/register-connection-factory"));
     }
 
     public void testJMSCommandAndItsRunnerAreGeneratedCorrectly() {
         Mock mockRequest = generateMockRequest();
         mockRequest.expects(atLeastOnce())
             .method("getPathInfo")
-            .will(returnValue("/testProvider/testFactory/register-connection-factory"));
+            .will(returnValue("/testProvider/testFactory/with/slashes/register-connection-factory"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath);
@@ -60,6 +60,6 @@ public class RegisterConnectionFactoryGeneratorTest extends
                            + " should contain testFactory",
                    -1 != generator.getGeneratedCommand()
                        .getDescription()
-                       .indexOf("testFactory"));
+                       .indexOf("testFactory/with/slashes"));
     }
 }

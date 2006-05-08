@@ -43,25 +43,25 @@ public class CreateConnectionGeneratorTest extends
         assertFalse(generator.matches("/foo/"));
         assertFalse(generator.matches("/foo/bar/connection-134d"));
         assertTrue(generator.matches("/foo/bar/create"));
-        assertTrue(generator.matches("/foo/baz/create"));
+        assertTrue(generator.matches("/foo/baz/multiple/slashes/create"));
     }
 
     public void testJMSCommandAndItsRunnerAreGeneratedCorrectly() {
         Mock mockRequest = generateMockRequest();
         mockRequest.expects(atLeastOnce())
             .method("getPathInfo")
-            .will(returnValue("/testProvider/testFactory/create"));
+            .will(returnValue("/testProvider/testFactory/slash/create"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath);
-        mockHJB.make1Session(root, "testProvider", "testFactory");
+        mockHJB.make1Session(root, "testProvider", "testFactory/slash");
 
         CreateConnectionGenerator generator = new CreateConnectionGenerator();
         generator.generateCommand(testRequest, root);
         assertSame(root.getCommandRunner(),
                    generator.getAssignedCommandRunner());
         assertTrue(generator.getGeneratedCommand() instanceof CreateConnection);
-        assertEquals("hjb/testProvider/testFactory/connection-{0}",
+        assertEquals("hjb/testProvider/testFactory/slash/connection-{0}",
                      generator.getCreatedLocationFormatter().toPattern());
 
     }

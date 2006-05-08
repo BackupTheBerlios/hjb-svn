@@ -37,23 +37,23 @@ public class CommitSessionGeneratorTest extends BaseJMSCommandGeneratorTestCase 
         assertFalse(generator.matches("/foo/"));
         assertFalse(generator.matches("/foo/bar/connection-1/sesssion0"));
         assertTrue(generator.matches("/foo/bar/connection-1/session-1/commit"));
-        assertTrue(generator.matches("/foo/bar/connection-5/session-50/commit"));
+        assertTrue(generator.matches("/foo/bar/multiple/slash/jndi-key/connection-5/session-50/commit"));
     }
 
     public void testJMSCommandAndItsRunnerAreGeneratedCorrectly() {
         Mock mockRequest = generateMockRequest();
         mockRequest.stubs()
             .method("getPathInfo")
-            .will(returnValue("/testProvider/testFactory/connection-0/session-0/commit"));
+            .will(returnValue("/testProvider/testFactory/slash/connection-0/session-0/commit"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath);
-        mockHJB.make1Session(root, "testProvider", "testFactory");
+        mockHJB.make1Session(root, "testProvider", "testFactory/slash");
 
         JMSCommandGenerator generator = new CommitSessionGenerator();
         generator.generateCommand(testRequest, root);
         assertSame(root.getProvider("testProvider")
-            .getConnectionFactory("testFactory")
+            .getConnectionFactory("testFactory/slash")
             .getConnection(0)
             .getSessionCommandRunner(0), generator.getAssignedCommandRunner());
         assertTrue(generator.getGeneratedCommand() instanceof CommitSession);

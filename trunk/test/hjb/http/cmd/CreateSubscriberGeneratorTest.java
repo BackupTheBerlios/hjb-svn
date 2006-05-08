@@ -45,31 +45,31 @@ public class CreateSubscriberGeneratorTest extends
         assertFalse(generator.matches("/foo/"));
         assertFalse(generator.matches("/foo/bar/connection-1/session-0/createconsumer"));
         assertTrue(generator.matches("/foo/bar/connection-1/session-0/create-durable-subscriber"));
-        assertTrue(generator.matches("/foo/baz/connection-5/session-4/create-durable-subscriber"));
+        assertTrue(generator.matches("/foo/baz/multiple/slashes/connection-5/session-4/create-durable-subscriber"));
     }
 
     public void testJMSCommandAndItsRunnerAreGeneratedCorrectly() {
         Mock mockRequest = generateMockRequest();
         mockRequest.expects(atLeastOnce())
             .method("getPathInfo")
-            .will(returnValue("/testProvider/testFactory/connection-0/session-0/create-durable-subscriber"));
+            .will(returnValue("/testProvider/testFactory/with/slash/connection-0/session-0/create-durable-subscriber"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath);
         mockHJB.make1SessionAnd1Destination(root,
                                             "testProvider",
-                                            "testFactory",
-                                            "testDestination",
+                                            "testFactory/with/slash",
+                                            "testDestination/with/slashes",
                                             createMockDestination());
 
         CreateSubscriberGenerator generator = new CreateSubscriberGenerator();
         generator.generateCommand(testRequest, root);
         assertSame(root.getProvider("testProvider")
-            .getConnectionFactory("testFactory")
+            .getConnectionFactory("testFactory/with/slash")
             .getConnection(0)
             .getSessionCommandRunner(0), generator.getAssignedCommandRunner());
         assertTrue(generator.getGeneratedCommand() instanceof CreateSubscriber);
-        assertEquals("hjb/testProvider/testFactory/connection-0/session-0/subscriber-{0}",
+        assertEquals("hjb/testProvider/testFactory/with/slash/connection-0/session-0/subscriber-{0}",
                      generator.getCreatedLocationFormatter().toPattern());
     }
 
@@ -85,7 +85,7 @@ public class CreateSubscriberGeneratorTest extends
             "testSubscriber"
         });
         parameterMap.put(HJBServletConstants.DESTINATION_URL, new String[] {
-            "/context/servlet/testProvider/testDestination"
+            "/context/servlet/testProvider/testDestination/with/slashes"
         });
         return Collections.unmodifiableMap(parameterMap);
     }
