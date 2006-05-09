@@ -101,7 +101,7 @@ public class NamedPropertyCopier implements MessageCopier {
 
     protected boolean doNotCopy(String headerName) {
         return getAssistant().isBuiltinHeader(headerName)
-                || MessageCopierFactory.HJB_JMS_CLASS.equals(headerName);
+                || MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE.equals(headerName);
     }
 
     protected EncodedValueCopier getValueCopier() {

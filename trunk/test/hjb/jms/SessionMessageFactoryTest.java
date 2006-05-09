@@ -42,7 +42,7 @@ public class SessionMessageFactoryTest extends MockObjectTestCase {
             fail("should have thrown an exception");
         } catch (HJBException e) {}
         Map headers = new HashMap();
-        headers.put(MessageCopierFactory.HJB_JMS_CLASS, "");
+        headers.put(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE, "");
         try {
             f.createMessage(new HJBMessage(headers, ""));
             fail("should have thrown an exception");
@@ -70,7 +70,7 @@ public class SessionMessageFactoryTest extends MockObjectTestCase {
 
             SessionMessageFactory f = new SessionMessageFactory(testSession);
             Map headers = new HashMap();
-            headers.put(MessageCopierFactory.HJB_JMS_CLASS, clazzName);
+            headers.put(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE, clazzName);
             assertNotNull(f.createMessage(new HJBMessage(headers, "")));
         }
     }

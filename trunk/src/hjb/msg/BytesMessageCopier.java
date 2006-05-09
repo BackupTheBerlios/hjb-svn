@@ -109,7 +109,7 @@ public class BytesMessageCopier extends PayloadMessageCopier {
     }
 
     protected boolean acceptHJBMessage(HJBMessage aMessage) throws HJBException {
-        return BytesMessage.class.getName().equals(aMessage.getHeader(MessageCopierFactory.HJB_JMS_CLASS));
+        return BytesMessage.class.getName().equals(aMessage.getHeader(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE));
     }
 
     protected ByteArrayCodec getCodec() {

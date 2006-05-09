@@ -109,7 +109,7 @@ public class MapMessageCopier extends PayloadMessageCopier {
     }
 
     protected boolean acceptHJBMessage(HJBMessage aMessage) throws HJBException {
-        return MapMessage.class.getName().equals(aMessage.getHeader(MessageCopierFactory.HJB_JMS_CLASS));
+        return MapMessage.class.getName().equals(aMessage.getHeader(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE));
     }
 
     private static final Logger LOG = Logger.getLogger(MapMessageCopier.class);

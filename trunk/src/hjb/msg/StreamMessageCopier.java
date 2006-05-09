@@ -121,7 +121,7 @@ public class StreamMessageCopier extends PayloadMessageCopier {
     }
 
     protected boolean acceptHJBMessage(HJBMessage aMessage) throws HJBException {
-        return StreamMessage.class.getName().equals(aMessage.getHeader(MessageCopierFactory.HJB_JMS_CLASS));
+        return StreamMessage.class.getName().equals(aMessage.getHeader(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE));
     }
 
     protected HJBStrings strings() {

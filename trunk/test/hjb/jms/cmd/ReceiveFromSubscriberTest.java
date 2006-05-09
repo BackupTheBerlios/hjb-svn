@@ -50,7 +50,7 @@ public class ReceiveFromSubscriberTest extends MockObjectTestCase {
 
     protected HJBMessage createTestTextHJBMessage() {
         HashMap headers = new HashMap();
-        headers.put(MessageCopierFactory.HJB_JMS_CLASS,
+        headers.put(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE,
                     TextMessage.class.getName());
         return new HJBMessage(headers, "boo!");
     }

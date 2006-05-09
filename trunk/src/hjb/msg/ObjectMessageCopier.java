@@ -106,7 +106,7 @@ public class ObjectMessageCopier extends PayloadMessageCopier {
     }
 
     protected boolean acceptHJBMessage(HJBMessage aMessage) throws HJBException {
-        return ObjectMessage.class.getName().equals(aMessage.getHeader(MessageCopierFactory.HJB_JMS_CLASS));
+        return ObjectMessage.class.getName().equals(aMessage.getHeader(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE));
     }
 
     protected Serializable asObject(byte[] bytes) throws IOException,

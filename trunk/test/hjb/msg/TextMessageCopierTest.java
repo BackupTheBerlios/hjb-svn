@@ -83,7 +83,7 @@ public class TextMessageCopierTest extends MockObjectTestCase {
         Mock mockJMSMessage = mock(TextMessage.class);
         mockJMSMessage.stubs()
             .method("setStringProperty")
-            .with(eq("hjb.core.message-version"), eq("1.0"));
+            .with(eq("hjb_message_version"), eq("1.0"));
         mockJMSMessage.stubs()
             .method("setText")
             .with(eq("test text"))
@@ -103,7 +103,7 @@ public class TextMessageCopierTest extends MockObjectTestCase {
         Mock mockJMSMessage = mock(TextMessage.class);
         mockJMSMessage.expects(once())
             .method("setStringProperty")
-            .with(eq("hjb.core.message-version"), eq("1.0"));
+            .with(eq("hjb_message_version"), eq("1.0"));
         mockJMSMessage.expects(once()).method("setText").with(eq("hjb text"));
 
         Message testJMSMessage = (TextMessage) mockJMSMessage.proxy();
@@ -115,7 +115,7 @@ public class TextMessageCopierTest extends MockObjectTestCase {
 
     protected Map createEmptyHJBTextMessageHeaders() {
         Map headers = new HashMap();
-        headers.put(MessageCopierFactory.HJB_JMS_CLASS,
+        headers.put(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE,
                     TextMessage.class.getName());
         return headers;
     }

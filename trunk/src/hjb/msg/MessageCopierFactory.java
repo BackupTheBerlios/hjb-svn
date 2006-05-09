@@ -51,7 +51,7 @@ public class MessageCopierFactory {
     public MessageCopier getCopierFor(HJBMessage hjbMessage)
             throws HJBException {
         try {
-            return getCopierFor(hjbMessage.getHeader(HJB_JMS_CLASS));
+            return getCopierFor(hjbMessage.getHeader(HJB_JMS_MESSAGE_INTERFACE));
         } catch (HJBException e) {
             LOG.error("Message headers");
             LOG.error("" + new HashMap(hjbMessage.getHeaders()));
@@ -188,17 +188,17 @@ public class MessageCopierFactory {
      * Constant that holds the name of the header that specifies what JMS class
      * is contained in a HTTP message.
      * 
-     * <p/> The value of this constant is "hjb.core.jms-message-class".
+     * <p/> The value of this constant is "hjb_jms_message_interface".
      */
-    public static final String HJB_JMS_CLASS = "hjb.core.jms-message-class";
+    public static final String HJB_JMS_MESSAGE_INTERFACE = "hjb_jms_message_interface";
     
     /**
      * Constant that holds the name of message parameter used to indicate
      * version of a HJB message
      * <p />
-     * The value of this constant is "hjb.core.message-version".
+     * The value of this constant is "hjb_message_version".
      */
-    public static final String HJB_MESSAGE_VERSION = "hjb.core.message-version";
+    public static final String HJB_MESSAGE_VERSION = "hjb_message_version";
     
     /**
      * Constant that holds the value of HJB 1.0 message version 

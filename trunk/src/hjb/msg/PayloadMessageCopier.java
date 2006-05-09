@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.msg;
 
 import javax.jms.Message;
@@ -28,16 +28,16 @@ import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 
 /**
- * <code>PayloadMessageCopier</code>  is a base class of all the 
- * <code>XXXMessageCopiers</code> in the <code>hjb.msg</code> package.
+ * <code>PayloadMessageCopier</code> is a base class of all the
+ * <code>xxxMessageCopiers</code> in the <code>hjb.msg</code> package.
  * 
  * <p>
  * It is provides two abtract methods {@link #acceptHJBMessage(HJBMessage)} and
- * {@link #acceptJMSMessage(Message)} which the base cases implement to
- * perform validation, and provides various utility methods used in
- * the concrete implementations of <code>MessageCopier</code>
+ * {@link #acceptJMSMessage(Message)} which the base cases implement to perform
+ * validation, and provides various utility methods used in the concrete
+ * implementations of <code>MessageCopier</code>
  * </p>
- *
+ * 
  * @author Tim Emiola
  */
 public abstract class PayloadMessageCopier implements MessageCopier {
@@ -97,8 +97,27 @@ public abstract class PayloadMessageCopier implements MessageCopier {
         }
     }
 
+    /**
+     * Determines if <code>aMessage</code> is the kind of JMS
+     * <code>Message</code> that this <code>MessageCopier</code> support.
+     * 
+     * @param aMessage
+     *            a JMS <code>Message</code>
+     * @return true if <code>aMessage</code> is the correct type of JMS
+     *         <code>Message</code> false otherwise.
+     */
     protected abstract boolean acceptJMSMessage(Message aMessage);
 
+    /**
+     * Determines if <code>aMessage</code> is the kind of
+     * <code>HJBMessage</code> that this <code>MessageCopier</code>
+     * supports.
+     * 
+     * @param aMessage
+     *            an <code>HJBMessage</code>
+     * @return true if <code>aMessage</code> is the correct type of JMS
+     *         <code>Message</code> false otherwise.
+     */
     protected abstract boolean acceptHJBMessage(HJBMessage aMessage);
 
     protected void handleIllegalJMSMessageType(Class messageClazz)
@@ -128,7 +147,7 @@ public abstract class PayloadMessageCopier implements MessageCopier {
     protected void handleIllegalJMSMessageType(HJBMessage aMessage)
             throws HJBException {
         handleIllegalJMSMessageType(null == aMessage ? null
-                : aMessage.getHeader(MessageCopierFactory.HJB_JMS_CLASS));
+                : aMessage.getHeader(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE));
     }
 
     protected void handleIllegalJMSMessageType(String clazzName)
@@ -144,7 +163,8 @@ public abstract class PayloadMessageCopier implements MessageCopier {
         String errorMessage = strings().getString(HJBStrings.COULD_NOT_COPY_MESSAGE,
                                                   this,
                                                   null == message ? "null"
-                                                          : message.getClass().getName());
+                                                          : message.getClass()
+                                                              .getName());
         LOG.error(errorMessage, e);
         throw new HJBException(errorMessage, e);
     }

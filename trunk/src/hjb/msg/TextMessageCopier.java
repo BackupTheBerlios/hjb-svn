@@ -71,6 +71,6 @@ public class TextMessageCopier extends PayloadMessageCopier {
     }
 
     protected boolean acceptHJBMessage(HJBMessage aMessage) throws HJBException {
-        return TextMessage.class.getName().equals(aMessage.getHeader(MessageCopierFactory.HJB_JMS_CLASS));
+        return TextMessage.class.getName().equals(aMessage.getHeader(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE));
     }
 }

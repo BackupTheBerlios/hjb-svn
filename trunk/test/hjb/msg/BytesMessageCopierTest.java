@@ -55,7 +55,7 @@ public class BytesMessageCopierTest extends MockObjectTestCase {
         Mock mockJMSMessage = mock(BytesMessage.class);
         mockJMSMessage.stubs()
             .method("setStringProperty")
-            .with(eq("hjb.core.message-version"), eq("1.0"));
+            .with(eq("hjb_message_version"), eq("1.0"));
         mockJMSMessage.stubs()
             .method("writeBytes")
             .will(throwException(new JMSException("thrown as a test")));
@@ -73,7 +73,7 @@ public class BytesMessageCopierTest extends MockObjectTestCase {
         Mock mockJMSMessage = mock(BytesMessage.class);
         mockJMSMessage.expects(once())
             .method("setStringProperty")
-            .with(eq("hjb.core.message-version"), eq("1.0"));
+            .with(eq("hjb_message_version"), eq("1.0"));
         mockJMSMessage.expects(once())
             .method("writeBytes")
             .with(eq(YetAnotherBase64Test.DECODED_SOURCE.getBytes()));
@@ -128,7 +128,7 @@ public class BytesMessageCopierTest extends MockObjectTestCase {
 
     protected Map createEmptyHJBBytesMessageHeaders() {
         Map headers = new HashMap();
-        headers.put(MessageCopierFactory.HJB_JMS_CLASS,
+        headers.put(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE,
                     BytesMessage.class.getName());
         return headers;
     }

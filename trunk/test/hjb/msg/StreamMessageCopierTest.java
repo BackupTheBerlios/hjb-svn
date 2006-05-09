@@ -60,7 +60,7 @@ public class StreamMessageCopierTest extends MockObjectTestCase {
             String methodName = ORDERED_STREAM_MESSAGE_METHODS[i][1];
             mockJMSMessage.stubs()
                 .method("setStringProperty")
-                .with(eq("hjb.core.message-version"), eq("1.0"));
+                .with(eq("hjb_message_version"), eq("1.0"));
             mockJMSMessage.stubs()
                 .method(methodName)
                 .will(throwException(new JMSException("thrown as a test")));
@@ -84,7 +84,7 @@ public class StreamMessageCopierTest extends MockObjectTestCase {
         Mock mockJMSMessage = mock(StreamMessage.class);
         mockJMSMessage.expects(once())
             .method("setStringProperty")
-            .with(eq("hjb.core.message-version"), eq("1.0"));
+            .with(eq("hjb_message_version"), eq("1.0"));
         for (int i = 0; i < ORDERED_STREAM_MESSAGE_METHODS.length; i++) {
             String methodName = ORDERED_STREAM_MESSAGE_METHODS[i][1];
             Object expectedValue = ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[i][0];
@@ -191,7 +191,7 @@ public class StreamMessageCopierTest extends MockObjectTestCase {
 
     protected Map createEmptyHJBStreamMessageHeaders() {
         Map headers = new HashMap();
-        headers.put(MessageCopierFactory.HJB_JMS_CLASS,
+        headers.put(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE,
                     StreamMessage.class.getName());
         return headers;
     }

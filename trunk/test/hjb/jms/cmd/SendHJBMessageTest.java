@@ -53,7 +53,7 @@ public class SendHJBMessageTest extends MockObjectTestCase {
 
     protected HJBMessage createTestTextHJBMessage() {
         HashMap headers = new HashMap();
-        headers.put(MessageCopierFactory.HJB_JMS_CLASS,
+        headers.put(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE,
                     TextMessage.class.getName());
         return new HJBMessage(headers, "boo!");
     }
@@ -63,7 +63,7 @@ public class SendHJBMessageTest extends MockObjectTestCase {
         mockJMSMessage.expects(once()).method("setText").with(eq("boo!"));
         mockJMSMessage.expects(once())
             .method("setStringProperty")
-            .with(eq("hjb.core.message-version"), eq("1.0"));
+            .with(eq("hjb_message_version"), eq("1.0"));
         Message testMessage = (TextMessage) mockJMSMessage.proxy();
 
         Mock mockProducer = mock(MessageProducer.class);

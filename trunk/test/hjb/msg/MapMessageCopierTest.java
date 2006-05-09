@@ -54,7 +54,7 @@ public class MapMessageCopierTest extends MockObjectTestCase {
             Mock mockJMSMessage = mock(MapMessage.class, "test" + i);
             mockJMSMessage.stubs()
                 .method("setStringProperty")
-                .with(eq("hjb.core.message-version"), eq("1.0"));
+                .with(eq("hjb_message_version"), eq("1.0"));
             String methodName = ORDERED_MAP_MESSAGE_METHODS[i][1];
             mockJMSMessage.stubs()
                 .method(methodName)
@@ -80,7 +80,7 @@ public class MapMessageCopierTest extends MockObjectTestCase {
         Mock mockJMSMessage = mock(MapMessage.class);
         mockJMSMessage.expects(once())
             .method("setStringProperty")
-            .with(eq("hjb.core.message-version"), eq("1.0"));
+            .with(eq("hjb_message_version"), eq("1.0"));
         for (int i = 0; i < ORDERED_MAP_MESSAGE_METHODS.length; i++) {
             String methodName = ORDERED_MAP_MESSAGE_METHODS[i][1];
             Object expectedValue = ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[i][0];
@@ -167,7 +167,7 @@ public class MapMessageCopierTest extends MockObjectTestCase {
 
     protected Map createEmptyHJBMapMessageHeaders() {
         Map headers = new HashMap();
-        headers.put(MessageCopierFactory.HJB_JMS_CLASS,
+        headers.put(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE,
                     MapMessage.class.getName());
         return headers;
     }

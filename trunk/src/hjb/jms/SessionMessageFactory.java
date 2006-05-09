@@ -61,7 +61,7 @@ public class SessionMessageFactory {
      *            an <code>HJBMessage</code>
      * 
      * Uses the value of the header named
-     * {@link MessageCopierFactory#HJB_JMS_CLASS} to determine what message type
+     * {@link MessageCopierFactory#HJB_JMS_MESSAGE_INTERFACE} to determine what message type
      * to create.
      * 
      * @return a JMS <code>Message</code>
@@ -69,7 +69,7 @@ public class SessionMessageFactory {
      *             if a problem occurs while creating the <code>Message<code>
      */
     public Message createMessage(HJBMessage hjbMessage) throws HJBException {
-        return createMessage(hjbMessage.getHeader(MessageCopierFactory.HJB_JMS_CLASS));
+        return createMessage(hjbMessage.getHeader(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE));
     }
 
     /**

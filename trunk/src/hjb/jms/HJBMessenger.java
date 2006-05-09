@@ -229,7 +229,7 @@ public class HJBMessenger {
 
     protected HJBMessage createHJBMessageFor(Message source) {
         HJBMessage result = new HJBMessage(new HashMap(), "");
-        result.addHeader(MessageCopierFactory.HJB_JMS_CLASS,
+        result.addHeader(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE,
                          new MessageCopierFactory().distinctJmsMessageInterfaceOf(source.getClass().getName()));
         return result;
     }

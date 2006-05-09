@@ -59,7 +59,7 @@ public class MessageCopierFactoryTest extends MockObjectTestCase {
 
     public void testGetCopierForHJBMessageThrowsWhenSpecifiedJMSClassIsBogus() {
         Map headers = new HashMap();
-        headers.put(MessageCopierFactory.HJB_JMS_CLASS, "foo.bar.baz");
+        headers.put(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE, "foo.bar.baz");
         HJBMessage m = new HJBMessage(headers, "test");
         try {
             new MessageCopierFactory().getCopierFor(m);
@@ -70,7 +70,7 @@ public class MessageCopierFactoryTest extends MockObjectTestCase {
     public void testGetCopierForHJBMessageIsOKForCorrectHJBMessages() {
         for (Iterator i = KNOWN_JMS_MESSAGE_CLASSES.iterator(); i.hasNext();) {
             Map headers = new HashMap();
-            headers.put(MessageCopierFactory.HJB_JMS_CLASS, i.next());
+            headers.put(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE, i.next());
             HJBMessage m = new HJBMessage(headers, "test");
             assertNotNull("copier was not found",
                           new MessageCopierFactory().getCopierFor(m));
