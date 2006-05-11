@@ -48,15 +48,16 @@ public class BooleanPropertyValueCopierTest extends MockObjectTestCase {
     }
 
     public void testCanBeEncodedReturnsFalseOnPossibleExceptions() {
-	    Exception[] possibleExceptions = new Exception [] {
-			new JMSException("Thrown as a test"),
-			new NumberFormatException("Thrown as a test"),
-	    };
-		for (int i = 0; i < possibleExceptions.length; i++) {
-			Exception ex = possibleExceptions[i];
-        Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getBooleanProperty", ex);
-        BooleanPropertyValueCopier testCopier = new BooleanPropertyValueCopier();
-        assertFalse(testCopier.canBeEncoded("testName", testMessage));
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new NumberFormatException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getBooleanProperty",
+                                                                              ex);
+            BooleanPropertyValueCopier testCopier = new BooleanPropertyValueCopier();
+            assertFalse(testCopier.canBeEncoded("testName", testMessage));
         }
     }
 
@@ -75,17 +76,18 @@ public class BooleanPropertyValueCopierTest extends MockObjectTestCase {
 
     public void testAddToMessageThrowsHJBExceptionOnPossibleExceptions() {
         Exception[] possibleExceptions = new Exception[] {
-            new JMSException("Thrown as a test"),
-            new IllegalArgumentException("Thrown as a test"),
+                new JMSException("Thrown as a test"),
+                new IllegalArgumentException("Thrown as a test"),
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
             Exception ex = possibleExceptions[i];
-            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("setBooleanProperty", ex);
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("setBooleanProperty",
+                                                                              ex);
             BooleanPropertyValueCopier testCopier = new BooleanPropertyValueCopier();
             try {
                 testCopier.addToMessage("testName",
-                        OK_EXPECTED_DECODED_BOOLEANS[0],
-                        testMessage);
+                                        OK_EXPECTED_DECODED_BOOLEANS[0],
+                                        testMessage);
                 fail("should have thrown an exception");
             } catch (HJBException e) {}
         }
@@ -106,18 +108,19 @@ public class BooleanPropertyValueCopierTest extends MockObjectTestCase {
     }
 
     public void testGetAsEncodedValueThrowsHJBExceptionOnPossibleException() {
-	    Exception[] possibleExceptions = new Exception [] {
-			new JMSException("Thrown as a test"),
-			new NumberFormatException("Thrown as a test"),
-	    };
-		for (int i = 0; i < possibleExceptions.length; i++) {
-			Exception ex = possibleExceptions[i];
-        Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getBooleanProperty", ex);
-        BooleanPropertyValueCopier testCopier = new BooleanPropertyValueCopier();
-        try {
-            testCopier.getAsEncodedValue("testName", testMessage);
-            fail("should have thrown an exception");
-        } catch (HJBException e) {}
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new NumberFormatException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getBooleanProperty",
+                                                                              ex);
+            BooleanPropertyValueCopier testCopier = new BooleanPropertyValueCopier();
+            try {
+                testCopier.getAsEncodedValue("testName", testMessage);
+                fail("should have thrown an exception");
+            } catch (HJBException e) {}
         }
     }
 

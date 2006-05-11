@@ -36,7 +36,6 @@ public class CreateProducerGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        JMSCommandGenerator generator = new CreateProducerGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
@@ -81,4 +80,8 @@ public class CreateProducerGeneratorTest extends
         return Collections.unmodifiableMap(parameterMap);
     }
 
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new CreateProducerGenerator();
+    }
 }

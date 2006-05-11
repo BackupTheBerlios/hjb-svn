@@ -82,16 +82,17 @@ public class MapMessageIntValueCopierTest extends MockObjectTestCase {
     }
 
     public void testCanBeEncodedReturnsFalseOnPossibleExceptions() {
-	    Exception[] possibleExceptions = new Exception [] {
-			new JMSException("Thrown as a test"),
-			new NumberFormatException("Thrown as a test"),
-	    };
-		for (int i = 0; i < possibleExceptions.length; i++) {
-			Exception ex = possibleExceptions[i];
-        Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getInt", ex);
-        MapMessageIntValueCopier testCopier = new MapMessageIntValueCopier();
-        assertFalse(testCopier.canBeEncoded("testName", testMessage));
-		}
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new NumberFormatException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getInt",
+                                                                              ex);
+            MapMessageIntValueCopier testCopier = new MapMessageIntValueCopier();
+            assertFalse(testCopier.canBeEncoded("testName", testMessage));
+        }
     }
 
     public void testCanBeEncodedReturnsTrueForCorrectValues() {
@@ -114,7 +115,8 @@ public class MapMessageIntValueCopierTest extends MockObjectTestCase {
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
             Exception ex = possibleExceptions[i];
-            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("setInt", ex);
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("setInt",
+                                                                              ex);
             MapMessageIntValueCopier testCopier = new MapMessageIntValueCopier();
             try {
                 testCopier.addToMessage("testName",

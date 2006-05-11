@@ -35,7 +35,7 @@ import hjb.misc.HJBException;
  * An encoded <code>Boolean</code> has the following form:
  * 
  * <pre>
- *    (boolean [true|other])
+ *     (boolean [true|other])
  * </pre>
  * 
  * </p>

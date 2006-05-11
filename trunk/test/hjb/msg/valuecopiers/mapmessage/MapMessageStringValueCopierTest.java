@@ -109,7 +109,8 @@ public class MapMessageStringValueCopierTest extends MockObjectTestCase {
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
             Exception ex = possibleExceptions[i];
-            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("setString", ex);
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("setString",
+                                                                              ex);
             MapMessageStringValueCopier testCopier = new MapMessageStringValueCopier();
             try {
                 testCopier.addToMessage("testName", "testValue", testMessage);

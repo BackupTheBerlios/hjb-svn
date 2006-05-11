@@ -31,7 +31,6 @@ public class RegisterConnectionFactoryGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        JMSCommandGenerator generator = new RegisterConnectionFactoryGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
@@ -61,5 +60,10 @@ public class RegisterConnectionFactoryGeneratorTest extends
                    -1 != generator.getGeneratedCommand()
                        .getDescription()
                        .indexOf("testFactory/with/slashes"));
+    }
+
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new RegisterConnectionFactoryGenerator();
     }
 }

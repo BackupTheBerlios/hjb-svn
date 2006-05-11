@@ -45,7 +45,8 @@ public class MessageCopierFactory {
     }
 
     public MessageCopier getCopierFor(Message jmsMessage) throws HJBException {
-        return getCopierFor(distinctJmsMessageInterfaceOf(jmsMessage.getClass().getName()));
+        return getCopierFor(distinctJmsMessageInterfaceOf(jmsMessage.getClass()
+            .getName()));
     }
 
     public MessageCopier getCopierFor(HJBMessage hjbMessage)
@@ -146,7 +147,7 @@ public class MessageCopierFactory {
     }
 
     protected String handleDistinctInterfaceNotFound(String name,
-                                                   List areImplemented) {
+                                                     List areImplemented) {
         if (0 == areImplemented.size()) {
             String message = strings().getString(HJBStrings.IS_NOT_A_JMS_MESSAGE,
                                                  name);
@@ -191,7 +192,7 @@ public class MessageCopierFactory {
      * <p/> The value of this constant is "hjb_jms_message_interface".
      */
     public static final String HJB_JMS_MESSAGE_INTERFACE = "hjb_jms_message_interface";
-    
+
     /**
      * Constant that holds the name of message parameter used to indicate
      * version of a HJB message
@@ -199,14 +200,13 @@ public class MessageCopierFactory {
      * The value of this constant is "hjb_message_version".
      */
     public static final String HJB_MESSAGE_VERSION = "hjb_message_version";
-    
+
     /**
-     * Constant that holds the value of HJB 1.0 message version 
+     * Constant that holds the value of HJB 1.0 message version
      * <p />
      * The value of this constant is "1.0".
      */
     public static final String HJB_MESSAGE_VERSION_1_0 = "1.0";
-    
 
     private static Map messageConverterNames;
     private static final Logger LOG = Logger.getLogger(MessageCopierFactory.class);

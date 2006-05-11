@@ -90,8 +90,9 @@ public class HJBMessenger {
                 LOG.warn(message);
                 return;
             }
-            String message = strings().getString(HJBStrings.ABOUT_TO_SEND, asHJB);
-            //TODO remove this info before release
+            String message = strings().getString(HJBStrings.ABOUT_TO_SEND,
+                                                 asHJB);
+            // TODO remove this info before release
             LOG.info(message);
             if (LOG.isDebugEnabled()) {
                 LOG.debug(message);
@@ -195,7 +196,8 @@ public class HJBMessenger {
             asJMS.acknowledge();
             HJBMessage result = createHJBMessageFor(asJMS);
             findMessageCopierFor(asJMS).copyToHJBMessage(asJMS, result);
-            String message = strings().getString(HJBStrings.RECEIVED_HJB_MESSAGE, result);            
+            String message = strings().getString(HJBStrings.RECEIVED_HJB_MESSAGE,
+                                                 result);
             // TODO remove this info before release
             LOG.info(message);
             if (LOG.isDebugEnabled()) {
@@ -230,7 +232,8 @@ public class HJBMessenger {
     protected HJBMessage createHJBMessageFor(Message source) {
         HJBMessage result = new HJBMessage(new HashMap(), "");
         result.addHeader(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE,
-                         new MessageCopierFactory().distinctJmsMessageInterfaceOf(source.getClass().getName()));
+                         new MessageCopierFactory().distinctJmsMessageInterfaceOf(source.getClass()
+                             .getName()));
         return result;
     }
 

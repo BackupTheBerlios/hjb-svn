@@ -37,7 +37,7 @@ import org.jmock.MockObjectTestCase;
  * 
  * @author Tim Emiola
  */
-public class StringMessageStringValueCopierTest extends MockObjectTestCase {
+public class StreamMessageStringValueCopierTest extends MockObjectTestCase {
 
     public void testAnyTwoInstancesAreEqual() {
         assertEquals("Any two instances were not equal",

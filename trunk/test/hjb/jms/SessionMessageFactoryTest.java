@@ -70,7 +70,8 @@ public class SessionMessageFactoryTest extends MockObjectTestCase {
 
             SessionMessageFactory f = new SessionMessageFactory(testSession);
             Map headers = new HashMap();
-            headers.put(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE, clazzName);
+            headers.put(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE,
+                        clazzName);
             assertNotNull(f.createMessage(new HJBMessage(headers, "")));
         }
     }

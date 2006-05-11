@@ -31,7 +31,6 @@ public class RegisterProviderGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        RegisterProviderGenerator generator = new RegisterProviderGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("/foo/bar/baz"));
         assertTrue(generator.matches("/bar/register"));
@@ -52,5 +51,10 @@ public class RegisterProviderGeneratorTest extends
         assertSame(root.getCommandRunner(),
                    generator.getAssignedCommandRunner());
         assertTrue(generator.getGeneratedCommand() instanceof RegisterProvider);
+    }
+
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new RegisterProviderGenerator();
     }
 }

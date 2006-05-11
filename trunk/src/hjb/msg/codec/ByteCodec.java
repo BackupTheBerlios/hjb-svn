@@ -35,7 +35,7 @@ import hjb.misc.HJBException;
  * An encoded <code>Byte</code> has the following form:
  * 
  * <pre>
- *     (byte [-+]\d+)
+ *      (byte [-+]\d+)
  * </pre>
  * 
  * </p>

@@ -30,7 +30,6 @@ import hjb.jms.cmd.DeleteSession;
 public class DeleteSessionGeneratorTest extends BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        JMSCommandGenerator generator = new DeleteSessionGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
@@ -61,4 +60,8 @@ public class DeleteSessionGeneratorTest extends BaseJMSCommandGeneratorTestCase 
             .indexOf("0"));
     }
 
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new DeleteSessionGenerator();
+    }
 }

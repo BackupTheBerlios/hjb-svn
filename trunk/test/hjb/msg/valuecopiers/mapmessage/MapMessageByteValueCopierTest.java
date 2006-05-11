@@ -82,16 +82,17 @@ public class MapMessageByteValueCopierTest extends MockObjectTestCase {
     }
 
     public void testCanBeEncodedReturnsFalseOnPossibleExceptions() {
-	    Exception[] possibleExceptions = new Exception [] {
-			new JMSException("Thrown as a test"),
-			new NumberFormatException("Thrown as a test"),
-	    };
-		for (int i = 0; i < possibleExceptions.length; i++) {
-			Exception ex = possibleExceptions[i];
-        Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getByte", ex);
-        MapMessageByteValueCopier testCopier = new MapMessageByteValueCopier();
-        assertFalse(testCopier.canBeEncoded("testName", testMessage));
-		}
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new NumberFormatException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getByte",
+                                                                              ex);
+            MapMessageByteValueCopier testCopier = new MapMessageByteValueCopier();
+            assertFalse(testCopier.canBeEncoded("testName", testMessage));
+        }
     }
 
     public void testCanBeEncodedReturnsTrueForCorrectValues() {

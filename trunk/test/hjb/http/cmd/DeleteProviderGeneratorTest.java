@@ -31,7 +31,6 @@ public class DeleteProviderGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        DeleteProviderGenerator generator = new DeleteProviderGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("/foo/bar/baz"));
         assertTrue(generator.matches("/foo"));
@@ -57,4 +56,8 @@ public class DeleteProviderGeneratorTest extends
             .indexOf("foo"));
     }
 
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new DeleteProviderGenerator();
+    }
 }

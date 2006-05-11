@@ -36,7 +36,6 @@ public class CreateConnectionGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        JMSCommandGenerator generator = new CreateConnectionGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
@@ -73,5 +72,10 @@ public class CreateConnectionGeneratorTest extends
         parameterMap.put(HJBServletConstants.CONNECTION_PASSWORD,
                          "testPassword");
         return Collections.unmodifiableMap(parameterMap);
+    }
+
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new CreateConnectionGenerator();
     }
 }

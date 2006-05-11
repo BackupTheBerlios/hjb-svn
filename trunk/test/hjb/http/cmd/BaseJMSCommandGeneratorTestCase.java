@@ -36,6 +36,10 @@ import hjb.testsupport.MockHJBRuntime;
 public abstract class BaseJMSCommandGeneratorTestCase extends
         MockObjectTestCase {
 
+    public void testGetGeneratedCommandThrowsIllegalStateExceptionIfNoCommandHasBeenGenerated() {
+        assertGetGeneratedCommandThrowsIllegalStateException(generator);
+    }
+
     protected Mock generateMockRequest() {
         Mock mockRequest = mock(HttpServletRequest.class);
         mockRequest.stubs().method("getContextPath").will(returnValue("hjb"));
@@ -57,11 +61,19 @@ public abstract class BaseJMSCommandGeneratorTestCase extends
         return testDestination;
     }
 
+    protected void assertGetGeneratedCommandThrowsIllegalStateException(JMSCommandGenerator generator) {
+        try {
+            generator.getGeneratedCommand();
+            fail("should have thrown and IllegalStateException");
+        } catch (IllegalStateException e) {}
+    }
+
     protected void setUp() throws Exception {
         testRootPath = File.createTempFile("test", null).getParentFile();
         mockHJB = new MockHJBRuntime();
     }
 
+    protected JMSCommandGenerator generator;
     protected File testRootPath;
     protected MockHJBRuntime mockHJB;
 }

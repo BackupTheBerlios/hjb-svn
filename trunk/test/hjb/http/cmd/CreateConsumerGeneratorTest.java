@@ -36,7 +36,6 @@ public class CreateConsumerGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        JMSCommandGenerator generator = new CreateConsumerGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
@@ -86,4 +85,10 @@ public class CreateConsumerGeneratorTest extends
         });
         return Collections.unmodifiableMap(parameterMap);
     }
+
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new CreateConsumerGenerator();
+    }
+
 }

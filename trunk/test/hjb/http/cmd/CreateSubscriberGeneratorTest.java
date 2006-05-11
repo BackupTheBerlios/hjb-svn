@@ -38,7 +38,6 @@ public class CreateSubscriberGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        JMSCommandGenerator generator = new CreateSubscriberGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
@@ -93,5 +92,10 @@ public class CreateSubscriberGeneratorTest extends
     protected Destination createMockDestination() {
         Mock mockDestination = mock(Topic.class);
         return (Topic) mockDestination.proxy();
+    }
+
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new CreateSubscriberGenerator();
     }
 }

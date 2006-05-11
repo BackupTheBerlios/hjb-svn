@@ -35,7 +35,7 @@ import hjb.misc.HJBException;
  * An encoded <code>Integer</code> has the following form:
  * 
  * <pre>
- *      (int &lt;validJavaStringRepresentationOfAnInteger&gt;)
+ *       (int &lt;validJavaStringRepresentationOfAnInteger&gt;)
  * </pre>
  * 
  * </p>

@@ -300,7 +300,9 @@ public class MetadataReaderAssistant {
 
     }
 
-    protected static Reader JMS_MINOR_VERSION_READER = new BaseReader(JMS_MINOR_VERSION, new IntCodec()) {
+    protected static Reader JMS_MINOR_VERSION_READER = new BaseReader(
+                                                                      JMS_MINOR_VERSION,
+                                                                      new IntCodec()) {
 
         public String read(ConnectionMetaData metadata) throws HJBException {
             try {
@@ -311,7 +313,8 @@ public class MetadataReaderAssistant {
         }
     };
 
-    protected static Reader JMS_PROVIDER_NAME_READER = new BaseReader(JMS_PROVIDER_NAME) {
+    protected static Reader JMS_PROVIDER_NAME_READER = new BaseReader(
+                                                                      JMS_PROVIDER_NAME) {
 
         public String read(ConnectionMetaData metadata) throws HJBException {
             try {
@@ -333,7 +336,9 @@ public class MetadataReaderAssistant {
         }
     };
 
-    protected static Reader JMS_MAJOR_VERSION_READER = new BaseReader(JMS_MAJOR_VERSION, new IntCodec()) {
+    protected static Reader JMS_MAJOR_VERSION_READER = new BaseReader(
+                                                                      JMS_MAJOR_VERSION,
+                                                                      new IntCodec()) {
 
         public String read(ConnectionMetaData metadata) throws HJBException {
             try {
@@ -344,7 +349,8 @@ public class MetadataReaderAssistant {
         }
     };
 
-    protected static Reader JMSX_PROPERTY_NAMES_READER = new BaseReader(JMSX_PROPERTY_NAMES) {
+    protected static Reader JMSX_PROPERTY_NAMES_READER = new BaseReader(
+                                                                        JMSX_PROPERTY_NAMES) {
 
         public String read(ConnectionMetaData metadata) throws HJBException {
             try {
@@ -356,7 +362,9 @@ public class MetadataReaderAssistant {
         }
     };
 
-    protected static Reader JMS_PROVIDER_MAJOR_VERSION_READER = new BaseReader(JMS_PROVIDER_MAJOR_VERSION, new IntCodec()) {
+    protected static Reader JMS_PROVIDER_MAJOR_VERSION_READER = new BaseReader(
+                                                                               JMS_PROVIDER_MAJOR_VERSION,
+                                                                               new IntCodec()) {
 
         public String read(ConnectionMetaData metadata) throws HJBException {
             try {
@@ -367,7 +375,8 @@ public class MetadataReaderAssistant {
         }
     };
 
-    protected static Reader JMS_PROVIDER_VERSION_READER = new BaseReader(JMS_PROVIDER_VERSION) {
+    protected static Reader JMS_PROVIDER_VERSION_READER = new BaseReader(
+                                                                         JMS_PROVIDER_VERSION) {
 
         public String read(ConnectionMetaData metadata) throws HJBException {
             try {
@@ -378,7 +387,9 @@ public class MetadataReaderAssistant {
         }
     };
 
-    protected static Reader JMS_PROVIDER_MINOR_VERSION_READER = new BaseReader(JMS_PROVIDER_MINOR_VERSION, new IntCodec()) {
+    protected static Reader JMS_PROVIDER_MINOR_VERSION_READER = new BaseReader(
+                                                                               JMS_PROVIDER_MINOR_VERSION,
+                                                                               new IntCodec()) {
 
         public String read(ConnectionMetaData metadata) throws HJBException {
             try {

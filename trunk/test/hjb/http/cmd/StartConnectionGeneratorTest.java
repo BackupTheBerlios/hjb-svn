@@ -31,7 +31,6 @@ public class StartConnectionGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        JMSCommandGenerator generator = new StartConnectionGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
@@ -56,5 +55,10 @@ public class StartConnectionGeneratorTest extends
         assertSame(root.getCommandRunner(),
                    generator.getAssignedCommandRunner());
         assertTrue(generator.getGeneratedCommand() instanceof StartConnection);
+    }
+
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new StartConnectionGenerator();
     }
 }

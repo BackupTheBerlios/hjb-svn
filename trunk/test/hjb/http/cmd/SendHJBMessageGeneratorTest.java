@@ -36,7 +36,6 @@ public class SendHJBMessageGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        JMSCommandGenerator generator = new SendHJBMessageGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
@@ -77,4 +76,8 @@ public class SendHJBMessageGeneratorTest extends
         return Collections.unmodifiableMap(parameterMap);
     }
 
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new SendHJBMessageGenerator();
+    }
 }

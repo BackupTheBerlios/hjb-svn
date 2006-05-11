@@ -78,8 +78,8 @@ public class CreateProducerGenerator extends PatternMatchingCommandGenerator {
         this.generatedCommand = new CreateProducer(connection.getSessionProducers(),
                                                    sessionIndex,
                                                    getFinder().findRequiredDestination(decodedParameters,
-                                                                               root,
-                                                                               providerName),
+                                                                                       root,
+                                                                                       providerName),
                                                    getFinder().findProducerArguments(decodedParameters));
         setAssignedCommandRunner(connection.getSessionCommandRunner(sessionIndex));
     }

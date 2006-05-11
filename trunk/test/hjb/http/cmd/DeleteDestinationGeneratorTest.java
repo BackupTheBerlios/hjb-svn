@@ -31,7 +31,6 @@ public class DeleteDestinationGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        JMSCommandGenerator generator = new DeleteDestinationGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
@@ -61,5 +60,10 @@ public class DeleteDestinationGeneratorTest extends
                    -1 != generator.getGeneratedCommand()
                        .getDescription()
                        .indexOf("testDestination/with/slash"));
+    }
+
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new DeleteDestinationGenerator();
     }
 }

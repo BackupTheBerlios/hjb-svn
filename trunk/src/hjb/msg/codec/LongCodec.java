@@ -35,7 +35,7 @@ import hjb.misc.HJBException;
  * An encoded <code>Long</code> has the following form:
  * 
  * <pre>
- *       (long &lt;validJavaStringRepresentationOfALong&gt;)
+ *        (long &lt;validJavaStringRepresentationOfALong&gt;)
  * </pre>
  * 
  * </p>

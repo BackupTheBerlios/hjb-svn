@@ -30,7 +30,6 @@ import hjb.jms.cmd.ReadMetaData;
 public class ReadMetaDataGeneratorTest extends BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        JMSCommandGenerator generator = new ReadMetaDataGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
@@ -57,4 +56,8 @@ public class ReadMetaDataGeneratorTest extends BaseJMSCommandGeneratorTestCase {
         assertTrue(generator.getGeneratedCommand() instanceof ReadMetaData);
     }
 
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new ReadMetaDataGenerator();
+    }
 }

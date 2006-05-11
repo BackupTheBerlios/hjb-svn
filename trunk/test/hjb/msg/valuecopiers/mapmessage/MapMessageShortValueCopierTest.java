@@ -82,16 +82,17 @@ public class MapMessageShortValueCopierTest extends MockObjectTestCase {
     }
 
     public void testCanBeEncodedReturnsFalseOnPossibleExceptions() {
-	    Exception[] possibleExceptions = new Exception [] {
-			new JMSException("Thrown as a test"),
-			new NumberFormatException("Thrown as a test"),
-	    };
-		for (int i = 0; i < possibleExceptions.length; i++) {
-			Exception ex = possibleExceptions[i];
-        Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getShort", ex);
-        MapMessageShortValueCopier testCopier = new MapMessageShortValueCopier();
-        assertFalse(testCopier.canBeEncoded("testName", testMessage));
-		}
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new NumberFormatException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getShort",
+                                                                              ex);
+            MapMessageShortValueCopier testCopier = new MapMessageShortValueCopier();
+            assertFalse(testCopier.canBeEncoded("testName", testMessage));
+        }
     }
 
     public void testCanBeEncodedReturnsTrueForCorrectValues() {
@@ -114,7 +115,8 @@ public class MapMessageShortValueCopierTest extends MockObjectTestCase {
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
             Exception ex = possibleExceptions[i];
-            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("setShort", ex);
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("setShort",
+                                                                              ex);
             MapMessageShortValueCopier testCopier = new MapMessageShortValueCopier();
             try {
                 testCopier.addToMessage("testName",

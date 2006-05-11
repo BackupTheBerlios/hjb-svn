@@ -30,7 +30,6 @@ import hjb.jms.cmd.ViewQueue;
 public class ViewQueueGeneratorTest extends BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        JMSCommandGenerator generator = new ViewQueueGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
@@ -61,6 +60,11 @@ public class ViewQueueGeneratorTest extends BaseJMSCommandGeneratorTestCase {
             .getConnection(0)
             .getSessionCommandRunner(0), generator.getAssignedCommandRunner());
         assertTrue(generator.getGeneratedCommand() instanceof ViewQueue);
+    }
+
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new ViewQueueGenerator();
     }
 
 }

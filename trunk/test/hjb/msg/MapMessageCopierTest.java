@@ -20,6 +20,7 @@
  */
 package hjb.msg;
 
+import java.io.IOException;
 import java.util.*;
 
 import javax.jms.JMSException;
@@ -49,30 +50,36 @@ public class MapMessageCopierTest extends MockObjectTestCase {
                       new Object());
     }
 
-    public void testCopyToJMSMessageThrowsHJBExceptionOnJMSException() {
+    public void testCopyToJMSMessageThrowsHJBExceptionOnPossibleExceptions() {
+        Exception[] possibleExceptions = {
+                new JMSException("thrown as a test"),
+                new IOException("thrown as test"),
+        };
         for (int i = 0; i < ORDERED_MAP_MESSAGE_METHODS.length; i++) {
-            Mock mockJMSMessage = mock(MapMessage.class, "test" + i);
-            mockJMSMessage.stubs()
-                .method("setStringProperty")
-                .with(eq("hjb_message_version"), eq("1.0"));
-            String methodName = ORDERED_MAP_MESSAGE_METHODS[i][1];
-            mockJMSMessage.stubs()
-                .method(methodName)
-                .will(throwException(new JMSException("thrown as a test")));
-            for (int j = 0; j < ORDERED_MAP_MESSAGE_METHODS.length; j++) {
-                if (j == i) continue;
-                String okMethod = ORDERED_MAP_MESSAGE_METHODS[j][1];
-                mockJMSMessage.stubs().method(okMethod);
-            }
 
-            Message testJMSMessage = (MapMessage) mockJMSMessage.proxy();
-            HJBMessage testHJBMessage = new HJBMessage(createEmptyHJBMapMessageHeaders(),
-                                                       "test text");
-            MapMessageCopier c = new MapMessageCopier();
-            try {
-                c.copyToJMSMessage(testHJBMessage, testJMSMessage);
-                fail("should have thrown an exception");
-            } catch (HJBException e) {}
+            for (int k = 0; k < possibleExceptions.length; k++) {
+                Mock mockJMSMessage = mock(MapMessage.class, "test" + i);
+                mockJMSMessage.stubs()
+                    .method("setStringProperty")
+                    .with(eq("hjb_message_version"), eq("1.0"));
+                String methodName = ORDERED_MAP_MESSAGE_METHODS[i][1];
+                mockJMSMessage.stubs()
+                    .method(methodName)
+                    .will(throwException(new JMSException("thrown as a test")));
+                for (int j = 0; j < ORDERED_MAP_MESSAGE_METHODS.length; j++) {
+                    if (j == i) continue;
+                    String okMethod = ORDERED_MAP_MESSAGE_METHODS[j][1];
+                    mockJMSMessage.stubs().method(okMethod);
+                }
+                Message testJMSMessage = (MapMessage) mockJMSMessage.proxy();
+                HJBMessage testHJBMessage = new HJBMessage(createEmptyHJBMapMessageHeaders(),
+                                                           "test text");
+                MapMessageCopier c = new MapMessageCopier();
+                try {
+                    c.copyToJMSMessage(testHJBMessage, testJMSMessage);
+                    fail("should have thrown an exception");
+                } catch (HJBException e) {}
+            }
         }
     }
 
@@ -106,6 +113,9 @@ public class MapMessageCopierTest extends MockObjectTestCase {
                 .method(methodName)
                 .will(throwException(new JMSException("thrown as a test")));
         }
+        mockJMSMessage.stubs()
+            .method("getMapNames")
+            .will(throwException(new JMSException("thrown as a test")));
         Enumeration anyNameEnumeration = Collections.enumeration(Arrays.asList(new String[] {
             "testMapName"
         }));

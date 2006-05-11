@@ -43,8 +43,6 @@ import hjb.msg.HJBMessage;
  * various arguments used in the construction of <code>JMSCommand</code>s
  * from a <code>Map</code>
  * 
- * TODO write unit tests for this class
- * 
  * @author Tim Emiola
  */
 public class JMSArgumentFinder {
@@ -248,29 +246,6 @@ public class JMSArgumentFinder {
 
     public Destination findRequiredDestination(Map decodedParameters,
                                                HJBRoot root,
-                                               String sessionProviderName,
-                                               boolean throwOnFailure) {
-        Object rawValue = decodedParameters.get(HJBServletConstants.DESTINATION_URL);
-        if (! assertIsValidDestinationURL(rawValue, throwOnFailure)) {
-            return null;
-        }
-        String destinationURL = (String) rawValue;
-        Matcher m = getDestinationPathMatcher().matcher(destinationURL);
-        m.matches();
-
-        String destinationProviderName = m.group(1);
-        String destinationName = applyURLDecoding(m.group(2));
-        assertIsSameProvider(sessionProviderName,
-                             destinationProviderName,
-                             throwOnFailure);
-        HJBTreeWalker walker = new HJBTreeWalker(root,
-                                                 destinationURL,
-                                                 throwOnFailure);
-        return walker.findDestination(destinationProviderName, destinationName);
-    }
-
-    public Destination findRequiredDestination(Map decodedParameters,
-                                               HJBRoot root,
                                                String sessionProviderName) {
         return findRequiredDestination(decodedParameters,
                                        root,
@@ -289,6 +264,29 @@ public class JMSArgumentFinder {
         } catch (HJBNotFoundException e) {
             return null;
         }
+    }
+
+    protected Destination findRequiredDestination(Map decodedParameters,
+                                                  HJBRoot root,
+                                                  String sessionProviderName,
+                                                  boolean throwOnFailure) {
+        Object rawValue = decodedParameters.get(HJBServletConstants.DESTINATION_URL);
+        if (!assertIsValidDestinationURL(rawValue, throwOnFailure)) {
+            return null;
+        }
+        String destinationURL = (String) rawValue;
+        Matcher m = getDestinationPathMatcher().matcher(destinationURL);
+        m.matches();
+
+        String destinationProviderName = m.group(1);
+        String destinationName = applyURLDecoding(m.group(2));
+        assertIsSameProvider(sessionProviderName,
+                             destinationProviderName,
+                             throwOnFailure);
+        HJBTreeWalker walker = new HJBTreeWalker(root,
+                                                 destinationURL,
+                                                 throwOnFailure);
+        return walker.findDestination(destinationProviderName, destinationName);
     }
 
     protected Integer findInteger(Map decodedParameters,
@@ -377,9 +375,16 @@ public class JMSArgumentFinder {
     }
 
     protected boolean assertIsValidDestinationURL(Object rawDestinationURL,
-                                               boolean throwOnFailure)
+                                                  boolean throwOnFailure)
             throws HJBClientException {
         if (rawDestinationURL instanceof String) {
+            Matcher m = getDestinationPathMatcher().matcher((String) rawDestinationURL);
+            if (!m.matches()) {
+                String message = strings().getString(HJBStrings.INVALID_DESTINATION_URL,
+                                                     rawDestinationURL);
+                LOG.error(message);
+                throw new HJBNotFoundException(message);
+            }
             return true;
         }
         if (throwOnFailure) {
@@ -414,8 +419,8 @@ public class JMSArgumentFinder {
         return DESTINATION_PATH_MATCHER;
     }
 
-    private static final int MAXIMUM_PRIORITY = 9;
-    private static final int MINIMUM_PRIORITY = 0;
+    public static final int MAXIMUM_PRIORITY = 9;
+    public static final int MINIMUM_PRIORITY = 0;
     private static final Logger LOG = Logger.getLogger(JMSArgumentFinder.class);
     private static final Pattern DESTINATION_PATH_MATCHER = Pattern.compile("^/[^/]*/[^/]*/(\\w+)/(.+)/?$");
     private static final HJBStrings STRINGS = new HJBStrings();

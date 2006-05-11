@@ -30,7 +30,6 @@ import hjb.jms.cmd.CommitSession;
 public class CommitSessionGeneratorTest extends BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        JMSCommandGenerator generator = new CommitSessionGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
@@ -50,7 +49,6 @@ public class CommitSessionGeneratorTest extends BaseJMSCommandGeneratorTestCase 
         HJBRoot root = new HJBRoot(testRootPath);
         mockHJB.make1Session(root, "testProvider", "testFactory/slash");
 
-        JMSCommandGenerator generator = new CommitSessionGenerator();
         generator.generateCommand(testRequest, root);
         assertSame(root.getProvider("testProvider")
             .getConnectionFactory("testFactory/slash")
@@ -59,4 +57,8 @@ public class CommitSessionGeneratorTest extends BaseJMSCommandGeneratorTestCase 
         assertTrue(generator.getGeneratedCommand() instanceof CommitSession);
     }
 
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new CommitSessionGenerator();
+    }
 }

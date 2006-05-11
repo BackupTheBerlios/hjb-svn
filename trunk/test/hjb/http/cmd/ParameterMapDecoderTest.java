@@ -27,6 +27,17 @@ import junit.framework.TestCase;
 
 public class ParameterMapDecoderTest extends TestCase {
 
+    public void testEqualsWorksCorrectly() {
+        assertEquals(new ParameterMapDecoder(), new ParameterMapDecoder());
+        assertEquals(new ParameterMapDecoder(), new ParameterMapDecoder(null));
+        assertFalse(new ParameterMapDecoder().equals(new Object()));
+    }
+
+    public void testHashCodeWorksCorrectly() {
+        assertEquals(new ParameterMapDecoder().hashCode(),
+                     new ParameterMapDecoder().hashCode());
+    }
+
     public void testDecodeReturnsEmptyMapOnNull() {
         ParameterMapDecoder decoder = new ParameterMapDecoder();
         assertNotNull(decoder.decode(null));
@@ -123,18 +134,18 @@ public class ParameterMapDecoderTest extends TestCase {
         expectedMap.put("string", "foobarbaz");
         expectedMap.put("byteArray", "TEST".getBytes());
         expectedMap.put("char", new Character('\u0061'));
-                
+
         String[] compulsoryDecodings = new String[] {
-            "byte",
-            "int",
-            "short",
-            "long",
-            "double",
-            "float",
-            "boolean",
-            "string",
-            "byteArray",
-            "char",                                                    
+                "byte",
+                "int",
+                "short",
+                "long",
+                "double",
+                "float",
+                "boolean",
+                "string",
+                "byteArray",
+                "char",
         };
         ParameterMapDecoder decoder = new ParameterMapDecoder(compulsoryDecodings);
         Map actualMap = new HashMap(decoder.decode(testMap));

@@ -31,7 +31,6 @@ public class RollbackSessionGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        JMSCommandGenerator generator = new RollbackSessionGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
@@ -58,5 +57,10 @@ public class RollbackSessionGeneratorTest extends
             .getConnection(0)
             .getSessionCommandRunner(0), generator.getAssignedCommandRunner());
         assertTrue(generator.getGeneratedCommand() instanceof RollbackSession);
+    }
+
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new RollbackSessionGenerator();
     }
 }

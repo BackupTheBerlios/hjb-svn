@@ -31,7 +31,6 @@ public class RegisterDestinationGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        JMSCommandGenerator generator = new RegisterDestinationGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
@@ -61,5 +60,10 @@ public class RegisterDestinationGeneratorTest extends
                    -1 != generator.getGeneratedCommand()
                        .getDescription()
                        .indexOf("testDestination/with/slashes"));
+    }
+
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new RegisterDestinationGenerator();
     }
 }

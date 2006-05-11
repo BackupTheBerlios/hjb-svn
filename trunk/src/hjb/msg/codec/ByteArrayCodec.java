@@ -41,7 +41,7 @@ import hjb.misc.YetAnotherBase64;
  * An encoded <code>byte[]</code> has the following form:
  * 
  * <pre>
- *   (base64 &lt;encodedarraywithoutnewlines&gt;)
+ *    (base64 &lt;encodedarraywithoutnewlines&gt;)
  * </pre>
  * 
  * </p>

@@ -31,7 +31,6 @@ public class ReceiveFromConsumerGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        JMSCommandGenerator generator = new ReceiveFromConsumerGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
@@ -64,4 +63,8 @@ public class ReceiveFromConsumerGeneratorTest extends
         assertTrue(generator.getGeneratedCommand() instanceof ReceiveFromConsumer);
     }
 
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new ReceiveFromConsumerGenerator();
+    }
 }

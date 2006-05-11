@@ -41,8 +41,8 @@ import hjb.msg.codec.ByteArrayCodec;
  * 
  * Encoding and decoding is performed using {@link hjb.msg.codec.ByteArrayCodec}.
  * It is an error if the body of the HJB message representing a
- * <code>BytesMessage</code> does not conform to the encoding output produced by
- * that class.
+ * <code>BytesMessage</code> does not conform to the encoding output produced
+ * by that class.
  * 
  * @author Tim Emiola
  */
@@ -109,7 +109,8 @@ public class BytesMessageCopier extends PayloadMessageCopier {
     }
 
     protected boolean acceptHJBMessage(HJBMessage aMessage) throws HJBException {
-        return BytesMessage.class.getName().equals(aMessage.getHeader(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE));
+        return BytesMessage.class.getName()
+            .equals(aMessage.getHeader(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE));
     }
 
     protected ByteArrayCodec getCodec() {

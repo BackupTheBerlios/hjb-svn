@@ -31,7 +31,6 @@ public class DeleteConnectionGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        JMSCommandGenerator generator = new DeleteConnectionGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
@@ -60,5 +59,10 @@ public class DeleteConnectionGeneratorTest extends
                 + " should contain 0", -1 != generator.getGeneratedCommand()
             .getDescription()
             .indexOf("0"));
+    }
+
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new DeleteConnectionGenerator();
     }
 }

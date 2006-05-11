@@ -35,7 +35,7 @@ import hjb.misc.HJBException;
  * An encoded <code>Character</code> has the following form:
  * 
  * <pre>
- *     (char \\u\d+)
+ *      (char \\u\d+)
  * </pre>
  * 
  * </p>
@@ -64,7 +64,8 @@ public class CharCodec extends BaseValueCodec {
             }
             Matcher m = getEncodingMatcher().matcher(value);
             m.matches();
-            return new Character((char) Integer.valueOf(m.group(2), 16).intValue());
+            return new Character((char) Integer.valueOf(m.group(2), 16)
+                .intValue());
         } catch (NumberFormatException e) {
             handleDecodingFailure(value, e);
             return null;
@@ -75,7 +76,8 @@ public class CharCodec extends BaseValueCodec {
         if (!(value instanceof Character)) {
             return handleBadEncodedType(value);
         }
-        String result = Integer.toHexString(((Character) value).charValue()).toUpperCase();
+        String result = Integer.toHexString(((Character) value).charValue())
+            .toUpperCase();
         for (int i = result.length(); i < 4; i++) {
             result = "0" + result;
         }

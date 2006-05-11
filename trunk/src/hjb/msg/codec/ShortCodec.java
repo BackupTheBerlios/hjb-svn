@@ -35,7 +35,7 @@ import hjb.misc.HJBException;
  * An encoded <code>Short</code> has the following form:
  * 
  * <pre>
- *        (short &lt;validJavaStringRepresentationOfAShort&gt;)
+ *         (short &lt;validJavaStringRepresentationOfAShort&gt;)
  * </pre>
  * 
  * </p>

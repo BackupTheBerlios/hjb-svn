@@ -36,32 +36,33 @@ import hjb.msg.HJBMessage;
  * <code>HJBMessage</code>s to text.
  * 
  * <p />
- * A single HJBMessage is represented as follows which <code>&lt;CR&gt;</code> indicates the
- * platform-specific end-of-line character sequence<br />
- * All the headers are written first on separate lines, next a '%' is written by itself,
- * and finally the message body is written. 
+ * A single HJBMessage is represented as follows which <code>&lt;CR&gt;</code>
+ * indicates the platform-specific end-of-line character sequence<br />
+ * All the headers are written first on separate lines, next a '%' is written by
+ * itself, and finally the message body is written.
+ * 
  * <pre>
- *  header1=headerValue1&lt;CR&gt;
- *  header2=headerValue2&lt;CR&gt;
- *  header3=headerValue3&lt;CR&gt;
- *  ...
- *  headerN=headerValueN&lt;CR&gt;
- *  %&lt;CR&gt;
- *  ... insert message body here ...
+ *   header1=headerValue1&lt;CR&gt;
+ *   header2=headerValue2&lt;CR&gt;
+ *   header3=headerValue3&lt;CR&gt;
+ *   ...
+ *   headerN=headerValueN&lt;CR&gt;
+ *   %&lt;CR&gt;
+ *   ... insert message body here ...
  * </pre>
- *  
+ * 
  * <p />
  * When multiple messages are written at once, each message is written as above,
  * and with a '%%' is used to separate each one:
  * 
  * <pre>
- * message1
- *  %%&lt;CR&gt;
- * message2
- *  %%&lt;CR&gt;
- * ....
- * messageN
-  *  %%&lt;CR&gt;
+ *  message1
+ *   %%&lt;CR&gt;
+ *  message2
+ *   %%&lt;CR&gt;
+ *  ....
+ *  messageN
+ *   %%&lt;CR&gt;
  * </pre>
  * 
  * @author Tim Emiola
@@ -74,7 +75,8 @@ public class HJBMessageWriter {
      * <p/> <code>mapAsText</code> is assumed to have been created in a manner
      * similar to that used by {@link #asText(Map)}.
      * 
-     * @param mapAsText a textual representation of a <code>Map</code>
+     * @param mapAsText
+     *            a textual representation of a <code>Map</code>
      * @return a <code>Map</code>
      * @throws HJBException
      *             if a line occurs that is not in the correct format, or if any

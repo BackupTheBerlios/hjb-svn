@@ -32,7 +32,8 @@ public class MessagingTimeoutConfiguration {
      * @return the default message timeout.
      */
     public int getMinimumMessageTimeout() {
-        return Integer.getInteger(MINIMUM_TIMEOUT_PROPERTY, MINIMUM_TIMEOUT).intValue();
+        return Integer.getInteger(MINIMUM_TIMEOUT_PROPERTY, MINIMUM_TIMEOUT)
+            .intValue();
     }
 
     /**

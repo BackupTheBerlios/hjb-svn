@@ -37,7 +37,6 @@ import hjb.jms.cmd.CreateBrowser;
 public class CreateBrowserGeneratorTest extends BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        JMSCommandGenerator generator = new CreateBrowserGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
@@ -86,6 +85,11 @@ public class CreateBrowserGeneratorTest extends BaseJMSCommandGeneratorTestCase 
     protected Destination createMockDestination() {
         Mock mockDestination = mock(Queue.class);
         return (Queue) mockDestination.proxy();
+    }
+
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new CreateBrowserGenerator();
     }
 
 }

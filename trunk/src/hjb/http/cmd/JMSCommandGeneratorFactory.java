@@ -32,9 +32,10 @@ public class JMSCommandGeneratorFactory {
     /**
      * Returns the set of <code>JMSCommandGenerator</code> instances that
      * match all expected DELETE requests.
-     *
-     * <strong>N.B</strong> the order in which the generators are returned <strong>is</strong> is significant
-     * as multiple generators may match the same URL.
+     * 
+     * <strong>N.B</strong> the order in which the generators are returned
+     * <strong>is</strong> is significant as multiple generators may match the
+     * same URL.
      * 
      * @return an array containing new instances of
      *         <code>JMSCommandGenerator</code> to be used to process HJB
@@ -54,9 +55,10 @@ public class JMSCommandGeneratorFactory {
     /**
      * Returns the set of <code>JMSCommandGenerator</code> instances that
      * match all expected GET requests.
-     *
-     * <strong>N.B</strong> the order in which the generators are returned <strong>is</strong> is significant
-     * as multiple generators may match the same URL.
+     * 
+     * <strong>N.B</strong> the order in which the generators are returned
+     * <strong>is</strong> is significant as multiple generators may match the
+     * same URL.
      * 
      * @return an array containing new instances of
      *         <code>JMSCommandGenerator</code> to be used to process HJB GET
@@ -79,8 +81,9 @@ public class JMSCommandGeneratorFactory {
      * Returns the set of <code>JMSCommandGenerator</code> instances that
      * match all expected POST requests.
      * 
-     * <strong>N.B</strong> the order in which the generators are returned <strong>is</strong> is significant
-     * as multiple generators may match the same URL.
+     * <strong>N.B</strong> the order in which the generators are returned
+     * <strong>is</strong> is significant as multiple generators may match the
+     * same URL.
      * 
      * @return an array containing new instances of
      *         <code>JMSCommandGenerator</code> to be used to process HJB POST

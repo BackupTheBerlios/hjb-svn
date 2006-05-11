@@ -68,7 +68,11 @@ public class HJBTreeWalker {
 
     public Destination findDestination(String providerName,
                                        String destinationName) {
-        Destination result = findProvider(providerName).getDestination(destinationName);
+        HJBProvider provider = findProvider(providerName);
+        if (null == provider) {
+            return null;
+        }
+        Destination result = provider.getDestination(destinationName);
         if (null == result) {
             handleMissingComponent(destinationName);
         }
@@ -77,7 +81,11 @@ public class HJBTreeWalker {
 
     public HJBConnectionFactory findConnectionFactory(String providerName,
                                                       String factoryName) {
-        HJBConnectionFactory result = findProvider(providerName).getConnectionFactory(factoryName);
+        HJBProvider provider = findProvider(providerName);
+        if (null == provider) {
+            return null;
+        }
+        HJBConnectionFactory result = provider.getConnectionFactory(factoryName);
         if (null == result) {
             handleMissingComponent(factoryName);
         }
@@ -88,8 +96,12 @@ public class HJBTreeWalker {
                                         String factoryName,
                                         int connectionIndex) {
         try {
-            HJBConnection result = findConnectionFactory(providerName,
-                                                         factoryName).getConnection(connectionIndex);
+            HJBConnectionFactory factory = findConnectionFactory(providerName,
+                                                                 factoryName);
+            if (null == factory) {
+                return null;
+            }
+            HJBConnection result = factory.getConnection(connectionIndex);
             if (null == result) {
                 handleMissingComponent("" + PathNaming.CONNECTION + ""
                         + connectionIndex);

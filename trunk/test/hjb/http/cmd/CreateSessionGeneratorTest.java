@@ -36,7 +36,6 @@ import hjb.jms.cmd.CreateSession;
 public class CreateSessionGeneratorTest extends BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        JMSCommandGenerator generator = new CreateSessionGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
@@ -73,5 +72,10 @@ public class CreateSessionGeneratorTest extends BaseJMSCommandGeneratorTestCase 
         parameterMap.put(HJBServletConstants.SESSION_TRANSACTED,
                          new Boolean(false));
         return Collections.unmodifiableMap(parameterMap);
+    }
+
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new CreateSessionGenerator();
     }
 }

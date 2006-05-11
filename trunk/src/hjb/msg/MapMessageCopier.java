@@ -42,7 +42,7 @@ import hjb.msg.valuecopiers.mapmessage.OrderedMapMessageValueCopier;
  * <code>MapMessage</code> and writing each value as text in the MapMessage as
  * 
  * <pre>
- *      fieldName=encodedfieldValue 'CR'
+ *       fieldName=encodedfieldValue 'CR'
  * </pre>
  * 
  * where CR is the platform specific carriage return.
@@ -91,14 +91,6 @@ public class MapMessageCopier extends PayloadMessageCopier {
             throw new HJBException(errorMessage, e);
         }
     }
-    
-    protected void handleBadMapData(int i, String line) throws HJBException {
-        String message = strings().getString(HJBStrings.INCORRECT_FORMAT_IN_MAP_DATA,
-                                             new Integer(i),
-                                             line);
-        LOG.error(message);
-        throw new HJBException(message);
-    }
 
     public boolean equals(Object o) {
         return (o instanceof MapMessageCopier);
@@ -109,7 +101,8 @@ public class MapMessageCopier extends PayloadMessageCopier {
     }
 
     protected boolean acceptHJBMessage(HJBMessage aMessage) throws HJBException {
-        return MapMessage.class.getName().equals(aMessage.getHeader(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE));
+        return MapMessage.class.getName()
+            .equals(aMessage.getHeader(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE));
     }
 
     private static final Logger LOG = Logger.getLogger(MapMessageCopier.class);

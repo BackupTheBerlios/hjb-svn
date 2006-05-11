@@ -31,7 +31,6 @@ public class StopConnectionGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        JMSCommandGenerator generator = new StopConnectionGenerator();
         assertFalse(generator.matches("/"));
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
@@ -56,5 +55,10 @@ public class StopConnectionGeneratorTest extends
         assertSame(root.getCommandRunner(),
                    generator.getAssignedCommandRunner());
         assertTrue(generator.getGeneratedCommand() instanceof StopConnection);
+    }
+
+    protected void setUp() throws Exception {
+        super.setUp();
+        generator = new StopConnectionGenerator();
     }
 }

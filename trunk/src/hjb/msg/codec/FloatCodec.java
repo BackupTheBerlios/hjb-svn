@@ -35,7 +35,7 @@ import hjb.misc.HJBException;
  * An encoded <code>Double</code> has the following form:
  * 
  * <pre>
- *      (float &lt;validJavaStringRepresentationOfAFloat&gt;)
+ *       (float &lt;validJavaStringRepresentationOfAFloat&gt;)
  * </pre>
  * 
  * </p>

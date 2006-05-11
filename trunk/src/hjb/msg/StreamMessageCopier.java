@@ -42,7 +42,7 @@ import hjb.msg.valuecopiers.streammessage.OrderedStreamMessageValueCopier;
  * of the <code>HJBMessage</code> as
  * 
  * <pre>
- *       'pos'=encodedFieldValue 'CR'
+ *        'pos'=encodedFieldValue 'CR'
  * </pre>
  * 
  * where 'CR' is the platform specific line terminator, and 'pos' is the
@@ -91,7 +91,8 @@ public class StreamMessageCopier extends PayloadMessageCopier {
             }
         }
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Encoded values read from the Stream Message: " + encodedValues);
+            LOG.debug("Encoded values read from the Stream Message: "
+                    + encodedValues);
         }
         target.setEntityBody(new HJBMessageWriter().asText(asMap(encodedValues)));
     }
@@ -121,7 +122,8 @@ public class StreamMessageCopier extends PayloadMessageCopier {
     }
 
     protected boolean acceptHJBMessage(HJBMessage aMessage) throws HJBException {
-        return StreamMessage.class.getName().equals(aMessage.getHeader(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE));
+        return StreamMessage.class.getName()
+            .equals(aMessage.getHeader(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE));
     }
 
     protected HJBStrings strings() {

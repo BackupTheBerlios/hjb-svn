@@ -63,7 +63,8 @@ public abstract class BaseEncodedValueCopier implements EncodedValueCopier {
                                                   name,
                                                   encodedValue,
                                                   null == message ? null
-                                                          : message.getClass().getName());
+                                                          : message.getClass()
+                                                              .getName());
         LOG.error(errorMessage, e);
         throw new HJBException(errorMessage, e);
     }
@@ -74,7 +75,8 @@ public abstract class BaseEncodedValueCopier implements EncodedValueCopier {
         String errorMessage = strings().getString(HJBStrings.COULD_NOT_READ_VALUE_FROM_MESSAGE,
                                                   name,
                                                   null == message ? null
-                                                          : message.getClass().getName());
+                                                          : message.getClass()
+                                                              .getName());
         LOG.error(errorMessage, e);
         throw new HJBException(errorMessage, e);
     }
