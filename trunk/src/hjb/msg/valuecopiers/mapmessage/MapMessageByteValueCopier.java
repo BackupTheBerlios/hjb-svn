@@ -38,6 +38,8 @@ public class MapMessageByteValueCopier extends MapMessageValueCopier {
             asAMapMessage(message).setByte(name, decodeAsByte(encodedValue));
         } catch (JMSException e) {
             handleValueWriteFailure(name, encodedValue, e, message);
+        } catch (IllegalArgumentException e) {
+            handleValueWriteFailure(name, encodedValue, e, message);
         }
     }
 

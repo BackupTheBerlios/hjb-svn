@@ -38,7 +38,9 @@ public class MapMessageLongValueCopier extends MapMessageValueCopier {
             asAMapMessage(message).setLong(name, decodeAsLong(encodedValue));
         } catch (JMSException e) {
             handleValueWriteFailure(name, encodedValue, e, message);
-        }
+        } catch (IllegalArgumentException e) {
+            handleValueWriteFailure(name, encodedValue, e, message);
+	}
     }
 
     public boolean canBeEncoded(String name, Message message)

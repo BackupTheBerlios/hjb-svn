@@ -169,11 +169,15 @@ public class MockMessageBuilder {
     }
 
     public Message throwsJMSMessageOnMethodNamed(String methodName) {
+        return throwsExceptionOnMethodNamed(methodName, new JMSException("thrown as a test"));
+    }
+
+    public Message throwsExceptionOnMethodNamed(String methodName, Exception e) {
         if (null == methodName) return throwsJMSMessageOnAnyMethod();
         Mock mockMessage = new Mock(mockedClazz);
         mockMessage.stubs()
             .method(methodName)
-            .will(new ThrowStub(new JMSException("thrown as a test")));
+            .will(new ThrowStub(e));
         return (Message) mockMessage.proxy();
     }
 

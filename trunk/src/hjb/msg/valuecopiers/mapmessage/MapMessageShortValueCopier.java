@@ -38,7 +38,9 @@ public class MapMessageShortValueCopier extends MapMessageValueCopier {
             asAMapMessage(message).setShort(name, decodeAsShort(encodedValue));
         } catch (JMSException e) {
             handleValueWriteFailure(name, encodedValue, e, message);
-        }
+        } catch (IllegalArgumentException e) {
+            handleValueWriteFailure(name, encodedValue, e, message);
+	}
     }
 
     public boolean canBeEncoded(String name, Message message)

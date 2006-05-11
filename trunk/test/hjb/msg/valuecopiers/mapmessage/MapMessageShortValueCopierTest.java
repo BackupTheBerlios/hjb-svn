@@ -20,14 +20,15 @@
  */
 package hjb.msg.valuecopiers.mapmessage;
 
+import hjb.misc.HJBException;
+import hjb.msg.codec.CodecTestValues;
+import hjb.msg.valuecopiers.MockMessageBuilder;
+
+import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 
 import org.jmock.MockObjectTestCase;
-
-import hjb.misc.HJBException;
-import hjb.msg.codec.CodecTestValues;
-import hjb.msg.valuecopiers.MockMessageBuilder;
 
 /**
  * <code>MapMessageShortValueCopierTest</code>
@@ -35,10 +36,6 @@ import hjb.msg.valuecopiers.MockMessageBuilder;
  * @author Tim Emiola
  */
 public class MapMessageShortValueCopierTest extends MockObjectTestCase {
-
-    public MapMessageShortValueCopierTest() {
-
-    }
 
     public void testAnyTwoInstancesAreEqual() {
         assertEquals("Any two instances were not equal",
@@ -103,15 +100,22 @@ public class MapMessageShortValueCopierTest extends MockObjectTestCase {
         }
     }
 
-    public void testAddToMessageThrowsHJBExceptionOnJMSException() {
-        Message testMessage = messageBuilder.throwsJMSMessageOnMethodNamed("setShort");
-        MapMessageShortValueCopier testCopier = new MapMessageShortValueCopier();
-        try {
-            testCopier.addToMessage("testName",
-                                    OK_EXPECTED_DECODED_SHORTS[0],
-                                    testMessage);
-            fail("should have thrown an exception");
-        } catch (HJBException e) {}
+    public void testAddToMessageThrowsHJBExceptionOnPossibleExceptions() {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new IllegalArgumentException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("setShort", ex);
+            MapMessageShortValueCopier testCopier = new MapMessageShortValueCopier();
+            try {
+                testCopier.addToMessage("testName",
+                                        OK_EXPECTED_DECODED_SHORTS[0],
+                                        testMessage);
+                fail("should have thrown an exception");
+            } catch (HJBException e) {}
+        }
     }
 
     public void testAddToMessageInvokesSetShort() {
@@ -160,5 +164,4 @@ public class MapMessageShortValueCopierTest extends MockObjectTestCase {
     private static final String OK_ENCODED_SHORTS[] = CodecTestValues.OK_ENCODED_SHORTS;
     private static final short EXPECTED_DECODED_SHORTS[] = CodecTestValues.EXPECTED_DECODED_SHORTS;
     private static final String OK_EXPECTED_DECODED_SHORTS[] = CodecTestValues.OK_EXPECTED_DECODED_SHORTS;
-
 }

@@ -20,13 +20,14 @@
  */
 package hjb.msg.valuecopiers.mapmessage;
 
+import hjb.misc.HJBException;
+import hjb.msg.valuecopiers.MockMessageBuilder;
+
+import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 
 import org.jmock.MockObjectTestCase;
-
-import hjb.misc.HJBException;
-import hjb.msg.valuecopiers.MockMessageBuilder;
 
 /**
  * <code>StringMessageStringValueCopierTest</code>
@@ -34,10 +35,6 @@ import hjb.msg.valuecopiers.MockMessageBuilder;
  * @author Tim Emiola
  */
 public class MapMessageStringValueCopierTest extends MockObjectTestCase {
-
-    public MapMessageStringValueCopierTest() {
-
-    }
 
     public void testAnyTwoInstancesAreEqual() {
         assertEquals("Any two instances were not equal",
@@ -105,13 +102,20 @@ public class MapMessageStringValueCopierTest extends MockObjectTestCase {
         assertTrue(testCopier.canBeEncoded("testName", testMessage));
     }
 
-    public void testAddToMessageThrowsHJBExceptionOnJMSException() {
-        Message testMessage = messageBuilder.throwsJMSMessageOnMethodNamed("setString");
-        MapMessageStringValueCopier testCopier = new MapMessageStringValueCopier();
-        try {
-            testCopier.addToMessage("testName", "testValue", testMessage);
-            fail("should have thrown an exception");
-        } catch (HJBException e) {}
+    public void testAddToMessageThrowsHJBExceptionOnPossibleExceptions() {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new IllegalArgumentException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("setString", ex);
+            MapMessageStringValueCopier testCopier = new MapMessageStringValueCopier();
+            try {
+                testCopier.addToMessage("testName", "testValue", testMessage);
+                fail("should have thrown an exception");
+            } catch (HJBException e) {}
+        }
     }
 
     public void testAddToMessageInvokesSetString() {

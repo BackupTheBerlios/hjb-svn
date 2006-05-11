@@ -38,6 +38,8 @@ public class MapMessageDoubleValueCopier extends MapMessageValueCopier {
             asAMapMessage(message).setDouble(name, decodeAsDouble(encodedValue));
         } catch (JMSException e) {
             handleValueWriteFailure(name, encodedValue, e, message);
+        } catch (IllegalArgumentException e) {
+            handleValueWriteFailure(name, encodedValue, e, message);
         }
     }
 

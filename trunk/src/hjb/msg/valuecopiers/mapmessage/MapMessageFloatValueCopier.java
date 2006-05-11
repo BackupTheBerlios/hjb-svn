@@ -38,6 +38,8 @@ public class MapMessageFloatValueCopier extends MapMessageValueCopier {
             asAMapMessage(message).setFloat(name, decodeAsFloat(encodedValue));
         } catch (JMSException e) {
             handleValueWriteFailure(name, encodedValue, e, message);
+        } catch (IllegalArgumentException e) {
+            handleValueWriteFailure(name, encodedValue, e, message);
         }
     }
 

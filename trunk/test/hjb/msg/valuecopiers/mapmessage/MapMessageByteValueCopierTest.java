@@ -20,14 +20,15 @@
  */
 package hjb.msg.valuecopiers.mapmessage;
 
+import hjb.misc.HJBException;
+import hjb.msg.codec.CodecTestValues;
+import hjb.msg.valuecopiers.MockMessageBuilder;
+
+import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 
 import org.jmock.MockObjectTestCase;
-
-import hjb.misc.HJBException;
-import hjb.msg.codec.CodecTestValues;
-import hjb.msg.valuecopiers.MockMessageBuilder;
 
 /**
  * <code>MapMessageByteValueCopierTest</code>
@@ -35,10 +36,6 @@ import hjb.msg.valuecopiers.MockMessageBuilder;
  * @author Tim Emiola
  */
 public class MapMessageByteValueCopierTest extends MockObjectTestCase {
-
-    public MapMessageByteValueCopierTest() {
-
-    }
 
     public void testAnyTwoInstancesAreEqual() {
         assertEquals("Any two instances were not equal",
@@ -103,15 +100,23 @@ public class MapMessageByteValueCopierTest extends MockObjectTestCase {
         }
     }
 
-    public void testAddToMessageThrowsHJBExceptionOnJMSException() {
-        Message testMessage = messageBuilder.throwsJMSMessageOnMethodNamed("setByte");
-        MapMessageByteValueCopier testCopier = new MapMessageByteValueCopier();
-        try {
-            testCopier.addToMessage("testName",
-                                    OK_EXPECTED_DECODED_BYTES[0],
-                                    testMessage);
-            fail("should have thrown an exception");
-        } catch (HJBException e) {}
+    public void testAddToMessageThrowsHJBExceptionOnPossibleExceptions() {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new IllegalArgumentException("Thrown as test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("setByte",
+                                                                              ex);
+            MapMessageByteValueCopier testCopier = new MapMessageByteValueCopier();
+            try {
+                testCopier.addToMessage("testName",
+                                        OK_EXPECTED_DECODED_BYTES[0],
+                                        testMessage);
+                fail("should have thrown an exception");
+            } catch (HJBException e) {}
+        }
     }
 
     public void testAddToMessageInvokesSetByte() {
