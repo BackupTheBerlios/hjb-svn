@@ -20,16 +20,18 @@
  */
 package hjb.msg.valuecopiers.streammessage;
 
-import java.util.LinkedList;
-
-import javax.jms.Message;
-import javax.jms.StreamMessage;
-
-import org.jmock.MockObjectTestCase;
-
 import hjb.misc.HJBException;
 import hjb.msg.codec.CodecTestValues;
 import hjb.msg.valuecopiers.MockMessageBuilder;
+
+import java.util.LinkedList;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageEOFException;
+import javax.jms.StreamMessage;
+
+import org.jmock.MockObjectTestCase;
 
 /**
  * <code>StreamMessageShortValueCopierTest</code>
@@ -37,10 +39,6 @@ import hjb.msg.valuecopiers.MockMessageBuilder;
  * @author Tim Emiola
  */
 public class StreamMessageShortValueCopierTest extends MockObjectTestCase {
-
-    public StreamMessageShortValueCopierTest() {
-
-    }
 
     public void testAnyTwoInstancesAreEqual() {
         assertEquals("Any two instances were not equal",
@@ -97,10 +95,34 @@ public class StreamMessageShortValueCopierTest extends MockObjectTestCase {
         assertEquals("number of valuesRead was incorrect", 2, valuesRead.size());
     }
 
-    public void testCanBeEncodedReturnsFalseOnJMSException() {
-        Message testMessage = messageBuilder.throwsJMSMessageOnMethodNamed("readShort");
-        StreamMessageShortValueCopier testCopier = new StreamMessageShortValueCopier(valuesRead);
-        assertFalse(testCopier.canBeEncoded("testName", testMessage));
+    public void testCanBeEncodedThrowsIllegalStateExceptionOnMessageEOFException() {
+        Exception[] possibleExceptions = new Exception[] {
+            new MessageEOFException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("readShort",
+                                                                              ex);
+            StreamMessageShortValueCopier testCopier = new StreamMessageShortValueCopier(valuesRead);
+            try {
+                testCopier.canBeEncoded(null, testMessage);
+                fail("should have thrown an exception");
+            } catch (IllegalStateException e) {}
+        }
+    }
+
+    public void testCanBeEncodedReturnsFalseOnPossibleExceptions() {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new NumberFormatException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("readShort",
+                                                                              ex);
+            StreamMessageShortValueCopier testCopier = new StreamMessageShortValueCopier(valuesRead);
+            assertFalse(testCopier.canBeEncoded("testName", testMessage));
+        }
     }
 
     public void testCanBeEncodedReturnsTrueForCorrectValues() {
@@ -139,13 +161,37 @@ public class StreamMessageShortValueCopierTest extends MockObjectTestCase {
         }
     }
 
-    public void testGetAsEncodedValueThrowsExceptionOnJMSException() {
-        Message testMessage = messageBuilder.throwsJMSMessageOnMethodNamed("readShort");
-        StreamMessageShortValueCopier testCopier = new StreamMessageShortValueCopier(valuesRead);
-        try {
-            testCopier.getAsEncodedValue("testName", testMessage);
-            fail("should have thrown an exception");
-        } catch (HJBException e) {}
+    public void testGetAsEncodedValueThrowsIllegalStateExceptionOnMessageEOFException() {
+        Exception[] possibleExceptions = new Exception[] {
+            new MessageEOFException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("readShort",
+                                                                              ex);
+            StreamMessageShortValueCopier testCopier = new StreamMessageShortValueCopier(valuesRead);
+            try {
+                testCopier.getAsEncodedValue("testName", testMessage);
+                fail("should have thrown an exception");
+            } catch (IllegalStateException e) {}
+        }
+    }
+
+    public void testGetAsEncodedValueThrowsHJBExceptionOnPossibleException() {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new NumberFormatException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("readShort",
+                                                                              ex);
+            StreamMessageShortValueCopier testCopier = new StreamMessageShortValueCopier(valuesRead);
+            try {
+                testCopier.getAsEncodedValue("testName", testMessage);
+                fail("should have thrown an exception");
+            } catch (HJBException e) {}
+        }
     }
 
     public void testGetAsEncodedValueReadsFromValuesReadFirst() {

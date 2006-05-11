@@ -20,6 +20,10 @@
  */
 package hjb.msg.valuecopiers.streammessage;
 
+import hjb.misc.HJBException;
+import hjb.msg.codec.CodecTestValues;
+import hjb.msg.valuecopiers.MockMessageBuilder;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -27,10 +31,6 @@ import javax.jms.Message;
 import javax.jms.StreamMessage;
 
 import org.jmock.MockObjectTestCase;
-
-import hjb.misc.HJBException;
-import hjb.msg.codec.CodecTestValues;
-import hjb.msg.valuecopiers.MockMessageBuilder;
 
 /**
  * <code>OrderedStreamMessageValueCopierTest</code>

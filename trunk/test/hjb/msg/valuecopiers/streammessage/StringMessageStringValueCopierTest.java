@@ -20,15 +20,17 @@
  */
 package hjb.msg.valuecopiers.streammessage;
 
+import hjb.misc.HJBException;
+import hjb.msg.valuecopiers.MockMessageBuilder;
+
 import java.util.LinkedList;
 
+import javax.jms.JMSException;
 import javax.jms.Message;
+import javax.jms.MessageEOFException;
 import javax.jms.StreamMessage;
 
 import org.jmock.MockObjectTestCase;
-
-import hjb.misc.HJBException;
-import hjb.msg.valuecopiers.MockMessageBuilder;
 
 /**
  * <code>StringMessageStringValueCopierTest</code>
@@ -36,10 +38,6 @@ import hjb.msg.valuecopiers.MockMessageBuilder;
  * @author Tim Emiola
  */
 public class StringMessageStringValueCopierTest extends MockObjectTestCase {
-
-    public StringMessageStringValueCopierTest() {
-
-    }
 
     public void testAnyTwoInstancesAreEqual() {
         assertEquals("Any two instances were not equal",
@@ -94,10 +92,33 @@ public class StringMessageStringValueCopierTest extends MockObjectTestCase {
         assertEquals("number of valuesRead was incorrect", 2, valuesRead.size());
     }
 
-    public void testCanBeEncodedReturnsFalseOnJMSException() {
-        Message testMessage = messageBuilder.throwsJMSMessageOnMethodNamed("readString");
-        StreamMessageStringValueCopier testCopier = new StreamMessageStringValueCopier(valuesRead);
-        assertFalse(testCopier.canBeEncoded("testName", testMessage));
+    public void testCanBeEncodedThrowsIllegalStateExceptionOnMessageEOFException() {
+        Exception[] possibleExceptions = new Exception[] {
+            new MessageEOFException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("readString",
+                                                                              ex);
+            StreamMessageStringValueCopier testCopier = new StreamMessageStringValueCopier(valuesRead);
+            try {
+                testCopier.canBeEncoded(null, testMessage);
+                fail("should have thrown an exception");
+            } catch (IllegalStateException e) {}
+        }
+    }
+
+    public void testCanBeEncodedReturnsFalseOnPossibleExceptions() {
+        Exception[] possibleExceptions = new Exception[] {
+            new JMSException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("readString",
+                                                                              ex);
+            StreamMessageStringValueCopier testCopier = new StreamMessageStringValueCopier(valuesRead);
+            assertFalse(testCopier.canBeEncoded("testName", testMessage));
+        }
     }
 
     public void testCanBeEncodedReturnsFalseOnNullValues() {
@@ -133,13 +154,36 @@ public class StringMessageStringValueCopierTest extends MockObjectTestCase {
         testCopier.addToMessage("testName", "testValue", testMessage);
     }
 
-    public void testGetAsEncodedValueThrowsExceptionOnJMSException() {
-        Message testMessage = messageBuilder.throwsJMSMessageOnMethodNamed("readString");
-        StreamMessageStringValueCopier testCopier = new StreamMessageStringValueCopier(valuesRead);
-        try {
-            testCopier.getAsEncodedValue("testName", testMessage);
-            fail("should have thrown an exception");
-        } catch (HJBException e) {}
+    public void testGetAsEncodedValueThrowsIllegalStateExceptionOnMessageEOFException() {
+        Exception[] possibleExceptions = new Exception[] {
+            new MessageEOFException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("readString",
+                                                                              ex);
+            StreamMessageStringValueCopier testCopier = new StreamMessageStringValueCopier(valuesRead);
+            try {
+                testCopier.getAsEncodedValue("testName", testMessage);
+                fail("should have thrown an exception");
+            } catch (IllegalStateException e) {}
+        }
+    }
+
+    public void testGetAsEncodedValueThrowsHJBExceptionOnPossibleException() {
+        Exception[] possibleExceptions = new Exception[] {
+            new JMSException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("readString",
+                                                                              ex);
+            StreamMessageStringValueCopier testCopier = new StreamMessageStringValueCopier(valuesRead);
+            try {
+                testCopier.getAsEncodedValue("testName", testMessage);
+                fail("should have thrown an exception");
+            } catch (HJBException e) {}
+        }
     }
 
     public void testGetAsEncodedValueThrowsExceptionOnNull() {
