@@ -20,11 +20,12 @@
  */
 package hjb.msg.valuecopiers;
 
+import hjb.misc.HJBException;
+
+import javax.jms.JMSException;
 import javax.jms.Message;
 
 import org.jmock.MockObjectTestCase;
-
-import hjb.misc.HJBException;
 
 /**
  * <code>StringPropertyValueCopierTest</code>
@@ -32,10 +33,6 @@ import hjb.misc.HJBException;
  * @author Tim Emiola
  */
 public class StringPropertyValueCopierTest extends MockObjectTestCase {
-
-    public StringPropertyValueCopierTest() {
-
-    }
 
     public void testAnyTwoInstancesAreEqual() {
         assertEquals("Any two instances were not equal",
@@ -49,10 +46,17 @@ public class StringPropertyValueCopierTest extends MockObjectTestCase {
                       new Object());
     }
 
-    public void testCanBeEncodedReturnsFalseOnJMSException() {
-        Message testMessage = messageBuilder.throwsJMSMessageOnMethodNamed("getStringProperty");
-        StringPropertyValueCopier testCopier = new StringPropertyValueCopier();
-        assertFalse(testCopier.canBeEncoded("testName", testMessage));
+    public void testCanBeEncodedReturnsFalseOnPossibleExceptions() {
+        Exception[] possibleExceptions = new Exception[] {
+            new JMSException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getStringProperty",
+                                                                              ex);
+            StringPropertyValueCopier testCopier = new StringPropertyValueCopier();
+            assertFalse(testCopier.canBeEncoded("testName", testMessage));
+        }
     }
 
     public void testCanBeEncodedReturnsFalseOnNullValues() {
@@ -73,13 +77,20 @@ public class StringPropertyValueCopierTest extends MockObjectTestCase {
         assertTrue(testCopier.canBeEncoded("testName", testMessage));
     }
 
-    public void testAddToMessageThrowsHJBExceptionOnJMSException() {
-        Message testMessage = messageBuilder.throwsJMSMessageOnMethodNamed("setStringProperty");
-        StringPropertyValueCopier testCopier = new StringPropertyValueCopier();
-        try {
-            testCopier.addToMessage("testName", "testValue", testMessage);
-            fail("should have thrown an exception");
-        } catch (HJBException e) {}
+    public void testAddToMessageThrowsHJBExceptionOnPossibleExceptions() {
+        Exception[] possibleExceptions = new Exception[] {
+            new JMSException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("setStringProperty",
+                                                                              ex);
+            StringPropertyValueCopier testCopier = new StringPropertyValueCopier();
+            try {
+                testCopier.addToMessage("testName", "testValue", testMessage);
+                fail("should have thrown an exception");
+            } catch (HJBException e) {}
+        }
     }
 
     public void testAddToMessageInvokesSetStringProperty() {
@@ -91,13 +102,20 @@ public class StringPropertyValueCopierTest extends MockObjectTestCase {
         testCopier.addToMessage("testName", "testValue", testMessage);
     }
 
-    public void testGetAsEncodedValueThrowsExceptionOnJMSException() {
-        Message testMessage = messageBuilder.throwsJMSMessageOnMethodNamed("getStringProperty");
-        StringPropertyValueCopier testCopier = new StringPropertyValueCopier();
-        try {
-            testCopier.getAsEncodedValue("testName", testMessage);
-            fail("should have thrown an exception");
-        } catch (HJBException e) {}
+    public void testGetAsEncodedValueThrowsHJBExceptionOnPossibleException() {
+        Exception[] possibleExceptions = new Exception[] {
+            new JMSException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getStringProperty",
+                                                                              ex);
+            StringPropertyValueCopier testCopier = new StringPropertyValueCopier();
+            try {
+                testCopier.getAsEncodedValue("testName", testMessage);
+                fail("should have thrown an exception");
+            } catch (HJBException e) {}
+        }
     }
 
     public void testGetAsEncodedValueThrowsExceptionOnNull() {

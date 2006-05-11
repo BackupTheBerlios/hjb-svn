@@ -20,12 +20,13 @@
  */
 package hjb.msg.valuecopiers;
 
+import hjb.misc.HJBException;
+import hjb.msg.codec.CodecTestValues;
+
+import javax.jms.JMSException;
 import javax.jms.Message;
 
 import org.jmock.MockObjectTestCase;
-
-import hjb.misc.HJBException;
-import hjb.msg.codec.CodecTestValues;
 
 /**
  * <code>ShortValuePropertyValueCopierTest</code>
@@ -33,10 +34,6 @@ import hjb.msg.codec.CodecTestValues;
  * @author Tim Emiola
  */
 public class ShortPropertyValueCopierTest extends MockObjectTestCase {
-
-    public ShortPropertyValueCopierTest() {
-
-    }
 
     public void testAnyTwoInstancesAreEqual() {
         assertEquals("Any two instances were not equal",
@@ -50,10 +47,18 @@ public class ShortPropertyValueCopierTest extends MockObjectTestCase {
                       new Object());
     }
 
-    public void testCanBeEncodedReturnsFalseOnJMSException() {
-        Message testMessage = messageBuilder.throwsJMSMessageOnMethodNamed("getShortProperty");
-        ShortPropertyValueCopier testCopier = new ShortPropertyValueCopier();
-        assertFalse(testCopier.canBeEncoded("testName", testMessage));
+    public void testCanBeEncodedReturnsFalseOnPossibleExceptions() {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new NumberFormatException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getShortProperty",
+                                                                              ex);
+            ShortPropertyValueCopier testCopier = new ShortPropertyValueCopier();
+            assertFalse(testCopier.canBeEncoded("testName", testMessage));
+        }
     }
 
     public void testCanBeEncodedReturnsTrueForCorrectValues() {
@@ -69,15 +74,23 @@ public class ShortPropertyValueCopierTest extends MockObjectTestCase {
         }
     }
 
-    public void testAddToMessageThrowsHJBExceptionOnJMSException() {
-        Message testMessage = messageBuilder.throwsJMSMessageOnMethodNamed("setShortProperty");
-        ShortPropertyValueCopier testCopier = new ShortPropertyValueCopier();
-        try {
-            testCopier.addToMessage("testName",
-                                    OK_EXPECTED_DECODED_SHORTS[0],
-                                    testMessage);
-            fail("should have thrown an exception");
-        } catch (HJBException e) {}
+    public void testAddToMessageThrowsHJBExceptionOnPossibleExceptions() {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new IllegalArgumentException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("setShortProperty",
+                                                                              ex);
+            ShortPropertyValueCopier testCopier = new ShortPropertyValueCopier();
+            try {
+                testCopier.addToMessage("testName",
+                                        OK_EXPECTED_DECODED_SHORTS[0],
+                                        testMessage);
+                fail("should have thrown an exception");
+            } catch (HJBException e) {}
+        }
     }
 
     public void testAddToMessageInvokesSetShortProperty() {
@@ -94,13 +107,21 @@ public class ShortPropertyValueCopierTest extends MockObjectTestCase {
         }
     }
 
-    public void testGetAsEncodedValueThrowsExceptionOnJMSException() {
-        Message testMessage = messageBuilder.throwsJMSMessageOnMethodNamed("getShortProperty");
-        ShortPropertyValueCopier testCopier = new ShortPropertyValueCopier();
-        try {
-            testCopier.getAsEncodedValue("testName", testMessage);
-            fail("should have thrown an exception");
-        } catch (HJBException e) {}
+    public void testGetAsEncodedValueThrowsHJBExceptionOnPossibleException() {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new NumberFormatException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getShortProperty",
+                                                                              ex);
+            ShortPropertyValueCopier testCopier = new ShortPropertyValueCopier();
+            try {
+                testCopier.getAsEncodedValue("testName", testMessage);
+                fail("should have thrown an exception");
+            } catch (HJBException e) {}
+        }
     }
 
     public void testGetAsEncodedValueReturnsValuesCorrectlyEncoded() {
@@ -126,5 +147,4 @@ public class ShortPropertyValueCopierTest extends MockObjectTestCase {
     private static final String OK_ENCODED_SHORTS[] = CodecTestValues.OK_EXPECTED_DECODED_SHORTS;
     private static final short EXPECTED_DECODED_SHORTS[] = CodecTestValues.EXPECTED_DECODED_SHORTS;
     private static final String OK_EXPECTED_DECODED_SHORTS[] = CodecTestValues.OK_EXPECTED_DECODED_SHORTS;
-
 }

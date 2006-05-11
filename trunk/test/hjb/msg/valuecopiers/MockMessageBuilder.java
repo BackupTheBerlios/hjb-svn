@@ -20,6 +20,8 @@
  */
 package hjb.msg.valuecopiers;
 
+import hjb.msg.valuecopiers.streammessage.UpdateByteArrayStub;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +35,6 @@ import org.jmock.core.matcher.InvokeAtLeastOnceMatcher;
 import org.jmock.core.matcher.InvokeOnceMatcher;
 import org.jmock.core.stub.ReturnStub;
 import org.jmock.core.stub.ThrowStub;
-
-import hjb.msg.valuecopiers.streammessage.UpdateByteArrayStub;
 
 /**
  * <code>MockMessageBuilder</code> contains methods that create mock
@@ -169,15 +169,14 @@ public class MockMessageBuilder {
     }
 
     public Message throwsJMSMessageOnMethodNamed(String methodName) {
-        return throwsExceptionOnMethodNamed(methodName, new JMSException("thrown as a test"));
+        return throwsExceptionOnMethodNamed(methodName,
+                                            new JMSException("thrown as a test"));
     }
 
     public Message throwsExceptionOnMethodNamed(String methodName, Exception e) {
         if (null == methodName) return throwsJMSMessageOnAnyMethod();
         Mock mockMessage = new Mock(mockedClazz);
-        mockMessage.stubs()
-            .method(methodName)
-            .will(new ThrowStub(e));
+        mockMessage.stubs().method(methodName).will(new ThrowStub(e));
         return (Message) mockMessage.proxy();
     }
 

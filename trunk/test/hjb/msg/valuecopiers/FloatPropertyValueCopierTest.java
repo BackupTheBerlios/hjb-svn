@@ -20,12 +20,13 @@
  */
 package hjb.msg.valuecopiers;
 
+import hjb.misc.HJBException;
+import hjb.msg.codec.CodecTestValues;
+
+import javax.jms.JMSException;
 import javax.jms.Message;
 
 import org.jmock.MockObjectTestCase;
-
-import hjb.misc.HJBException;
-import hjb.msg.codec.CodecTestValues;
 
 /**
  * <code>FloatPropertyValueCopierTest</code>
@@ -33,10 +34,6 @@ import hjb.msg.codec.CodecTestValues;
  * @author Tim Emiola
  */
 public class FloatPropertyValueCopierTest extends MockObjectTestCase {
-
-    public FloatPropertyValueCopierTest() {
-
-    }
 
     public void testAnyTwoInstancesAreEqual() {
         assertEquals("Any two instances were not equal",
@@ -50,10 +47,18 @@ public class FloatPropertyValueCopierTest extends MockObjectTestCase {
                       new Object());
     }
 
-    public void testCanBeEncodedReturnsFalseOnJMSException() {
-        Message testMessage = messageBuilder.throwsJMSMessageOnMethodNamed("getFloatProperty");
-        FloatPropertyValueCopier testCopier = new FloatPropertyValueCopier();
-        assertFalse(testCopier.canBeEncoded("testName", testMessage));
+    public void testCanBeEncodedReturnsFalseOnPossibleExceptions() {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new NumberFormatException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getFloatProperty",
+                                                                              ex);
+            FloatPropertyValueCopier testCopier = new FloatPropertyValueCopier();
+            assertFalse(testCopier.canBeEncoded("testName", testMessage));
+        }
     }
 
     public void testCanBeEncodedReturnsTrueForCorrectValues() {
@@ -69,15 +74,23 @@ public class FloatPropertyValueCopierTest extends MockObjectTestCase {
         }
     }
 
-    public void testAddToMessageThrowsHJBExceptionOnJMSException() {
-        Message testMessage = messageBuilder.throwsJMSMessageOnMethodNamed("setFloatProperty");
-        FloatPropertyValueCopier testCopier = new FloatPropertyValueCopier();
-        try {
-            testCopier.addToMessage("testName",
-                                    OK_EXPECTED_DECODED_FLOATS[0],
-                                    testMessage);
-            fail("should have thrown an exception");
-        } catch (HJBException e) {}
+    public void testAddToMessageThrowsHJBExceptionOnPossibleExceptions() {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new IllegalArgumentException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("setFloatProperty",
+                                                                              ex);
+            FloatPropertyValueCopier testCopier = new FloatPropertyValueCopier();
+            try {
+                testCopier.addToMessage("testName",
+                                        OK_EXPECTED_DECODED_FLOATS[0],
+                                        testMessage);
+                fail("should have thrown an exception");
+            } catch (HJBException e) {}
+        }
     }
 
     public void testAddToMessageInvokesSetFloatProperty() {
@@ -95,13 +108,21 @@ public class FloatPropertyValueCopierTest extends MockObjectTestCase {
         }
     }
 
-    public void testGetAsEncodedValueThrowsExceptionOnJMSException() {
-        Message testMessage = messageBuilder.throwsJMSMessageOnMethodNamed("getFloatProperty");
-        FloatPropertyValueCopier testCopier = new FloatPropertyValueCopier();
-        try {
-            testCopier.getAsEncodedValue("testName", testMessage);
-            fail("should have thrown an exception");
-        } catch (HJBException e) {}
+    public void testGetAsEncodedValueThrowsHJBExceptionOnPossibleException() {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new NumberFormatException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getFloatProperty",
+                                                                              ex);
+            FloatPropertyValueCopier testCopier = new FloatPropertyValueCopier();
+            try {
+                testCopier.getAsEncodedValue("testName", testMessage);
+                fail("should have thrown an exception");
+            } catch (HJBException e) {}
+        }
     }
 
     public void testGetAsEncodedValueReturnsValuesCorrectlyEncoded() {

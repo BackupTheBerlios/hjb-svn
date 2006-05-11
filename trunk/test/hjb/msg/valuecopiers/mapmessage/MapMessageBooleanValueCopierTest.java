@@ -81,10 +81,17 @@ public class MapMessageBooleanValueCopierTest extends MockObjectTestCase {
         } catch (HJBException e) {}
     }
 
-    public void testCanBeEncodedReturnsFalseOnJMSException() {
-        Message testMessage = messageBuilder.throwsJMSMessageOnMethodNamed("getBoolean");
+    public void testCanBeEncodedReturnsFalseOnPossibleExceptions() {
+	    Exception[] possibleExceptions = new Exception [] {
+			new JMSException("Thrown as a test"),
+			new NumberFormatException("Thrown as a test"),
+	    };
+		for (int i = 0; i < possibleExceptions.length; i++) {
+			Exception ex = possibleExceptions[i];
+        Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getBoolean", ex);
         MapMessageBooleanValueCopier testCopier = new MapMessageBooleanValueCopier();
         assertFalse(testCopier.canBeEncoded("testName", testMessage));
+		}
     }
 
     public void testCanBeEncodedReturnsTrueForCorrectValues() {

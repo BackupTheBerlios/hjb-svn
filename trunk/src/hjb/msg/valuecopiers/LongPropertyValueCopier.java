@@ -38,7 +38,9 @@ public class LongPropertyValueCopier extends BaseEncodedValueCopier {
             message.setLongProperty(name, decodeAsLong(encodedValue));
         } catch (JMSException e) {
             handleValueWriteFailure(name, encodedValue, e, message);
-        }
+        } catch (IllegalArgumentException e) {
+            handleValueWriteFailure(name, encodedValue, e, message);
+	    }
     }
 
     public boolean canBeEncoded(String name, Message message)

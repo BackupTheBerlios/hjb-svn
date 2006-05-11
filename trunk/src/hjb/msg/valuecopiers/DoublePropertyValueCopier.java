@@ -38,7 +38,9 @@ public class DoublePropertyValueCopier extends BaseEncodedValueCopier {
             message.setDoubleProperty(name, decodeAsDouble(encodedValue));
         } catch (JMSException e) {
             handleValueWriteFailure(name, encodedValue, e, message);
-        }
+        } catch (IllegalArgumentException e) {
+            handleValueWriteFailure(name, encodedValue, e, message);
+	    }
     }
 
     public boolean canBeEncoded(String name, Message message)

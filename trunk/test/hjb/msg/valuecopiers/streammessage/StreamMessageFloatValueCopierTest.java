@@ -95,32 +95,34 @@ public class StreamMessageFloatValueCopierTest extends MockObjectTestCase {
         assertEquals("number of valuesRead was incorrect", 2, valuesRead.size());
     }
 
-	public void testCanBeEncodedThrowsIllegalStateExceptionOnMessageEOFException() {
-	    Exception[] possibleExceptions = new Exception [] {
-			new MessageEOFException("Thrown as a test"),
-	    };
-		for (int i = 0; i < possibleExceptions.length; i++) {
-			Exception ex = possibleExceptions[i];
-        Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("readFloat", ex);
-        StreamMessageFloatValueCopier testCopier = new StreamMessageFloatValueCopier(valuesRead);
-        try {
-            testCopier.canBeEncoded(null, testMessage);
-            fail("should have thrown an exception");
-        } catch (IllegalStateException e) {}
-		}
-	}
+    public void testCanBeEncodedThrowsIllegalStateExceptionOnMessageEOFException() {
+        Exception[] possibleExceptions = new Exception[] {
+            new MessageEOFException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("readFloat",
+                                                                              ex);
+            StreamMessageFloatValueCopier testCopier = new StreamMessageFloatValueCopier(valuesRead);
+            try {
+                testCopier.canBeEncoded(null, testMessage);
+                fail("should have thrown an exception");
+            } catch (IllegalStateException e) {}
+        }
+    }
 
     public void testCanBeEncodedReturnsFalseOnPossibleExceptions() {
-	    Exception[] possibleExceptions = new Exception [] {
-			new JMSException("Thrown as a test"),
-			new NumberFormatException("Thrown as a test"),
-	    };
-		for (int i = 0; i < possibleExceptions.length; i++) {
-			Exception ex = possibleExceptions[i];
-        Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("readFloat", ex);
-        StreamMessageFloatValueCopier testCopier = new StreamMessageFloatValueCopier(valuesRead);
-        assertFalse(testCopier.canBeEncoded("testName", testMessage));
-		}
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new NumberFormatException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("readFloat",
+                                                                              ex);
+            StreamMessageFloatValueCopier testCopier = new StreamMessageFloatValueCopier(valuesRead);
+            assertFalse(testCopier.canBeEncoded("testName", testMessage));
+        }
     }
 
     public void testCanBeEncodedReturnsTrueForCorrectValues() {
@@ -160,35 +162,37 @@ public class StreamMessageFloatValueCopierTest extends MockObjectTestCase {
         }
     }
 
-	public void testGetAsEncodedValueThrowsIllegalStateExceptionOnMessageEOFException() {
-	    Exception[] possibleExceptions = new Exception [] {
-			new MessageEOFException("Thrown as a test"),
-	    };
-		for (int i = 0; i < possibleExceptions.length; i++) {
-			Exception ex = possibleExceptions[i];
-        Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("readFloat", ex);
-        StreamMessageFloatValueCopier testCopier = new StreamMessageFloatValueCopier(valuesRead);
-        try {
-            testCopier.getAsEncodedValue("testName", testMessage);
-            fail("should have thrown an exception");
-        } catch (IllegalStateException e) {}
-		}
-	}
+    public void testGetAsEncodedValueThrowsIllegalStateExceptionOnMessageEOFException() {
+        Exception[] possibleExceptions = new Exception[] {
+            new MessageEOFException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("readFloat",
+                                                                              ex);
+            StreamMessageFloatValueCopier testCopier = new StreamMessageFloatValueCopier(valuesRead);
+            try {
+                testCopier.getAsEncodedValue("testName", testMessage);
+                fail("should have thrown an exception");
+            } catch (IllegalStateException e) {}
+        }
+    }
 
     public void testGetAsEncodedValueThrowsHJBExceptionOnPossibleException() {
-	    Exception[] possibleExceptions = new Exception [] {
-			new JMSException("Thrown as a test"),
-			new NumberFormatException("Thrown as a test"),
-	    };
-		for (int i = 0; i < possibleExceptions.length; i++) {
-			Exception ex = possibleExceptions[i];
-        Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("readFloat", ex);
-        StreamMessageFloatValueCopier testCopier = new StreamMessageFloatValueCopier(valuesRead);
-        try {
-            testCopier.getAsEncodedValue("testName", testMessage);
-            fail("should have thrown an exception");
-        } catch (HJBException e) {}
-		}
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new NumberFormatException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("readFloat",
+                                                                              ex);
+            StreamMessageFloatValueCopier testCopier = new StreamMessageFloatValueCopier(valuesRead);
+            try {
+                testCopier.getAsEncodedValue("testName", testMessage);
+                fail("should have thrown an exception");
+            } catch (HJBException e) {}
+        }
     }
 
     public void testGetAsEncodedValueReadsFromValuesReadFirst() {

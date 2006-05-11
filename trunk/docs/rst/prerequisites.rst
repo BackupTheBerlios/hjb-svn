@@ -50,6 +50,12 @@ binary HJB installations of HJB.  This is because it is used
 post-installation task of building war files specific to messaging
 providers.
 
+The Ant build scripts used the JUnit_ task for executing test cases.  As such,
+the JUnit library file, junit.jar, *must* be present in the Ant classpath when
+running the build scripts.  The easiest way to ensure that this is true is to
+copy the junit.jar to the ANT_HOME/lib directory of the Ant installation. For
+full details, see `installing Ant Optional Tasks`_ on the Ant website.
+
 Library Jars
 ************
 
@@ -64,7 +70,7 @@ should indicate how to obtain these.
 
 Once obtained, the vendor jars will need to be deployed with the HJB
 servlet.  Both the HJB source and binary distributions include a build
-file that contains an ant task that simplifies this procedure.
+file that contains an Ant task that simplifies this procedure.
 
 
 A Servlet Container
@@ -95,6 +101,10 @@ subversion repository.
 .. _Subversion access: ./repository.html
 
 .. _Ant: http://ant.apache.org
+
+.. _JUnit: http://www.junit.org
+
+.. _installing Ant optional tasks: http://ant.apache.org/manual/install.html#optionalTasks
 
 .. _ant website installation page: http://ant.apache.org/manual/install.htm
 
