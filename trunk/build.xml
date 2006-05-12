@@ -167,7 +167,7 @@
     <delete file="${dist.dir}/lib/${dist.jar.name}" failonerror="false"/>
     <jar jarfile="${dist.dir}/lib/${dist.jar.name}">
       <fileset dir="${build.dir}/classes"
-	       excludes="**/*Test.class **/testsupport/**/*"
+	       excludes="**/*Test*.class **/testsupport/**/*"
 	       />
       <manifest>
 	<attribute name="Implementation-Title" value="HJB"/>
