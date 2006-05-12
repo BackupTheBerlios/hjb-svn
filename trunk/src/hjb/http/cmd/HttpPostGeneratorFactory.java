@@ -20,14 +20,17 @@
  */
 package hjb.http.cmd;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
- * <code>PostGeneratorFactory</code> is used to instantiate the various
+ * <code>HttpPostGeneratorFactory</code> is used to instantiate the various
  * {@link hjb.http.cmd.JMSCommandGenerator}s used by
  * {@link hjb.http.HJBServlet#doPost(HttpServletRequest, HttpServletResponse)}.
  * 
  * @author Tim Emiola
  */
-public class PostGeneratorFactory implements JMSCommandGeneratorFactory {
+public class HttpPostGeneratorFactory implements JMSCommandGeneratorFactory {
 
     /**
      * Returns the set of <code>JMSCommandGenerator</code> instances that
@@ -57,4 +60,20 @@ public class PostGeneratorFactory implements JMSCommandGeneratorFactory {
         };
         return result;
     }
+    
+    public boolean equals(Object o) {
+        if (!(o instanceof HttpPostGeneratorFactory)) return false;
+        return this.getClass().getName().equals(o.getClass().getName());
+    }
+
+    public int hashCode() {
+        return this.getClass().getName().hashCode();
+    }
+
+    public String toString() {
+        String clazzName = this.getClass().getName();
+        if (-1 == clazzName.lastIndexOf('.')) return "[" + clazzName + "]";
+        return "[" + clazzName.substring(clazzName.lastIndexOf('.') + 1) + "]";
+    }
+
 }

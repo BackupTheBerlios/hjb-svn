@@ -147,5 +147,4 @@ public class DoublePropertyValueCopierTest extends MockObjectTestCase {
     private static final String OK_ENCODED_DOUBLES[] = CodecTestValues.OK_EXPECTED_DECODED_DOUBLES;
     private static final double EXPECTED_DECODED_DOUBLES[] = CodecTestValues.EXPECTED_DECODED_DOUBLES;
     private static final String OK_EXPECTED_DECODED_DOUBLES[] = CodecTestValues.OK_EXPECTED_DECODED_DOUBLES;
-
 }

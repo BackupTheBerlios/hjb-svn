@@ -86,6 +86,8 @@ public class HJBApplication {
                                          request.getPathInfo()));
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         } catch (HJBException e) {
+            // HJB Exceptions have already been logged, that's
+            // why there is a separate exception clause for them here
             new RuntimeExceptionHandler().sendHJBFault(response, e);
         } catch (RuntimeException e) {
             LOG.error(e);

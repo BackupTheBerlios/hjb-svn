@@ -30,9 +30,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import hjb.http.cmd.DeleteGeneratorFactory;
-import hjb.http.cmd.GetGeneratorFactory;
-import hjb.http.cmd.PostGeneratorFactory;
+import hjb.http.cmd.HttpDeleteGeneratorFactory;
+import hjb.http.cmd.HttpGetGeneratorFactory;
+import hjb.http.cmd.HttpPostGeneratorFactory;
 import hjb.misc.HJBStrings;
 
 /**
@@ -75,39 +75,39 @@ public class HJBServlet extends HttpServlet {
 
     /**
      * Gives
-     * <code>HJBApplication<code> a {@link DeleteGeneratorFactory} to use to create
+     * <code>HJBApplication<code> a {@link HttpDeleteGeneratorFactory} to use to create
      * the set of <code>JMSCommandGenerators</code>, one of which match the request's path and then complete its processing.
      */
     protected void doDelete(HttpServletRequest request,
                             HttpServletResponse response)
             throws ServletException, IOException {
-        findApplication().handleUsingMatchingGenerator(new DeleteGeneratorFactory(),
+        findApplication().handleUsingMatchingGenerator(new HttpDeleteGeneratorFactory(),
                                                        request,
                                                        response);
     }
 
     /**
      * Gives
-     * <code>HJBApplication<code> a {@link GetGeneratorFactory} to use to create
+     * <code>HJBApplication<code> a {@link HttpGetGeneratorFactory} to use to create
      * the set of <code>JMSCommandGenerators</code>, one of which match the request's path and then complete its processing.
      */
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException,
             IOException {
-        findApplication().handleUsingMatchingGenerator(new GetGeneratorFactory(),
+        findApplication().handleUsingMatchingGenerator(new HttpGetGeneratorFactory(),
                                                        request,
                                                        response);
     }
 
     /**
      * Gives
-     * <code>HJBApplication<code> a {@link PostGeneratorFactory} to use to create
+     * <code>HJBApplication<code> a {@link HttpPostGeneratorFactory} to use to create
      * the set of <code>JMSCommandGenerators</code>, one of which match the request's path and then complete its processing.
      */
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
             throws ServletException, IOException {
-        findApplication().handleUsingMatchingGenerator(new PostGeneratorFactory(),
+        findApplication().handleUsingMatchingGenerator(new HttpPostGeneratorFactory(),
                                                        request,
                                                        response);
     }

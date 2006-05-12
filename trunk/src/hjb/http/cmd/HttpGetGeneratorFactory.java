@@ -20,35 +20,56 @@
  */
 package hjb.http.cmd;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
- * <code>DeleteGeneratorFactory</code> is used to instantiate the various
+ * <code>HttpGetGeneratorFactory</code> is used to instantiate the various
  * {@link hjb.http.cmd.JMSCommandGenerator}s used by
- * {@link hjb.http.HJBServlet#doDelete(HttpServletRequest, HttpServletResponse)}.
+ * {@link hjb.http.HJBServlet#doGet(HttpServletRequest, HttpServletResponse)}.
  * 
  * @author Tim Emiola
  */
-public class DeleteGeneratorFactory implements JMSCommandGeneratorFactory {
+public class HttpGetGeneratorFactory implements JMSCommandGeneratorFactory {
 
     /**
      * Returns the set of <code>JMSCommandGenerator</code> instances that
-     * match all expected DELETE requests.
+     * match all expected GET requests.
      * 
      * <strong>N.B</strong> the order in which the generators are returned
      * <strong>is</strong> is significant as multiple generators may match the
      * same URL.
      * 
      * @return an array containing new instances of
-     *         <code>JMSCommandGenerator</code> to be used to process HJB
-     *         DELETE requests.
+     *         <code>JMSCommandGenerator</code> to be used to process HJB GET
+     *         requests.
      */
     public JMSCommandGenerator[] getGenerators() {
         JMSCommandGenerator[] result = new JMSCommandGenerator[] {
-                new DeleteConnectionFactoryGenerator(),
-                new DeleteConnectionGenerator(),
-                new DeleteDestinationGenerator(),
-                new DeleteProviderGenerator(),
-                new DeleteSessionGenerator(),
+                new CommitSessionGenerator(),
+                new RollbackSessionGenerator(),
+                new StartConnectionGenerator(),
+                new StopConnectionGenerator(),
+                new RegisterConnectionFactoryGenerator(),
+                new RegisterDestinationGenerator(),
+                new ReadMetaDataGenerator(),
         };
         return result;
     }
+    
+    public boolean equals(Object o) {
+        if (!(o instanceof HttpGetGeneratorFactory)) return false;
+        return this.getClass().getName().equals(o.getClass().getName());
+    }
+
+    public int hashCode() {
+        return this.getClass().getName().hashCode();
+    }
+
+    public String toString() {
+        String clazzName = this.getClass().getName();
+        if (-1 == clazzName.lastIndexOf('.')) return "[" + clazzName + "]";
+        return "[" + clazzName.substring(clazzName.lastIndexOf('.') + 1) + "]";
+    }
+
 }
