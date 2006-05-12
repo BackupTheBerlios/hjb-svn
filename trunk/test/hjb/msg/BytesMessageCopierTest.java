@@ -34,8 +34,8 @@ import org.jmock.MockObjectTestCase;
 import hjb.misc.HJBException;
 import hjb.misc.YetAnotherBase64Test;
 import hjb.msg.codec.ByteArrayCodec;
-import hjb.msg.valuecopiers.MockMessageBuilder;
 import hjb.testsupport.MessageAttributeInvoker;
+import hjb.testsupport.MockMessageBuilder;
 
 public class BytesMessageCopierTest extends MockObjectTestCase {
 

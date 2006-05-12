@@ -36,9 +36,9 @@ import org.jmock.core.stub.StubSequence;
 import hjb.http.cmd.HJBMessageWriter;
 import hjb.misc.HJBException;
 import hjb.msg.codec.CodecTestValues;
-import hjb.msg.valuecopiers.MockMessageBuilder;
 import hjb.msg.valuecopiers.streammessage.OrderedStreamMessageValueCopierTest;
 import hjb.testsupport.MessageAttributeInvoker;
+import hjb.testsupport.MockMessageBuilder;
 
 public class StreamMessageCopierTest extends MockObjectTestCase {
 

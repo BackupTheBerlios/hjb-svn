@@ -27,6 +27,7 @@ import org.jmock.MockObjectTestCase;
 
 import hjb.misc.HJBException;
 import hjb.msg.codec.CodecTestValues;
+import hjb.testsupport.MockMessageBuilder;
 
 /**
  * <code>BooleanPropertyValueCopierTest</code>

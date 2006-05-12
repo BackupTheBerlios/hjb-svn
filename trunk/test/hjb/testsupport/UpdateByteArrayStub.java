@@ -1,4 +1,4 @@
-package hjb.msg.valuecopiers.streammessage;
+package hjb.testsupport;
 
 import org.jmock.core.Invocation;
 import org.jmock.core.Stub;

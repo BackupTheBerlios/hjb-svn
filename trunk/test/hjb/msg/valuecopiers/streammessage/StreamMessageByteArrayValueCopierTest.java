@@ -32,7 +32,7 @@ import org.jmock.MockObjectTestCase;
 
 import hjb.misc.HJBException;
 import hjb.msg.codec.CodecTestValues;
-import hjb.msg.valuecopiers.MockMessageBuilder;
+import hjb.testsupport.MockMessageBuilder;
 
 /**
  * <code>StreamMessageByteArrayValueCopierTest</code>

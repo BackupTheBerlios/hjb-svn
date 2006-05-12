@@ -18,7 +18,7 @@
  USA
 
  */
-package hjb.msg.valuecopiers;
+package hjb.testsupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,6 @@ import org.jmock.core.matcher.InvokeOnceMatcher;
 import org.jmock.core.stub.ReturnStub;
 import org.jmock.core.stub.ThrowStub;
 
-import hjb.msg.valuecopiers.streammessage.UpdateByteArrayStub;
 
 /**
  * <code>MockMessageBuilder</code> contains methods that create mock

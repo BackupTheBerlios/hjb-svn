@@ -26,6 +26,7 @@ import javax.jms.Message;
 import org.jmock.MockObjectTestCase;
 
 import hjb.misc.HJBException;
+import hjb.testsupport.MockMessageBuilder;
 
 /**
  * <code>StringPropertyValueCopierTest</code>

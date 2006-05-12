@@ -30,7 +30,7 @@ import javax.jms.StreamMessage;
 import org.jmock.MockObjectTestCase;
 
 import hjb.misc.HJBException;
-import hjb.msg.valuecopiers.MockMessageBuilder;
+import hjb.testsupport.MockMessageBuilder;
 
 /**
  * <code>StringMessageStringValueCopierTest</code>
