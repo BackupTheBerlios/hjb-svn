@@ -29,7 +29,16 @@ import javax.jms.Session;
  * @author Tim Emiola
  */
 public final class HJBServletConstants {
-
+    
+    
+    /**
+     * Constant that holds the name of the attribute used to store HJB Application in
+     * the servlet context.
+     * <p />
+     * The value of this constant is "hjb.runtime.application".
+     */
+    public static final String HJB_APPLICATION_ATTRIBUTE = "hjb.runtime.application";
+    
     /**
      * Constant that holds the name of the servlet parameter used to configure
      * HJBRoot's storage path.
@@ -37,22 +46,6 @@ public final class HJBServletConstants {
      * The value of this constant is "hjb.config.rootpath".
      */
     public static final String ROOT_PATH_CONFIG = "hjb.config.rootpath";
-
-    /**
-     * Constant that holds the name of the attribute used to store HJBRoot in
-     * the servlet context.
-     * <p />
-     * The value of this constant is "hjb.runtime.root".
-     */
-    public static final String HJB_ROOT_ATTRIBUTE = "hjb.runtime.root";
-
-    /**
-     * Constant that holds the name of the attribute used to store the Command
-     * timeout timer in the servlet context.
-     * <p />
-     * The value of this constant is "hjb.runtime.root".
-     */
-    public static final String COMMAND_TIMEOUT_ATTRIBUTE = "hjb.runtime.timeout.timer";
 
     /**
      * Constant that holds the HTTP response header used to send a command's

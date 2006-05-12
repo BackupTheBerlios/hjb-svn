@@ -62,7 +62,7 @@ public class MapMessageByteArrayValueCopier extends MapMessageValueCopier {
             return encode(asAMapMessage(message).getBytes(name));
         } catch (JMSException e) {
             return handleValueReadFailure(name, e, message);
-        } catch (NumberFormatException e) {
+        } catch (NullPointerException e) {
             return handleValueReadFailure(name, e, message);
         }
     }

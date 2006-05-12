@@ -1,12 +1,12 @@
 package hjb.http.cmd;
 
-import hjb.jms.HJBRoot;
-import hjb.misc.HJBNotFoundException;
-import hjb.testsupport.MockHJBRuntime;
-
 import java.io.File;
 
 import junit.framework.TestCase;
+
+import hjb.jms.HJBRoot;
+import hjb.misc.HJBNotFoundException;
+import hjb.testsupport.MockHJBRuntime;
 
 public class HJBTreeWalkerTest extends TestCase {
 

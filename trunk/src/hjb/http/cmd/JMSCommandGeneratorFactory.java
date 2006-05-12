@@ -21,88 +21,21 @@
 package hjb.http.cmd;
 
 /**
- * <code>JMSCommandGeneratorFactory</code> is used to instantiate the various
+ * <code>JMSCommandGeneratorFactorys</code> are used to instantiate the various
  * {@link hjb.http.cmd.JMSCommandGenerator}s used by the service methods of
  * {@link hjb.http.HJBServlet}.
  * 
  * @author Tim Emiola
  */
-public class JMSCommandGeneratorFactory {
+public interface JMSCommandGeneratorFactory {
 
     /**
-     * Returns the set of <code>JMSCommandGenerator</code> instances that
-     * match all expected DELETE requests.
-     * 
-     * <strong>N.B</strong> the order in which the generators are returned
-     * <strong>is</strong> is significant as multiple generators may match the
-     * same URL.
+     * Returns a set of <code>JMSCommandGenerator</code> instances that
+     * match expected HJB requests.
      * 
      * @return an array containing new instances of
-     *         <code>JMSCommandGenerator</code> to be used to process HJB
-     *         DELETE requests.
+     *         <code>JMSCommandGenerator</code> to be used to process HJB requests.
      */
-    public JMSCommandGenerator[] getDeleteGenerators() {
-        JMSCommandGenerator[] result = new JMSCommandGenerator[] {
-                new DeleteConnectionFactoryGenerator(),
-                new DeleteConnectionGenerator(),
-                new DeleteDestinationGenerator(),
-                new DeleteProviderGenerator(),
-                new DeleteSessionGenerator(),
-        };
-        return result;
-    }
 
-    /**
-     * Returns the set of <code>JMSCommandGenerator</code> instances that
-     * match all expected GET requests.
-     * 
-     * <strong>N.B</strong> the order in which the generators are returned
-     * <strong>is</strong> is significant as multiple generators may match the
-     * same URL.
-     * 
-     * @return an array containing new instances of
-     *         <code>JMSCommandGenerator</code> to be used to process HJB GET
-     *         requests.
-     */
-    public JMSCommandGenerator[] getGetGenerators() {
-        JMSCommandGenerator[] result = new JMSCommandGenerator[] {
-                new CommitSessionGenerator(),
-                new RollbackSessionGenerator(),
-                new StartConnectionGenerator(),
-                new StopConnectionGenerator(),
-                new RegisterConnectionFactoryGenerator(),
-                new RegisterDestinationGenerator(),
-                new ReadMetaDataGenerator(),
-        };
-        return result;
-    }
-
-    /**
-     * Returns the set of <code>JMSCommandGenerator</code> instances that
-     * match all expected POST requests.
-     * 
-     * <strong>N.B</strong> the order in which the generators are returned
-     * <strong>is</strong> is significant as multiple generators may match the
-     * same URL.
-     * 
-     * @return an array containing new instances of
-     *         <code>JMSCommandGenerator</code> to be used to process HJB POST
-     *         requests.
-     */
-    public JMSCommandGenerator[] getPostGenerators() {
-        JMSCommandGenerator[] result = new JMSCommandGenerator[] {
-                new RegisterProviderGenerator(),
-                new CreateConsumerGenerator(),
-                new ReceiveFromConsumerGenerator(),
-                new CreateSubscriberGenerator(),
-                new ReceiveFromSubscriberGenerator(),
-                new CreateProducerGenerator(),
-                new SendHJBMessageGenerator(),
-                new CreateBrowserGenerator(),
-                new ViewQueueGenerator(),
-                new CreateSessionGenerator(),
-                new CreateConnectionGenerator(),
-        };
-        return result;
-    }
+    public JMSCommandGenerator[] getGenerators();   
 }

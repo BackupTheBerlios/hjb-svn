@@ -20,15 +20,15 @@
  */
 package hjb.msg.valuecopiers.mapmessage;
 
-import hjb.misc.HJBException;
-import hjb.msg.codec.CodecTestValues;
-import hjb.msg.valuecopiers.MockMessageBuilder;
-
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 
 import org.jmock.MockObjectTestCase;
+
+import hjb.misc.HJBException;
+import hjb.msg.codec.CodecTestValues;
+import hjb.msg.valuecopiers.MockMessageBuilder;
 
 /**
  * <code>MapMessageIntValueCopierTest</code>
@@ -142,12 +142,20 @@ public class MapMessageIntValueCopierTest extends MockObjectTestCase {
     }
 
     public void testGetAsEncodedValueThrowsExceptionOnJMSException() {
-        Message testMessage = messageBuilder.throwsJMSMessageOnMethodNamed("getInt");
-        MapMessageIntValueCopier testCopier = new MapMessageIntValueCopier();
-        try {
-            testCopier.getAsEncodedValue("testName", testMessage);
-            fail("should have thrown an exception");
-        } catch (HJBException e) {}
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new NumberFormatException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getInt",
+                                                                              ex);
+            MapMessageIntValueCopier testCopier = new MapMessageIntValueCopier();
+            try {
+                testCopier.getAsEncodedValue("testName", testMessage);
+                fail("should have thrown an exception");
+            } catch (HJBException e) {}
+        }
     }
 
     public void testGetAsEncodedValueReturnsValuesCorrectlyEncoded() {
@@ -166,6 +174,7 @@ public class MapMessageIntValueCopierTest extends MockObjectTestCase {
     }
 
     protected void setUp() throws Exception {
+        super.setUp();
         messageBuilder = new MockMessageBuilder(MapMessage.class);
     }
 

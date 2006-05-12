@@ -20,9 +20,6 @@
  */
 package hjb.msg.valuecopiers.streammessage;
 
-import hjb.misc.HJBException;
-import hjb.msg.valuecopiers.MockMessageBuilder;
-
 import java.util.LinkedList;
 
 import javax.jms.JMSException;
@@ -31,6 +28,9 @@ import javax.jms.MessageEOFException;
 import javax.jms.StreamMessage;
 
 import org.jmock.MockObjectTestCase;
+
+import hjb.misc.HJBException;
+import hjb.msg.valuecopiers.MockMessageBuilder;
 
 /**
  * <code>StringMessageStringValueCopierTest</code>
@@ -170,7 +170,7 @@ public class StreamMessageStringValueCopierTest extends MockObjectTestCase {
         }
     }
 
-    public void testGetAsEncodedValueThrowsHJBExceptionOnPossibleException() {
+    public void testGetAsEncodedValueThrowsHJBExceptionOnPossibleExceptions() {
         Exception[] possibleExceptions = new Exception[] {
             new JMSException("Thrown as a test"),
         };
@@ -220,6 +220,7 @@ public class StreamMessageStringValueCopierTest extends MockObjectTestCase {
     }
 
     protected void setUp() throws Exception {
+        super.setUp();
         messageBuilder = new MockMessageBuilder(StreamMessage.class);
         valuesRead = new LinkedList();
     }

@@ -69,6 +69,7 @@ public abstract class BaseJMSCommandGeneratorTestCase extends
     }
 
     protected void setUp() throws Exception {
+        super.setUp();
         testRootPath = File.createTempFile("test", null).getParentFile();
         mockHJB = new MockHJBRuntime();
     }

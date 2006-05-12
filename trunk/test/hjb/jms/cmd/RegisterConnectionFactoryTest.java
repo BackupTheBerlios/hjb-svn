@@ -20,17 +20,17 @@
  */
 package hjb.jms.cmd;
 
-import hjb.jms.HJBProvider;
-import hjb.jms.HJBRoot;
-import hjb.misc.HJBException;
-import hjb.testsupport.MockHJBRuntime;
-
 import java.io.File;
 
 import javax.jms.Destination;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+
+import hjb.jms.HJBProvider;
+import hjb.jms.HJBRoot;
+import hjb.misc.HJBException;
+import hjb.testsupport.MockHJBRuntime;
 
 public class RegisterConnectionFactoryTest extends MockObjectTestCase {
 

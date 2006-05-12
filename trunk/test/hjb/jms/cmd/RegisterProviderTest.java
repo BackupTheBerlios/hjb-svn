@@ -20,13 +20,6 @@
  */
 package hjb.jms.cmd;
 
-import hjb.jms.HJBProvider;
-import hjb.jms.HJBRoot;
-import hjb.misc.HJBException;
-import hjb.testsupport.MockContextBuilder;
-import hjb.testsupport.MockHJBRuntime;
-import hjb.testsupport.SharedMock;
-
 import java.io.File;
 import java.util.Hashtable;
 
@@ -34,6 +27,13 @@ import javax.naming.Context;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+
+import hjb.jms.HJBProvider;
+import hjb.jms.HJBRoot;
+import hjb.misc.HJBException;
+import hjb.testsupport.MockContextBuilder;
+import hjb.testsupport.MockHJBRuntime;
+import hjb.testsupport.SharedMock;
 
 public class RegisterProviderTest extends MockObjectTestCase {
 

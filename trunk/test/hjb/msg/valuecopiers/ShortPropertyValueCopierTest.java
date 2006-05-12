@@ -20,13 +20,13 @@
  */
 package hjb.msg.valuecopiers;
 
-import hjb.misc.HJBException;
-import hjb.msg.codec.CodecTestValues;
-
 import javax.jms.JMSException;
 import javax.jms.Message;
 
 import org.jmock.MockObjectTestCase;
+
+import hjb.misc.HJBException;
+import hjb.msg.codec.CodecTestValues;
 
 /**
  * <code>ShortValuePropertyValueCopierTest</code>

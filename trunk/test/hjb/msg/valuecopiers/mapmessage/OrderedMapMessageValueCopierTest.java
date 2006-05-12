@@ -20,16 +20,16 @@
  */
 package hjb.msg.valuecopiers.mapmessage;
 
-import hjb.misc.HJBException;
-import hjb.msg.codec.CodecTestValues;
-import hjb.msg.valuecopiers.MockMessageBuilder;
-
 import java.util.ArrayList;
 
 import javax.jms.MapMessage;
 import javax.jms.Message;
 
 import org.jmock.MockObjectTestCase;
+
+import hjb.misc.HJBException;
+import hjb.msg.codec.CodecTestValues;
+import hjb.msg.valuecopiers.MockMessageBuilder;
 
 /**
  * <code>OrderedStreamMessageValueCopierTest</code>
@@ -132,6 +132,7 @@ public class OrderedMapMessageValueCopierTest extends MockObjectTestCase {
     }
 
     protected void setUp() throws Exception {
+        super.setUp();
         messageBuilder = new MockMessageBuilder(MapMessage.class);
     }
 

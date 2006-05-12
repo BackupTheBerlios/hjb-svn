@@ -20,11 +20,6 @@
  */
 package hjb.jms.cmd;
 
-import hjb.jms.HJBConnection;
-import hjb.jms.HJBRoot;
-import hjb.misc.HJBException;
-import hjb.testsupport.MockHJBRuntime;
-
 import java.io.File;
 
 import javax.jms.Connection;
@@ -33,6 +28,11 @@ import javax.jms.Session;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+
+import hjb.jms.HJBConnection;
+import hjb.jms.HJBRoot;
+import hjb.misc.HJBException;
+import hjb.testsupport.MockHJBRuntime;
 
 public class CreateSessionTest extends MockObjectTestCase {
 

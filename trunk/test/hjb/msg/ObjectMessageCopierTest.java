@@ -20,10 +20,6 @@
  */
 package hjb.msg;
 
-import hjb.misc.HJBException;
-import hjb.msg.codec.ByteArrayCodec;
-import hjb.testsupport.MessageAttributeInvoker;
-
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.Calendar;
@@ -37,6 +33,10 @@ import javax.jms.ObjectMessage;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+
+import hjb.misc.HJBException;
+import hjb.msg.codec.ByteArrayCodec;
+import hjb.testsupport.MessageAttributeInvoker;
 
 public class ObjectMessageCopierTest extends MockObjectTestCase {
 
@@ -74,6 +74,21 @@ public class ObjectMessageCopierTest extends MockObjectTestCase {
                 fail("should have thrown an exception");
             } catch (HJBException e) {}
         }
+    }
+
+    public void testCopyToJMSMessageThrowsHJBExceptionOnInvalidObject()
+            throws Exception {
+        Mock mockJMSMessage = mock(ObjectMessage.class);
+        mockJMSMessage.stubs()
+            .method("setStringProperty")
+            .with(eq("hjb_message_version"), eq("1.0"));
+        Message testJMSMessage = (ObjectMessage) mockJMSMessage.proxy();
+        HJBMessage testHJBMessage = createClassCastObjectMethod();
+        ObjectMessageCopier c = new ObjectMessageCopier();
+        try {
+            c.copyToJMSMessage(testHJBMessage, testJMSMessage);
+            fail("should have thrown an exception");
+        } catch (HJBException e) {}
     }
 
     public void testCopyToJMSMessageCopiesObjectOK() throws Exception {
@@ -116,6 +131,23 @@ public class ObjectMessageCopierTest extends MockObjectTestCase {
         }
     }
 
+    public void testCopyToHJBMessageThrowsOnInvalidObject() throws Exception {
+        Mock mockJMSMessage = mock(ObjectMessage.class);
+        attributeInvoker.stubAllPropertyGettersFor(mockJMSMessage);
+        mockJMSMessage.stubs()
+            .method("getObject")
+            .will(returnValue("Hope this fails".getBytes()));
+
+        Message testJMSMessage = (ObjectMessage) mockJMSMessage.proxy();
+        HJBMessage testHJBMessage = new HJBMessage(createEmptyHJBObjectMessageHeaders(),
+                                                   "");
+        ObjectMessageCopier c = new ObjectMessageCopier();
+        try {
+            c.copyToHJBMessage(testJMSMessage, testHJBMessage);            
+        } catch (Exception e) {
+        }
+    }
+    
     public void testCopyToHJBMessageCopiesObjectCorrectly() throws Exception {
         Mock mockJMSMessage = mock(ObjectMessage.class);
         attributeInvoker.stubAllPropertyGettersFor(mockJMSMessage);
@@ -142,6 +174,11 @@ public class ObjectMessageCopierTest extends MockObjectTestCase {
                               new ByteArrayCodec().encode(out.toByteArray()));
     }
 
+    protected HJBMessage createClassCastObjectMethod() throws Exception {
+        return new HJBMessage(createEmptyHJBObjectMessageHeaders(),
+                              new ByteArrayCodec().encode("Hope This Fails".getBytes()));
+    }
+    
     protected Date getTestSerializable() {
         Calendar c = Calendar.getInstance();
         c.clear();
@@ -157,7 +194,8 @@ public class ObjectMessageCopierTest extends MockObjectTestCase {
         return headers;
     }
 
-    protected void setUp() {
+    protected void setUp() throws Exception {
+        super.setUp();
         attributeInvoker = new MessageAttributeInvoker();
     }
 

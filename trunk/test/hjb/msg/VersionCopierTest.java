@@ -1,7 +1,5 @@
 package hjb.msg;
 
-import hjb.misc.HJBException;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,12 +10,20 @@ import javax.jms.TextMessage;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
+import hjb.misc.HJBException;
+
 public class VersionCopierTest extends MockObjectTestCase {
 
     public void testAnyTwoInstancesAreEqual() {
         assertEquals("Any two instances were not equal",
                      new VersionCopier(),
                      new VersionCopier());
+        assertEquals("Hashcodes were not equal",
+                     new VersionCopier().hashCode(),
+                     new VersionCopier().hashCode());
+        assertEquals("ToStrings were not equal",
+                     new VersionCopier().toString(),
+                     new VersionCopier().toString());
     }
 
     public void testEqualsWorksCorrectly() {

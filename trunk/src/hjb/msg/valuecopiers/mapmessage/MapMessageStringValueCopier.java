@@ -52,8 +52,6 @@ public class MapMessageStringValueCopier extends MapMessageValueCopier {
             return null != asAMapMessage(message).getString(name);
         } catch (JMSException e) {
             return false;
-        } catch (NumberFormatException e) {
-            return false;
         }
     }
 
@@ -69,8 +67,6 @@ public class MapMessageStringValueCopier extends MapMessageValueCopier {
             }
             return encode(result);
         } catch (JMSException e) {
-            return handleValueReadFailure(name, e, message);
-        } catch (NumberFormatException e) {
             return handleValueReadFailure(name, e, message);
         }
     }

@@ -20,15 +20,15 @@
  */
 package hjb.msg.valuecopiers.mapmessage;
 
-import hjb.misc.HJBException;
-import hjb.msg.codec.CodecTestValues;
-import hjb.msg.valuecopiers.MockMessageBuilder;
-
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 
 import org.jmock.MockObjectTestCase;
+
+import hjb.misc.HJBException;
+import hjb.msg.codec.CodecTestValues;
+import hjb.msg.valuecopiers.MockMessageBuilder;
 
 /**
  * <code>MapMessageByteArrayValueCopierTest</code>
@@ -108,7 +108,7 @@ public class MapMessageByteArrayValueCopierTest extends MockObjectTestCase {
         }
     }
 
-    public void testAddToMessageThrowsHJBExceptionOnExceptions() {
+    public void testAddToMessageThrowsHJBExceptionOnPossibleExceptions() {
         Exception[] possibleExceptions = new Exception[] {
                 new JMSException("Thrown as a test"),
                 new NullPointerException("Thrown as test"),
@@ -142,12 +142,20 @@ public class MapMessageByteArrayValueCopierTest extends MockObjectTestCase {
     }
 
     public void testGetAsEncodedValueThrowsExceptionOnJMSException() {
-        Message testMessage = messageBuilder.throwsJMSMessageOnMethodNamed("getBytes");
-        MapMessageByteArrayValueCopier testCopier = new MapMessageByteArrayValueCopier();
-        try {
-            testCopier.getAsEncodedValue("testName", testMessage);
-            fail("should have thrown an exception");
-        } catch (HJBException e) {}
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new NullPointerException("Thrown as test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getBytes",
+                                                                              ex);
+            MapMessageByteArrayValueCopier testCopier = new MapMessageByteArrayValueCopier();
+            try {
+                testCopier.getAsEncodedValue("testName", testMessage);
+                fail("should have thrown an exception");
+            } catch (HJBException e) {}
+        }
     }
 
     public void testGetAsEncodedValueReturnsValuesCorrectlyEncoded() {
@@ -158,7 +166,6 @@ public class MapMessageByteArrayValueCopierTest extends MockObjectTestCase {
                                                                                              + i,
                                                                                      "testName",
                                                                                      EXPECTED_DECODED_BARRAYS[i]);
-
             assertEquals("retrieved property was encoded correctly",
                          OK_EXPECTED_DECODED_BARRAYS[i],
                          testCopier.getAsEncodedValue("testName", testMessage));
@@ -166,6 +173,7 @@ public class MapMessageByteArrayValueCopierTest extends MockObjectTestCase {
     }
 
     protected void setUp() throws Exception {
+        super.setUp();
         messageBuilder = new MockMessageBuilder(MapMessage.class);
     }
 

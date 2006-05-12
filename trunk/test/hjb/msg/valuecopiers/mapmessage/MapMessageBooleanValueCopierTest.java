@@ -20,15 +20,15 @@
  */
 package hjb.msg.valuecopiers.mapmessage;
 
-import hjb.misc.HJBException;
-import hjb.msg.codec.CodecTestValues;
-import hjb.msg.valuecopiers.MockMessageBuilder;
-
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 
 import org.jmock.MockObjectTestCase;
+
+import hjb.misc.HJBException;
+import hjb.msg.codec.CodecTestValues;
+import hjb.msg.valuecopiers.MockMessageBuilder;
 
 /**
  * <code>MapMessageBooleanValueCopierTest</code>
@@ -141,13 +141,22 @@ public class MapMessageBooleanValueCopierTest extends MockObjectTestCase {
         }
     }
 
-    public void testGetAsEncodedValueThrowsExceptionOnJMSException() {
-        Message testMessage = messageBuilder.throwsJMSMessageOnMethodNamed("getBoolean");
-        MapMessageBooleanValueCopier testCopier = new MapMessageBooleanValueCopier();
-        try {
-            testCopier.getAsEncodedValue("testName", testMessage);
-            fail("should have thrown an exception");
-        } catch (HJBException e) {}
+    public void testGetAsEncodedValueThrowsExceptionOnPossibleExceptions() {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("Thrown as a test"),
+                new NumberFormatException("Thrown as a test"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Exception ex = possibleExceptions[i];
+            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getBoolean",
+                                                                              ex);
+            MapMessageBooleanValueCopier testCopier = new MapMessageBooleanValueCopier();
+            try {
+                testCopier.getAsEncodedValue("testName", testMessage);
+                fail("should have thrown an exception");
+            } catch (HJBException e) {}
+        }
+
     }
 
     public void testGetAsEncodedValueReturnsValuesCorrectlyEncoded() {
@@ -165,6 +174,7 @@ public class MapMessageBooleanValueCopierTest extends MockObjectTestCase {
     }
 
     protected void setUp() throws Exception {
+        super.setUp();
         messageBuilder = new MockMessageBuilder(MapMessage.class);
     }
 
