@@ -20,17 +20,17 @@
  */
 package hjb.jms.cmd;
 
+import hjb.jms.HJBProvider;
+import hjb.jms.HJBRoot;
+import hjb.misc.HJBException;
+import hjb.testsupport.MockHJBRuntime;
+
 import java.io.File;
 
 import javax.jms.Destination;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-
-import hjb.jms.HJBProvider;
-import hjb.jms.HJBRoot;
-import hjb.misc.HJBException;
-import hjb.testsupport.MockHJBRuntime;
 
 public class RegisterConnectionFactoryTest extends MockObjectTestCase {
 
@@ -64,15 +64,47 @@ public class RegisterConnectionFactoryTest extends MockObjectTestCase {
         RegisterConnectionFactory command = new RegisterConnectionFactory(testProvider,
                                                                           "testFactory");
         command.execute();
-        assertTrue(command.isExecutedOK());
         assertEquals(1, root.getProvider("testProvider")
             .getConnectionFactories()
             .size());
+        assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
+        assertNull(command.getFault());
+        assertNotNull(command.getStatusMessage());
         try {
             command.execute();
             fail("should have thrown an exception");
         } catch (HJBException e) {}
+    }
+
+    public void testExecuteReportsAFaultOnPossibleExceptions() throws Exception {
+        Exception[] possibleExceptions = new Exception[] {
+            new RuntimeException("fire in the server room"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            HJBRoot root = new HJBRoot(testRootPath);
+            mockHJB.make1ProviderWithContextThatThrows(root,
+                                                       "testProvider",
+                                                       possibleExceptions[i]);
+
+            HJBProvider testProvider = root.getProvider("testProvider");
+            assertEquals(0, testProvider.getConnectionFactories().size());
+            RegisterConnectionFactory command = new RegisterConnectionFactory(testProvider,
+                                                                              "testFactory");
+            command.execute();
+            assertEquals(0, root.getProvider("testProvider")
+                .getConnectionFactories()
+                .size());
+            assertFalse(command.isExecutedOK());
+            assertTrue(command.isComplete());
+            assertNotNull(command.getFault());
+            assertEquals(command.getStatusMessage(), command.getFault()
+                .getMessage());
+            try {
+                command.execute();
+                fail("should have thrown an exception");
+            } catch (HJBException e) {}
+        }
     }
 
     protected void setUp() throws Exception {

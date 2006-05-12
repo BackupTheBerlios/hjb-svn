@@ -20,17 +20,17 @@
  */
 package hjb.jms.cmd;
 
+import hjb.jms.HJBProvider;
+import hjb.jms.HJBRoot;
+import hjb.misc.HJBException;
+import hjb.testsupport.MockHJBRuntime;
+
 import java.io.File;
 
 import javax.jms.Connection;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-
-import hjb.jms.HJBProvider;
-import hjb.jms.HJBRoot;
-import hjb.misc.HJBException;
-import hjb.testsupport.MockHJBRuntime;
 
 public class DeleteConnectionFactoryTest extends MockObjectTestCase {
 
@@ -92,11 +92,45 @@ public class DeleteConnectionFactoryTest extends MockObjectTestCase {
         assertEquals(0, root.getProvider("testProvider")
             .getConnectionFactories()
             .size());
+        assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
+        assertNull(command.getFault());
+        assertNotNull(command.getStatusMessage());
         try {
             command.execute();
             fail("should have thrown an exception");
         } catch (HJBException e) {}
+    }
+
+    public void testExecuteReportsAFaultOnPossibleExceptions() throws Exception {
+        Exception[] possibleExceptions = new Exception[] {
+            new RuntimeException("fire in the server room"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            HJBRoot root = new HJBRoot(testRootPath);
+            Mock connectionMock = mock(Connection.class);
+            connectionMock.expects(once())
+                .method("setExceptionListener")
+                .withAnyArguments();
+            connectionMock.expects(once())
+                .method("stop")
+                .will(throwException(possibleExceptions[i]));
+            mockHJB.make1Connection(root,
+                                    (Connection) connectionMock.proxy(),
+                                    "testProvider",
+                                    "testFactory");
+
+            HJBProvider testProvider = root.getProvider("testProvider");
+            assertEquals(1, testProvider.getConnectionFactories().size());
+            DeleteConnectionFactory command = new DeleteConnectionFactory(testProvider,
+                                                                          "testFactory");
+            command.execute();
+            assertFalse(command.isExecutedOK());
+            assertTrue(command.isComplete());
+            assertNotNull(command.getFault());
+            assertEquals(command.getStatusMessage(), command.getFault()
+                .getMessage());
+        }
     }
 
     protected void setUp() throws Exception {

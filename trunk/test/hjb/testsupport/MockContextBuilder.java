@@ -84,4 +84,15 @@ public class MockContextBuilder {
         return result;
     }
 
+    public Mock lookupThrows(Exception exception) {
+        Mock result = new Mock(Context.class);
+        result.stubs()
+            .method("getEnvironment")
+            .will(new ReturnStub((new Hashtable())));
+        result.stubs()
+            .method("lookup")
+            .will(new ThrowStub(new NamingException("thrown as a test")));
+        return result;
+    }
+
 }

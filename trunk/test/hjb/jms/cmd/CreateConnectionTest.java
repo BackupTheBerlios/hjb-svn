@@ -20,22 +20,62 @@
  */
 package hjb.jms.cmd;
 
-import java.io.File;
-
-import junit.framework.TestCase;
-
 import hjb.jms.HJBConnectionFactory;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
 import hjb.testsupport.MockHJBRuntime;
 
-public class CreateConnectionTest extends TestCase {
+import java.io.File;
+
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
+
+public class CreateConnectionTest extends MockObjectTestCase {
 
     public void testCreateConnectionThrowsOnNullConnectionFactory() {
         try {
             new CreateConnection(null, "hello", "world");
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
+    }
+
+    public void testExecuteReportsAFaultOnPossibleExceptions() throws Exception {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("thrown as a test"),
+                new RuntimeException("fire in the server room"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            HJBRoot root = new HJBRoot(testRootPath);
+            Mock mockFactory = mock(ConnectionFactory.class);
+            mockHJB.make1Factory(root,
+                                 (ConnectionFactory) mockFactory.proxy(),
+                                 "testProvider",
+                                 "testFactory");
+            HJBConnectionFactory testFactory = root.getProvider("testProvider")
+                .getConnectionFactory("testFactory");
+            mockFactory.expects(once())
+                .method("createConnection")
+                .will(throwException(possibleExceptions[i]));
+
+            assertEquals(0, testFactory.getActiveConnections().size());
+            CreateConnection command = new CreateConnection(testFactory,
+                                                            "hello",
+                                                            "world");
+            command.execute();
+            assertEquals(0, testFactory.getActiveConnections().size());
+            assertFalse(command.isExecutedOK());
+            assertTrue(command.isComplete());
+            assertNotNull(command.getFault());
+            assertEquals(command.getStatusMessage(), command.getFault()
+                .getMessage());
+            try {
+                command.execute();
+                fail("should have thrown an exception");
+            } catch (HJBException e) {}
+        }
     }
 
     public void testExecuteCreatesANewConnection() {
@@ -52,6 +92,8 @@ public class CreateConnectionTest extends TestCase {
         assertEquals(1, testFactory.getActiveConnections().size());
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
+        assertNull(command.getFault());
+        assertNotNull(command.getStatusMessage());
         try {
             command.execute();
             fail("should have thrown an exception");

@@ -22,7 +22,9 @@ package hjb.jms.cmd;
 
 import java.io.File;
 
+import javax.jms.JMSException;
 import javax.jms.Queue;
+import javax.jms.Session;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -74,10 +76,47 @@ public class CreateBrowserTest extends MockObjectTestCase {
         assertEquals(1, sessionBrowsers.getBrowsers(0).length);
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
+        assertNull(command.getFault());
+        assertNotNull(command.getStatusMessage());
         try {
             command.execute();
             fail("should have thrown an exception");
         } catch (HJBException e) {}
+    }
+
+    public void testExecuteReportsAFaultOnPossibleExceptions() throws Exception {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("thrown as a test"),
+                new RuntimeException("fire in the server room"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            HJBRoot root = new HJBRoot(testRootPath);
+            Mock mockSession = mock(Session.class);
+            mockHJB.make1Session(root,
+                                 (Session) mockSession.proxy(),
+                                 "testProvider",
+                                 "testFactory");
+            HJBConnection testConnection = root.getProvider("testProvider")
+                .getConnectionFactory("testFactory")
+                .getConnection(0);
+            HJBSessionQueueBrowsers sessionBrowsers = testConnection.getSessionBrowsers();
+            Mock mockQueue = mock(Queue.class);
+            mockSession.expects(once())
+                .method("createBrowser")
+                .will(throwException(possibleExceptions[i]));
+            assertEquals(0, sessionBrowsers.getBrowsers(0).length);
+            CreateBrowser command = new CreateBrowser(sessionBrowsers,
+                                                      0,
+                                                      ((Queue) mockQueue.proxy()),
+                                                      "*");
+            command.execute();
+            assertEquals(0, sessionBrowsers.getBrowsers(0).length);
+            assertFalse(command.isExecutedOK());
+            assertTrue(command.isComplete());
+            assertNotNull(command.getFault());
+            assertEquals(command.getStatusMessage(), command.getFault()
+                .getMessage());
+        }
     }
 
     protected void setUp() throws Exception {

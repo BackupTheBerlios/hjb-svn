@@ -23,6 +23,7 @@ package hjb.jms.cmd;
 import java.io.File;
 
 import javax.jms.Destination;
+import javax.jms.JMSException;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -63,15 +64,44 @@ public class RegisterDestinationTest extends MockObjectTestCase {
         RegisterDestination command = new RegisterDestination(testProvider,
                                                               "testDestination");
         command.execute();
-        assertTrue(command.isExecutedOK());
         assertEquals(1, root.getProvider("testProvider")
             .getDestinations()
             .size());
+        assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
+        assertNull(command.getFault());
+        assertNotNull(command.getStatusMessage());
         try {
             command.execute();
             fail("should have thrown an exception");
         } catch (HJBException e) {}
+    }
+
+    public void testExecuteReportsAFaultOnPossibleExceptions() throws Exception {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("thrown as a test"),
+                new RuntimeException("fire in the server room"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            HJBRoot root = new HJBRoot(testRootPath);
+            mockHJB.make1ProviderWithContextThatThrows(root,
+                                                       "testProvider",
+                                                       possibleExceptions[i]);
+
+            HJBProvider testProvider = root.getProvider("testProvider");
+            assertEquals(0, testProvider.getDestinations().size());
+            RegisterDestination command = new RegisterDestination(testProvider,
+                                                                  "testDestination");
+            command.execute();
+            assertEquals(0, root.getProvider("testProvider")
+                .getDestinations()
+                .size());
+            assertFalse(command.isExecutedOK());
+            assertTrue(command.isComplete());
+            assertNotNull(command.getFault());
+            assertEquals(command.getStatusMessage(), command.getFault()
+                .getMessage());
+        }
     }
 
     protected void setUp() throws Exception {

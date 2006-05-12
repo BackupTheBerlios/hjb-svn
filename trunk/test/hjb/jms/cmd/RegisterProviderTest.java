@@ -20,6 +20,13 @@
  */
 package hjb.jms.cmd;
 
+import hjb.jms.HJBProvider;
+import hjb.jms.HJBRoot;
+import hjb.misc.HJBException;
+import hjb.testsupport.MockContextBuilder;
+import hjb.testsupport.MockHJBRuntime;
+import hjb.testsupport.SharedMock;
+
 import java.io.File;
 import java.util.Hashtable;
 
@@ -27,13 +34,6 @@ import javax.naming.Context;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-
-import hjb.jms.HJBProvider;
-import hjb.jms.HJBRoot;
-import hjb.misc.HJBException;
-import hjb.testsupport.MockContextBuilder;
-import hjb.testsupport.MockHJBRuntime;
-import hjb.testsupport.SharedMock;
 
 public class RegisterProviderTest extends MockObjectTestCase {
 
@@ -66,13 +66,38 @@ public class RegisterProviderTest extends MockObjectTestCase {
         assertEquals(0, root.getProviders().size());
         RegisterProvider command = new RegisterProvider(root, testEnvironment);
         command.execute();
-        assertTrue(command.isExecutedOK());
         assertEquals(1, root.getProviders().size());
+        assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
+        assertNull(command.getFault());
+        assertNotNull(command.getStatusMessage());
         try {
             command.execute();
             fail("should have thrown an exception");
         } catch (HJBException e) {}
+    }
+
+    public void testExecuteReportsAFaultOnPossibleExceptions() throws Exception {
+        Hashtable testEnvironment = new Hashtable();
+        testEnvironment.put(Context.INITIAL_CONTEXT_FACTORY,
+                            "hjb.testsupport.MockInitialContextFactory");
+        MockContextBuilder contextBuilder = new MockContextBuilder();
+        Mock newContextMock = contextBuilder.returnsEnvironment(testEnvironment);
+
+        SharedMock sharedMock = SharedMock.getInstance();
+        sharedMock.setCurrentMock(newContextMock);
+
+        HJBRoot root = new HJBRoot(testRootPath);
+
+        assertEquals(0, root.getProviders().size());
+        RegisterProvider command = new RegisterProvider(root, testEnvironment);
+        command.execute();
+        assertEquals(0, root.getProviders().size());
+        assertFalse(command.isExecutedOK());
+        assertTrue(command.isComplete());
+        assertNotNull(command.getFault());
+        assertEquals(command.getStatusMessage(), command.getFault()
+            .getMessage());
     }
 
     protected void setUp() throws Exception {

@@ -23,6 +23,8 @@ package hjb.jms.cmd;
 import java.io.File;
 
 import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Session;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -79,10 +81,53 @@ public class CreateProducerTest extends MockObjectTestCase {
         assertEquals(1, sessionProducers.getProducers(0).length);
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
+        assertNull(command.getFault());
+        assertNotNull(command.getStatusMessage());
         try {
             command.execute();
             fail("should have thrown an exception");
         } catch (HJBException e) {}
+    }
+
+    public void testExecuteReportsAFaultOnPossibleExceptions() throws Exception {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("thrown as a test"),
+                new RuntimeException("fire in the server room"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            HJBRoot root = new HJBRoot(testRootPath);
+            Mock mockSession = mock(Session.class);
+            mockHJB.make1Session(root,
+                                 (Session) mockSession.proxy(),
+                                 "testProvider",
+                                 "testFactory");
+            HJBConnection testConnection = root.getProvider("testProvider")
+                .getConnectionFactory("testFactory")
+                .getConnection(0);
+            HJBSessionProducers sessionProducers = testConnection.getSessionProducers();
+            Mock mockDestination = mock(Destination.class);
+            Destination testDestination = (Destination) mockDestination.proxy();
+
+            mockSession.expects(once())
+                .method("createProducer")
+                .will(throwException(possibleExceptions[i]));
+            assertEquals(0, sessionProducers.getProducers(0).length);
+            CreateProducer command = new CreateProducer(sessionProducers,
+                                                        0,
+                                                        testDestination,
+                                                        new MessageProducerArguments(false,
+                                                                                     false,
+                                                                                     null,
+                                                                                     null,
+                                                                                     null));
+            command.execute();
+            assertEquals(0, sessionProducers.getProducers(0).length);
+            assertFalse(command.isExecutedOK());
+            assertTrue(command.isComplete());
+            assertNotNull(command.getFault());
+            assertEquals(command.getStatusMessage(), command.getFault()
+                .getMessage());
+        }
     }
 
     protected void setUp() throws Exception {

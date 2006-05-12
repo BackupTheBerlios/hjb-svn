@@ -44,7 +44,7 @@ import hjb.testsupport.MockHJBRuntime;
 
 public class ViewQueueTest extends MockObjectTestCase {
 
-    public void testCommitSessionThrowsOnNullInputs() {
+    public void testViewQueueThrowsOnNullInputs() {
         try {
             new ReceiveFromSubscriber(null, 1);
             fail("should have thrown an exception");
@@ -103,12 +103,58 @@ public class ViewQueueTest extends MockObjectTestCase {
         command.execute();
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
+        assertNull(command.getFault());
+        assertNotNull(command.getStatusMessage());
         assertNotNull(command.getMessagesOnQueue());
         System.err.println(new HJBMessageWriter().asText(command.getMessagesOnQueue()));
         try {
             command.execute();
             fail("should have thrown an exception");
         } catch (HJBException e) {}
+    }
+
+    public void testExecuteReportsAFaultOnPossibleExceptions() throws Exception {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("thrown as a test"),
+                new RuntimeException("fire in the server room"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Mock mockBrowser = mock(QueueBrowser.class);
+            mockBrowser.expects(once())
+                .method("getEnumeration")
+                .will(throwException(possibleExceptions[i]));
+            QueueBrowser testBrowser = (QueueBrowser) mockBrowser.proxy();
+
+            Mock mockSession = mock(Session.class);
+            mockSession.stubs()
+                .method("createBrowser")
+                .will(returnValue(testBrowser));
+            Session testSession = (Session) mockSession.proxy();
+
+            Mock mockQueue = mock(Queue.class);
+            Queue testQueue = (Queue) mockQueue.proxy();
+
+            HJBRoot root = new HJBRoot(testRootPath);
+            mockHJB.make1SessionAnd1Destination(root,
+                                                testSession,
+                                                "testProvider",
+                                                "testFactory",
+                                                "testDestination",
+                                                testQueue);
+            HJBConnection testConnection = root.getProvider("testProvider")
+                .getConnectionFactory("testFactory")
+                .getConnection(0);
+
+            create1Browser(testConnection);
+            ViewQueue command = new ViewQueue(new HJBMessenger(testConnection,
+                                                               0), 0);
+            command.execute();
+            assertFalse(command.isExecutedOK());
+            assertTrue(command.isComplete());
+            assertNotNull(command.getFault());
+            assertEquals(command.getStatusMessage(), command.getFault()
+                .getMessage());
+        }
     }
 
     protected void create1Browser(HJBConnection testConnection) {

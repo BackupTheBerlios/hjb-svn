@@ -40,7 +40,7 @@ import hjb.testsupport.MockSessionBuilder;
 
 public class SendHJBMessageTest extends MockObjectTestCase {
 
-    public void testCommitSessionThrowsOnNullInputs() {
+    public void testSendHJBMessageThrowsOnNullInputs() {
         try {
             new SendHJBMessage(null,
                                new HJBMessage(new HashMap(), ""),
@@ -107,6 +107,8 @@ public class SendHJBMessageTest extends MockObjectTestCase {
         command.execute();
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
+        assertNull(command.getFault());
+        assertNotNull(command.getStatusMessage());
         try {
             command.execute();
             fail("should have thrown an exception");
@@ -122,6 +124,71 @@ public class SendHJBMessageTest extends MockObjectTestCase {
                                                     testDestination,
                                                     new MockSessionBuilder().defaultProducerArguments());
         command.execute();
+    }
+
+    public void testExecuteReportsAFaultOnPossibleExceptions() throws Exception {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("thrown as a test"),
+                new RuntimeException("fire in the server room"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Mock mockJMSMessage = mock(TextMessage.class);
+            mockJMSMessage.expects(once()).method("setText").with(eq("boo!"));
+            mockJMSMessage.expects(once())
+                .method("setStringProperty")
+                .with(eq("hjb_message_version"), eq("1.0"));
+            Message testMessage = (TextMessage) mockJMSMessage.proxy();
+
+            Mock mockProducer = mock(MessageProducer.class);
+            mockProducer.expects(once())
+                .method("send")
+                .will(throwException(possibleExceptions[i]));
+            mockProducer.expects(atLeastOnce())
+                .method("setDisableMessageTimestamp");
+            mockProducer.expects(atLeastOnce()).method("setDisableMessageID");
+            mockProducer.stubs()
+                .method("getTimeToLive")
+                .will(returnValue(Message.DEFAULT_TIME_TO_LIVE));
+            mockProducer.stubs()
+                .method("getPriority")
+                .will(returnValue(Message.DEFAULT_PRIORITY));
+            mockProducer.stubs()
+                .method("getDeliveryMode")
+                .will(returnValue(Message.DEFAULT_DELIVERY_MODE));
+            MessageProducer testProducer = (MessageProducer) mockProducer.proxy();
+
+            Mock mockSession = mock(Session.class);
+            mockSession.stubs()
+                .method("createProducer")
+                .will(returnValue(testProducer));
+            mockSession.expects(once())
+                .method("createTextMessage")
+                .will(returnValue(testMessage));
+            Session testSession = (Session) mockSession.proxy();
+
+            HJBRoot root = new HJBRoot(testRootPath);
+            mockHJB.make1Session(root,
+                                 testSession,
+                                 "testProvider",
+                                 "testFactory");
+            HJBConnection testConnection = root.getProvider("testProvider")
+                .getConnectionFactory("testFactory")
+                .getConnection(0);
+
+            create1Producer(testConnection);
+            SendHJBMessage command = new SendHJBMessage(new HJBMessenger(testConnection,
+                                                                         0),
+                                                        createTestTextHJBMessage(),
+                                                        0,
+                                                        new MockSessionBuilder().defaultProducerArguments(),
+                                                        null);
+            command.execute();
+            assertFalse(command.isExecutedOK());
+            assertTrue(command.isComplete());
+            assertNotNull(command.getFault());
+            assertEquals(command.getStatusMessage(), command.getFault()
+                .getMessage());
+        }
     }
 
     protected void setUp() throws Exception {

@@ -22,6 +22,7 @@ package hjb.jms.cmd;
 
 import java.io.File;
 
+import javax.jms.JMSException;
 import javax.jms.Session;
 
 import org.jmock.Mock;
@@ -57,10 +58,43 @@ public class DeleteSessionTest extends MockObjectTestCase {
         assertEquals(0, testConnection.getActiveSessions().size());
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
+        assertNull(command.getFault());
+        assertNotNull(command.getStatusMessage());
         try {
             command.execute();
             fail("should have thrown an exception");
         } catch (HJBException e) {}
+    }
+
+    public void testExecuteReportsAFaultOnPossibleExceptions() throws Exception {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("thrown as a test"),
+                new RuntimeException("fire in the server room"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            HJBRoot root = new HJBRoot(testRootPath);
+            Mock mockSession = mock(Session.class);
+            mockSession.expects(once())
+                .method("close")
+                .will(throwException(possibleExceptions[i]));
+            Session testSession = (Session) mockSession.proxy();
+            mockHJB.make1Session(root,
+                                 testSession,
+                                 "testProvider",
+                                 "testFactory");
+            HJBConnection testConnection = root.getProvider("testProvider")
+                .getConnectionFactory("testFactory")
+                .getConnection(0);
+
+            assertEquals(1, testConnection.getActiveSessions().size());
+            DeleteSession command = new DeleteSession(testConnection, 0);
+            command.execute();
+            assertFalse(command.isExecutedOK());
+            assertTrue(command.isComplete());
+            assertNotNull(command.getFault());
+            assertEquals(command.getStatusMessage(), command.getFault()
+                .getMessage());
+        }
     }
 
     protected void setUp() throws Exception {

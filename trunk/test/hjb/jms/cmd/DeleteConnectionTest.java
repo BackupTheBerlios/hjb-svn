@@ -28,6 +28,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import hjb.jms.HJBConnectionFactory;
+import hjb.jms.HJBProvider;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
 import hjb.testsupport.MockHJBRuntime;
@@ -66,6 +67,38 @@ public class DeleteConnectionTest extends MockObjectTestCase {
             command.execute();
             fail("should have thrown an exception");
         } catch (HJBException e) {}
+    }
+
+    public void testExecuteReportsAFaultOnPossibleExceptions() throws Exception {
+        Exception[] possibleExceptions = new Exception[] {
+            new RuntimeException("fire in the server room"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            HJBRoot root = new HJBRoot(testRootPath);
+            Mock connectionMock = mock(Connection.class);
+            connectionMock.expects(once())
+                .method("setExceptionListener")
+                .withAnyArguments();
+            connectionMock.expects(once())
+                .method("stop")
+                .will(throwException(possibleExceptions[i]));
+            mockHJB.make1Connection(root,
+                                    (Connection) connectionMock.proxy(),
+                                    "testProvider",
+                                    "testFactory");
+
+            HJBProvider testProvider = root.getProvider("testProvider");
+            assertEquals(1, testProvider.getConnectionFactories().size());
+            HJBConnectionFactory testFactory = root.getProvider("testProvider")
+                .getConnectionFactory("testFactory");
+            DeleteConnection command = new DeleteConnection(testFactory, 0);
+            command.execute();
+            assertFalse(command.isExecutedOK());
+            assertTrue(command.isComplete());
+            assertNotNull(command.getFault());
+            assertEquals(command.getStatusMessage(), command.getFault()
+                .getMessage());
+        }
     }
 
     protected void setUp() throws Exception {

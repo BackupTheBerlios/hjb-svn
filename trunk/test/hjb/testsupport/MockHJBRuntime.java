@@ -179,6 +179,24 @@ public class MockHJBRuntime {
     }
 
     public void make1Factory(HJBRoot root,
+                             ConnectionFactory testFactory,
+                             String providerName,
+                             String factoryName) {
+        Hashtable testEnvironment = new Hashtable();
+        testEnvironment.put(HJBProvider.HJB_PROVIDER_NAME, providerName);
+        testEnvironment.put(Context.INITIAL_CONTEXT_FACTORY,
+                            "hjb.testsupport.MockInitialContextFactory");
+        MockContextBuilder contextBuilder = new MockContextBuilder();
+        Mock newContextMock = contextBuilder.lookupReturnsConnectionFactory(testEnvironment,
+                                                                            testFactory);
+
+        SharedMock sharedMock = SharedMock.getInstance();
+        sharedMock.setCurrentMock(newContextMock);
+        updateProvider(root, testEnvironment, providerName);
+        root.getProvider(providerName).registerConnectionFactory(factoryName);        
+    }
+    
+    public void make1Factory(HJBRoot root,
                              Connection testConnection,
                              String providerName,
                              String factoryName) {
@@ -223,6 +241,19 @@ public class MockHJBRuntime {
         Mock newContextMock = contextBuilder.lookupReturnsMatchingObject(testEnvironment,
                                                                          testFactory,
                                                                          testDestination);
+
+        SharedMock sharedMock = SharedMock.getInstance();
+        sharedMock.setCurrentMock(newContextMock);
+        updateProvider(root, testEnvironment, providerName);
+    }
+
+    public void make1ProviderWithContextThatThrows(HJBRoot root, String providerName, Exception exception) {
+        Hashtable testEnvironment = new Hashtable();
+        testEnvironment.put(HJBProvider.HJB_PROVIDER_NAME, providerName);
+        testEnvironment.put(Context.INITIAL_CONTEXT_FACTORY,
+                            "hjb.testsupport.MockInitialContextFactory");
+        MockContextBuilder contextBuilder = new MockContextBuilder();
+        Mock newContextMock = contextBuilder.lookupThrows(exception);
 
         SharedMock sharedMock = SharedMock.getInstance();
         sharedMock.setCurrentMock(newContextMock);

@@ -100,12 +100,59 @@ public class ReceiveFromSubscriberTest extends MockObjectTestCase {
         command.execute();
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
+        assertNull(command.getFault());
+        assertNotNull(command.getStatusMessage());
         assertNotNull(command.getMessageReceived());
         System.err.println(new HJBMessageWriter().asText(command.getMessageReceived()));
         try {
             command.execute();
             fail("should have thrown an exception");
         } catch (HJBException e) {}
+    }
+
+    public void testExecuteReportsAFaultOnPossibleExceptions() throws Exception {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("thrown as a test"),
+                new RuntimeException("fire in the server room"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Mock mockSubscriber = mock(TopicSubscriber.class);
+            mockSubscriber.expects(once())
+                .method("receive")
+                .will(throwException(possibleExceptions[i]));
+            TopicSubscriber testSubscriber = (TopicSubscriber) mockSubscriber.proxy();
+
+            Mock mockSession = mock(Session.class);
+            mockSession.stubs()
+                .method("createDurableSubscriber")
+                .will(returnValue(testSubscriber));
+            Session testSession = (Session) mockSession.proxy();
+
+            Mock mockTopic = mock(Topic.class);
+            Topic testTopic = (Topic) mockTopic.proxy();
+
+            HJBRoot root = new HJBRoot(testRootPath);
+            mockHJB.make1SessionAnd1Destination(root,
+                                                testSession,
+                                                "testProvider",
+                                                "testFactory",
+                                                "testDestination",
+                                                testTopic);
+            HJBConnection testConnection = root.getProvider("testProvider")
+                .getConnectionFactory("testFactory")
+                .getConnection(0);
+
+            create1Subscriber(testConnection);
+            ReceiveFromSubscriber command = new ReceiveFromSubscriber(new HJBMessenger(testConnection,
+                                                                                       0),
+                                                                      0);
+            command.execute();
+            assertFalse(command.isExecutedOK());
+            assertTrue(command.isComplete());
+            assertNotNull(command.getFault());
+            assertEquals(command.getStatusMessage(), command.getFault()
+                .getMessage());
+        }
     }
 
     protected void create1Subscriber(HJBConnection testConnection) {

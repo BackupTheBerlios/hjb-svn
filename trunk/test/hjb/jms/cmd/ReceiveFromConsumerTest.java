@@ -92,12 +92,53 @@ public class ReceiveFromConsumerTest extends MockObjectTestCase {
         command.execute();
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
-        assertNotNull(command.getMessageReceived());
+        assertNull(command.getFault());
+        assertNotNull(command.getStatusMessage());
         System.err.println(new HJBMessageWriter().asText(command.getMessageReceived()));
         try {
             command.execute();
             fail("should have thrown an exception");
         } catch (HJBException e) {}
+    }
+
+    public void testExecuteReportsAFaultOnPossibleExceptions() throws Exception {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("thrown as a test"),
+                new RuntimeException("fire in the server room"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            Mock mockConsumer = mock(MessageConsumer.class);
+            mockConsumer.expects(once())
+                .method("receive")
+                .will(throwException(possibleExceptions[i]));
+            MessageConsumer testConsumer = (MessageConsumer) mockConsumer.proxy();
+
+            Mock mockSession = mock(Session.class);
+            mockSession.stubs()
+                .method("createConsumer")
+                .will(returnValue(testConsumer));
+            Session testSession = (Session) mockSession.proxy();
+
+            HJBRoot root = new HJBRoot(testRootPath);
+            mockHJB.make1Session(root,
+                                 testSession,
+                                 "testProvider",
+                                 "testFactory");
+            HJBConnection testConnection = root.getProvider("testProvider")
+                .getConnectionFactory("testFactory")
+                .getConnection(0);
+
+            create1Consumer(testConnection);
+            ReceiveFromConsumer command = new ReceiveFromConsumer(new HJBMessenger(testConnection,
+                                                                                   0),
+                                                                  0);
+            command.execute();
+            assertFalse(command.isExecutedOK());
+            assertTrue(command.isComplete());
+            assertNotNull(command.getFault());
+            assertEquals(command.getStatusMessage(), command.getFault()
+                .getMessage());
+        }
     }
 
     protected void create1Consumer(HJBConnection testConnection) {

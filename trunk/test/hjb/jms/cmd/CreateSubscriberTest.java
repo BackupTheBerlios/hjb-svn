@@ -22,6 +22,8 @@ package hjb.jms.cmd;
 
 import java.io.File;
 
+import javax.jms.JMSException;
+import javax.jms.Session;
 import javax.jms.Topic;
 
 import org.jmock.Mock;
@@ -74,10 +76,49 @@ public class CreateSubscriberTest extends MockObjectTestCase {
         assertEquals(1, sessionSubscribers.getSubscribers(0).length);
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
+        assertNull(command.getFault());
+        assertNotNull(command.getStatusMessage());
         try {
             command.execute();
             fail("should have thrown an exception");
         } catch (HJBException e) {}
+    }
+
+    public void testExecuteReportsAFaultOnPossibleExceptions() throws Exception {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("thrown as a test"),
+                new RuntimeException("fire in the server room"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            HJBRoot root = new HJBRoot(testRootPath);
+            Mock mockSession = mock(Session.class);
+            mockHJB.make1Session(root,
+                                 (Session) mockSession.proxy(),
+                                 "testProvider",
+                                 "testFactory");
+            HJBConnection testConnection = root.getProvider("testProvider")
+                .getConnectionFactory("testFactory")
+                .getConnection(0);
+            HJBSessionDurableSubscribers sessionSubscribers = testConnection.getSessionSubscribers();
+            Mock mockTopic = mock(Topic.class);
+            Topic testTopic = (Topic) mockTopic.proxy();
+            mockSession.expects(once())
+                .method("createDurableSubscriber")
+                .will(throwException(possibleExceptions[i]));
+
+            assertEquals(0, sessionSubscribers.getSubscribers(0).length);
+            CreateSubscriber command = new CreateSubscriber(sessionSubscribers,
+                                                            0,
+                                                            testTopic,
+                                                            "*");
+            command.execute();
+            assertEquals(0, sessionSubscribers.getSubscribers(0).length);
+            assertFalse(command.isExecutedOK());
+            assertTrue(command.isComplete());
+            assertNotNull(command.getFault());
+            assertEquals(command.getStatusMessage(), command.getFault()
+                .getMessage());
+        }
     }
 
     protected void setUp() throws Exception {

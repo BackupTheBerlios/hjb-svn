@@ -28,7 +28,7 @@ public class VersionCopierTest extends MockObjectTestCase {
 
     public void testCopyToHJBMessageAddsHeadersWithoutUsingJMSMessage() {
         Mock mockJMSMessage = mock(TextMessage.class);
- 
+
         Message testJMSMessage = (TextMessage) mockJMSMessage.proxy();
         HJBMessage testHJBMessage = new HJBMessage(createEmptyHJBTextMessageHeaders(),
                                                    "hjb text");
@@ -59,7 +59,7 @@ public class VersionCopierTest extends MockObjectTestCase {
         mockJMSMessage.expects(once())
             .method("setStringProperty")
             .with(eq(MessageCopierFactory.HJB_MESSAGE_VERSION), eq("1.0"));
- 
+
         Message testJMSMessage = (TextMessage) mockJMSMessage.proxy();
         HJBMessage testHJBMessage = new HJBMessage(createEmptyHJBTextMessageHeaders(),
                                                    "hjb text");

@@ -68,11 +68,13 @@ public class DeleteDestinationTest extends MockObjectTestCase {
         DeleteDestination command = new DeleteDestination(testProvider,
                                                           "testDestination");
         command.execute();
-        assertTrue(command.isExecutedOK());
         assertEquals(0, root.getProvider("testProvider")
             .getDestinations()
             .size());
+        assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
+        assertNull(command.getFault());
+        assertNotNull(command.getStatusMessage());
         try {
             command.execute();
             fail("should have thrown an exception");

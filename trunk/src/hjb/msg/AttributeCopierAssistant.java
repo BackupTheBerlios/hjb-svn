@@ -1,23 +1,23 @@
 /*
-HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
-Copyright (C) 2006 Timothy Emiola
+ HJB (HTTP JMS Bridge) links the HTTP protocol to the JMS API.
+ Copyright (C) 2006 Timothy Emiola
 
-HJB is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the
-Free Software Foundation; either version 2.1 of the License, or (at
-your option) any later version.
+ HJB is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2.1 of the License, or (at
+ your option) any later version.
 
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+ This library is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
-USA
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+ USA
 
-*/
+ */
 package hjb.msg;
 
 import java.util.Arrays;
@@ -310,7 +310,8 @@ public class AttributeCopierAssistant {
 
     };
 
-    protected static ReaderWriter DESTINATION_RW = new BaseReaderWriter(DESTINATION) {
+    protected static ReaderWriter DESTINATION_RW = new BaseReaderWriter(
+                                                                        DESTINATION) {
 
         public void write(String encodedValue, Message aMessage)
                 throws HJBException {
@@ -348,7 +349,8 @@ public class AttributeCopierAssistant {
         }
     };
 
-    protected static ReaderWriter CORRELATION_ID_RW = new BaseReaderWriter(CORRELATION_ID) {
+    protected static ReaderWriter CORRELATION_ID_RW = new BaseReaderWriter(
+                                                                           CORRELATION_ID) {
 
         public void write(String encodedValue, Message aMessage)
                 throws HJBException {
@@ -368,7 +370,8 @@ public class AttributeCopierAssistant {
         }
     };
 
-    protected static ReaderWriter MESSAGE_ID_RW = new BaseReaderWriter(MESSAGE_ID) {
+    protected static ReaderWriter MESSAGE_ID_RW = new BaseReaderWriter(
+                                                                       MESSAGE_ID) {
 
         public void write(String encodedValue, Message aMessage)
                 throws HJBException {
@@ -408,7 +411,9 @@ public class AttributeCopierAssistant {
         }
     };
 
-    protected static ReaderWriter DELIVERY_MODE_RW = new BaseReaderWriter(DELIVERY_MODE, new IntCodec()) {
+    protected static ReaderWriter DELIVERY_MODE_RW = new BaseReaderWriter(
+                                                                          DELIVERY_MODE,
+                                                                          new IntCodec()) {
 
         public void write(String encodedValue, Message aMessage)
                 throws HJBException {
@@ -429,7 +434,9 @@ public class AttributeCopierAssistant {
         }
     };
 
-    protected static ReaderWriter PRIORITY_RW = new BaseReaderWriter(PRIORITY, new IntCodec()) {
+    protected static ReaderWriter PRIORITY_RW = new BaseReaderWriter(
+                                                                     PRIORITY,
+                                                                     new IntCodec()) {
 
         public void write(String encodedValue, Message aMessage)
                 throws HJBException {
@@ -450,7 +457,9 @@ public class AttributeCopierAssistant {
         }
     };
 
-    protected static ReaderWriter EXPIRATION_RW = new BaseReaderWriter(EXPIRATION, new LongCodec()) {
+    protected static ReaderWriter EXPIRATION_RW = new BaseReaderWriter(
+                                                                       EXPIRATION,
+                                                                       new LongCodec()) {
 
         public void write(String encodedValue, Message aMessage)
                 throws HJBException {
@@ -471,7 +480,9 @@ public class AttributeCopierAssistant {
         }
     };
 
-    protected static ReaderWriter REDELIVERED_RW = new BaseReaderWriter(REDELIVERED, new BooleanCodec()) {
+    protected static ReaderWriter REDELIVERED_RW = new BaseReaderWriter(
+                                                                        REDELIVERED,
+                                                                        new BooleanCodec()) {
 
         public void write(String encodedValue, Message aMessage)
                 throws HJBException {
@@ -492,7 +503,9 @@ public class AttributeCopierAssistant {
         }
     };
 
-    protected static ReaderWriter TIMESTAMP_RW = new BaseReaderWriter(TIMESTAMP, new LongCodec()) {
+    protected static ReaderWriter TIMESTAMP_RW = new BaseReaderWriter(
+                                                                      TIMESTAMP,
+                                                                      new LongCodec()) {
 
         public void write(String encodedValue, Message aMessage)
                 throws HJBException {

@@ -20,18 +20,20 @@
  */
 package hjb.jms.cmd;
 
-import java.io.File;
-
-import javax.jms.Destination;
-
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-
 import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
 import hjb.jms.HJBSessionConsumers;
 import hjb.misc.HJBException;
 import hjb.testsupport.MockHJBRuntime;
+
+import java.io.File;
+
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Session;
+
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
 
 public class CreateConsumerTest extends MockObjectTestCase {
 
@@ -55,6 +57,43 @@ public class CreateConsumerTest extends MockObjectTestCase {
         } catch (IllegalArgumentException e) {}
     }
 
+    public void testExecuteReportsAFaultOnPossibleExceptions() throws Exception {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("thrown as a test"),
+                new RuntimeException("fire in the server room"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            HJBRoot root = new HJBRoot(testRootPath);
+            Mock mockSession = mock(Session.class);
+            mockHJB.make1Session(root,
+                                 (Session) mockSession.proxy(),
+                                 "testProvider",
+                                 "testFactory");
+            HJBConnection testConnection = root.getProvider("testProvider")
+                .getConnectionFactory("testFactory")
+                .getConnection(0);
+            HJBSessionConsumers sessionConsumers = testConnection.getSessionConsumers();
+            Mock mockDestination = mock(Destination.class);
+            Destination testDestination = (Destination) mockDestination.proxy();
+
+            mockSession.expects(once())
+                .method("createConsumer")
+                .will(throwException(possibleExceptions[i]));
+            assertEquals(0, sessionConsumers.getConsumers(0).length);
+            CreateConsumer command = new CreateConsumer(sessionConsumers,
+                                                        0,
+                                                        testDestination,
+                                                        "*");
+            command.execute();
+            assertEquals(0, sessionConsumers.getConsumers(0).length);
+            assertFalse(command.isExecutedOK());
+            assertTrue(command.isComplete());
+            assertNotNull(command.getFault());
+            assertEquals(command.getStatusMessage(), command.getFault()
+                .getMessage());
+        }
+    }
+
     public void testExecuteCreatesANewConsumer() {
         HJBRoot root = new HJBRoot(testRootPath);
         mockHJB.make1Session(root, "testProvider", "testFactory");
@@ -74,6 +113,8 @@ public class CreateConsumerTest extends MockObjectTestCase {
         assertEquals(1, sessionConsumers.getConsumers(0).length);
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
+        assertNull(command.getFault());
+        assertNotNull(command.getStatusMessage());
         try {
             command.execute();
             fail("should have thrown an exception");

@@ -20,18 +20,21 @@
  */
 package hjb.jms.cmd;
 
-import java.io.File;
-
-import javax.jms.Session;
-
-import junit.framework.TestCase;
-
 import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
 import hjb.testsupport.MockHJBRuntime;
 
-public class CreateSessionTest extends TestCase {
+import java.io.File;
+
+import javax.jms.Connection;
+import javax.jms.JMSException;
+import javax.jms.Session;
+
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
+
+public class CreateSessionTest extends MockObjectTestCase {
 
     public void testCreateSessionThrowsOnNullConnection() {
         try {
@@ -55,10 +58,49 @@ public class CreateSessionTest extends TestCase {
         assertEquals(1, testConnection.getActiveSessions().size());
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
+        assertNull(command.getFault());
+        assertNotNull(command.getStatusMessage());
         try {
             command.execute();
             fail("should have thrown an exception");
         } catch (HJBException e) {}
+    }
+
+    public void testExecuteReportsAFaultOnPossibleExceptions() throws Exception {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("thrown as a test"),
+                new RuntimeException("fire in the server room"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            HJBRoot root = new HJBRoot(testRootPath);
+            Mock mockConnection = mock(Connection.class);
+            mockConnection.stubs()
+                .method("setExceptionListener")
+                .withAnyArguments();
+            mockConnection.expects(once())
+                .method("createSession")
+                .will(throwException(possibleExceptions[i]));
+
+            mockHJB.make1Connection(root,
+                                    (Connection) mockConnection.proxy(),
+                                    "testProvider",
+                                    "testFactory");
+            HJBConnection testConnection = root.getProvider("testProvider")
+                .getConnectionFactory("testFactory")
+                .getConnection(0);
+
+            assertEquals(0, testConnection.getActiveSessions().size());
+            CreateSession command = new CreateSession(testConnection,
+                                                      Session.AUTO_ACKNOWLEDGE,
+                                                      false);
+            command.execute();
+            assertEquals(0, testConnection.getActiveSessions().size());
+            assertFalse(command.isExecutedOK());
+            assertTrue(command.isComplete());
+            assertNotNull(command.getFault());
+            assertEquals(command.getStatusMessage(), command.getFault()
+                .getMessage());
+        }
     }
 
     protected void setUp() throws Exception {

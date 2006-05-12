@@ -26,6 +26,7 @@ import java.util.Collections;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionMetaData;
+import javax.jms.JMSException;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -87,12 +88,46 @@ public class ReadMetaDataTest extends MockObjectTestCase {
         command.execute();
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
+        assertNull(command.getFault());
+        assertNotNull(command.getStatusMessage());
         assertNotNull(command.getMetaDataAsText());
         System.err.println(command.getMetaDataAsText());
         try {
             command.execute();
             fail("should have thrown an exception");
         } catch (HJBException e) {}
+    }
+
+    public void testExecuteReportsAFaultOnPossibleExceptions() throws Exception {
+        Exception[] possibleExceptions = new Exception[] {
+                new JMSException("thrown as a test"),
+                new RuntimeException("fire in the server room"),
+        };
+        for (int i = 0; i < possibleExceptions.length; i++) {
+            HJBRoot root = new HJBRoot(testRootPath);
+            Mock connectionMock = mock(Connection.class);
+            Connection testConnection = (Connection) connectionMock.proxy();
+            connectionMock.expects(once())
+                .method("getMetaData")
+                .will(throwException(possibleExceptions[i]));
+            connectionMock.stubs().method("setExceptionListener");
+
+            mockHJB.make1Connection(root,
+                                    testConnection,
+                                    "testProvider",
+                                    "testFactory");
+            HJBConnection testHJBConnection = root.getProvider("testProvider")
+                .getConnectionFactory("testFactory")
+                .getConnection(0);
+            ReadMetaData command = new ReadMetaData(testHJBConnection);
+            command.execute();
+            assertFalse(command.isExecutedOK());
+            assertTrue(command.isComplete());
+            assertNotNull(command.getFault());
+            assertEquals(command.getStatusMessage(), command.getFault()
+                .getMessage());
+            assertNull(command.getMetaDataAsText());
+        }
     }
 
     protected void setUp() throws Exception {
