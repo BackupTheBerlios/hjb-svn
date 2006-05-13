@@ -75,7 +75,7 @@ public class CreateProducerGeneratorTest extends
     protected Map generateMockParameterMap() {
         Map parameterMap = new HashMap();
         parameterMap.put(HJBServletConstants.DESTINATION_URL, new String[] {
-            "/context/servlet/testProvider/testDestination/with/slashes"
+            "/context/servlet/testProvider/destination/testDestination/with/slashes"
         });
         return Collections.unmodifiableMap(parameterMap);
     }

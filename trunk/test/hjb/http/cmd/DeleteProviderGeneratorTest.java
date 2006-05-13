@@ -31,7 +31,7 @@ public class DeleteProviderGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        assertFalse(generator.matches("/"));
+        assertFalse(generator.matches("/foo/destination"));
         assertFalse(generator.matches("/foo/bar/baz"));
         assertTrue(generator.matches("/foo"));
         assertTrue(generator.matches("/foo/"));

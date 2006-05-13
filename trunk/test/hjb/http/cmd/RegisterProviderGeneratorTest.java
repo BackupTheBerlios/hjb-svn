@@ -32,7 +32,7 @@ public class RegisterProviderGeneratorTest extends
 
     public void testMatchWorksCorrectly() {
         assertFalse(generator.matches("/"));
-        assertFalse(generator.matches("/foo/bar/baz"));
+        assertFalse(generator.matches("/foo/destination/baz/register"));
         assertTrue(generator.matches("/bar/register"));
         assertTrue(generator.matches("/foo/register"));
     }

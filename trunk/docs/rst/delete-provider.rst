@@ -4,7 +4,7 @@ Delete Provider
 
 `back to commands`_
 
-:URL-Pattern: *provider-uri*/jndi-key/register-destination
+:URL-Pattern: *provider-uri*/jndi-name
 
 :Parameters: None
 

@@ -35,16 +35,16 @@ public class RegisterDestinationGeneratorTest extends
         assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
         assertFalse(generator.matches("/foo/"));
-        assertFalse(generator.matches("/foo/bar/register-connnection-factory"));
-        assertTrue(generator.matches("/foo/bar/multiple/slash/jndi-key/register-destination"));
-        assertTrue(generator.matches("/foo/baz/register-destination"));
+        assertFalse(generator.matches("/foo/bar/register"));
+        assertTrue(generator.matches("/foo/destination/bar/multiple/slash/jndi-key/register"));
+        assertTrue(generator.matches("/foo/destination/baz/register"));
     }
 
     public void testJMSCommandAndItsRunnerAreGeneratedCorrectly() {
         Mock mockRequest = generateMockRequest();
         mockRequest.expects(atLeastOnce())
             .method("getPathInfo")
-            .will(returnValue("/testProvider/testDestination/with/slashes/register-destination"));
+            .will(returnValue("/testProvider/destination/testDestination/with/slashes/register"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath);

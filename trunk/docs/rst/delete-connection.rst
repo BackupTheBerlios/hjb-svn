@@ -4,7 +4,7 @@ Delete Connection
 
 `back to commands`_
 
-:URL-Pattern: *provider-uri*/jndi-key/connection-*nnn*
+:URL-Pattern: *provider-uri*/jndi-name/connection-*nnn*
 
 :Parameters: None
 

@@ -4,17 +4,17 @@ Register Connection Factory
 
 `back to commands`_
 
-:URL-Pattern: *provider-uri*/jndi-key/register-connection-factory
+:URL-Pattern: *provider-uri*/*factory-jndi-name*/register
 
 :Parameters: N/A
 
 :Returns: N/A
 
 This **GET** request looks up the connection-factory identified by 
-jndi-key in the Provider's JNDI context and registers it with 
+jndi-name in the Provider's JNDI context and registers it with 
 the HJB runtime. This command
 
-* can be invoked multiple times with the exactly the same jndi-key;
+* can be invoked multiple times with the exactly the same jndi-name;
   after the first successful attempt, HJB ignores subsequent
   invocations.
 

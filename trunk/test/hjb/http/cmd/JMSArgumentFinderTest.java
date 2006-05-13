@@ -273,7 +273,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
     public void testFindsRequiredDestinationIfItIsAvailable() {
         Mock mockDestination = mock(Destination.class);
         decodedParameters.put(HJBServletConstants.DESTINATION_URL,
-                              "/foo/bar/testProvider/testDestination");
+                              "/foo/bar/testProvider/destination/testDestination");
         mockHJB.make1Destination(root,
                                  "testProvider",
                                  "testDestination",
@@ -287,7 +287,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
             throws Exception {
         Mock mockDestination = mock(Destination.class);
         decodedParameters.put(HJBServletConstants.DESTINATION_URL,
-                              "/foobar/testProvider/testDestination");
+                              "/foobar/testProvider/destination/testDestination");
         mockHJB.make1Destination(root,
                                  "testProvider",
                                  "testDestination",
@@ -310,7 +310,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
     public void testThrowsExceptionIfSessionProviderDoesNotMatchSessionProvider() {
         Mock mockDestination = mock(Destination.class);
         decodedParameters.put(HJBServletConstants.DESTINATION_URL,
-                              "/foobar/testProvider/testDestination");
+                              "/foobar/testProvider/destination/testDestination");
         mockHJB.make1Destination(root,
                                  "testProvider",
                                  "testDestination",
@@ -326,7 +326,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
     public void testThrowsExceptionIfRequiredDestinationIsNotAvailable() {
         Mock mockDestination = mock(Destination.class);
         decodedParameters.put(HJBServletConstants.DESTINATION_URL,
-                              "/foobar/testProvider/notThere");
+                              "/foobar/testProvider/destination/notThere");
         mockHJB.make1Destination(root,
                                  "sessionProvider",
                                  "testDestination",
@@ -342,7 +342,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
     public void testFindsOptionalDestinationIfOneIsPresent() {
         Mock mockDestination = mock(Destination.class);
         decodedParameters.put(HJBServletConstants.DESTINATION_URL,
-                              "/foo/bar/testProvider/testDestination");
+                              "/foo/bar/testProvider/destination/testDestination");
         mockHJB.make1Destination(root,
                                  "testProvider",
                                  "testDestination",
@@ -356,7 +356,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
             throws Exception {
         Mock mockDestination = mock(Destination.class);
         decodedParameters.put(HJBServletConstants.DESTINATION_URL,
-                              "/foo/bar/testProvider/notThere");
+                              "/foo/bar/testProvider/destination/notThere");
         mockHJB.make1Destination(root,
                                  "testProvider",
                                  "testDestination",
@@ -369,7 +369,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
     public void testFindsQueueIfOneIsPresentAndValid() {
         Mock mockDestination = mock(Queue.class);
         decodedParameters.put(HJBServletConstants.DESTINATION_URL,
-                              "/foo/bar/testProvider/testDestination");
+                              "/foo/bar/testProvider/destination/testDestination");
         mockHJB.make1Destination(root,
                                  "testProvider",
                                  "testDestination",
@@ -382,7 +382,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
     public void testThrowsExceptionIfQueueIsNotPresentOrIsInvalid() {
         Mock mockDestination = mock(Destination.class);
         decodedParameters.put(HJBServletConstants.DESTINATION_URL,
-                              "/foo/bar/testProvider/notHere");
+                              "/foo/bar/testProvider/destination/notHere");
         mockHJB.make1Destination(root,
                                  "testProvider",
                                  "testDestination",
@@ -394,7 +394,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
             fail("should have thrown HJBNotFoundException");
         } catch (HJBClientException e) {}
         decodedParameters.put(HJBServletConstants.DESTINATION_URL,
-                              "/foo/bar/testProvider/testDestination");
+                              "/foo/bar/testProvider/destination/testDestination");
         try {
             assertNotNull(new JMSArgumentFinder().findQueue(decodedParameters,
                                                             root,
@@ -406,7 +406,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
     public void testFindsTopicIfOneIsPresentAndValid() {
         Mock mockDestination = mock(Topic.class);
         decodedParameters.put(HJBServletConstants.DESTINATION_URL,
-                              "/foo/bar/testProvider/testDestination");
+                              "/foo/bar/testProvider/destination/testDestination");
         mockHJB.make1Destination(root,
                                  "testProvider",
                                  "testDestination",
@@ -419,7 +419,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
     public void testThrowsExceptionIfTopicIsNotPresentOrIsInvalid() {
         Mock mockDestination = mock(Destination.class);
         decodedParameters.put(HJBServletConstants.DESTINATION_URL,
-                              "/foo/bar/testProvider/notHere");
+                              "/foo/bar/testProvider/destination/notHere");
         mockHJB.make1Destination(root,
                                  "testProvider",
                                  "testDestination",
@@ -431,7 +431,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
             fail("should have thrown HJBNotFoundException");
         } catch (HJBClientException e) {}
         decodedParameters.put(HJBServletConstants.DESTINATION_URL,
-                              "/foo/bar/testProvider/testDestination");
+                              "/foo/bar/testProvider/destination/testDestination");
         try {
             assertNotNull(new JMSArgumentFinder().findTopic(decodedParameters,
                                                             root,

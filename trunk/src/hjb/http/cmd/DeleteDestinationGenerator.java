@@ -65,5 +65,6 @@ public class DeleteDestinationGenerator extends PatternMatchingCommandGenerator 
     }
 
     private transient DeleteDestination generatedCommand;
-    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/(.+?)/?$");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/"
+            + PathNaming.DESTINATION + "/(.+?)/?$");
 }

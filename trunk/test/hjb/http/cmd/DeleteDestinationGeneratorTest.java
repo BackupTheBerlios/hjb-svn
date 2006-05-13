@@ -32,19 +32,18 @@ public class DeleteDestinationGeneratorTest extends
 
     public void testMatchWorksCorrectly() {
         assertFalse(generator.matches("/"));
-        assertFalse(generator.matches("//"));
-        assertFalse(generator.matches("///"));
         assertFalse(generator.matches("/foo/"));
-        assertTrue(generator.matches("/foo/bar/baz"));
-        assertTrue(generator.matches("/foo/bar/"));
-        assertTrue(generator.matches("/foo/bar/multiple/slash/jndi-key"));
+        assertFalse(generator.matches("/foo/bar/like/a/connection/connection-524"));
+        assertFalse(generator.matches("/foo/notdestination/bar/baz"));
+        assertTrue(generator.matches("/foo/destination/bar/"));
+        assertTrue(generator.matches("/foo/destination/bar/multiple/slash/jndi-key"));
     }
 
     public void testJMSCommandAndItsRunnerAreGeneratedCorrectly() {
         Mock mockRequest = generateMockRequest();
         mockRequest.expects(atLeastOnce())
             .method("getPathInfo")
-            .will(returnValue("/testProvider/testDestination/with/slash"));
+            .will(returnValue("/testProvider/destination/testDestination/with/slash"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath);

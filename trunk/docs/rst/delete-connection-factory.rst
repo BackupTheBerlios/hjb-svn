@@ -4,7 +4,7 @@ Delete Connection Factory
 
 `back to commands`_
 
-:URL-Pattern: *provider-uri*/jndi-key
+:URL-Pattern: *provider-uri*/factory-jndi-name
 
 :Parameters: None
 

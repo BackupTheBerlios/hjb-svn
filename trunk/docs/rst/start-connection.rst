@@ -4,7 +4,7 @@ Start Connection
 
 `back to commands`_
 
-:URL-Pattern: *provider-uri*/jndi-key/connection-*nnn*/start
+:URL-Pattern: *provider-uri*/factory-jndi-name/connection-*nnn*/start
 
 :Parameters: None
 

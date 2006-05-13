@@ -4,7 +4,7 @@ Create Connection
 
 `back to commands`_
 
-:URL-Pattern: *provider-uri*/connection-factory-jndi-key/create
+:URL-Pattern: *provider-uri*/factory-jndi-name/create
 
 :Parameters:
 

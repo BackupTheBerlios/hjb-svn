@@ -36,6 +36,5 @@ public interface JMSCommandGeneratorFactory {
      * @return an array containing new instances of
      *         <code>JMSCommandGenerator</code> to be used to process HJB requests.
      */
-
     public JMSCommandGenerator[] getGenerators();   
 }

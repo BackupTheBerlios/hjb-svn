@@ -4,7 +4,7 @@ Read Connection MetaData
 
 `back to commands`_
 
-:URL-Pattern: provider-uri/jndi-key/connection-*nnn*/metadata
+:URL-Pattern: provider-uri/jndi-name/connection-*nnn*/metadata
 
 :Parameters: None
 

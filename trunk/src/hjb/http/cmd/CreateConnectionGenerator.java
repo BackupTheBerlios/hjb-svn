@@ -72,14 +72,13 @@ public class CreateConnectionGenerator extends PatternMatchingCommandGenerator {
         HJBConnectionFactory factory = walker.findConnectionFactory(providerName,
                                                                     factoryName);
 
-        // get the username and password from the decoded parameters,
-        // then create the JMSCommand
+        // get the username and password from the decoded parameters, then
+        // create the JMSCommand
         Map decodedParameters = getDecoder().decode(request.getParameterMap());
         Object rawUsername = decodedParameters.get(HJBServletConstants.CONNECTION_USERNAME);
         String username = null == rawUsername ? null : "" + rawUsername;
         Object rawPassword = decodedParameters.get(HJBServletConstants.CONNECTION_PASSWORD);
         String password = null == rawPassword ? null : "" + rawPassword;
-
         this.generatedCommand = new CreateConnection(factory,
                                                      username,
                                                      password);
@@ -102,7 +101,8 @@ public class CreateConnectionGenerator extends PatternMatchingCommandGenerator {
 
     private transient MessageFormat createdLocationFormat;
     private transient CreateConnection generatedCommand;
-    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/(.+)/create$");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/(?!.*?"
+            + PathNaming.CONNECTION + "-\\d+)(.+)/create$");
     private static final MessageFormat FORMATTER_GENERATOR = new MessageFormat("{0}{1}/{2}/{3}/"
             + PathNaming.CONNECTION + "-'{0}'");
 }

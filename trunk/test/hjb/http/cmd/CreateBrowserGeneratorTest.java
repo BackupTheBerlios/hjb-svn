@@ -77,7 +77,7 @@ public class CreateBrowserGeneratorTest extends BaseJMSCommandGeneratorTestCase 
             "*"
         });
         parameterMap.put(HJBServletConstants.DESTINATION_URL, new String[] {
-            "/context/servlet/testProvider/testDestination/with/slashes"
+            "/context/servlet/testProvider/destination/testDestination/with/slashes"
         });
         return Collections.unmodifiableMap(parameterMap);
     }

@@ -31,20 +31,18 @@ public class RegisterConnectionFactoryGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        assertFalse(generator.matches("/"));
-        assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
         assertFalse(generator.matches("/foo/"));
-        assertFalse(generator.matches("/foo/bar/baz"));
-        assertTrue(generator.matches("/foo/bar/register-connection-factory"));
-        assertTrue(generator.matches("/foo/baz/with/slashes/register-connection-factory"));
+        assertFalse(generator.matches("/foo/destination/bar/baz/register"));
+        assertTrue(generator.matches("/foo/bar/register"));
+        assertTrue(generator.matches("/foo/baz/with/slashes/register"));
     }
 
     public void testJMSCommandAndItsRunnerAreGeneratedCorrectly() {
         Mock mockRequest = generateMockRequest();
         mockRequest.expects(atLeastOnce())
             .method("getPathInfo")
-            .will(returnValue("/testProvider/testFactory/with/slashes/register-connection-factory"));
+            .will(returnValue("/testProvider/testFactory/with/slashes/register"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath);

@@ -31,10 +31,9 @@ public class DeleteConnectionFactoryGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        assertFalse(generator.matches("/"));
-        assertFalse(generator.matches("//"));
         assertFalse(generator.matches("///"));
-        assertFalse(generator.matches("/foo/"));
+        assertFalse(generator.matches("/foo/destination/like/a/destination"));
+        assertFalse(generator.matches("/foo/bar/like/a/connection/connection-524"));
         assertTrue(generator.matches("/foo/bar/baz"));
         assertTrue(generator.matches("/foo/bar/"));
         assertTrue(generator.matches("/foo/bar/multiple/slashes/"));

@@ -36,11 +36,9 @@ public class CreateConnectionGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {
 
     public void testMatchWorksCorrectly() {
-        assertFalse(generator.matches("/"));
-        assertFalse(generator.matches("//"));
-        assertFalse(generator.matches("///"));
         assertFalse(generator.matches("/foo/"));
-        assertFalse(generator.matches("/foo/bar/connection-134d"));
+        assertFalse(generator.matches("/foo/bar/not-end-with-slash-create"));
+        assertFalse(generator.matches("/foo/bar/looks/like/a/session/connection-134/create"));
         assertTrue(generator.matches("/foo/bar/create"));
         assertTrue(generator.matches("/foo/baz/multiple/slashes/create"));
     }

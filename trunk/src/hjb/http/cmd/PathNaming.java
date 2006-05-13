@@ -30,6 +30,7 @@ import hjb.misc.HJBStrings;
 public class PathNaming {
 
     private static final HJBStrings STRINGS = new HJBStrings();
+    public static final String DESTINATION = STRINGS.getString(HJBStrings.HJB_PATH_DESTINATION);
     public static final String CONNECTION = STRINGS.getString(HJBStrings.HJB_PATH_CONNECTION);
     public static final String SESSION = STRINGS.getString(HJBStrings.HJB_PATH_SESSION);
     public static final String CONSUMER = STRINGS.getString(HJBStrings.HJB_PATH_CONSUMER);

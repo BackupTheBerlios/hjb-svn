@@ -17,14 +17,14 @@ specified URLs and HTTP request methods.
 +----------------------------------+--------------------------------------------------------+
 |`Delete Provider`_ (*D*)          |*hjb-root-uri*/*provider-name*                          |
 +----------------------------------+--------------------------------------------------------+
-|`Register Destination`_ (*G*)     |*provider-uri*/*jndi-key*/register-destination          |
+|`Register Destination`_ (*G*)     |*provider-uri*/destination/*jndi-name*/register         |
 +----------------------------------+--------------------------------------------------------+
-|`Delete Destination`_ (*D*)       |*provider-uri*/*destination-jndi-key*                   |
+|`Delete Destination`_ (*D*)       |*provider-uri*/destination/*jndi-name*                  |
 +----------------------------------+--------------------------------------------------------+
-|`Register Connection Factory`_    |*provider-uri*/*jndi-key*/register-connection-factory   |
+|`Register Connection Factory`_    |*provider-uri*/*jndi-name*/register                     |
 |(*G*)                             |                                                        |
 +----------------------------------+--------------------------------------------------------+
-|`Delete Connection Factory`_ (*D*)|*provider-uri*/*factory-jndi-key*                       |
+|`Delete Connection Factory`_ (*D*)|*provider-uri*/*jndi-name*                              |
 +----------------------------------+--------------------------------------------------------+
 |`Create Connection`_ (*P*)        |*factory-uri*/create                                    |
 +----------------------------------+--------------------------------------------------------+
@@ -75,7 +75,7 @@ URIs
 
 - *hjb-root-uri*   is as configured on the servlet container
 - *provider-uri*   is *hjb-root-uri*/*provider-name*
-- *factory-uri*    is *provider-uri*/*factory-jndi-key*
+- *factory-uri*    is *provider-uri*/*factory-jndi-name*
 - *connection-uri* is *factory-uri*/connection-*nnn*
 - *session-uri*    is *connection-uri*/session-*nnn*
 

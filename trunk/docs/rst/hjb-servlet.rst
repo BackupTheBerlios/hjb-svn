@@ -69,7 +69,7 @@ requests to child paths of the these URIs (cf. `the JMS command list`_).
 +====================+==============================================+
 |Provider            |HJB_ROOT/provider-name                        |
 +--------------------+----------------------------------------------+
-|Destination         |HJB_ROOT/provider-name/destination-jndi-key   |
+|Destination         |HJB_ROOT/provider-name/destination/jndi-name  |
 +--------------------+----------------------------------------------+
 |Connection Factory  |HJB_ROOT/provider-name/factory-jndi-name      |
 |(*FACTORY_URL*)     |                                              |

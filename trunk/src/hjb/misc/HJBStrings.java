@@ -418,6 +418,8 @@ public final class HJBStrings {
     public static final String NO_VALUE_PROVIDED = "no.value.provided";
 
     public static final String HJB_PATH_CONNECTION = "hjb.path.connection";
+    
+    public static final String HJB_PATH_DESTINATION = "hjb.path.destination";
 
     public static final String HJB_PATH_SESSION = "hjb.path.session";
 
