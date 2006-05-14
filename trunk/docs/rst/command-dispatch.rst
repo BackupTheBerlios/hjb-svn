@@ -55,9 +55,9 @@ JMS Commands
 JMS Command Generators
 ----------------------
 
-If `JMS Commands`_ are the JMS-facing part of the processing of a HTTP
+If `JMS Commands`_ are the JMS-facing aspect of the processing of a HTTP
 request by HJB, then *JMS Command Generators* are the corresponding
-HTTP-facing part.
+HTTP-facing aspect.
 
 There is a one-one relationship between JMS Commands and JMS Command
 Generators. Each Generator is tightly coupled to the corresponding JMS
