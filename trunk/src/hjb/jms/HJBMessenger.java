@@ -94,8 +94,8 @@ public class HJBMessenger {
                                                  asHJB);
             // TODO remove this info before release
             LOG.info(message);
-            if (LOG.isDebugEnabled()) {
-                LOG.debug(message);
+            if (MESSAGE_LOG.isDebugEnabled()) {
+                MESSAGE_LOG.debug(message);
             }
             Message asJMS = createJMSMessageFor(asHJB);
             findMessageCopierFor(asHJB).copyToJMSMessage(asHJB, asJMS);
@@ -171,7 +171,7 @@ public class HJBMessenger {
             return processReceivedMessage(aConsumer.receive(Math.max(timeout,
                                                                      getMinimumTimeout())));
         } catch (JMSException e) {
-            return handleReceiptFailure();
+            return handleReceiptFailure(e);
         }
     }
 
@@ -180,7 +180,7 @@ public class HJBMessenger {
         try {
             return processReceivedMessage(aConsumer.receiveNoWait());
         } catch (JMSException e) {
-            return handleReceiptFailure();
+            return handleReceiptFailure(e);
         }
     }
 
@@ -190,8 +190,7 @@ public class HJBMessenger {
             if (null == asJMS) {
                 String message = strings().getString(HJBStrings.NO_MESSAGE_AVAILABLE,
                                                      new Integer(getSessionIndex()));
-                LOG.warn(message);
-                throw new HJBClientException(message);
+                throw new HJBNotFoundException(message);
             }
             asJMS.acknowledge();
             HJBMessage result = createHJBMessageFor(asJMS);
@@ -200,20 +199,20 @@ public class HJBMessenger {
                                                  result);
             // TODO remove this info before release
             LOG.info(message);
-            if (LOG.isDebugEnabled()) {
-                LOG.debug(message);
+            if (MESSAGE_LOG.isDebugEnabled()) {
+                MESSAGE_LOG.debug(message);
             }
             return result;
         } catch (JMSException e) {
-            return handleReceiptFailure();
+            return handleReceiptFailure(e);
         }
     }
 
-    protected HJBMessage handleReceiptFailure() throws HJBException {
+    protected HJBMessage handleReceiptFailure(Exception e) throws HJBException {
         String message = strings().getString(HJBStrings.RECEIVE_OF_MESSAGE_FAILED,
                                              new Integer(getSessionIndex()));
-        LOG.error(message);
-        throw new HJBException(message);
+        LOG.error(message);            
+        throw new HJBException(message, e);
     }
 
     protected MessageCopier findMessageCopierFor(HJBMessage hjbMessage) {
@@ -303,5 +302,6 @@ public class HJBMessenger {
 
     private static final MessageCopierFactory COPIER_FACTORY = new MessageCopierFactory();
     private static final Logger LOG = Logger.getLogger(HJBMessenger.class);
+    private static final Logger MESSAGE_LOG = Logger.getLogger("Messages." + HJBMessenger.class.getName());
     private static final HJBStrings STRINGS = new HJBStrings();
 }

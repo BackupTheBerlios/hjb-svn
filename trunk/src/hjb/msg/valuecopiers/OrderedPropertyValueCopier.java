@@ -62,11 +62,13 @@ public class OrderedPropertyValueCopier extends BaseEncodedValueCopier {
             throws HJBException {
         EncodedValueCopier[] orderedCopiers = getOrderedValueCopiers();
         for (int i = 0; i < orderedCopiers.length; i++) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Checking if " + name + " can be encoded using "
-                        + orderedCopiers[i]);
+            if (orderedCopiers[i].canBeEncoded(name, message)) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug(name + "can be encoded using "
+                            + orderedCopiers[i]);
+                }
+                return true;
             }
-            if (orderedCopiers[i].canBeEncoded(name, message)) return true;
         }
         return false;
     }
@@ -76,12 +78,10 @@ public class OrderedPropertyValueCopier extends BaseEncodedValueCopier {
 
         EncodedValueCopier[] orderedCopiers = getOrderedValueCopiers();
         for (int i = 0; i < orderedCopiers.length; i++) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Checking to get value for " + name + " using "
-                        + orderedCopiers[i]);
-            }
-
             if (orderedCopiers[i].canBeEncoded(name, message)) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug(name + " is encoded using " + orderedCopiers[i]);
+                }
                 return orderedCopiers[i].getAsEncodedValue(name, message);
             }
         }

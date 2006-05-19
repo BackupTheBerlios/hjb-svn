@@ -148,9 +148,20 @@ public class MapMessageCopierTest extends MockObjectTestCase {
                 .with(eq(keyName))
                 .will(returnValue(methodResult));
             mockJMSMessage.stubs()
-                .method(methodName)
-                .with(not(eq(keyName)))
-                .will(throwException(new JMSException("thrown as a test")));
+                .method("getString")
+                .with(eq(keyName))
+                .will(returnValue("" + methodResult));
+            if ("getString".equals(methodName)) {
+                mockJMSMessage.stubs()
+                    .method(methodName)
+                    .with(not(eq(keyName)))
+                    .will(returnValue("" + Boolean.TRUE));
+            } else {
+                mockJMSMessage.stubs()
+                    .method(methodName)
+                    .with(not(eq(keyName)))
+                    .will(throwException(new JMSException("thrown as a test")));
+            }
             expectedValues.put(keyName,
                                ORDERED_OK_EXPECTED_DECODED_VALUES[i][0]);
         }

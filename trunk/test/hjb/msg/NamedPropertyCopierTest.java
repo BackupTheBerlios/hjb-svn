@@ -119,9 +119,9 @@ public class NamedPropertyCopierTest extends MockObjectTestCase {
             .with(eq("testBoolean"))
             .will(returnValue(true));
         mockJms.expects(atLeastOnce())
-            .method("getBooleanProperty")
-            .with(not(eq("testBoolean")))
-            .will(throwException(new JMSException("thrown as a test")));
+            .method("getStringProperty")
+            .with(eq("testBoolean"))
+            .will(returnValue("" + true));
         mockJms.expects(atLeastOnce())
             .method("getByteProperty")
             .with(eq("testByte"))

@@ -438,4 +438,6 @@ public final class HJBStrings {
     public static final String ABOUT_TO_SEND = "about.to.send";
 
     public static final String REQUEST_METHOD_AND_PATH = "request.method.and.path";
+
+    public static final String COULD_NOT_READ_BOOLEAN_VALUE_FROM_MESSAGE = "could.not.read.boolean.value.from.message";
 }

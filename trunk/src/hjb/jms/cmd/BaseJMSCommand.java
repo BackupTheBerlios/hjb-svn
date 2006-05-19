@@ -70,6 +70,11 @@ public abstract class BaseJMSCommand implements JMSCommand {
         LOG.error(fault);
     }
 
+    protected void recordFaultAsWarning(RuntimeException fault) {
+        this.fault = fault;
+        LOG.warn(fault.getMessage());
+    }
+
     protected HJBStrings strings() {
         return STRINGS;
     }

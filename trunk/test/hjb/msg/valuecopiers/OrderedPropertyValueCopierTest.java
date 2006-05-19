@@ -21,9 +21,12 @@
 package hjb.msg.valuecopiers;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import javax.jms.MapMessage;
 import javax.jms.Message;
 
+import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import hjb.misc.HJBException;
@@ -36,10 +39,6 @@ import hjb.testsupport.MockMessageBuilder;
  * @author Tim Emiola
  */
 public class OrderedPropertyValueCopierTest extends MockObjectTestCase {
-
-    public OrderedPropertyValueCopierTest() {
-
-    }
 
     public void testAnyTwoInstancesAreEqual() {
         assertEquals("Any two instances were not equal",
@@ -64,12 +63,22 @@ public class OrderedPropertyValueCopierTest extends MockObjectTestCase {
         ArrayList throwsOn = new ArrayList();
         for (int i = 0, mocks = 0; i < PROPERTY_METHODS.length; i++) {
             for (int j = 0; j < ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[i].length; j++, mocks++) {
-                Message testMessage = messageBuilder.throwsOnSome(PROPERTY_METHODS[i][0],
-                                                                  "testMessage"
-                                                                          + mocks,
-                                                                  "testName",
-                                                                  ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[i][j],
-                                                                  throwsOn);
+                Mock mockMessage = new Mock(MapMessage.class);
+                String methodName = PROPERTY_METHODS[i][0];
+                List toThrowOn = new ArrayList(throwsOn);
+                Object returnValue = ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[i][j];
+                if ("getBooleanProperty".equals(methodName)) {
+                    toThrowOn.remove("getStringProperty");
+                    mockMessage.stubs().method("getStringProperty").will(returnValue(""
+                            + returnValue));
+                }
+                messageBuilder.throwsJMSExceptionOnMethods(mockMessage,
+                                                           new ArrayList(throwsOn));
+                mockMessage.expects(atLeastOnce())
+                    .method(methodName)
+                    .with(eq("testName"))
+                    .will(returnValue(returnValue));
+                Message testMessage = (Message) mockMessage.proxy();
                 assertTrue("should be true "
                                    + ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[i][j],
                            testCopier.canBeEncoded("testName", testMessage));
@@ -120,12 +129,22 @@ public class OrderedPropertyValueCopierTest extends MockObjectTestCase {
         ArrayList throwsOn = new ArrayList();
         for (int i = 0, mocks = 0; i < PROPERTY_METHODS.length; i++) {
             for (int j = 0; j < ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[i].length; j++, mocks++) {
-                Message testMessage = messageBuilder.throwsOnSome(PROPERTY_METHODS[i][0],
-                                                                  "testMessage"
-                                                                          + mocks,
-                                                                  "testName",
-                                                                  ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[i][j],
-                                                                  throwsOn);
+                Mock mockMessage = new Mock(MapMessage.class);
+                String methodName = PROPERTY_METHODS[i][0];
+                List toThrowOn = new ArrayList(throwsOn);
+                Object returnValue = ORDERED_EXPECTED_DECODED_VALUES_OBJECTS[i][j];
+                if ("getBooleanProperty".equals(methodName)) {
+                    toThrowOn.remove("getStringProperty");
+                    mockMessage.stubs().method("getStringProperty").will(returnValue(""
+                            + returnValue));
+                }
+                messageBuilder.throwsJMSExceptionOnMethods(mockMessage,
+                                                           new ArrayList(throwsOn));
+                mockMessage.expects(atLeastOnce())
+                    .method(methodName)
+                    .with(eq("testName"))
+                    .will(returnValue(returnValue));
+                Message testMessage = (Message) mockMessage.proxy();
                 assertEquals("retrieved property was encoded correctly",
                              ORDERED_OK_EXPECTED_DECODED_VALUES[i][j],
                              testCopier.getAsEncodedValue("testName",

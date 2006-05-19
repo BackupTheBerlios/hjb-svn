@@ -20,15 +20,16 @@
  */
 package hjb.msg.valuecopiers.mapmessage;
 
+import hjb.misc.HJBException;
+import hjb.msg.codec.CodecTestValues;
+import hjb.testsupport.MockMessageBuilder;
+
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 
+import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-
-import hjb.misc.HJBException;
-import hjb.msg.codec.CodecTestValues;
-import hjb.testsupport.MockMessageBuilder;
 
 /**
  * <code>MapMessageBooleanValueCopierTest</code>
@@ -88,8 +89,13 @@ public class MapMessageBooleanValueCopierTest extends MockObjectTestCase {
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
             Exception ex = possibleExceptions[i];
-            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getBoolean",
-                                                                              ex);
+            Mock mockMessage = new Mock(MapMessage.class);
+            mockMessage.stubs()
+                .method("getString")
+                .with(eq("testName"))
+                .will(throwException(ex));
+            Message testMessage = (Message) mockMessage.proxy();
+
             MapMessageBooleanValueCopier testCopier = new MapMessageBooleanValueCopier();
             assertFalse(testCopier.canBeEncoded("testName", testMessage));
         }
@@ -98,11 +104,18 @@ public class MapMessageBooleanValueCopierTest extends MockObjectTestCase {
     public void testCanBeEncodedReturnsTrueForCorrectValues() {
         MapMessageBooleanValueCopier testCopier = new MapMessageBooleanValueCopier();
         for (int i = 0; i < EXPECTED_DECODED_BOOLEANS.length; i++) {
-            Message testMessage = messageBuilder.returnsExpectedValueFromNamedMethod("getBoolean",
-                                                                                     "testMessage"
-                                                                                             + i,
-                                                                                     "testName",
-                                                                                     new Boolean(EXPECTED_DECODED_BOOLEANS[i]));
+            Mock mockMessage = new Mock(MapMessage.class);
+            mockMessage.expects(atLeastOnce())
+                .method("getString")
+                .with(eq("testName"))
+                .will(returnValue(""
+                        + new Boolean(EXPECTED_DECODED_BOOLEANS[i])));
+            mockMessage.expects(atLeastOnce())
+                .method("getBoolean")
+                .with(eq("testName"))
+                .will(returnValue(new Boolean(EXPECTED_DECODED_BOOLEANS[i])));
+            Message testMessage = (Message) mockMessage.proxy();
+
             assertTrue("should be true " + EXPECTED_DECODED_BOOLEANS[i],
                        testCopier.canBeEncoded("testName", testMessage));
         }
@@ -148,8 +161,12 @@ public class MapMessageBooleanValueCopierTest extends MockObjectTestCase {
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
             Exception ex = possibleExceptions[i];
-            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getBoolean",
-                                                                              ex);
+            Mock mockMessage = new Mock(MapMessage.class);
+            mockMessage.stubs()
+                .method("getString")
+                .with(eq("testName"))
+                .will(throwException(ex));
+            Message testMessage = (Message) mockMessage.proxy();
             MapMessageBooleanValueCopier testCopier = new MapMessageBooleanValueCopier();
             try {
                 testCopier.getAsEncodedValue("testName", testMessage);
@@ -162,11 +179,17 @@ public class MapMessageBooleanValueCopierTest extends MockObjectTestCase {
     public void testGetAsEncodedValueReturnsValuesCorrectlyEncoded() {
         MapMessageBooleanValueCopier testCopier = new MapMessageBooleanValueCopier();
         for (int i = 0; i < EXPECTED_DECODED_BOOLEANS.length; i++) {
-            Message testMessage = messageBuilder.returnsExpectedValueFromNamedMethod("getBoolean",
-                                                                                     "testMessage"
-                                                                                             + i,
-                                                                                     "testName",
-                                                                                     new Boolean(EXPECTED_DECODED_BOOLEANS[i]));
+            Mock mockMessage = new Mock(MapMessage.class);
+            mockMessage.expects(atLeastOnce())
+                .method("getString")
+                .with(eq("testName"))
+                .will(returnValue(""
+                        + new Boolean(EXPECTED_DECODED_BOOLEANS[i])));
+            mockMessage.expects(atLeastOnce())
+                .method("getBoolean")
+                .with(eq("testName"))
+                .will(returnValue(new Boolean(EXPECTED_DECODED_BOOLEANS[i])));
+            Message testMessage = (Message) mockMessage.proxy();
             assertEquals("retrieved property was not encoded correctly",
                          OK_EXPECTED_DECODED_BOOLEANS[i],
                          testCopier.getAsEncodedValue("testName", testMessage));

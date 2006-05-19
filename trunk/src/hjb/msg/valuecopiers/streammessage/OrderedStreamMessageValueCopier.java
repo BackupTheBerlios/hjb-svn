@@ -68,8 +68,8 @@ public class OrderedStreamMessageValueCopier extends OrderedPropertyValueCopier 
                 new StreamMessageLongValueCopier(valuesRead),
                 new StreamMessageFloatValueCopier(valuesRead),
                 new StreamMessageDoubleValueCopier(valuesRead),
-                new StreamMessageBooleanValueCopier(valuesRead),
                 new StreamMessageByteArrayValueCopier(valuesRead),
+                new StreamMessageBooleanValueCopier(valuesRead),
                 new StreamMessageStringValueCopier(valuesRead),
         };
     }

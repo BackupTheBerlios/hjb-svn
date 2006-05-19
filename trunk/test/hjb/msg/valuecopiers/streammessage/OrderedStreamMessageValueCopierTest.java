@@ -174,9 +174,9 @@ public class OrderedStreamMessageValueCopierTest extends MockObjectTestCase {
             }, new String[] {
                     "readDouble", "writeDouble"
             }, new String[] {
-                    "readBoolean", "writeBoolean"
-            }, new String[] {
                     "readBytes", "writeBytes"
+            }, new String[] {
+                    "readBoolean", "writeBoolean"
             }, new String[] {
                     "readString", "writeString"
             },

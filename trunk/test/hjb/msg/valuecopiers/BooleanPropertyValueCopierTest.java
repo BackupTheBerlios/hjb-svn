@@ -21,8 +21,10 @@
 package hjb.msg.valuecopiers;
 
 import javax.jms.JMSException;
+import javax.jms.MapMessage;
 import javax.jms.Message;
 
+import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import hjb.misc.HJBException;
@@ -55,8 +57,12 @@ public class BooleanPropertyValueCopierTest extends MockObjectTestCase {
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
             Exception ex = possibleExceptions[i];
-            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getBooleanProperty",
-                                                                              ex);
+            Mock mockMessage = new Mock(Message.class);
+            mockMessage.stubs()
+                .method("getStringProperty")
+                .with(eq("testName"))
+                .will(throwException(ex));
+            Message testMessage = (Message) mockMessage.proxy();
             BooleanPropertyValueCopier testCopier = new BooleanPropertyValueCopier();
             assertFalse(testCopier.canBeEncoded("testName", testMessage));
         }
@@ -65,11 +71,17 @@ public class BooleanPropertyValueCopierTest extends MockObjectTestCase {
     public void testCanBeEncodedReturnsTrueForCorrectValues() {
         BooleanPropertyValueCopier testCopier = new BooleanPropertyValueCopier();
         for (int i = 0; i < EXPECTED_DECODED_BOOLEANS.length; i++) {
-            Message testMessage = messageBuilder.returnsExpectedValueFromNamedMethod("getBooleanProperty",
-                                                                                     "testMessage"
-                                                                                             + i,
-                                                                                     "testName",
-                                                                                     new Boolean(EXPECTED_DECODED_BOOLEANS[i]));
+            Mock mockMessage = new Mock(MapMessage.class);
+            mockMessage.expects(atLeastOnce())
+                .method("getStringProperty")
+                .with(eq("testName"))
+                .will(returnValue(""
+                        + new Boolean(EXPECTED_DECODED_BOOLEANS[i])));
+            mockMessage.expects(atLeastOnce())
+                .method("getBooleanProperty")
+                .with(eq("testName"))
+                .will(returnValue(new Boolean(EXPECTED_DECODED_BOOLEANS[i])));
+            Message testMessage = (Message) mockMessage.proxy();
             assertTrue("should be true " + EXPECTED_DECODED_BOOLEANS[i],
                        testCopier.canBeEncoded("testName", testMessage));
         }
@@ -115,8 +127,12 @@ public class BooleanPropertyValueCopierTest extends MockObjectTestCase {
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
             Exception ex = possibleExceptions[i];
-            Message testMessage = messageBuilder.throwsExceptionOnMethodNamed("getBooleanProperty",
-                                                                              ex);
+            Mock mockMessage = new Mock(Message.class);
+            mockMessage.stubs()
+                .method("getStringProperty")
+                .with(eq("testName"))
+                .will(throwException(ex));
+            Message testMessage = (Message) mockMessage.proxy();
             BooleanPropertyValueCopier testCopier = new BooleanPropertyValueCopier();
             try {
                 testCopier.getAsEncodedValue("testName", testMessage);
@@ -128,11 +144,17 @@ public class BooleanPropertyValueCopierTest extends MockObjectTestCase {
     public void testGetAsEncodedValueReturnsValuesCorrectlyEncoded() {
         BooleanPropertyValueCopier testCopier = new BooleanPropertyValueCopier();
         for (int i = 0; i < EXPECTED_DECODED_BOOLEANS.length; i++) {
-            Message testMessage = messageBuilder.returnsExpectedValueFromNamedMethod("getBooleanProperty",
-                                                                                     "testMessage"
-                                                                                             + i,
-                                                                                     "testName",
-                                                                                     new Boolean(EXPECTED_DECODED_BOOLEANS[i]));
+            Mock mockMessage = new Mock(MapMessage.class);
+            mockMessage.expects(atLeastOnce())
+                .method("getStringProperty")
+                .with(eq("testName"))
+                .will(returnValue(""
+                        + new Boolean(EXPECTED_DECODED_BOOLEANS[i])));
+            mockMessage.expects(atLeastOnce())
+                .method("getBooleanProperty")
+                .with(eq("testName"))
+                .will(returnValue(new Boolean(EXPECTED_DECODED_BOOLEANS[i])));
+            Message testMessage = (Message) mockMessage.proxy();
             assertEquals("retrieved property was not encoded correctly",
                          OK_EXPECTED_DECODED_BOOLEANS[i],
                          testCopier.getAsEncodedValue("testName", testMessage));

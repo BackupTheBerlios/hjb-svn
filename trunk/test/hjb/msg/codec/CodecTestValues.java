@@ -355,8 +355,8 @@ public class CodecTestValues {
             EXPECTED_DECODED_LONGS_OBJECTS,
             EXPECTED_DECODED_FLOATS_OBJECTS,
             EXPECTED_DECODED_DOUBLES_OBJECTS,
-            EXPECTED_DECODED_BOOLEANS_OBJECTS,
             EXPECTED_DECODED_BARRAYS,
+            EXPECTED_DECODED_BOOLEANS_OBJECTS,
             NOT_OK_FOR_ANYTHING,
     };
 
@@ -368,8 +368,8 @@ public class CodecTestValues {
             OK_EXPECTED_DECODED_LONGS,
             OK_EXPECTED_DECODED_FLOATS,
             OK_EXPECTED_DECODED_DOUBLES,
-            OK_EXPECTED_DECODED_BOOLEANS,
             OK_EXPECTED_DECODED_BARRAYS,
+            OK_EXPECTED_DECODED_BOOLEANS,
             NOT_OK_FOR_ANYTHING,
     };
 
@@ -381,8 +381,8 @@ public class CodecTestValues {
             OK_ENCODED_LONGS,
             OK_ENCODED_FLOATS,
             OK_ENCODED_DOUBLES,
-            OK_ENCODED_BOOLEANS,
             OK_ENCODED_BARRAYS,
+            OK_ENCODED_BOOLEANS,
             NOT_OK_FOR_ANYTHING,
     };
 

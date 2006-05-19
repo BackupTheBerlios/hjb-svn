@@ -23,7 +23,10 @@ package hjb.msg.valuecopiers.mapmessage;
 import javax.jms.JMSException;
 import javax.jms.Message;
 
+import org.apache.log4j.Logger;
+
 import hjb.misc.HJBException;
+import hjb.misc.HJBStrings;
 import hjb.msg.codec.BooleanCodec;
 
 public class MapMessageBooleanValueCopier extends MapMessageValueCopier {
@@ -47,8 +50,7 @@ public class MapMessageBooleanValueCopier extends MapMessageValueCopier {
     public boolean canBeEncoded(String name, Message message)
             throws HJBException {
         try {
-            asAMapMessage(message).getBoolean(name);
-            return true;
+            return isReallyABoolean(asAMapMessage(message).getString(name));
         } catch (JMSException e) {
             return false;
         } catch (NumberFormatException e) {
@@ -59,7 +61,12 @@ public class MapMessageBooleanValueCopier extends MapMessageValueCopier {
     public String getAsEncodedValue(String name, Message message)
             throws HJBException {
         try {
-            return encode(new Boolean(asAMapMessage(message).getBoolean(name)));
+            String asString = asAMapMessage(message).getString(name);
+            if (isReallyABoolean(asString)) {
+                return encode(new Boolean(asAMapMessage(message).getBoolean(name)));
+            } else {
+                return handleInvalidBooleanFailure(name, asString);
+            }
         } catch (JMSException e) {
             return handleValueReadFailure(name, e, message);
         } catch (NumberFormatException e) {
@@ -67,8 +74,22 @@ public class MapMessageBooleanValueCopier extends MapMessageValueCopier {
         }
     }
 
+    protected boolean isReallyABoolean(String asString) {
+        return Boolean.FALSE.toString().equals(asString)
+                || Boolean.TRUE.toString().equals(asString);
+    }
+
     protected boolean decodeAsBoolean(String value) throws HJBException {
         return ((Boolean) decode(value)).booleanValue();
     }
 
+    protected String handleInvalidBooleanFailure(String name, String value) {
+        String errorMessage = strings().getString(HJBStrings.COULD_NOT_READ_BOOLEAN_VALUE_FROM_MESSAGE,
+                                                  name,
+                                                  value);
+        LOG.error(errorMessage);
+        throw new HJBException(errorMessage);
+    }
+
+    private static final Logger LOG = Logger.getLogger(MapMessageBooleanValueCopier.class);
 }

@@ -99,8 +99,8 @@ public class OrderedTypedValueCodecTest extends MockObjectTestCase {
             Long.class,
             Float.class,
             Double.class,
-            Boolean.class,
             byte[].class,
+            Boolean.class,
             String.class,
     };
 

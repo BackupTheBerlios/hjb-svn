@@ -57,8 +57,8 @@ public class OrderedMapMessageValueCopier extends OrderedPropertyValueCopier {
             new MapMessageLongValueCopier(),
             new MapMessageFloatValueCopier(),
             new MapMessageDoubleValueCopier(),
-            new MapMessageBooleanValueCopier(),
             new MapMessageByteArrayValueCopier(),
+            new MapMessageBooleanValueCopier(),
             new MapMessageStringValueCopier(),
     };
 

@@ -21,6 +21,7 @@
 package hjb.jms.cmd;
 
 import hjb.jms.HJBMessenger;
+import hjb.misc.HJBNotFoundException;
 import hjb.misc.HJBStrings;
 import hjb.msg.HJBMessage;
 
@@ -42,12 +43,14 @@ public class ReceiveFromConsumer extends MessengerCommand {
         assertNotCompleted();
         try {
             receiveMessage();
+        } catch (HJBNotFoundException e) {
+            recordFaultAsWarning(e);
         } catch (RuntimeException e) {
             recordFault(e);
         }
         completed();
     }
-
+    
     public String getDescription() {
         return strings().getString(HJBStrings.DESCRIPTION_OF_RECEIVE_FROM_CONSUMER,
                                    new Integer(getConsumerIndex()),

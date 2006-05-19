@@ -20,11 +20,14 @@
  */
 package hjb.msg.valuecopiers;
 
+import hjb.misc.HJBException;
+import hjb.misc.HJBStrings;
+import hjb.msg.codec.BooleanCodec;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 
-import hjb.misc.HJBException;
-import hjb.msg.codec.BooleanCodec;
+import org.apache.log4j.Logger;
 
 public class BooleanPropertyValueCopier extends BaseEncodedValueCopier {
 
@@ -46,8 +49,8 @@ public class BooleanPropertyValueCopier extends BaseEncodedValueCopier {
     public boolean canBeEncoded(String name, Message message)
             throws HJBException {
         try {
-            message.getBooleanProperty(name);
-            return true;
+            String asString = message.getStringProperty(name);
+            return isReallyABoolean(asString);
         } catch (JMSException e) {
             return false;
         } catch (NumberFormatException e) {
@@ -58,7 +61,12 @@ public class BooleanPropertyValueCopier extends BaseEncodedValueCopier {
     public String getAsEncodedValue(String name, Message message)
             throws HJBException {
         try {
-            return encode(new Boolean(message.getBooleanProperty(name)));
+            String asString = message.getStringProperty(name);
+            if (isReallyABoolean(asString)) {
+                return encode(new Boolean(message.getBooleanProperty(name)));
+            } else {
+                return handleInvalidBooleanFailure(name, asString);
+            }
         } catch (JMSException e) {
             return handleValueReadFailure(name, e, message);
         } catch (NumberFormatException e) {
@@ -69,5 +77,20 @@ public class BooleanPropertyValueCopier extends BaseEncodedValueCopier {
     protected boolean decodeAsBoolean(String value) throws HJBException {
         return ((Boolean) decode(value)).booleanValue();
     }
+
+    protected boolean isReallyABoolean(String asString) {
+        return Boolean.FALSE.toString().equals(asString)
+                || Boolean.TRUE.toString().equals(asString);
+    }
+
+    protected String handleInvalidBooleanFailure(String name, String value) {
+        String errorMessage = strings().getString(HJBStrings.COULD_NOT_READ_BOOLEAN_VALUE_FROM_MESSAGE,
+                                                  name,
+                                                  value);
+        LOG.error(errorMessage);
+        throw new HJBException(errorMessage);
+    }
+
+    private static final Logger LOG = Logger.getLogger(BooleanPropertyValueCopier.class);
 
 }
