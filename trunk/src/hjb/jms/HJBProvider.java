@@ -212,11 +212,28 @@ public class HJBProvider {
             if (null != result) {
                 return result;
             } else {
+                result = getProviderContext().lookup(name);
+                if (null != result) {
+                    return result;
+                }
                 return handleResourceNotFound(name, null);
             }
         } catch (NamingException e) {
             return handleResourceNotFound(name, e);
         }
+    }
+    
+    /**
+     * Adds a leading slash to a name.
+     * 
+     * this is a kludge.
+     * TODO fix the need for this.
+     * 
+     * @param name a potential name stored in JNDI.
+     * @return name with a leading '/'
+     */
+    protected String addInitialSlashTo(String name) {
+        return "/" + name;
     }
 
     protected Object handleResourceNotFound(String name, NamingException e) {

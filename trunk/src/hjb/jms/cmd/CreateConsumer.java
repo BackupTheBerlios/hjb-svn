@@ -23,6 +23,8 @@ package hjb.jms.cmd;
 import javax.jms.Destination;
 import javax.jms.MessageConsumer;
 
+import org.apache.log4j.Logger;
+
 import hjb.jms.HJBSessionConsumers;
 import hjb.misc.HJBStrings;
 
@@ -95,6 +97,7 @@ public class CreateConsumer extends BaseJMSCommand {
             setConsumerIndex(getConsumers().createConsumer(getSessionIndex(),
                                                            getDestination()));
         } else if (null != getMessageSelector() && !noLocal) {
+            
             setConsumerIndex(getConsumers().createConsumer(getSessionIndex(),
                                                            getDestination(),
                                                            getMessageSelector()));
@@ -123,6 +126,10 @@ public class CreateConsumer extends BaseJMSCommand {
     }
 
     protected String getMessageSelector() {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Using selector: " + messageSelector);            
+        }
+        LOG.info("Using selector: " + messageSelector);
         return messageSelector;
     }
 
@@ -136,5 +143,7 @@ public class CreateConsumer extends BaseJMSCommand {
     private String messageSelector;
     private boolean noLocal;
     private HJBSessionConsumers consumers;
+    private static final Logger LOG = Logger.getLogger(CreateConsumer.class);
     public static final int UNSET_CONSUMER_INDEX = Integer.MIN_VALUE;
+    
 }
