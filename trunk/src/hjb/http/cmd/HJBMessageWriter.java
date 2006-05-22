@@ -87,6 +87,7 @@ public class HJBMessageWriter {
             LineNumberReader lines = new LineNumberReader(new StringReader(mapAsText));
             Map result = new HashMap();
             for (String line = lines.readLine(); null != line; line = lines.readLine()) {
+                if ("".equals(line.trim())) continue;
                 int equalsPosition = line.indexOf('=');
                 if (-1 == equalsPosition) {
                     handleBadMapData(lines.getLineNumber(), mapAsText);
