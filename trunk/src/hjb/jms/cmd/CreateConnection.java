@@ -20,23 +20,28 @@
  */
 package hjb.jms.cmd;
 
+import javax.jms.JMSException;
+
 import hjb.jms.HJBConnection;
 import hjb.jms.HJBConnectionFactory;
+import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 
 public class CreateConnection extends ConnectionFactoryCommand {
 
     public CreateConnection(HJBConnectionFactory theFactory,
                             String username,
-                            String password) {
+                            String password,
+                            String clientId) {
         super(theFactory);
         this.username = username;
         this.password = password;
+        this.clientId = clientId;
         this.connectionIndex = UNSET_CONNECTION_INDEX;
     }
 
     public CreateConnection(HJBConnectionFactory theFactory) {
-        this(theFactory, null, null);
+        this(theFactory, null, null, null);
     }
 
     public void execute() {
@@ -56,6 +61,24 @@ public class CreateConnection extends ConnectionFactoryCommand {
             setConnectionIndex(getTheFactory().createHJBConnection(getUsername(),
                                                                    getPassword()));
         }
+        assignClientIdIfNecessary();
+    }
+
+    protected void assignClientIdIfNecessary() {
+        try {
+            if (clientIdWasSentAndCanBeUsed()) {
+                getTheFactory().getConnection(getConnectionIndex())
+                    .setClientID(getClientId());
+            }
+        } catch (JMSException e) {
+            throw new HJBException(e);
+        }
+    }
+
+    protected boolean clientIdWasSentAndCanBeUsed() throws JMSException {
+        return null != getClientId()
+                && null == getTheFactory().getConnection(getConnectionIndex())
+                    .getClientID();
     }
 
     public String getDescription() {
@@ -94,8 +117,13 @@ public class CreateConnection extends ConnectionFactoryCommand {
         return username;
     }
 
+    protected String getClientId() {
+        return clientId;
+    }
+
     private int connectionIndex;
     private String username;
     private String password;
+    private String clientId;
     public static final int UNSET_CONNECTION_INDEX = Integer.MIN_VALUE;
 }

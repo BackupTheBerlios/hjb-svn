@@ -27,9 +27,11 @@ import javax.jms.*;
 import org.apache.log4j.Logger;
 
 import hjb.misc.*;
+import hjb.msg.AttributeCopier;
 import hjb.msg.HJBMessage;
 import hjb.msg.MessageCopier;
 import hjb.msg.MessageCopierFactory;
+import hjb.msg.NamedPropertyCopier;
 
 /**
  * <code>HJBMessenger</code> uses a <code>HJBConnection</code> to send and
@@ -78,7 +80,7 @@ public class HJBMessenger {
         send(asHJB, null, null, index);
     }
 
-    public void send(HJBMessage asHJB,
+    public HJBMessage send(HJBMessage asHJB,
                      Destination destination,
                      MessageProducerArguments producerArguments,
                      int index) throws HJBException {
@@ -88,7 +90,7 @@ public class HJBMessenger {
                                                      new Integer(getSessionIndex()),
                                                      new Integer(index));
                 LOG.warn(message);
-                return;
+                return null;
             }
             String message = strings().getString(HJBStrings.ABOUT_TO_SEND,
                                                  asHJB);
@@ -100,6 +102,8 @@ public class HJBMessenger {
             Message asJMS = createJMSMessageFor(asHJB);
             findMessageCopierFor(asHJB).copyToJMSMessage(asHJB, asJMS);
             sendJMSMessage(asJMS, destination, producerArguments, index);
+            updateHeaders(asHJB, asJMS);
+            return asHJB;
         } catch (JMSException e) {
             String message = strings().getString(HJBStrings.SEND_OF_MESSAGE_FAILED,
                                                  new Integer(getSessionIndex()));
@@ -137,6 +141,11 @@ public class HJBMessenger {
 
     public int getSessionIndex() {
         return sessionIndex;
+    }
+
+    protected void updateHeaders(HJBMessage asHJB, Message asJMS) {
+        new NamedPropertyCopier().copyToHJBMessage(asJMS, asHJB);
+        new AttributeCopier().copyToHJBMessage(asJMS, asHJB);
     }
 
     protected void sendJMSMessage(Message asJMS,

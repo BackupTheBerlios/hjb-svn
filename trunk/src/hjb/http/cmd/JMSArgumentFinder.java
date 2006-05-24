@@ -213,6 +213,12 @@ public class JMSArgumentFinder {
         }
         return (String) rawSubscriberName;
     }
+    
+    
+    public String findClientId(Map decodedParameters) {
+        Object rawValue = decodedParameters.get(HJBServletConstants.CLIENT_ID);
+        return (null == rawValue) ? null : "" + rawValue;
+    }
 
     public Queue findQueue(Map decodedParameters,
                            HJBRoot root,
@@ -425,4 +431,5 @@ public class JMSArgumentFinder {
     private static final Pattern DESTINATION_PATH_MATCHER = Pattern.compile("^/[^/]*/[^/]*/(\\w+)/"
             + PathNaming.DESTINATION + "/(.+)/?$");
     private static final HJBStrings STRINGS = new HJBStrings();
+    
 }

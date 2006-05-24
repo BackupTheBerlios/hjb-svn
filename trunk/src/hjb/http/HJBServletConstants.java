@@ -212,6 +212,14 @@ public final class HJBServletConstants {
     public static final String TIMEOUT = "timeout";
 
     /**
+     * Constant that holds the name of the request parameter that HJB uses to
+     * identify a clientId for use in some JMS API calls. 
+     * <p />
+     * The value of this constant is "clientId".
+     */
+    public static final String CLIENT_ID = "clientId";
+
+    /**
      * Constant that holds the default value of the transacted flag for use in
      * configuration of JMS <code>Sessions</code>
      * <p />

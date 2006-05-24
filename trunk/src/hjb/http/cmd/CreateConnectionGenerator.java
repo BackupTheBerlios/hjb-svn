@@ -81,7 +81,8 @@ public class CreateConnectionGenerator extends PatternMatchingCommandGenerator {
         String password = null == rawPassword ? null : "" + rawPassword;
         this.generatedCommand = new CreateConnection(factory,
                                                      username,
-                                                     password);
+                                                     password,
+                                                     getFinder().findClientId(decodedParameters));
     }
 
     protected JMSCommandResponder createResponder() {

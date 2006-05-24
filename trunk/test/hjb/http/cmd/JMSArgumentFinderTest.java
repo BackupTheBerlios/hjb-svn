@@ -82,6 +82,12 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
         assertNotNull(new JMSArgumentFinder().findMessageSelector(decodedParameters));
     }
 
+    public void testFindsClientIdIfOneIsPresent() {
+        assertNull(new JMSArgumentFinder().findMessageSelector(decodedParameters));
+        decodedParameters.put(HJBServletConstants.CLIENT_ID, "testClientId");
+        assertNotNull(new JMSArgumentFinder().findClientId(decodedParameters));
+    }
+
     public void testFindsDisableTimestampsCorrectly() {
         assertFalse(new JMSArgumentFinder().findDisableTimestamps(decodedParameters));
         decodedParameters.put(HJBServletConstants.DISABLE_TIMESTAMPS,

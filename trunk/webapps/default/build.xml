@@ -56,7 +56,8 @@
     <filter token="hjb.deploy.servlet.display.name" value="${hjb.deploy.servlet.display.name}"/>
     <filter token="hjb.deploy.servlet.name" value="${hjb.deploy.servlet.name}"/>
     <filter token="hjb.deploy.servlet.mapping" value="${hjb.deploy.servlet.mapping}"/>
-
+    <filter token="hjb.deploy.webapp.name" value="${hjb.deploy.webapp.name}"/>
+   
     <filter token="hjb.config.command.timeout" value="${hjb.config.command.timeout}"/>
     <filter token="hjb.config.rootpath" value="${hjb.config.rootpath}"/>
 

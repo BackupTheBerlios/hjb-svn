@@ -20,13 +20,13 @@
  */
 package hjb.jms.cmd;
 
-import javax.jms.Destination;
-
 import hjb.jms.HJBMessenger;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 import hjb.misc.MessageProducerArguments;
 import hjb.msg.HJBMessage;
+
+import javax.jms.Destination;
 
 public class SendHJBMessage extends MessengerCommand {
 
@@ -66,11 +66,15 @@ public class SendHJBMessage extends MessengerCommand {
         }
     }
 
+    public HJBMessage getMessageThatWasSent() {
+        return messageThatWasSent;
+    }
+
     protected void sendTheMessage() throws HJBException {
-        getMessenger().send(getMessageToSend(),
-                            getDestination(),
-                            getProducerArguments(),
-                            getProducerIndex());
+        messageThatWasSent = getMessenger().send(getMessageToSend(),
+                                                 getDestination(),
+                                                 getProducerArguments(),
+                                                 getProducerIndex());
     }
 
     protected boolean isDestinationSupplied() {
@@ -97,6 +101,7 @@ public class SendHJBMessage extends MessengerCommand {
         return messageToSend;
     }
 
+    private HJBMessage messageThatWasSent;
     private HJBMessage messageToSend;
     private int producerIndex;
     private MessageProducerArguments producerArguments;

@@ -440,4 +440,10 @@ public final class HJBStrings {
     public static final String REQUEST_METHOD_AND_PATH = "request.method.and.path";
 
     public static final String COULD_NOT_READ_BOOLEAN_VALUE_FROM_MESSAGE = "could.not.read.boolean.value.from.message";
+
+    public static final String SUCCESS_MESSAGE_OF_UNSUBSCRIBE = "success.message.of.unsubscribe";
+
+    public static final String DESCRIPTION_OF_UNSUBSCRIBE = "description.of.unsubscribe";
+
+    public static final String INVALID_CLIENT_ID = "invalid.client.id";
 }

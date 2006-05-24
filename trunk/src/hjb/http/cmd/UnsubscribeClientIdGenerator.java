@@ -27,23 +27,24 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 
 import hjb.jms.HJBConnection;
-import hjb.jms.HJBMessenger;
 import hjb.jms.HJBRoot;
 import hjb.jms.cmd.JMSCommand;
-import hjb.jms.cmd.SendHJBMessage;
+import hjb.jms.cmd.RollbackSession;
+import hjb.jms.cmd.UnsubscribeClientId;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 
 /**
- * <code>SendHJBMessageGenerator</code> is the
- * <code>JMSCommandGenerator</code> that produces {@link SendHJBMessage}.
+ * <code>RollbackSessionGenerator</code> is the
+ * <code>JMSCommandGenerator</code> that produces {@link RollbackSession}.
  * 
  * @see hjb.http.cmd.JMSCommandGenerator
  * @see hjb.jms.cmd.JMSCommand
  * 
  * @author Tim Emiola
  */
-public class SendHJBMessageGenerator extends PatternMatchingCommandGenerator {
+public class UnsubscribeClientIdGenerator extends
+        PatternMatchingCommandGenerator {
 
     public JMSCommand getGeneratedCommand() throws HJBException {
         if (null == generatedCommand)
@@ -60,21 +61,15 @@ public class SendHJBMessageGenerator extends PatternMatchingCommandGenerator {
         String factoryName = applyURLDecoding(m.group(2));
         int connectionIndex = Integer.parseInt(m.group(3));
         int sessionIndex = Integer.parseInt(m.group(4));
-        int producerIndex = Integer.parseInt(m.group(5));
 
         HJBTreeWalker walker = new HJBTreeWalker(root, pathInfo);
         HJBConnection connection = walker.findConnection(providerName,
                                                          factoryName,
                                                          connectionIndex);
         Map decodedParameters = getDecoder().decode(request.getParameterMap());
-        this.generatedCommand = new SendHJBMessage(new HJBMessenger(connection,
-                                                                    sessionIndex),
-                                                   getFinder().findHJBMessage(decodedParameters),
-                                                   producerIndex,
-                                                   getFinder().findProducerArguments(decodedParameters),
-                                                   getFinder().findOptionalDestination(decodedParameters,
-                                                                                       root,
-                                                                                       providerName));
+        this.generatedCommand = new UnsubscribeClientId(connection,
+                                                        sessionIndex,
+                                                        getFinder().findClientId(decodedParameters));
         setAssignedCommandRunner(connection.getSessionCommandRunner(sessionIndex));
     }
 
@@ -82,20 +77,15 @@ public class SendHJBMessageGenerator extends PatternMatchingCommandGenerator {
         return PATH_MATCHER;
     }
 
-    protected JMSCommandResponder createResponder() {
-        return new ContentWritingResponder(getGeneratedCommand(),
-                                           new HJBMessageWriter().asText(generatedCommand.getMessageThatWasSent()));
-    }
-
     protected boolean useRootCommandRunner() {
         return false;
     }
 
-    private transient SendHJBMessage generatedCommand;
+    private transient UnsubscribeClientId generatedCommand;
 
     private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/(.+)/"
             + PathNaming.CONNECTION
             + "-(\\d+)/"
             + PathNaming.SESSION
-            + "-(\\d+)/" + PathNaming.PRODUCER + "-(\\d+)/send$");
+            + "-(\\d+)/unsubscribe$");
 }

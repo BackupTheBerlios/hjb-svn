@@ -20,24 +20,25 @@
  */
 package hjb.jms.cmd;
 
+import hjb.jms.HJBConnectionFactory;
+import hjb.jms.HJBRoot;
+import hjb.misc.HJBException;
+import hjb.testsupport.MockHJBRuntime;
+
 import java.io.File;
 
+import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
-import hjb.jms.HJBConnectionFactory;
-import hjb.jms.HJBRoot;
-import hjb.misc.HJBException;
-import hjb.testsupport.MockHJBRuntime;
-
 public class CreateConnectionTest extends MockObjectTestCase {
 
     public void testCreateConnectionThrowsOnNullConnectionFactory() {
         try {
-            new CreateConnection(null, "hello", "world");
+            new CreateConnection(null, "hello", "world", null);
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
     }
@@ -63,7 +64,8 @@ public class CreateConnectionTest extends MockObjectTestCase {
             assertEquals(0, testFactory.getActiveConnections().size());
             CreateConnection command = new CreateConnection(testFactory,
                                                             "hello",
-                                                            "world");
+                                                            "world",
+                                                            null);
             command.execute();
             assertEquals(0, testFactory.getActiveConnections().size());
             assertFalse(command.isExecutedOK());
@@ -87,7 +89,80 @@ public class CreateConnectionTest extends MockObjectTestCase {
         assertEquals(0, testFactory.getActiveConnections().size());
         CreateConnection command = new CreateConnection(testFactory,
                                                         "hello",
-                                                        "world");
+                                                        "world",
+                                                        null);
+        command.execute();
+        assertEquals(1, testFactory.getActiveConnections().size());
+        assertTrue(command.isExecutedOK());
+        assertTrue(command.isComplete());
+        assertNull(command.getFault());
+        assertNotNull(command.getStatusMessage());
+        try {
+            command.execute();
+            fail("should have thrown an exception");
+        } catch (HJBException e) {}
+    }
+
+    public void testExecuteDoesNotUseTheSuppliedClientIdIfTheProviderSuppliesOne() {
+        HJBRoot root = new HJBRoot(testRootPath);
+
+        Mock connectionMock = mock(Connection.class);
+        Connection testConnection = (Connection) connectionMock.proxy();
+        connectionMock.stubs().method("setExceptionListener");
+        connectionMock.expects(once())
+            .method("getClientID")
+            .will(returnValue("testProviderClientId"));
+        connectionMock.expects(never()).method("setClientID");
+
+        mockHJB.make1Factory(root,
+                             testConnection,
+                             "testProvider",
+                             "testFactory");
+        HJBConnectionFactory testFactory = root.getProvider("testProvider")
+            .getConnectionFactory("testFactory");
+
+        assertEquals(0, testFactory.getActiveConnections().size());
+        CreateConnection command = new CreateConnection(testFactory,
+                                                        "hello",
+                                                        "world",
+                                                        "newClientId");
+        command.execute();
+        assertEquals(1, testFactory.getActiveConnections().size());
+        assertTrue(command.isExecutedOK());
+        assertTrue(command.isComplete());
+        assertNull(command.getFault());
+        assertNotNull(command.getStatusMessage());
+        try {
+            command.execute();
+            fail("should have thrown an exception");
+        } catch (HJBException e) {}
+    }
+
+    public void testExecuteUsesTheSuppliedClientIdIfTheProviderDoesNotSupplyOne() {
+        HJBRoot root = new HJBRoot(testRootPath);
+
+        Mock connectionMock = mock(Connection.class);
+        Connection testConnection = (Connection) connectionMock.proxy();
+        connectionMock.stubs().method("setExceptionListener");
+        connectionMock.expects(once())
+            .method("getClientID")
+            .will(returnValue(null));
+        connectionMock.expects(once())
+            .method("setClientID")
+            .with(eq("newClientId"));
+
+        mockHJB.make1Factory(root,
+                             testConnection,
+                             "testProvider",
+                             "testFactory");
+        HJBConnectionFactory testFactory = root.getProvider("testProvider")
+            .getConnectionFactory("testFactory");
+
+        assertEquals(0, testFactory.getActiveConnections().size());
+        CreateConnection command = new CreateConnection(testFactory,
+                                                        "hello",
+                                                        "world",
+                                                        "newClientId");
         command.execute();
         assertEquals(1, testFactory.getActiveConnections().size());
         assertTrue(command.isExecutedOK());

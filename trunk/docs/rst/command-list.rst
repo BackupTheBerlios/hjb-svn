@@ -40,6 +40,8 @@ specified URLs and HTTP request methods.
 +----------------------------------+--------------------------------------------------------+
 |`Rollback Session`_ (*G*)         |*connection-uri*/session-*nnn*/rollback                 |
 +----------------------------------+--------------------------------------------------------+
+|`Unsubscribe Client Id`_ (*G*)    |*connection-uri*/session-*nnn*/unsubscribe              |
++----------------------------------+--------------------------------------------------------+
 |`Commit Session`_ (*P*)           |*connection-uri*/session-*nnn*/commit                   |
 +----------------------------------+--------------------------------------------------------+
 |`Delete Session`_ (*D*)           |*connection-uri*/session-*nnn*                          |
@@ -91,6 +93,7 @@ URIs
 .. _Read Connection MetaData: ./read-connection-metadata.html
 .. _Delete Connection: ./delete-connection.html
 .. _Create Session: ./create-session.html
+.. _Unsubscribe Client Id: ./unsubscribe-client-id.html
 .. _Rollback Session: ./rollback-session.html
 .. _Commit Session: ./commit-session.html
 .. _Delete Session: ./delete-session.html

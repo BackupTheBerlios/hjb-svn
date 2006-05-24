@@ -35,6 +35,7 @@ import hjb.jms.HJBSessionProducers;
 import hjb.misc.HJBException;
 import hjb.msg.HJBMessage;
 import hjb.msg.MessageCopierFactory;
+import hjb.testsupport.MessageAttributeInvoker;
 import hjb.testsupport.MockHJBRuntime;
 import hjb.testsupport.MockSessionBuilder;
 
@@ -64,6 +65,10 @@ public class SendHJBMessageTest extends MockObjectTestCase {
         mockJMSMessage.expects(once())
             .method("setStringProperty")
             .with(eq("hjb_message_version"), eq("1.0"));
+        MessageAttributeInvoker attributeInvoker = new MessageAttributeInvoker();
+        attributeInvoker.invokesAllAccessors(mockJMSMessage);
+        attributeInvoker.invokesGetPropertyNamesReturnsNothing(mockJMSMessage);
+
         Message testMessage = (TextMessage) mockJMSMessage.proxy();
 
         Mock mockProducer = mock(MessageProducer.class);

@@ -12,6 +12,8 @@ Create Connection
 
   (optional) *password* (with *username*)
 
+  (optional) *clientId*
+  
 :Returns:
 
   Location (HTTP header) : the URI of the created connection
@@ -21,6 +23,9 @@ command
 
 * uses the security credentials to create the connection if they are
   supplied in the request parameters.
+
+* assigns the connection's client Id *if* one is supplied *and* the provider
+  has not already configured the connection with a clientId
 
 * returns the URI of the created connection.
 
