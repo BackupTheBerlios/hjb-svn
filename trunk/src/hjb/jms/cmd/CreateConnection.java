@@ -24,8 +24,6 @@ import hjb.jms.HJBConnection;
 import hjb.jms.HJBConnectionFactory;
 import hjb.misc.HJBStrings;
 
-import javax.jms.JMSException;
-
 public class CreateConnection extends ConnectionFactoryCommand {
 
     public CreateConnection(HJBConnectionFactory theFactory,
@@ -63,13 +61,7 @@ public class CreateConnection extends ConnectionFactoryCommand {
         }
     }
 
-    protected boolean clientIdWasSentAndCanBeUsed() throws JMSException {
-        return null != getClientId()
-                && null == getTheFactory().getConnection(getConnectionIndex())
-                    .getClientID();
-    }
-
-    public String getDescription() {
+     public String getDescription() {
         return strings().getString(HJBStrings.DESCRIPTION_OF_CREATE_COMMANDS,
                                    HJBConnection.class.getName(),
                                    strings().getString(HJBStrings.NOT_APPLICAPLE));
