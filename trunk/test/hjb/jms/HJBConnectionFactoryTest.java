@@ -64,12 +64,12 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
     public void testCreateHJBConnectionAddsToConnectionsOnSuccess()
             throws Exception {
         HJBConnectionFactory rcf = new HJBConnectionFactory(testConnectionFactory);
-        assertEquals("index should be 0", 0, rcf.createHJBConnection());
+        assertEquals("index should be 0", 0, rcf.createHJBConnection(null));
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
             .size());
         assertEquals("index should be 1",
                      1,
-                     rcf.createHJBConnection("testUser", "testPassword"));
+                     rcf.createHJBConnection("testUser", "testPassword", null));
         assertEquals("should be two connections", 2, rcf.getActiveConnections()
             .size());
     }
@@ -108,13 +108,13 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
         assertEquals("should be no connections", 0, rcf.getActiveConnections()
             .size());
         try {
-            rcf.createHJBConnection();
+            rcf.createHJBConnection(null);
             fail("Expected JMS exception was not thrown");
         } catch (HJBException hjbe) {}
         assertEquals("should be no connections", 0, rcf.getActiveConnections()
             .size());
         try {
-            rcf.createHJBConnection("testUser", "testPassword");
+            rcf.createHJBConnection("testUser", "testPassword", null);
             fail("Expected JMS exception was not thrown");
         } catch (HJBException hjbe) {}
         assertEquals("should be no connections", 0, rcf.getActiveConnections()

@@ -89,12 +89,13 @@ public class HJBConnectionFactory implements ConnectionFactory {
         }
     }
 
-    public int createHJBConnection() {
+    public int createHJBConnection(String clientId) {
         synchronized (activeConnections) {
             try {
                 Integer index = new Integer(connectionIndices.size());
                 connectionIndices.add(index);
                 HJBConnection result = new HJBConnection(connectionFactory.createConnection(),
+                                                         clientId,
                                                          0);
                 activeConnections.put(index, result);
                 return index.intValue();
@@ -105,12 +106,13 @@ public class HJBConnectionFactory implements ConnectionFactory {
         }
     }
 
-    public int createHJBConnection(String user, String password) {
+    public int createHJBConnection(String user, String password, String clientId) {
         synchronized (activeConnections) {
             try {
                 Integer index = new Integer(connectionIndices.size());
                 connectionIndices.add(index);
                 HJBConnection result = new HJBConnection(getConnectionFactory().createConnection(),
+                                                         clientId,
                                                          0);
                 activeConnections.put(index, result);
                 return index.intValue();
@@ -122,11 +124,11 @@ public class HJBConnectionFactory implements ConnectionFactory {
     }
 
     public Connection createConnection() {
-        return getConnection(createHJBConnection());
+        return getConnection(createHJBConnection(null));
     }
 
     public Connection createConnection(String user, String password) {
-        return getConnection(createHJBConnection(user, password));
+        return getConnection(createHJBConnection(user, password, null));
     }
 
     public void startConnection(int index) {

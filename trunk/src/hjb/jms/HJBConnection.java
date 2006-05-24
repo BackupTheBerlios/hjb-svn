@@ -66,12 +66,15 @@ public class HJBConnection implements Connection {
      * 
      * @param theConnection
      *            the wrapped connection
+     * @param clientId
+     *            the clientId to assign to the create connection
      * @param connectionIndex
      *            the index of this connection in the set of connections created
      *            by a connection factory.
      */
-    public HJBConnection(Connection theConnection, int connectionIndex) {
-
+    public HJBConnection(Connection theConnection,
+                         String clientId,
+                         int connectionIndex) {
         if (null == theConnection) {
             throw new IllegalArgumentException(strings().needsANonNull(Connection.class.getName()));
         }
@@ -83,12 +86,23 @@ public class HJBConnection implements Connection {
         this.sessionIndices = Collections.synchronizedList(new ArrayList());
         this.activeSessions = Collections.synchronizedMap(new HashMap());
         this.sessionCommandRunners = Collections.synchronizedMap(new HashMap());
-        try {
-            this.theConnection.setExceptionListener(new HJBExceptionListener());
-        } catch (JMSException e) {
-            LOG.error(strings().getString(HJBStrings.COULD_NOT_ASSIGN_EXCEPTION_LISTENER));
-        }
+        assignExceptionListener();
+        assignClientIdIfNecessary(clientId);
         this.connectionIndex = connectionIndex;
+    }
+
+    /**
+     * Creates a <code>HJBConnection</code> that wraps
+     * <code>theConnection</code>.
+     * 
+     * @param theConnection
+     *            the wrapped connection
+     * @param connectionIndex
+     *            the index of this connection in the set of connections created
+     *            by a connection factory.
+     */
+    public HJBConnection(Connection theConnection, int connectionIndex) {
+        this(theConnection, null, connectionIndex);
     }
 
     public Session createSession(boolean transacted, int acknowledgeMode) {
@@ -266,6 +280,32 @@ public class HJBConnection implements Connection {
 
     public HJBSessionDurableSubscribers getSessionSubscribers() {
         return sessionSubscribers;
+    }
+
+    protected void assignClientIdIfNecessary(String clientId) {
+        try {
+            if (clientIdWasSentAndCanBeUsed(clientId)) {
+                getTheConnection().setClientID(clientId);
+            }
+        } catch (JMSException e) {
+            String message = strings().getString(HJBStrings.COULD_NOT_SET_CLIENT_ID,
+                                                 clientId,
+                                                 new Integer(getConnectionIndex()));
+            LOG.error(message);
+        }
+    }
+
+    protected void assignExceptionListener() {
+        try {
+            this.theConnection.setExceptionListener(new HJBExceptionListener());
+        } catch (JMSException e) {
+            LOG.error(strings().getString(HJBStrings.COULD_NOT_ASSIGN_EXCEPTION_LISTENER));
+        }
+    }
+
+    protected boolean clientIdWasSentAndCanBeUsed(String clientId)
+            throws JMSException {
+        return null != clientId && null == getTheConnection().getClientID();
     }
 
     protected void addCommandRunner(JMSCommandRunner commandRunner,

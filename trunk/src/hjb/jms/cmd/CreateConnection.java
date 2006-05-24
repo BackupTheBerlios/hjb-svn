@@ -20,12 +20,11 @@
  */
 package hjb.jms.cmd;
 
-import javax.jms.JMSException;
-
 import hjb.jms.HJBConnection;
 import hjb.jms.HJBConnectionFactory;
-import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
+
+import javax.jms.JMSException;
 
 public class CreateConnection extends ConnectionFactoryCommand {
 
@@ -56,22 +55,11 @@ public class CreateConnection extends ConnectionFactoryCommand {
 
     protected void createConnectionAndReturnItsIndex() {
         if (null == getPassword() || null == getUsername()) {
-            setConnectionIndex(getTheFactory().createHJBConnection());
+            setConnectionIndex(getTheFactory().createHJBConnection(getClientId()));
         } else {
             setConnectionIndex(getTheFactory().createHJBConnection(getUsername(),
-                                                                   getPassword()));
-        }
-        assignClientIdIfNecessary();
-    }
-
-    protected void assignClientIdIfNecessary() {
-        try {
-            if (clientIdWasSentAndCanBeUsed()) {
-                getTheFactory().getConnection(getConnectionIndex())
-                    .setClientID(getClientId());
-            }
-        } catch (JMSException e) {
-            throw new HJBException(e);
+                                                                   getPassword(),
+                                                                   getClientId()));
         }
     }
 
