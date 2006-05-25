@@ -44,7 +44,7 @@ public class ReceiveFromConsumer extends MessengerCommand {
         try {
             receiveMessage();
         } catch (HJBNotFoundException e) {
-            recordFaultAsWarning(e);
+            recordFaultAsDebug(e);
         } catch (RuntimeException e) {
             recordFault(e);
         }

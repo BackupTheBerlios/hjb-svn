@@ -92,17 +92,16 @@ public class HJBMessenger {
                 LOG.warn(message);
                 return null;
             }
-            String message = strings().getString(HJBStrings.ABOUT_TO_SEND,
-                                                 asHJB);
-            // TODO remove this info before release
-            LOG.info(message);
-            if (MESSAGE_LOG.isDebugEnabled()) {
-                MESSAGE_LOG.debug(message);
-            }
+            debugMessage(asHJB);
             Message asJMS = createJMSMessageFor(asHJB);
             findMessageCopierFor(asHJB).copyToJMSMessage(asHJB, asJMS);
             sendJMSMessage(asJMS, destination, producerArguments, index);
             updateHeaders(asHJB, asJMS);
+            if (MESSAGE_LOG.isDebugEnabled()) {
+                String message = strings().getString(HJBStrings.MESSAGE_WAS_SENT,
+                                              asHJB);
+                MESSAGE_LOG.debug(message);
+            }
             return asHJB;
         } catch (JMSException e) {
             String message = strings().getString(HJBStrings.SEND_OF_MESSAGE_FAILED,
@@ -141,6 +140,14 @@ public class HJBMessenger {
 
     public int getSessionIndex() {
         return sessionIndex;
+    }
+
+    protected void debugMessage(HJBMessage asHJB) {
+        if (MESSAGE_LOG.isDebugEnabled()) {
+            String message = strings().getString(HJBStrings.ABOUT_TO_SEND,
+                                                 asHJB);
+            MESSAGE_LOG.debug(message);
+        }
     }
 
     protected void updateHeaders(HJBMessage asHJB, Message asJMS) {
@@ -202,16 +209,10 @@ public class HJBMessenger {
                 throw new HJBNotFoundException(message);
             }
             asJMS.acknowledge();
-            HJBMessage result = createHJBMessageFor(asJMS);
-            findMessageCopierFor(asJMS).copyToHJBMessage(asJMS, result);
-            String message = strings().getString(HJBStrings.RECEIVED_HJB_MESSAGE,
-                                                 result);
-            // TODO remove this info before release
-            LOG.info(message);
-            if (MESSAGE_LOG.isDebugEnabled()) {
-                MESSAGE_LOG.debug(message);
-            }
-            return result;
+            HJBMessage asHJB = createHJBMessageFor(asJMS);
+            findMessageCopierFor(asJMS).copyToHJBMessage(asJMS, asHJB);
+            debugMessage(asHJB);
+            return asHJB;
         } catch (JMSException e) {
             return handleReceiptFailure(e);
         }

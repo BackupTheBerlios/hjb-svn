@@ -211,10 +211,6 @@ public class HJBApplication {
                 timeIsUp.cancel();
             }
         }
-        if (!generatedCommand.isExecutedOK()) {
-            LOG.error(generatedCommand.getStatusMessage(),
-                      generatedCommand.getFault());
-        }
         generator.sendResponse(response);
     }
 

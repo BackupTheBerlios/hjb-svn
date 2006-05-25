@@ -448,4 +448,6 @@ public final class HJBStrings {
     public static final String INVALID_CLIENT_ID = "invalid.client.id";
 
     public static final String COULD_NOT_SET_CLIENT_ID = "could.not.set.client.id";
+
+    public static final String MESSAGE_WAS_SENT = "message.was.sent";
 }
