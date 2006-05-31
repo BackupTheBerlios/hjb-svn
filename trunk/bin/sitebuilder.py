@@ -29,7 +29,6 @@ main_page_template = "sitepage.kid"
 _template = Template(file=main_page_template)
 
 def archive_site(root=site_root):
-    generate_site()
     make_archive(strftime("../hjb_web_site_%Y%m%d_%H%M%S", gmtime(time())),
                  "gztar",
                  abspath(site_root),
@@ -113,6 +112,7 @@ def parts_of(rst_file):
 
 def main():
     update_css()
+    generate_site()
     archive_site()
 
 
