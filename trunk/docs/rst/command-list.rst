@@ -105,3 +105,5 @@ URIs
 .. _Receive From Subscriber: ./receive-from-subscriber.html
 .. _Create Producer: ./create-producer.html
 .. _Send HJB Message: ./send-hjb-message.html
+
+.. Copyright (C) 2006 Tim Emiola

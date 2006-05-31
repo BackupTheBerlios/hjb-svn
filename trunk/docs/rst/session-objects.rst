@@ -155,8 +155,10 @@ In HJB, each Queue Browser
 * has a URL that includes its creation index, i.e, the number of Queue
   Browsers that the session created prior to this one.
 
-* returns a set of HJB-encoded JMS message in the response on
-  receiving a HTTP POST request on its 'receive' child URL.
+* returns a set of HJB-encoded JMS messages in the HTTP response on
+  receiving a HTTP POST request to its 'receive' URL.
 
 .. [JMSSpec] `Java Message Service specification 1.1
   <http://java.sun.com/products/jms/docs.html>`_
+
+.. Copyright (C) 2006 Tim Emiola

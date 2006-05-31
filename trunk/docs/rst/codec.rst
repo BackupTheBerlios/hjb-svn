@@ -74,3 +74,5 @@ simple to parse in any language.
    <http://java.sun.com/products/jms/docs.html>`_
 
 .. [#] `S-Expressions <http://en.wikipedia.org/wiki/S_expression>`_
+
+.. Copyright (C) 2006 Tim Emiola

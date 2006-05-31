@@ -27,3 +27,5 @@ specified URI.  This command
 .. _back to commands: ./command-list.html
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_
+
+.. Copyright (C) 2006 Tim Emiola

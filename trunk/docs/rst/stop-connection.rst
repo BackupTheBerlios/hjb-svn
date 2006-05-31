@@ -19,3 +19,5 @@ command
   present, the command results in a *404 Not Found* response.
 
 .. _back to commands: ./command-list.html
+
+.. Copyright (C) 2006 Tim Emiola

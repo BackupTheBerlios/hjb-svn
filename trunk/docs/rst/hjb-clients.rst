@@ -24,3 +24,5 @@ HJB.
 
 
 .. _PyHJB: http://hjb.python-hosting.com
+
+.. Copyright (C) 2006 Tim Emiola

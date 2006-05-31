@@ -81,3 +81,5 @@ In HJB, each JMS Session
   <http://java.sun.com/products/jms/docs.html>`_
 
 .. _session objects: ./session-objects.rst
+
+.. Copyright (C) 2006 Tim Emiola

@@ -28,6 +28,8 @@ adding it yourself!
 
 .. _Design notes: ./detailed-design.html
 
-.. _Javadocs (download): http://hjb.tigris.org/files/documents/3759/31729/hjb-docs-0.8beta.jar
+.. _Javadocs (download): http://prdownload.berlios.de/hjb/hjb-docs-0.8.1beta.jar
 
-.. _get in touch: mailto:users@hjb.tigris.org
+.. _get in touch: mailto:hjb-users@lists.berlios.de
+
+.. Copyright (C) 2006 Tim Emiola

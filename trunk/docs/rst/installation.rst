@@ -70,8 +70,10 @@ OR
 
 .. _anonymous subversion: http://hjb.tigris.org/source/browse/hjb
 
-.. _downloading: http://hjb.tigris.org/files/documents/3759/31728/hjb-src-0.8beta.jar
+.. _downloading: http://prdownload.berlios.de/hjb/hjb-src-0.8.1beta.jar
 
-.. _binary archive: http://hjb.tigris.org/files/documents/3759/31730/hjb-bin-0.8beta.jar
+.. _binary archive: http://prdownload.berlios.de/hjb/hjb-bin-0.8.1beta.jar
 
 .. _HJB client libraries: ./hjb-clients.html
+
+.. Copyright (C) 2006 Tim Emiola

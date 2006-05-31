@@ -98,3 +98,5 @@ not implemented yet.
 
 .. _the JMS command list: ./command-list.html
 .. _JMS commands: ./command-dispatch.html
+
+.. Copyright (C) 2006 Tim Emiola

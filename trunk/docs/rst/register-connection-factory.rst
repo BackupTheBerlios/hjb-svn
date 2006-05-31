@@ -19,3 +19,5 @@ the HJB runtime. This command
   invocations.
 
 .. _back to commands: ./command-list.html
+
+.. Copyright (C) 2006 Tim Emiola

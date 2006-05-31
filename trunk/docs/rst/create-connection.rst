@@ -30,3 +30,5 @@ command
 * returns the URI of the created connection.
 
 .. _back to commands: ./command-list.html
+
+.. Copyright (C) 2006 Tim Emiola

@@ -248,3 +248,5 @@ Links
    <http://java.sun.com/products/jms/docs.html>`_ 
 
 .. _HJB-encoded: ./codec.rst
+
+.. Copyright (C) 2006 Tim Emiola

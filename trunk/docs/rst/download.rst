@@ -2,21 +2,25 @@
 Downloads
 =========
 
-HJB 0.8 Beta
-------------
+
+The latest version is **HJB 0.8.1 Beta** (since 2005/05/31)
+
+You can
 
 * Download the HJB `binary distribution`_.
 
 * Download the full HJB `source distribution`_.
  
-* Download javadocs_.
+* Download its javadocs_.
 
-* Access the source_ repository.
+* Read instructions for accessing the source_ repository.
 
-.. _binary distribution: http://hjb.tigris.org/files/documents/3759/31730/hjb-bin-0.8beta.jar
+.. _binary distribution: http://prdownload.berlios.de/hjb/hjb-bin-0.8.1beta.jar
 
-.. _source distribution: http://hjb.tigris.org/files/documents/3759/31728/hjb-src-0.8beta.jar
+.. _source distribution: http://prdownload.berlios.de/hjb/hjb-src-0.8.1beta.jar
 
-.. _javadocs: http://hjb.tigris.org/files/documents/3759/31729/hjb-docs-0.8beta.jar
+.. _javadocs: http://prdownload.berlios.de/hjb/hjb-docs-0.8.1beta.jar
 
 .. _source: ./repository.html
+
+.. Copyright (C) 2006 Tim Emiola

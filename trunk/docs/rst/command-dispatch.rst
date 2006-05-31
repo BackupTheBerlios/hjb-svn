@@ -111,3 +111,5 @@ together. It
 
 .. [DesignPatterns] `Design Patterns
    <http://en.wikipedia.org/wiki/Design_Patterns>`_
+
+.. Copyright (C) 2006 Tim Emiola

@@ -41,3 +41,5 @@ There is not much to it really ;-)
 .. _HJBServlet: ./hjb-servlet.html
 
 .. _JMS messages: ./message-translation.html
+
+.. Copyright (C) 2006 Tim Emiola

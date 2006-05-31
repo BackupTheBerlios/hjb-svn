@@ -26,3 +26,5 @@ the connection with the specified URI.  This command
   message headers.
 
 .. _back to commands: ./command-list.html
+
+.. Copyright (C) 2006 Tim Emiola

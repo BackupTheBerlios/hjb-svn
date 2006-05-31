@@ -35,3 +35,5 @@ factory with the specified URI from the HJB runtime. This command
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_
 
+
+.. Copyright (C) 2006 Tim Emiola

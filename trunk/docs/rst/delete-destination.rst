@@ -17,3 +17,5 @@ specified jndi-name from the HJB runtime.  This command
   destination is no longer registered, the command is ignored.
 
 .. _back to commands: ./command-list.html
+
+.. Copyright (C) 2006 Tim Emiola

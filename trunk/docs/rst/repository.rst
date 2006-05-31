@@ -26,3 +26,5 @@ mailing list`_.
 .. _instructions: http://hjb.tigris.org/source/browse/hjb
 
 .. _commit mailing list: http://hjb.tigris.org/servlets/SummarizeList?listName=commits
+
+.. Copyright (C) 2006 Tim Emiola

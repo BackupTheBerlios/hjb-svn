@@ -94,3 +94,5 @@ Related Resources
 .. _`Zope`: http://www.zope.org
 
 .. _`RubyOnRails`: http://www.rubyonrails.org
+
+.. Copyright (C) 2006 Tim Emiola

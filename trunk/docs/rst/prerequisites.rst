@@ -117,3 +117,5 @@ subversion repository.
 .. _subversion client: http://hjb.tigris.org/servlets/ProjectSource
 
 .. _subversion book: http://svnbook.red-bean.com/
+
+.. Copyright (C) 2006 Tim Emiola

@@ -25,3 +25,5 @@ as described in `message translation`_.  The command
 .. _back to commands: ./command-list.html
 
 .. _message translation: ../message-translation.html
+
+.. Copyright (C) 2006 Tim Emiola
