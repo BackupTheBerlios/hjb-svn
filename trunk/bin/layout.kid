@@ -31,7 +31,7 @@ page_mate = empty()
 	      <td><a href="http://hjb.berlios.de/download.html">Download</a></td>
 	      <td><a href="http://hjb.berlios.de/doc.html">Documentation</a></td>
 	      <td><a href="http://hjb.berlios.de/detailed-design.html">Design</a></td>
-	      <td><a href="mailto:hjb-users@lists.berlios.de">Support</a></td>
+	      <td><a href="feedback.html">Feedback</a></td>
 	    </tr>
 	  </tbody>
 	</table>
