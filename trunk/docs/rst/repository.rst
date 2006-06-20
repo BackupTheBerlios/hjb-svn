@@ -9,22 +9,13 @@ HJB is stored in a subversion repository that allows anonymous
 read-only access. These instructions_ explain how to access the
 source.
 
-Web access
-----------
+Online access
+-------------
 
-The subversion repository can be `viewed online here`_.
+The subversion repository can also be `viewed online here`_.
 
-Commit Announcements
---------------------
+.. _viewed online here: http://svn.berlios.de/wsvn/hjb
 
-Commits to the repository are announced on the project's `commit
-mailing list`_.
-
-
-.. _viewed online here: http://hjb.tigris.org/source/browse/hjb
-
-.. _instructions: http://hjb.tigris.org/source/browse/hjb
-
-.. _commit mailing list: http://hjb.tigris.org/servlets/SummarizeList?listName=commits
+.. _instructions: http://developer.berlios.de/svn/?group_id=6390
 
 .. Copyright (C) 2006 Tim Emiola

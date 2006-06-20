@@ -65,7 +65,7 @@ requests to child paths of the these URIs (cf. `the JMS command list`_).
 .. class:: display-items
 
 +--------------------+----------------------------------------------+
-|JMS Object          |URL                                           |
+|JMS Object          |URI                                           |
 +====================+==============================================+
 |Provider            |HJB_ROOT/provider-name                        |
 +--------------------+----------------------------------------------+

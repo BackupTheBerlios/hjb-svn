@@ -68,7 +68,7 @@ OR
 
 .. _ant: http://ant.apache.org
 
-.. _anonymous subversion: http://hjb.tigris.org/source/browse/hjb
+.. _anonymous subversion: http://developer.berlios.de/svn/?group_id=6390
 
 .. _downloading: http://prdownload.berlios.de/hjb/hjb-src-0.8.1beta.jar
 

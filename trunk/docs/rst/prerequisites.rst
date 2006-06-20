@@ -114,7 +114,7 @@ subversion repository.
 
 .. _Sun website: http://java.sun.com/products/jms/docs.html
 
-.. _subversion client: http://hjb.tigris.org/servlets/ProjectSource
+.. _subversion client: http://subversion.tigris.org/links.html#clients
 
 .. _subversion book: http://svnbook.red-bean.com/
 

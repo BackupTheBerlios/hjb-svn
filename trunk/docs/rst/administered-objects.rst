@@ -22,17 +22,16 @@ Providers in HJB
 
 HJB *always* accesses the Provider using JNDI.  JNDI allows the
 provider's initial context to be configured using a hashtable of
-native type values; HJB allows these values to be supplied in a HTTP
-requests, so the presence of vendor's library jars on the classpath is
-HJB's only dependency on any given vendor.
+native type values; HJB supplies these values via HTTP, so the
+presence of vendor's library jars on the classpath is HJB's only
+dependency on any given vendor.
 
 In HJB, each Provider
 
-* has a unique name (the name has the same constraints a valid java
-  identifier).
+* has a unique name (the name must be a valid java identifier).
 
 * is represented by a HTTP resource whose URL corresponds to the
-  combination of the HJB runtime root URL and its name.
+  combination of the HJB servlet root URL and its name.
 
 * is registered by sending a HTTP POST request to a registration
   URL. The registration URL is a child URL of the Provider resource
