@@ -3,7 +3,7 @@ Downloads
 =========
 
 
-The latest version is **HJB 0.8.1 Beta** (since 2005/05/31)
+The latest version is **HJB 0.8.2** (since 2006/06/21)
 
 You can
 
@@ -15,11 +15,11 @@ You can
 
 * Read instructions for accessing the source_ repository.
 
-.. _binary distribution: http://prdownload.berlios.de/hjb/hjb-bin-0.8.1beta.jar
+.. _binary distribution: http://prdownload.berlios.de/hjb/hjb-bin-0.8.2.jar
 
-.. _source distribution: http://prdownload.berlios.de/hjb/hjb-src-0.8.1beta.jar
+.. _source distribution: http://prdownload.berlios.de/hjb/hjb-src-0.8.2.jar
 
-.. _javadocs: http://prdownload.berlios.de/hjb/hjb-docs-0.8.1beta.jar
+.. _javadocs: http://prdownload.berlios.de/hjb/hjb-docs-0.8.2.jar
 
 .. _source: ./repository.html
 
