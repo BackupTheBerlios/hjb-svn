@@ -2,8 +2,8 @@
 Repository
 ==========
 
-Anonymouse Subversion Access
-----------------------------
+Anonymous Subversion Access
+---------------------------
 
 HJB is stored in a subversion repository that allows anonymous
 read-only access. These instructions_ explain how to access the
