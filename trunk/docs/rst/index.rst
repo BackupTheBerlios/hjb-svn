@@ -5,7 +5,9 @@ HJB - the HTTP JMS Bridge
 Mission
 -------
 
-HJB provides access to JMS resources via HTTP.
+HJB provides access to JMS resources via HTTP. It provides a REST
+equivalent of the JMS API, making it possible to perform JMS
+operations by accessing JMS objects as REST resources via HTTP.
 
 Scope
 -----
@@ -16,7 +18,7 @@ HJB
   libraries for communicating with JMS providers in any language
   that has libraries for communicating over HTTP.
 
-* is **RESTful**: it provides a RESTful equivalent to all of the
+* is `REST`_-ful: it provides a `REST`_-ful equivalent to all of the
   non-optional portions of the JMS API including
 
   - registration of resources administered by the messaging provider
@@ -36,8 +38,8 @@ HJB
 * will work with any messaging vendor that provides a JMS interface.
 
 * aims to do one thing well. Its role is to act as an HTTP gateway
-  server for JMS resources.  Other potentially useful features are
-  deliberately excluded, e.g,
+  server allowing access to JMS object as REST resources. Other
+  potentially useful features are deliberately excluded, e.g,
 
   - HTTP session management
 
@@ -88,6 +90,8 @@ Related Resources
 
 * `Java Servlet specification 2.4
   <http://java.sun.com/products/servlet/download.html#specs>`_
+
+.. _`REST`: http://en.wikipedia.org/wiki/REST
 
 .. _`Apache httpd`: http://httpd.apache.org
 
