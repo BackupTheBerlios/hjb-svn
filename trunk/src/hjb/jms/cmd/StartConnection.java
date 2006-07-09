@@ -45,12 +45,14 @@ public class StartConnection extends ConnectionCommand {
     }
 
     public String getDescription() {
-        return strings().getString(HJBStrings.DESCRIPTION_OF_START_CONNECTION);
+        return strings().getString(HJBStrings.DESCRIPTION_OF_START_CONNECTION,
+                                   getTheConnection());
     }
 
     public String getStatusMessage() {
         if (isExecutedOK()) {
-            return strings().getString(HJBStrings.SUCCESS_MESSAGE_OF_START_CONNECTION);
+            return strings().getString(HJBStrings.SUCCESS_MESSAGE_OF_START_CONNECTION,
+                                       getTheConnection());
         } else {
             return getFault().getMessage();
         }

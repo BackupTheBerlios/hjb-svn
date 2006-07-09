@@ -450,4 +450,16 @@ public final class HJBStrings {
     public static final String COULD_NOT_SET_CLIENT_ID = "could.not.set.client.id";
 
     public static final String MESSAGE_WAS_SENT = "message.was.sent";
+
+    public static final String FORMAT_CLIENT_ID = "format.client.id";
+    
+    public static final String SIMPLE_DELETE_SUCCESS_MESSAGE = "simple.delete.success.message";
+    
+    public static final String SIMPLE_DELETE_DESCRIPTION = "simple.delete.description";
+
+    public static final String INVALID_SESSION_INDEX = "invalid.session.index";
+
+    public static final String TRANSACTED = "transacted";
+    
+    public static final String SIMPLE_SESSION_DESCRIPTION = "simple.session.description";
 }

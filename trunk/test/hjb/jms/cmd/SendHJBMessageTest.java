@@ -91,6 +91,7 @@ public class SendHJBMessageTest extends MockObjectTestCase {
         mockSession.stubs()
             .method("createProducer")
             .will(returnValue(testProducer));
+        mockSession.stubs().method("getTransacted").will(returnValue(false));
         mockSession.expects(once())
             .method("createTextMessage")
             .will(returnValue(testMessage));
@@ -166,6 +167,9 @@ public class SendHJBMessageTest extends MockObjectTestCase {
             mockSession.stubs()
                 .method("createProducer")
                 .will(returnValue(testProducer));
+            mockSession.stubs()
+                .method("getTransacted")
+                .will(returnValue(false));
             mockSession.expects(once())
                 .method("createTextMessage")
                 .will(returnValue(testMessage));

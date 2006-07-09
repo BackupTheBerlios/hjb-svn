@@ -74,6 +74,7 @@ public class ReceiveFromSubscriberTest extends MockObjectTestCase {
         TopicSubscriber testSubscriber = (TopicSubscriber) mockSubscriber.proxy();
 
         Mock mockSession = mock(Session.class);
+        mockSession.stubs().method("getTransacted").will(returnValue(false));
         mockSession.stubs()
             .method("createDurableSubscriber")
             .will(returnValue(testSubscriber));
@@ -123,6 +124,7 @@ public class ReceiveFromSubscriberTest extends MockObjectTestCase {
             TopicSubscriber testSubscriber = (TopicSubscriber) mockSubscriber.proxy();
 
             Mock mockSession = mock(Session.class);
+            mockSession.stubs().method("getTransacted").will(returnValue(false));
             mockSession.stubs()
                 .method("createDurableSubscriber")
                 .will(returnValue(testSubscriber));

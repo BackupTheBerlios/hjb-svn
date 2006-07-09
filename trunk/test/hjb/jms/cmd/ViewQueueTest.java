@@ -78,6 +78,7 @@ public class ViewQueueTest extends MockObjectTestCase {
         QueueBrowser testBrowser = (QueueBrowser) mockBrowser.proxy();
 
         Mock mockSession = mock(Session.class);
+        mockSession.stubs().method("getTransacted").will(returnValue(false));
         mockSession.stubs()
             .method("createBrowser")
             .will(returnValue(testBrowser));
@@ -126,6 +127,7 @@ public class ViewQueueTest extends MockObjectTestCase {
             QueueBrowser testBrowser = (QueueBrowser) mockBrowser.proxy();
 
             Mock mockSession = mock(Session.class);
+            mockSession.stubs().method("getTransacted").will(returnValue(false));
             mockSession.stubs()
                 .method("createBrowser")
                 .will(returnValue(testBrowser));

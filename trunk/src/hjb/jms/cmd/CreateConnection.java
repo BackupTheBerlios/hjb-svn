@@ -64,14 +64,13 @@ public class CreateConnection extends ConnectionFactoryCommand {
      public String getDescription() {
         return strings().getString(HJBStrings.DESCRIPTION_OF_CREATE_COMMANDS,
                                    HJBConnection.class.getName(),
-                                   strings().getString(HJBStrings.NOT_APPLICAPLE));
+                                   "");
     }
 
     public String getStatusMessage() {
         if (isExecutedOK()) {
             return strings().getString(HJBStrings.SUCCESS_MESSAGE_OF_CREATE_COMMANDS,
-                                       HJBConnection.class.getName(),
-                                       strings().getString(HJBStrings.NOT_APPLICAPLE));
+                                       getConnectionDescription());
         } else {
             return getFault().getMessage();
         }
@@ -81,8 +80,8 @@ public class CreateConnection extends ConnectionFactoryCommand {
         return connectionIndex;
     }
 
-    public boolean isConnectionIndexSet() {
-        return UNSET_CONNECTION_INDEX == getConnectionIndex();
+    protected String getConnectionDescription() {
+        return getTheFactory().getConnection(getConnectionIndex()).toString();
     }
 
     protected void setConnectionIndex(int connectionIndex) {

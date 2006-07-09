@@ -20,7 +20,6 @@
  */
 package hjb.jms.cmd;
 
-import hjb.jms.HJBConnection;
 import hjb.jms.HJBConnectionFactory;
 import hjb.misc.HJBStrings;
 
@@ -29,6 +28,8 @@ public class DeleteConnection extends ConnectionFactoryCommand {
     public DeleteConnection(HJBConnectionFactory theFactory, int connectionIndex) {
         super(theFactory);
         setConnectionIndex(connectionIndex);
+        updateSuccessMessage(connectionIndex);
+        updateDescription(connectionIndex);
     }
 
     public void execute() {
@@ -42,29 +43,40 @@ public class DeleteConnection extends ConnectionFactoryCommand {
     }
 
     public String getDescription() {
-        return strings().getString(HJBStrings.DESCRIPTION_OF_DELETE_COMMANDS,
-                                   new Integer(getConnectionIndex()),
-                                   HJBConnection.class.getName());
+        return description;
     }
 
     public String getStatusMessage() {
         if (isExecutedOK()) {
-            return strings().getString(HJBStrings.SUCCESS_MESSAGE_OF_DELETE_COMMANDS,
-                                       HJBConnection.class.getName(),
-                                       new Integer(getConnectionIndex()));
+            return getSuccessMessage();
         } else {
             return getFault().getMessage();
         }
     }
 
-    public int getConnectionIndex() {
+    protected int getConnectionIndex() {
         return connectionIndex;
     }
 
     protected void setConnectionIndex(int connectionIndex) {
         this.connectionIndex = connectionIndex;
     }
-
+    
+    protected String getSuccessMessage() {
+        return successMessage;
+    }
+    
+    protected void updateDescription(int connectionIndex) {
+        description = strings().getString(HJBStrings.SIMPLE_DELETE_DESCRIPTION,
+                                           getTheFactory().getConnection(connectionIndex));
+    }
+     
+    protected void updateSuccessMessage(int connectionIndex) {
+        successMessage = strings().getString(HJBStrings.SIMPLE_DELETE_SUCCESS_MESSAGE,
+                                             getTheFactory().getConnection(connectionIndex));
+    }
+    
+    private String successMessage;
+    private String description;
     private int connectionIndex;
-    public static final int UNSET_CONNECTION_INDEX = Integer.MIN_VALUE;
 }

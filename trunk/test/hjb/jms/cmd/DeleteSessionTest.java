@@ -77,6 +77,7 @@ public class DeleteSessionTest extends MockObjectTestCase {
             mockSession.expects(once())
                 .method("close")
                 .will(throwException(possibleExceptions[i]));
+            mockSession.stubs().method("getTransacted").will(returnValue(false));
             Session testSession = (Session) mockSession.proxy();
             mockHJB.make1Session(root,
                                  testSession,

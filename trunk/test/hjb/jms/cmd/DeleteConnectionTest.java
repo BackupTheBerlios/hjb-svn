@@ -49,6 +49,7 @@ public class DeleteConnectionTest extends MockObjectTestCase {
         connectionMock.expects(once()).method("stop");
         connectionMock.expects(once()).method("close");
         connectionMock.stubs().method("setExceptionListener");
+        connectionMock.stubs().method("getClientID").will(returnValue(null));
 
         mockHJB.make1Connection(root,
                                 testConnection,
@@ -79,6 +80,7 @@ public class DeleteConnectionTest extends MockObjectTestCase {
             connectionMock.expects(once())
                 .method("setExceptionListener")
                 .withAnyArguments();
+            connectionMock.stubs().method("getClientID").will(returnValue(null));
             connectionMock.expects(once())
                 .method("stop")
                 .will(throwException(possibleExceptions[i]));

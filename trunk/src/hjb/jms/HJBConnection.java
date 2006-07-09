@@ -26,6 +26,7 @@ import javax.jms.*;
 
 import org.apache.log4j.Logger;
 
+import hjb.http.cmd.PathNaming;
 import hjb.jms.cmd.JMSCommandRunner;
 import hjb.misc.HJBException;
 import hjb.misc.HJBNotFoundException;
@@ -135,6 +136,10 @@ public class HJBConnection implements Connection {
         }
     }
 
+    public SessionDescription getSessionDescription(int index) {
+        return new SessionDescription(getSession(index), index);
+    }
+
     public void assertSessionExists(int sessionIndex) {
         getSession(sessionIndex);
     }
@@ -156,7 +161,7 @@ public class HJBConnection implements Connection {
                 throw new HJBNotFoundException(message);
             } catch (JMSException e) {
                 String message = strings().getString(HJBStrings.COULD_NOT_CLOSE_SESSION,
-                                                     new Integer(sessionIndex));
+                                                     getSessionDescription(sessionIndex));
                 LOG.error(message);
                 throw new HJBException(message);
             }
@@ -189,6 +194,11 @@ public class HJBConnection implements Connection {
         return connectionIndex;
     }
 
+    public String toString() {
+        return PathNaming.CONNECTION + "-" + getConnectionIndex()
+                + getFormattedClientID();
+    }
+
     protected void addAndStartCommandRunner(int sessionIndex) {
         JMSCommandRunner r = new JMSCommandRunner();
         addCommandRunner(r, sessionIndex);
@@ -196,6 +206,20 @@ public class HJBConnection implements Connection {
                 + sessionIndex);
         runnerThread.setDaemon(true);
         runnerThread.start();
+    }
+
+    protected String getFormattedClientID() {
+        try {
+            String clientID = getClientID();
+            if (null == clientID) {
+                return "";
+            } else {
+                return strings().getString(HJBStrings.FORMAT_CLIENT_ID,
+                                           clientID);
+            }
+        } catch (JMSException e) {
+            return "";
+        }
     }
 
     protected void deleteCommandRunner(int sessionIndex) {
@@ -290,7 +314,7 @@ public class HJBConnection implements Connection {
         } catch (JMSException e) {
             String message = strings().getString(HJBStrings.COULD_NOT_SET_CLIENT_ID,
                                                  clientId,
-                                                 new Integer(getConnectionIndex()));
+                                                 this);
             LOG.error(message);
         }
     }

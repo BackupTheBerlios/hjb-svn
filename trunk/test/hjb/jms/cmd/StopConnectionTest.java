@@ -47,6 +47,7 @@ public class StopConnectionTest extends MockObjectTestCase {
         Mock connectionMock = mock(Connection.class);
         Connection testConnection = (Connection) connectionMock.proxy();
         connectionMock.expects(once()).method("stop");
+        connectionMock.stubs().method("getClientID").will(returnValue(null));
         connectionMock.stubs().method("setExceptionListener");
 
         mockHJB.make1Connection(root,

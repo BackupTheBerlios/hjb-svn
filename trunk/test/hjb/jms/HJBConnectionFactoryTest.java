@@ -28,6 +28,7 @@ import javax.jms.JMSException;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.stub.ReturnStub;
 
 import hjb.misc.HJBException;
 import hjb.testsupport.MockConnectionBuilder;
@@ -201,6 +202,7 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
 
     public void testJMSExceptionOnStartConnectionThrows() throws Exception {
         Mock mockConnection = connectionBuilder.createMockConnectionThatThrowsJMSOn("start");
+        mockConnection.stubs().method("getClientID").will(new ReturnStub(null));
         registerToVerify(mockConnection);
         Connection testConnection = (Connection) mockConnection.proxy();
         Mock mockFactory = factoryBuilder.createMockConnectionFactory(testConnection);
@@ -218,6 +220,7 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
 
     public void testStopConnection() throws Exception {
         Mock mockConnection = connectionBuilder.createMockConnectionReturnedByConnectionFactory();
+        mockConnection.stubs().method("getClientID").will(new ReturnStub(null));
         registerToVerify(mockConnection);
         mockConnection.expects(once()).method("stop");
         Connection testConnection = (Connection) mockConnection.proxy();
@@ -260,6 +263,7 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
 
     public void testGetMetaData() throws Exception {
         Mock mockConnection = connectionBuilder.createMockConnectionReturnedByConnectionFactory();
+        mockConnection.stubs().method("getClientID").will(new ReturnStub(null));
         registerToVerify(mockConnection);
         mockConnection.expects(once()).method("getMetaData");
         Connection testConnection = (Connection) mockConnection.proxy();
@@ -275,6 +279,7 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
 
     public void testJMSExceptionOnStopConnectionThrows() throws Exception {
         Mock mockConnection = connectionBuilder.createMockConnectionThatThrowsJMSOn("stop");
+        mockConnection.stubs().method("getClientID").will(new ReturnStub(null));
         registerToVerify(mockConnection);
         Connection testConnection = (Connection) mockConnection.proxy();
         Mock mockFactory = factoryBuilder.createMockConnectionFactory(testConnection);
@@ -318,6 +323,7 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
     public void testJMSExceptionOnGetConnectionMetaDataThrows()
             throws Exception {
         Mock mockConnection = connectionBuilder.createMockConnectionThatThrowsJMSOn("getMetaData");
+        mockConnection.stubs().method("getClientID").will(new ReturnStub(null));
         registerToVerify(mockConnection);
         Connection testConnection = (Connection) mockConnection.proxy();
         Mock mockFactory = factoryBuilder.createMockConnectionFactory(testConnection);

@@ -69,7 +69,7 @@ public class HJBMessenger {
             return (HJBMessage[]) result.toArray(new HJBMessage[result.size()]);
         } catch (JMSException e) {
             String message = strings().getString(HJBStrings.COULD_NOT_BROWSE_QUEUE,
-                                                 new Integer(getSessionIndex()),
+                                                 getSessionDescription(),
                                                  new Integer(index));
             LOG.error(message, e);
             throw new HJBException(message, e);
@@ -87,7 +87,7 @@ public class HJBMessenger {
         try {
             if (null == asHJB) {
                 String message = strings().getString(HJBStrings.IGNORED_NULL_HJB_MESSAGE,
-                                                     new Integer(getSessionIndex()),
+                                                     getSessionDescription(),
                                                      new Integer(index));
                 LOG.warn(message);
                 return null;
@@ -105,7 +105,7 @@ public class HJBMessenger {
             return asHJB;
         } catch (JMSException e) {
             String message = strings().getString(HJBStrings.SEND_OF_MESSAGE_FAILED,
-                                                 new Integer(getSessionIndex()));
+                                                 getSessionDescription());
             LOG.error(message);
             throw new HJBException(message);
         }
@@ -140,6 +140,10 @@ public class HJBMessenger {
 
     public int getSessionIndex() {
         return sessionIndex;
+    }
+    
+    public SessionDescription getSessionDescription() {
+        return new SessionDescription(getSession(), getSessionIndex());
     }
 
     protected void debugMessage(HJBMessage asHJB) {
@@ -205,7 +209,7 @@ public class HJBMessenger {
         try {
             if (null == asJMS) {
                 String message = strings().getString(HJBStrings.NO_MESSAGE_AVAILABLE,
-                                                     new Integer(getSessionIndex()));
+                                                     getSessionDescription());
                 throw new HJBNotFoundException(message);
             }
             asJMS.acknowledge();
@@ -220,7 +224,7 @@ public class HJBMessenger {
 
     protected HJBMessage handleReceiptFailure(Exception e) throws HJBException {
         String message = strings().getString(HJBStrings.RECEIVE_OF_MESSAGE_FAILED,
-                                             new Integer(getSessionIndex()));
+                                             getSessionDescription());
         LOG.error(message);            
         throw new HJBException(message, e);
     }

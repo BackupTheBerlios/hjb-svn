@@ -74,6 +74,7 @@ public class ReceiveFromConsumerTest extends MockObjectTestCase {
         MessageConsumer testConsumer = (MessageConsumer) mockConsumer.proxy();
 
         Mock mockSession = mock(Session.class);
+        mockSession.stubs().method("getTransacted").will(returnValue(false));
         mockSession.stubs()
             .method("createConsumer")
             .will(returnValue(testConsumer));
@@ -114,6 +115,7 @@ public class ReceiveFromConsumerTest extends MockObjectTestCase {
             MessageConsumer testConsumer = (MessageConsumer) mockConsumer.proxy();
 
             Mock mockSession = mock(Session.class);
+            mockSession.stubs().method("getTransacted").will(returnValue(false));
             mockSession.stubs()
                 .method("createConsumer")
                 .will(returnValue(testConsumer));

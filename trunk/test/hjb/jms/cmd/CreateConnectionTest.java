@@ -109,7 +109,7 @@ public class CreateConnectionTest extends MockObjectTestCase {
         Mock connectionMock = mock(Connection.class);
         Connection testConnection = (Connection) connectionMock.proxy();
         connectionMock.stubs().method("setExceptionListener");
-        connectionMock.expects(once())
+        connectionMock.expects(atLeastOnce())
             .method("getClientID")
             .will(returnValue("testProviderClientId"));
         connectionMock.expects(never()).method("setClientID");
@@ -144,7 +144,7 @@ public class CreateConnectionTest extends MockObjectTestCase {
         Mock connectionMock = mock(Connection.class);
         Connection testConnection = (Connection) connectionMock.proxy();
         connectionMock.stubs().method("setExceptionListener");
-        connectionMock.expects(once())
+        connectionMock.expects(atLeastOnce())
             .method("getClientID")
             .will(returnValue(null));
         connectionMock.expects(once())

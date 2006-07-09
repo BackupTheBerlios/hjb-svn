@@ -76,6 +76,7 @@ public class ReadMetaDataTest extends MockObjectTestCase {
             .method("getMetaData")
             .will(returnValue(makeMockMetaData()));
         connectionMock.stubs().method("setExceptionListener");
+        connectionMock.stubs().method("getClientID").will(returnValue(null));
 
         mockHJB.make1Connection(root,
                                 testConnection,

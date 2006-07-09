@@ -45,6 +45,7 @@ public class MockConnectionBuilder {
     public Mock createMockConnection(Session testSession) {
         Mock result = new Mock(Connection.class);
         result.stubs().method("setExceptionListener");
+        result.stubs().method("getClientID").will(new ReturnStub(null));
         result.stubs()
             .method("createSession")
             .will(new ReturnStub(testSession));
@@ -54,6 +55,7 @@ public class MockConnectionBuilder {
     public Mock createMockConnectionReturnedByConnectionFactory() {
         Mock result = new Mock(Connection.class);
         result.stubs().method("setExceptionListener");
+        result.stubs().method("getClientID").will(new ReturnStub(null));
         result.stubs()
             .method("createSession")
             .will(new ReturnStub(sessionBuilder.createMockSession()));

@@ -50,6 +50,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         Mock mockConnection = connectionBuilder.createMockConnection();
         registerToVerify(mockConnection);
         mockConnection.stubs().method("setExceptionListener");
+        mockConnection.stubs().method("getClientID").will(returnValue(null));
         mockConnection.expects(once()).method("createSession");
         Connection testConnection = (Connection) mockConnection.proxy();
 
@@ -62,6 +63,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         Connection testConnection = (Connection) mockConnection.proxy();
         registerToVerify(mockConnection);
         mockConnection.stubs().method("setExceptionListener");
+        mockConnection.stubs().method("getClientID").will(returnValue(null));
         mockConnection.expects(once()).method("createSession");
 
         HJBConnection h = new HJBConnection(testConnection, 0);
@@ -83,6 +85,7 @@ public class HJBConnectionTest extends MockObjectTestCase {
         Mock mockConnection = connectionBuilder.createMockConnection();
         registerToVerify(mockConnection);
         mockConnection.stubs().method("setExceptionListener");
+        mockConnection.stubs().method("getClientID").will(returnValue(null));
         mockConnection.expects(atLeastOnce()).method("createSession");
         Connection testConnection = (Connection) mockConnection.proxy();
 

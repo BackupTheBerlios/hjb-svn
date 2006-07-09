@@ -70,7 +70,7 @@ public abstract class HJBSessionItems {
                                  String messageKey,
                                  Exception e) {
         logAndThrowFailure(strings().getString(messageKey,
-                                               new Integer(itemIndex)), e);
+                                               getSessionDescription(itemIndex)), e);
     }
 
     protected void logAndThrowFailure(String message, Exception e) {
@@ -133,6 +133,10 @@ public abstract class HJBSessionItems {
             handleFailure(sessionIndex, HJBStrings.SESSION_NOT_FOUND, e);
             return null;
         }
+    }
+
+    protected SessionDescription getSessionDescription(int sessionIndex) {
+        return new SessionDescription(getSession(sessionIndex), sessionIndex);
     }
 
     protected HJBStrings strings() {

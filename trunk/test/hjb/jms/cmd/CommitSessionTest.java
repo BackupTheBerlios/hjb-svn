@@ -46,6 +46,7 @@ public class CommitSessionTest extends MockObjectTestCase {
         HJBRoot root = new HJBRoot(testRootPath);
         Mock mockSession = mock(Session.class);
         mockSession.expects(once()).method("commit");
+        mockSession.stubs().method("getTransacted").will(returnValue(true));
         Session testSession = (Session) mockSession.proxy();
         mockHJB.make1Session(root, testSession, "testProvider", "testFactory");
         HJBConnection testConnection = root.getProvider("testProvider")
@@ -72,6 +73,7 @@ public class CommitSessionTest extends MockObjectTestCase {
         for (int i = 0; i < possibleExceptions.length; i++) {
             HJBRoot root = new HJBRoot(testRootPath);
             Mock mockSession = mock(Session.class);
+            mockSession.stubs().method("getTransacted").will(returnValue(true));
             mockSession.expects(once())
                 .method("commit")
                 .will(throwException(possibleExceptions[i]));

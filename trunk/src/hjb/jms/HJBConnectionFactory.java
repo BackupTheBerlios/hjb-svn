@@ -66,9 +66,9 @@ public class HJBConnectionFactory implements ConnectionFactory {
                 try {
                     stopThenCloseConnection((HJBConnection) i.next());
                 } catch (HJBException e) {
-                    // it is ok to handle the exception in this way - it is
-                    // logged
-                    // when it is created, and we don't want to stop until all
+                    // it is ok to handle the exception in this way - the
+                    // exception is
+                    // logged on creation, and we don't want to stop until all
                     // the connections are closed
                 }
             }
@@ -136,7 +136,7 @@ public class HJBConnectionFactory implements ConnectionFactory {
             try {
                 getConnection(index).start();
                 LOG.info(strings().getString(HJBStrings.STARTED_CONNECTION,
-                                             new Integer(index)));
+                                             getConnection(index)));
             } catch (IndexOutOfBoundsException e) {
                 handleConnectionNotFound(index, e);
             } catch (JMSException e) {
@@ -150,7 +150,7 @@ public class HJBConnectionFactory implements ConnectionFactory {
             try {
                 getConnection(index).stop();
                 LOG.info(strings().getString(HJBStrings.STOPPED_CONNECTION,
-                                             new Integer(index)));
+                                             getConnection(index)));
             } catch (IndexOutOfBoundsException e) {
                 handleConnectionNotFound(index, e);
             } catch (JMSException e) {
@@ -163,10 +163,11 @@ public class HJBConnectionFactory implements ConnectionFactory {
         synchronized (activeConnections) {
             try {
                 HJBConnection c = getConnection(index);
+                String description = c.toString();
                 stopThenCloseConnection(c);
                 activeConnections.remove(new Integer(index));
                 LOG.info(strings().getString(HJBStrings.DELETED_CONNECTION,
-                                             new Integer(index)));
+                                             description));
             } catch (IndexOutOfBoundsException e) {
                 handleConnectionNotFound(index, e);
             }
@@ -193,14 +194,16 @@ public class HJBConnectionFactory implements ConnectionFactory {
             c.deleteSessions();
             c.close();
         } catch (JMSException e) {
-            handleFailedConnectionClosure(e);
+            handleFailedConnectionClosure(e, c);
         }
     }
 
-    protected HJBConnection handleFailedConnectionClosure(Exception e) {
-        LOG.error(strings().getString(HJBStrings.COULD_NOT_CLOSE_CONNECTION), e);
-        throw new HJBException(strings().getString(HJBStrings.COULD_NOT_CLOSE_CONNECTION),
-                               e);
+    protected HJBConnection handleFailedConnectionClosure(Exception e,
+                                                          HJBConnection c) {
+        String message = strings().getString(HJBStrings.COULD_NOT_CLOSE_CONNECTION,
+                                             c);
+        LOG.error(message, e);
+        throw new HJBException(message, e);
     }
 
     protected HJBConnection handleFailedConnectionRegistration(Exception e) {
@@ -210,26 +213,21 @@ public class HJBConnectionFactory implements ConnectionFactory {
         throw new HJBException(message, e);
     }
 
-    protected void handleConnectionCloseFailure(Exception e) {
-        logAndThrowFailure(strings().getString(HJBStrings.COULD_NOT_STOP_CONNECTION),
-                           e);
-    }
-
     protected void handleConnectionStopFailure(int index, Exception e) {
         String message = strings().getString(HJBStrings.COULD_NOT_STOP_CONNECTION,
-                                             new Integer(index));
+                                             getConnection(index));
         logAndThrowFailure(message, e);
     }
 
     protected void handleConnectionStartFailure(int index, Exception e) {
         String message = strings().getString(HJBStrings.COULD_NOT_START_CONNECTION,
-                                             new Integer(index));
+                                             getConnection(index));
         logAndThrowFailure(message, e);
     }
 
     protected void handleConnectionMetaDataFailure(int index, Exception e) {
         String message = strings().getString(HJBStrings.COULD_NOT_OBTAIN_CONNECTION_METADATA,
-                                             new Integer(index));
+                                             getConnection(index));
         logAndThrowFailure(message, e);
     }
 

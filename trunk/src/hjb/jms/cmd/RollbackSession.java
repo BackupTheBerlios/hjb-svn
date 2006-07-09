@@ -47,13 +47,13 @@ public class RollbackSession extends ConnectionCommand {
 
     public String getDescription() {
         return strings().getString(HJBStrings.DESCRIPTION_OF_SESSION_ROLLBACK,
-                                   new Integer(getSessionIndex()));
+                                   getTheConnection().getSessionDescription(getSessionIndex()));
     }
 
     public String getStatusMessage() {
         if (isExecutedOK()) {
             return strings().getString(HJBStrings.SUCCESS_MESSAGE_OF_SESSION_ROLLBACK,
-                                       new Integer(getSessionIndex()));
+                                       getTheConnection().getSessionDescription(getSessionIndex()));
         } else {
             return getFault().getMessage();
         }

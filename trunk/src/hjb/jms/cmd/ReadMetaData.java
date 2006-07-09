@@ -47,12 +47,14 @@ public class ReadMetaData extends ConnectionCommand {
     }
 
     public String getDescription() {
-        return strings().getString(HJBStrings.DESCRIPTION_OF_READ_META_DATA);
+        return strings().getString(HJBStrings.DESCRIPTION_OF_READ_META_DATA,
+                                   getTheConnection());
     }
 
     public String getStatusMessage() {
         if (isExecutedOK()) {
-            return strings().getString(HJBStrings.SUCCESS_MESSAGE_OF_READ_META_DATA);
+            return strings().getString(HJBStrings.SUCCESS_MESSAGE_OF_READ_META_DATA,
+                                       getTheConnection());
         } else {
             return getFault().getMessage();
         }
