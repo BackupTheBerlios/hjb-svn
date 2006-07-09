@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<project name="HJB instrumentation" default="" basedir=".">
+
+  <description>
+    The build file used to generate metrics for the HJB project,
+    designed to be imported into the main build.xml file
+  </description>
+
+  <!-- setup values used in the EMMA tasks -->
+  <path id='emma.lib'>
+    <fileset dir='${emma.dir}' includes='emma*.jar' />
+  </path>
+  <path id="instr.lib">
+    <fileset dir="${instr.dir}" includes="**/*.jar"/>
+  </path>
+  <taskdef resource='emma_ant.properties' classpathref='emma.lib'/>
+
+
+  <!-- **** Targets for creating the EMMA instrumented jar **** -->
+
+  <target name="instrument.jar"
+	  depends="dist.jar, only.instrument.jar"/>
+
+  <target name="only.instrument.jar">
+    <delete dir="${instr.dir}" failonerror="false"/>
+
+    <emma enabled="${emma.enabled}" >
+      <instr mode="fullcopy"
+	     outdir="${instr.dir}"
+             outfile="${instr.dir}/metadata.em"
+	     merge="no">
+	<instrpath>
+	  <fileset dir="${dist.dir}/lib" includes="${dist.jar.name}" />
+	</instrpath>
+      </instr>
+    </emma>
+  </target>
+
+  <!-- **** Targets for running the test suite 
+       against the EMMA instrumented jar **** -->
+
+  <target name="instrument.test"
+	  depends="instrument.jar, only.instrument.test"/>
+
+  <target name="only.instrument.jar.and.test"
+	  depends="only.instrument.jar, only.instrument.test"/> 
+
+  <target name="only.instrument.test"
+	  description="runs the junit test cases with EMMA instrumentation">
+
+    <!-- ***** Run JUnit with the EMMA instrumented jar file -->
+    <junit fork="yes" printsummary="off" haltonfailure="no">
+      <classpath>
+        <path refid="instr.lib"/>
+	<pathelement location="${build.dir}/classes"/>
+	<path refid="java.libs"/>
+      </classpath>
+
+      <!-- ******* EMMA coverage parameters junit ******* --> 
+      <jvmarg value="-Demma.coverage.out.file=${instr.dir}/coverage.em"/> 
+      <jvmarg value="-Demma.coverage.out.merge=true"/> 
+
+      <formatter type="plain"/>
+      <batchtest fork="yes" todir="${reports.tests}">
+	<fileset dir="${test.dir}">
+	  <include name="**/*Test.java"/>
+	</fileset>
+      </batchtest>
+    </junit>
+
+    <!-- ***** Produce the EMMA Report ***** --> 
+    <delete dir="${instr.doc.dir}" failonerror="false"/>
+    <mkdir dir="${instr.doc.dir}"/>
+    <emma enabled="${emma.enabled}"> 
+      <report sourcepath="${src.dir}"> 
+	<fileset dir="${instr.dir}"> 
+	  <include name="*.em"/> 
+	</fileset> 
+	
+	<txt outfile="${instr.doc.dir}/coverage.txt"/> 
+	<html outfile="${instr.doc.dir}/coverage.html"/> 
+      </report> 
+    </emma> 
+
+  </target>
+
+  <!-- Generate the test EMMA report and update it on the website  -->
+
+  <target name="instrument.publish"
+	  depends="instrument.test">
+    <mkdir dir="${instr.web.dir}"/>
+    <copy todir="${instr.web.dir}">
+      <fileset dir="${instr.doc.dir}">
+	<include name="**/*.html"/>
+      </fileset>
+    </copy>
+  </target>
+
+</project>
