@@ -37,7 +37,7 @@ public class ReceiveFromSubscriber extends ReceiveFromConsumer {
 
     public String getDescription() {
         return strings().getString(HJBStrings.DESCRIPTION_OF_RECEIVE_FROM_SUBSCRIBER,
-                                   new Integer(getConsumerIndex()),
+                                   getMessenger().getSubscriberDescription(getConsumerIndex()),
                                    getMessenger().getSessionDescription());
     }
 

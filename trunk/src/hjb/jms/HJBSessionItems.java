@@ -66,12 +66,14 @@ public abstract class HJBSessionItems {
     }
 
     protected void handleFailure(int sessionIndex,
-                                 int itemIndex,
+                                 String itemDescription,
                                  String messageKey,
                                  Exception e) {
         logAndThrowFailure(strings().getString(messageKey,
-                                               getSessionDescription(itemIndex)), e);
+                                               getSessionDescription(sessionIndex),
+                                               itemDescription), e);
     }
+
 
     protected void logAndThrowFailure(String message, Exception e) {
         LOG.error(message, e);

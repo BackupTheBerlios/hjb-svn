@@ -26,24 +26,19 @@ public class SessionDescription {
         this.sessionIndex = sessionIndex;
     }
 
-    protected HJBStrings strings() {
-        return STRINGS;
+    public String toString() {
+        return PathNaming.SESSION + "-" + getSessionIndex()
+                + getExtraInformation();
     }
 
     protected String getExtraInformation() {
         try {
-            String transacted = getTheSession().getTransacted() ? strings().getString(HJBStrings.TRANSACTED)
-                    : "";
-            return strings().getString(HJBStrings.SIMPLE_SESSION_DESCRIPTION,
-                                       transacted);
+            return !getTheSession().getTransacted() ? ""
+                    : strings().getString(HJBStrings.SESSION_DESCRIPTION,
+                                          strings().getString(HJBStrings.TRANSACTED));
         } catch (JMSException e) {
             return "";
         }
-    }
-
-    public String toString() {
-        return PathNaming.SESSION + "-" + getSessionIndex()
-                + getExtraInformation();
     }
 
     protected Session getTheSession() {
@@ -52,6 +47,10 @@ public class SessionDescription {
 
     protected int getSessionIndex() {
         return sessionIndex;
+    }
+
+    protected HJBStrings strings() {
+        return STRINGS;
     }
 
     private Session theSession;

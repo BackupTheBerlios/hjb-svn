@@ -54,7 +54,7 @@ public class SendHJBMessage extends MessengerCommand {
 
     public String getDescription() {
         return strings().getString(HJBStrings.DESCRIPTION_OF_SEND_HJB_MESSAGE,
-                                   new Integer(getProducerIndex()),
+                                   getMessenger().getProducerDescription(getProducerIndex()),
                                    getMessenger().getSessionDescription());
     }
 

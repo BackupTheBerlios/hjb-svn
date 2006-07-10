@@ -461,5 +461,23 @@ public final class HJBStrings {
 
     public static final String TRANSACTED = "transacted";
     
-    public static final String SIMPLE_SESSION_DESCRIPTION = "simple.session.description";
+    public static final String SESSION_DESCRIPTION = "session.description";
+
+    public static final String INVALID_PRODUCER_INDEX = "invalid.producer.index";
+
+    public static final String INVALID_CONSUMER_INDEX = "invalid.consumer.index";
+
+    public static final String INVALID_BROWSER_INDEX = "invalid.browser.index";
+
+    public static final String INVALID_SUBSCRIBER_INDEX = "invalid.subscriber.index";
+
+    public static final String PRODUCER_DESCRIPTION = "producer.description";
+
+    public static final String SUBSCRIBER_DESCRIPTION = "subscriber.description";
+
+    public static final String CONSUMER_DESCRIPTION = "consumer.description";
+
+    public static final String BROWSER_DESCRIPTION = "browser.description";
+
+    public static final String ANY_PRODUCER = "any.producer";
 }

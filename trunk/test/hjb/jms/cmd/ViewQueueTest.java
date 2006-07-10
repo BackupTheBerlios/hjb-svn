@@ -72,6 +72,7 @@ public class ViewQueueTest extends MockObjectTestCase {
         List testMessages = new ArrayList();
         testMessages.add(testMessage);
         Mock mockBrowser = mock(QueueBrowser.class);
+        mockBrowser.stubs().method("getQueue").will(returnValue(null));
         mockBrowser.expects(once())
             .method("getEnumeration")
             .will(returnValue(Collections.enumeration(testMessages)));
@@ -121,6 +122,7 @@ public class ViewQueueTest extends MockObjectTestCase {
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
             Mock mockBrowser = mock(QueueBrowser.class);
+            mockBrowser.stubs().method("getQueue").will(returnValue(null));
             mockBrowser.expects(once())
                 .method("getEnumeration")
                 .will(throwException(possibleExceptions[i]));

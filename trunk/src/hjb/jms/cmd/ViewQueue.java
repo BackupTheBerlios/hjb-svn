@@ -43,7 +43,7 @@ public class ViewQueue extends MessengerCommand {
 
     public String getDescription() {
         return strings().getString(HJBStrings.DESCRIPTION_OF_VIEW_QUEUE,
-                                   new Integer(getBrowserIndex()),
+                                   getMessenger().getBrowserDescription(getBrowserIndex()),
                                    getMessenger().getSessionDescription());
     }
 

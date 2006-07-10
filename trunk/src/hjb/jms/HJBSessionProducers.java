@@ -63,10 +63,7 @@ public class HJBSessionProducers extends HJBSessionItems {
         try {
             return getProducers(sessionIndex)[producerIndex];
         } catch (IndexOutOfBoundsException e) {
-            handleFailure(sessionIndex,
-                          producerIndex,
-                          HJBStrings.PRODUCER_NOT_FOUND,
-                          e);
+            handleFailure(sessionIndex, "" + producerIndex, HJBStrings.PRODUCER_NOT_FOUND, e);
             return null;
         }
     }

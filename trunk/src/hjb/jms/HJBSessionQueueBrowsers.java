@@ -74,10 +74,7 @@ public class HJBSessionQueueBrowsers extends HJBSessionItems {
         try {
             return getBrowsers(sessionIndex)[browserIndex];
         } catch (IndexOutOfBoundsException e) {
-            handleFailure(sessionIndex,
-                          browserIndex,
-                          HJBStrings.BROWSER_NOT_FOUND,
-                          e);
+            handleFailure(sessionIndex, "" + browserIndex, HJBStrings.BROWSER_NOT_FOUND, e);
             return null;
         }
     }

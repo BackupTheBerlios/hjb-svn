@@ -72,10 +72,6 @@ public class SendHJBMessageTest extends MockObjectTestCase {
         Message testMessage = (TextMessage) mockJMSMessage.proxy();
 
         Mock mockProducer = mock(MessageProducer.class);
-        mockProducer.expects(once()).method("send");
-        mockProducer.expects(atLeastOnce())
-            .method("setDisableMessageTimestamp");
-        mockProducer.expects(atLeastOnce()).method("setDisableMessageID");
         mockProducer.stubs()
             .method("getTimeToLive")
             .will(returnValue(Message.DEFAULT_TIME_TO_LIVE));
@@ -85,6 +81,12 @@ public class SendHJBMessageTest extends MockObjectTestCase {
         mockProducer.stubs()
             .method("getDeliveryMode")
             .will(returnValue(Message.DEFAULT_DELIVERY_MODE));
+        mockProducer.stubs().method("getDestination").will(returnValue(null));
+        
+        mockProducer.expects(once()).method("send");
+        mockProducer.expects(atLeastOnce())
+            .method("setDisableMessageTimestamp");
+        mockProducer.expects(atLeastOnce()).method("setDisableMessageID");
         MessageProducer testProducer = (MessageProducer) mockProducer.proxy();
 
         Mock mockSession = mock(Session.class);

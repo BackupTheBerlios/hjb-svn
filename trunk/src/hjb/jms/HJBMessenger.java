@@ -70,7 +70,7 @@ public class HJBMessenger {
         } catch (JMSException e) {
             String message = strings().getString(HJBStrings.COULD_NOT_BROWSE_QUEUE,
                                                  getSessionDescription(),
-                                                 new Integer(index));
+                                                 getBrowserDescription(index));
             LOG.error(message, e);
             throw new HJBException(message, e);
         }
@@ -88,7 +88,7 @@ public class HJBMessenger {
             if (null == asHJB) {
                 String message = strings().getString(HJBStrings.IGNORED_NULL_HJB_MESSAGE,
                                                      getSessionDescription(),
-                                                     new Integer(index));
+                                                     getProducerDescription(index));
                 LOG.warn(message);
                 return null;
             }
@@ -144,6 +144,22 @@ public class HJBMessenger {
     
     public SessionDescription getSessionDescription() {
         return new SessionDescription(getSession(), getSessionIndex());
+    }
+    
+    public ProducerDescription getProducerDescription(int index) {
+        return new ProducerDescription(getProducerFor(index), index);
+    }
+
+    public BrowserDescription getBrowserDescription(int index) {
+        return new BrowserDescription(getBrowserFor(index), index);
+    }
+
+    public ConsumerDescription getConsumerDescription(int index) {
+        return new ConsumerDescription(getConsumerFor(index), index);
+    }
+
+    public SubscriberDescription getSubscriberDescription(int index) {
+        return new SubscriberDescription(getSubscriberFor(index), index);
     }
 
     protected void debugMessage(HJBMessage asHJB) {

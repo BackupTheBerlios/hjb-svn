@@ -68,6 +68,8 @@ public class ReceiveFromSubscriberTest extends MockObjectTestCase {
         Message testMessage = (TextMessage) mockTextMessage.proxy();
 
         Mock mockSubscriber = mock(TopicSubscriber.class);
+        mockSubscriber.stubs().method("getTopic").will(returnValue(null));
+        mockSubscriber.stubs().method("getNoLocal").will(returnValue(false));
         mockSubscriber.expects(once())
             .method("receive")
             .will(returnValue(testMessage));

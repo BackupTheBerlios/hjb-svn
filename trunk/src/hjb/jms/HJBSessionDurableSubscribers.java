@@ -86,10 +86,7 @@ public class HJBSessionDurableSubscribers extends HJBSessionItems {
         try {
             return getSubscribers(sessionIndex)[producerIndex];
         } catch (IndexOutOfBoundsException e) {
-            handleFailure(sessionIndex,
-                          producerIndex,
-                          HJBStrings.SUBSCRIBER_NOT_FOUND,
-                          e);
+            handleFailure(sessionIndex, "" + producerIndex, HJBStrings.SUBSCRIBER_NOT_FOUND, e);
             return null;
         }
     }

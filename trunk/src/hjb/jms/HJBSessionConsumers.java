@@ -100,10 +100,7 @@ public class HJBSessionConsumers extends HJBSessionItems {
         try {
             return getConsumers(sessionIndex)[consumerIndex];
         } catch (IndexOutOfBoundsException e) {
-            handleFailure(sessionIndex,
-                          consumerIndex,
-                          HJBStrings.CONSUMER_NOT_FOUND,
-                          e);
+            handleFailure(sessionIndex, "" + consumerIndex, HJBStrings.CONSUMER_NOT_FOUND, e);
             return null;
         }
     }

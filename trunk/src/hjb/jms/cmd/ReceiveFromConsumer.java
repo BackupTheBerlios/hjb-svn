@@ -53,7 +53,7 @@ public class ReceiveFromConsumer extends MessengerCommand {
     
     public String getDescription() {
         return strings().getString(HJBStrings.DESCRIPTION_OF_RECEIVE_FROM_CONSUMER,
-                                   new Integer(getConsumerIndex()),
+                                   getMessenger().getConsumerDescription(getConsumerIndex()),
                                    getMessenger().getSessionDescription());
     }
 

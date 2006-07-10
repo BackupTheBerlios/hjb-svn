@@ -3,9 +3,11 @@ package hjb.jms;
 import javax.jms.Session;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
-public class SessionDescriptionTest extends MockObjectTestCase {
+import hjb.http.cmd.PathNaming;
+import hjb.misc.HJBStrings;
+
+public class SessionDescriptionTest extends BaseDescriptionTestCase {
     
     public void testConstructorShouldThrowOnNegativeIndices() {
         Mock mockSession = mock(Session.class);       
@@ -17,12 +19,34 @@ public class SessionDescriptionTest extends MockObjectTestCase {
         }
     }
 
-    public void testConstructorShouldThrowOnNullSessions() {
+    public void testConstructorShouldThrowOnNullInputs() {
         try {
             new SessionDescription(null, 0);
             fail("Should have thrown an IllegalArgumentException");
         } catch (IllegalArgumentException e) {            
         }
     }
+    
+    public void testToStringHasNoXtraInfoForNonTransactedSessions() {
+        Mock mockSession = mock(Session.class);
+        mockSession.stubs().method("getTransacted").will(returnValue(false));
+        
+        Session testSession = (Session) mockSession.proxy();
+        SessionDescription testDescription = new SessionDescription(testSession, 0);
+        assertContains(testDescription.toString(), "0");
+        assertContains(testDescription.toString(), PathNaming.SESSION);
+        assertDoesNotContain(testDescription.toString(), strings().getString(HJBStrings.TRANSACTED));
+    }
 
+    public void testToStringHasXtraInfoForTransactedSessions() {
+        Mock mockSession = mock(Session.class);
+        mockSession.stubs().method("getTransacted").will(returnValue(true));
+        
+        Session testSession = (Session) mockSession.proxy();
+        SessionDescription testDescription = new SessionDescription(testSession, 0);
+        assertContains(testDescription.toString(), "0");
+        assertContains(testDescription.toString(), PathNaming.SESSION);
+        assertContains(testDescription.toString(), strings().getString(HJBStrings.TRANSACTED));
+    }
+ 
 }
