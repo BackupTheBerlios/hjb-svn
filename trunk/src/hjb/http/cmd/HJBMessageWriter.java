@@ -161,9 +161,12 @@ public class HJBMessageWriter {
         PrintWriter pw = new PrintWriter(aWriter);
         for (Iterator i = anyMap.keySet().iterator(); i.hasNext();) {
             Object key = i.next();
-            pw.println(strings().getString(HJBStrings.NAME_AND_VALUE,
-                                           key,
-                                           anyMap.get(key)));
+            pw.print(strings().getString(HJBStrings.NAME_AND_VALUE,
+                                         key,
+                                         anyMap.get(key)));
+            if (i.hasNext()) {
+                pw.println();
+            }
         }
     }
 
@@ -194,7 +197,11 @@ public class HJBMessageWriter {
         PrintWriter pw = new PrintWriter(aWriter);
         for (int i = 0; i < someMessages.length; i++) {
             writeAsText(someMessages[i], aWriter);
-            pw.println(MESSAGE_SEPARATOR);
+            if (i + 1 != someMessages.length) {
+                pw.println();
+                pw.print(MESSAGE_SEPARATOR);
+                pw.println();
+            }
         }
     }
 

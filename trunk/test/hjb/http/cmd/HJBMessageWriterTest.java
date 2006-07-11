@@ -32,7 +32,7 @@ public class HJBMessageWriterTest extends TestCase {
     
     protected void setUp() {
         testMessageWriter = new HJBMessageWriter();
-        testString = "foo=bar" + CR + "baz=(int 1)" + CR + "bar=(long 5)" + CR;
+        testString = "foo=bar" + CR + "baz=(int 1)" + CR + "bar=(long 5)";
         testMap = new HashMap();
         testMap.put("foo", "bar");
         testMap.put("baz", "(int 1)");

@@ -33,5 +33,5 @@ public abstract class BaseDescriptionTestCase  extends MockObjectTestCase  {
     }
     
     private static final HJBStrings STRINGS = new HJBStrings();
-
+    public static final String CR = System.getProperty("line.separator");
 }
