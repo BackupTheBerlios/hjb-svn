@@ -11,37 +11,23 @@ import hjb.misc.HJBStrings;
  * 
  * @author Tim Emiola
  */
-public class ConsumerDescription {
+public class ConsumerDescription extends BaseJMSObjectDescription {
 
     public ConsumerDescription(MessageConsumer theConsumer, int consumerIndex) {
+        super(consumerIndex, HJBStrings.INVALID_CONSUMER_INDEX);
         if (null == theConsumer) {
             throw new IllegalArgumentException(strings().needsANonNull(MessageConsumer.class));
         }
-        if (consumerIndex < 0) {
-            throw new IllegalArgumentException(strings().getString(HJBStrings.INVALID_CONSUMER_INDEX,
-                                                                   new Integer(consumerIndex)));
-        }
         this.theConsumer = theConsumer;
-        this.consumerIndex = consumerIndex;
-    }
-
-    public String toString() {
-        return PathNaming.CONSUMER + "-" + getConsumerIndex();
     }
 
     protected MessageConsumer getTheConsumer() {
         return theConsumer;
     }
-
-    protected HJBStrings strings() {
-        return STRINGS;
-    }
-
-    protected int getConsumerIndex() {
-        return consumerIndex;
+    
+    protected String getPathname() {
+        return PathNaming.CONSUMER + "-" + getIndex();
     }
 
     private final MessageConsumer theConsumer;
-    private final int consumerIndex;
-    private static final HJBStrings STRINGS = new HJBStrings();
 }

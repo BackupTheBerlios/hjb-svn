@@ -12,23 +12,14 @@ import hjb.misc.HJBStrings;
  * 
  * @author Tim Emiola
  */
-public class SubscriberDescription {
+public class SubscriberDescription extends BaseJMSObjectDescription {
 
     public SubscriberDescription(TopicSubscriber theSubscriber, int subscriberIndex) {
+        super(subscriberIndex, HJBStrings.INVALID_SUBSCRIBER_INDEX);
         if (null == theSubscriber) {
             throw new IllegalArgumentException(strings().needsANonNull(TopicSubscriber.class));
         }
-        if (subscriberIndex < 0) {
-            throw new IllegalArgumentException(strings().getString(HJBStrings.INVALID_SUBSCRIBER_INDEX,
-                                                                   new Integer(subscriberIndex)));
-        }
         this.theSubscriber = theSubscriber;
-        this.subscriberIndex = subscriberIndex;
-    }
-
-    public String toString() {
-        return PathNaming.SUBSCRIBER + "-" + getSubscriberIndex()
-                + getExtraInformation();
     }
 
     protected String getExtraInformation() {
@@ -43,19 +34,13 @@ public class SubscriberDescription {
         }
     }
 
+    protected String getPathname() {
+        return PathNaming.SUBSCRIBER + "-" + getIndex();
+    }
+
     protected TopicSubscriber getTheSubscriber() {
         return theSubscriber;
     }
 
-    protected HJBStrings strings() {
-        return STRINGS;
-    }
-
-    protected int getSubscriberIndex() {
-        return subscriberIndex;
-    }
-
     private final TopicSubscriber theSubscriber;
-    private final int subscriberIndex;
-    private static final HJBStrings STRINGS = new HJBStrings();
 }

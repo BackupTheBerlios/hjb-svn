@@ -12,23 +12,14 @@ import hjb.misc.HJBStrings;
  * 
  * @author Tim Emiola
  */
-public class BrowserDescription {
+public class BrowserDescription extends BaseJMSObjectDescription {
 
     public BrowserDescription(QueueBrowser theBrowser, int browserIndex) {
+        super(browserIndex, HJBStrings.INVALID_BROWSER_INDEX);
         if (null == theBrowser) {
             throw new IllegalArgumentException(strings().needsANonNull(QueueBrowser.class));
         }
-        if (browserIndex < 0) {
-            throw new IllegalArgumentException(strings().getString(HJBStrings.INVALID_BROWSER_INDEX,
-                                                                   new Integer(browserIndex)));
-        }
         this.theBrowser = theBrowser;
-        this.browserIndex = browserIndex;
-    }
-
-    public String toString() {
-        return PathNaming.BROWSER + "-" + getBrowserIndex()
-                + getExtraInformation();
     }
 
     protected String getExtraInformation() {
@@ -42,19 +33,13 @@ public class BrowserDescription {
         }
     }
 
+    protected String getPathname() {
+        return PathNaming.BROWSER + "-" + getIndex();
+    }
+
     protected QueueBrowser getTheBrowser() {
         return theBrowser;
     }
 
-    protected HJBStrings strings() {
-        return STRINGS;
-    }
-
-    protected int getBrowserIndex() {
-        return browserIndex;
-    }
-
     private final QueueBrowser theBrowser;
-    private final int browserIndex;
-    private static final HJBStrings STRINGS = new HJBStrings();
 }
