@@ -471,6 +471,8 @@ public final class HJBStrings {
 
     public static final String INVALID_SUBSCRIBER_INDEX = "invalid.subscriber.index";
 
+    public static final String INVALID_CONNECTION_INDEX = "invalid.connection.index";
+
     public static final String PRODUCER_DESCRIPTION = "producer.description";
 
     public static final String SUBSCRIBER_DESCRIPTION = "subscriber.description";

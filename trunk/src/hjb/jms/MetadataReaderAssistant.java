@@ -55,14 +55,25 @@ public class MetadataReaderAssistant {
      */
     public String asText(ConnectionMetaData metadata) {
         if (null == metadata) return "";
-        Map metadataValues = new HashMap();
+        return new HJBMessageWriter().asText(metaDataAsMap(metadata));
+    }
+
+    /**
+     * Converts <code>metadata</code> to a <code>Map</code> containing the
+     * metadata as key-value pairs.
+     * 
+     * @param metadata
+     * @return a <code>Map</code> containing the metadata values as key-value
+     *         pairs
+     */
+    public Map metaDataAsMap(ConnectionMetaData metadata) {
+        Map result = new HashMap();
         String[] headerNames = KNOWN_METADATA_ATTRIBUTES;
         for (int i = 0; i < headerNames.length; i++) {
-            metadataValues.put(headerNames[i],
-                               getEncodedValueFromMetaData(headerNames[i],
-                                                           metadata));
+            result.put(headerNames[i],
+                       getEncodedValueFromMetaData(headerNames[i], metadata));
         }
-        return new HJBMessageWriter().asText(metadataValues);
+        return result;
     }
 
     /**
@@ -106,6 +117,12 @@ public class MetadataReaderAssistant {
     protected HJBStrings strings() {
         return STRINGS;
     }
+
+    /**
+     * Constant that holds the root of the hjbkeys used in all the
+     * <code>ConnectionMetaData</code> fields.
+     */
+    public static final String METADATA_KEY_ROOT = "hjb.core.metadata.";
 
     /**
      * Constant that holds the hjbKey that corresponds to the value

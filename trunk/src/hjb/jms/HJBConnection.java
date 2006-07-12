@@ -26,7 +26,6 @@ import javax.jms.*;
 
 import org.apache.log4j.Logger;
 
-import hjb.http.cmd.PathNaming;
 import hjb.jms.cmd.JMSCommandRunner;
 import hjb.misc.HJBException;
 import hjb.misc.HJBNotFoundException;
@@ -195,8 +194,7 @@ public class HJBConnection implements Connection {
     }
 
     public String toString() {
-        return PathNaming.CONNECTION + "-" + getConnectionIndex()
-                + getFormattedClientID();
+        return "" + new ConnectionDescription(this, getConnectionIndex());
     }
 
     protected void addAndStartCommandRunner(int sessionIndex) {
@@ -206,20 +204,6 @@ public class HJBConnection implements Connection {
                 + sessionIndex);
         runnerThread.setDaemon(true);
         runnerThread.start();
-    }
-
-    protected String getFormattedClientID() {
-        try {
-            String clientID = getClientID();
-            if (null == clientID) {
-                return "";
-            } else {
-                return strings().getString(HJBStrings.FORMAT_CLIENT_ID,
-                                           clientID);
-            }
-        } catch (JMSException e) {
-            return "";
-        }
     }
 
     protected void deleteCommandRunner(int sessionIndex) {

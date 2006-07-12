@@ -29,8 +29,7 @@ import javax.jms.Session;
  * @author Tim Emiola
  */
 public final class HJBServletConstants {
-    
-    
+        
     /**
      * Constant that holds the name of the attribute used to store HJB Application in
      * the servlet context.
@@ -258,5 +257,4 @@ public final class HJBServletConstants {
      * The value of this constant is "hjb.config.command.timeout".
      */
     public static final String COMMAND_TIMEOUT_CONFIG = "hjb.config.command.timeout";
-
 }
