@@ -33,4 +33,25 @@ public class ConsumerDescriptionTest extends BaseDescriptionTestCase {
         assertContains(testDescription.toString(), "0");
         assertContains(testDescription.toString(), PathNaming.CONSUMER);
     }
+    
+    public void testLongDescriptionOutputsAllValues() {
+        Mock mockConsumer = mock(MessageConsumer.class);
+        
+        mockConsumer.stubs()
+            .method("getMessageSelector")
+            .will(returnValue("testSelector"));
+
+        MessageConsumer testConsumer = (MessageConsumer) mockConsumer.proxy();
+        ConsumerDescription testDescription = new ConsumerDescription(testConsumer,
+                                                                      0);
+        
+        String expectedOutput = testDescription.toString() + CR
+                + "message-selector=testSelector";
+
+        assertContains(testDescription.longDescription(), "0");
+        assertContains(testDescription.longDescription(), PathNaming.CONSUMER);
+        assertEquals(expectedOutput, testDescription.longDescription());
+        System.err.println(testDescription.longDescription());
+    }
+
 }

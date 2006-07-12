@@ -29,7 +29,7 @@ public class BaseJMSObjectDescription {
     }
     
     public String toString() {
-        return getPathname() + getExtraInformation();
+        return getPathName() + getExtraInformation();
     }
     
     public String longDescription() {
@@ -57,7 +57,7 @@ public class BaseJMSObjectDescription {
         return STRINGS;
     }
     
-    protected String getPathname() {
+    protected String getPathName() {
         return "";
     }
     

@@ -1,8 +1,12 @@
 package hjb.jms;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import javax.jms.JMSException;
 import javax.jms.QueueBrowser;
 
+import hjb.http.HJBServletConstants;
 import hjb.http.cmd.PathNaming;
 import hjb.misc.HJBStrings;
 
@@ -33,7 +37,18 @@ public class BrowserDescription extends BaseJMSObjectDescription {
         }
     }
 
-    protected String getPathname() {
+    protected Map attributesAsAMap() {
+        Map result = new TreeMap();
+        try {
+            result.put(HJBServletConstants.MESSAGE_SELECTOR,
+                       (null == getTheBrowser().getMessageSelector() ? ""
+                               : getTheBrowser().getMessageSelector()));
+        } catch (JMSException e) {}
+        return result;
+    }
+
+
+    protected String getPathName() {
         return PathNaming.BROWSER + "-" + getIndex();
     }
 

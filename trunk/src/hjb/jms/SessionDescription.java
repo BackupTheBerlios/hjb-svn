@@ -12,23 +12,18 @@ import hjb.misc.HJBStrings;
  * 
  * @author Tim Emiola
  */
-public class SessionDescription {
+public class SessionDescription extends BaseJMSObjectDescription {
 
     public SessionDescription(Session theSession, int sessionIndex) {
+        super(sessionIndex, HJBStrings.INVALID_SESSION_INDEX);
         if (null == theSession) {
             throw new IllegalArgumentException(strings().needsANonNull(Session.class));
         }
-        if (sessionIndex < 0) {
-            throw new IllegalArgumentException(strings().getString(HJBStrings.INVALID_SESSION_INDEX,
-                                                                   new Integer(sessionIndex)));
-        }
         this.theSession = theSession;
-        this.sessionIndex = sessionIndex;
     }
-
-    public String toString() {
-        return PathNaming.SESSION + "-" + getSessionIndex()
-                + getExtraInformation();
+    
+    protected String getPathName() {
+        return PathNaming.SESSION + "-" + getIndex();
     }
 
     protected String getExtraInformation() {
@@ -45,15 +40,5 @@ public class SessionDescription {
         return theSession;
     }
 
-    protected int getSessionIndex() {
-        return sessionIndex;
-    }
-
-    protected HJBStrings strings() {
-        return STRINGS;
-    }
-
     private Session theSession;
-    private int sessionIndex;
-    private static final HJBStrings STRINGS = new HJBStrings();
 }

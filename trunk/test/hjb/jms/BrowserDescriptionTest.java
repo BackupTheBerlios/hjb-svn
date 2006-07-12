@@ -50,4 +50,26 @@ public class BrowserDescriptionTest extends BaseDescriptionTestCase {
         assertContains(testDescription.toString(), mockQueue.toString());
     }
 
+    public void testLongDescriptionOutputsAllValues() {
+        Mock mockBrowser = mock(QueueBrowser.class);
+        Mock mockQueue = mock(Queue.class);
+        
+        mockBrowser.stubs().method("getQueue").will(returnValue((Queue) mockQueue.proxy()));
+        mockBrowser.stubs()
+            .method("getMessageSelector")
+            .will(returnValue("testSelector"));
+
+        QueueBrowser testBrowser = (QueueBrowser) mockBrowser.proxy();
+        BrowserDescription testDescription = new BrowserDescription(testBrowser,
+                                                                      0);
+        
+        String expectedOutput = testDescription.toString() + CR
+                + "message-selector=testSelector";
+
+        assertContains(testDescription.longDescription(), "0");
+        assertContains(testDescription.longDescription(), PathNaming.BROWSER);
+        assertEquals(expectedOutput, testDescription.longDescription());
+        System.err.println(testDescription.longDescription());
+    }
+
 }

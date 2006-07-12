@@ -1,7 +1,12 @@
 package hjb.jms;
 
+import java.util.Map;
+import java.util.TreeMap;
+
+import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 
+import hjb.http.HJBServletConstants;
 import hjb.http.cmd.PathNaming;
 import hjb.misc.HJBStrings;
 
@@ -24,8 +29,18 @@ public class ConsumerDescription extends BaseJMSObjectDescription {
     protected MessageConsumer getTheConsumer() {
         return theConsumer;
     }
-    
-    protected String getPathname() {
+
+    protected Map attributesAsAMap() {
+        Map result = new TreeMap();
+        try {
+            result.put(HJBServletConstants.MESSAGE_SELECTOR,
+                       (null == getTheConsumer().getMessageSelector() ? ""
+                               : getTheConsumer().getMessageSelector()));
+        } catch (JMSException e) {}
+        return result;
+    }
+
+    protected String getPathName() {
         return PathNaming.CONSUMER + "-" + getIndex();
     }
 

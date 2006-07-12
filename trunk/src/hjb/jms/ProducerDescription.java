@@ -55,7 +55,7 @@ public class ProducerDescription extends BaseJMSObjectDescription {
         }
     }
     
-    protected String getPathname() {
+    protected String getPathName() {
         return PathNaming.PRODUCER + "-" + getIndex();
     }
 
