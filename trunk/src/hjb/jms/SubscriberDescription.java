@@ -53,7 +53,7 @@ public class SubscriberDescription extends BaseJMSObjectDescription {
         }
     }
 
-    protected String getPathName() {
+    protected String getBaseName() {
         return PathNaming.SUBSCRIBER + "-" + getIndex();
     }
 

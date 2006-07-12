@@ -1,8 +1,12 @@
 package hjb.jms;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import javax.jms.JMSException;
 import javax.jms.Session;
 
+import hjb.http.HJBServletConstants;
 import hjb.http.cmd.PathNaming;
 import hjb.misc.HJBStrings;
 
@@ -21,8 +25,19 @@ public class SessionDescription extends BaseJMSObjectDescription {
         }
         this.theSession = theSession;
     }
-    
-    protected String getPathName() {
+
+    protected Map attributesAsAMap() {
+        Map result = new TreeMap();
+        try {
+            result.put(HJBServletConstants.SESSION_TRANSACTED,
+                       getCodec().encode(new Boolean(getTheSession().getTransacted())));
+            result.put(HJBServletConstants.SESSION_ACKNOWLEDGEMENT_MODE,
+                       getCodec().encode(new Integer(getTheSession().getAcknowledgeMode())));
+        } catch (JMSException e) {}
+        return result;
+    }
+
+    protected String getBaseName() {
         return PathNaming.SESSION + "-" + getIndex();
     }
 

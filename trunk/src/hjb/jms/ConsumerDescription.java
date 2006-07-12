@@ -40,7 +40,7 @@ public class ConsumerDescription extends BaseJMSObjectDescription {
         return result;
     }
 
-    protected String getPathName() {
+    protected String getBaseName() {
         return PathNaming.CONSUMER + "-" + getIndex();
     }
 

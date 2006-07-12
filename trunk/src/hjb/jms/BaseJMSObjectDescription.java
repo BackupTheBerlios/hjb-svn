@@ -11,10 +11,11 @@ import hjb.misc.HJBStrings;
 import hjb.msg.codec.OrderedTypedValueCodec;
 
 /**
- * <code>BaseJMSObjectDescription</code> is the base class for the various XXXDescription classes.
+ * <code>BaseJMSObjectDescription</code> is the base class for the various
+ * XXXDescription classes.
  * 
- * It provides useful protected methods to each of its subclasses. 
- *
+ * It provides useful protected methods to each of its subclasses.
+ * 
  * @author Tim Emiola
  */
 public class BaseJMSObjectDescription {
@@ -27,17 +28,34 @@ public class BaseJMSObjectDescription {
         this.codec = new OrderedTypedValueCodec();
         this.index = index;
     }
-    
+
+    /**
+     * Overrides the {@link Object#toString()} to return {@link #getBaseName()}
+     * combined with {@link #getExtraInformation()}.
+     */
     public String toString() {
-        return getPathName() + getExtraInformation();
+        return getBaseName() + getExtraInformation();
     }
-    
+
+    /**
+     * Provides a detailed description of the JMS object, often spread over
+     * multiple lines.
+     * 
+     * @return a detailed description of the JMS object.
+     */
     public String longDescription() {
         StringWriter sw = new StringWriter();
         writeLongDescription(sw);
         return sw.toString();
     }
 
+    /**
+     * Writes a detailed description of the JMS object as (in
+     * {@link #longDescription()} to <code>aWriter</code>.
+     * 
+     * @param aWriter
+     *            has <code>longDescription</code> written to it.
+     */
     public void writeLongDescription(Writer aWriter) {
         PrintWriter pw = new PrintWriter(aWriter);
         pw.print(this);
@@ -45,28 +63,52 @@ public class BaseJMSObjectDescription {
         new HJBMessageWriter().writeAsText(attributesAsAMap(), pw);
     }
 
+    /**
+     * @return a Map containing the JMS object's attributes. 
+     */
     protected Map attributesAsAMap() {
         return Collections.EMPTY_MAP;
+    }
+
+    /**
+     * Returns the basename of a JMS object.
+     * <p>
+     * The basename is the final part of the JMS object's URI.
+     * </p>
+     * 
+     * @return
+     */
+    protected String getBaseName() {
+        return "";
+    }
+
+    /**
+     * Returns the extra information about a JMS object.
+     * <p>
+     * The extra information is intended to be a small amount of text, suitable
+     * for showing inline with the session object's URI
+     * </p>
+     * 
+     * @return a string containing the extra information
+     */
+    protected String getExtraInformation() {
+        return "";
+    }
+
+    /**
+     * @return an OrderedTypedValueCodec instance.
+     */
+    protected OrderedTypedValueCodec getCodec() {
+        return codec;
     }
 
     protected int getIndex() {
         return index;
     }
-    
+
+
     protected HJBStrings strings() {
         return STRINGS;
-    }
-    
-    protected String getPathName() {
-        return "";
-    }
-    
-    protected String getExtraInformation() {
-        return "";
-    }
-
-    protected OrderedTypedValueCodec getCodec() {
-        return codec;
     }
 
     private final int index;

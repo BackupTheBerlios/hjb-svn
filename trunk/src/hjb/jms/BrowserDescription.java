@@ -48,7 +48,7 @@ public class BrowserDescription extends BaseJMSObjectDescription {
     }
 
 
-    protected String getPathName() {
+    protected String getBaseName() {
         return PathNaming.BROWSER + "-" + getIndex();
     }
 
