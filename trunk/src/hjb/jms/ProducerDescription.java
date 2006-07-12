@@ -11,8 +11,8 @@ import hjb.http.cmd.PathNaming;
 import hjb.misc.HJBStrings;
 
 /**
- * <code>ProducerDescription</code> is used to provide textual description of
- * the JMS <code>Producers</code> in HJB status messages and logs.
+ * <code>ProducerDescription</code> is used to provide a description of JMS
+ * <code>Producers</code> in HJB status messages and logs.
  * 
  * @author Tim Emiola
  */
@@ -54,7 +54,7 @@ public class ProducerDescription extends BaseJMSObjectDescription {
             return "";
         }
     }
-    
+
     protected String getBaseName() {
         return PathNaming.PRODUCER + "-" + getIndex();
     }

@@ -12,8 +12,8 @@ import hjb.http.cmd.PathNaming;
 import hjb.misc.HJBStrings;
 
 /**
- * <code>ConnectionDescription</code> is used to provide textual description
- * of the JMS <code>Connections</code> in HJB status messages and logs.
+ * <code>ConnectionDescription</code> is used to provide a description of JMS
+ * <code>Connections</code> in HJB status messages and logs.
  * 
  * @author Tim Emiola
  */
@@ -34,7 +34,7 @@ public class ConnectionDescription extends BaseJMSObjectDescription {
                        null == getTheConnection().getClientID() ? ""
                                : getTheConnection().getClientID());
             result.putAll(getModifiedMetadataMap());
-            new MetadataReaderAssistant().metaDataAsMap(getTheConnection().getMetaData());  
+            new MetadataReaderAssistant().metaDataAsMap(getTheConnection().getMetaData());
         } catch (JMSException e) {}
         return result;
     }

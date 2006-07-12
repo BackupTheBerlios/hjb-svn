@@ -11,8 +11,8 @@ import hjb.http.cmd.PathNaming;
 import hjb.misc.HJBStrings;
 
 /**
- * <code>SessionDescription</code> is used to provide textual description of
- * the JMS <code>Sessions</code> in HJB status messages and logs.
+ * <code>SessionDescription</code> is used to provide a description of JMS
+ * <code>Sessions</code> in HJB status messages and logs.
  * 
  * @author Tim Emiola
  */

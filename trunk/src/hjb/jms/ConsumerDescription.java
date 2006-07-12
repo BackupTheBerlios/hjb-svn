@@ -11,8 +11,8 @@ import hjb.http.cmd.PathNaming;
 import hjb.misc.HJBStrings;
 
 /**
- * <code>ConsumerDescription</code> is used to provide textual description of
- * JMS <code>MessageConsumers</code> in HJB status messages and logs.
+ * <code>ConsumerDescription</code> is used to provide a description of JMS
+ * <code>MessageConsumers</code> in HJB status messages and logs.
  * 
  * @author Tim Emiola
  */

@@ -11,8 +11,8 @@ import hjb.http.cmd.PathNaming;
 import hjb.misc.HJBStrings;
 
 /**
- * <code>SubscriberDescription</code> is used to provide textual description
- * of the JMS <code>TopicSubscribers</code> in HJB status messages and logs.
+ * <code>SubscriberDescription</code> is used to a provide description of JMS
+ * <code>TopicSubscribers</code> in HJB status messages and logs.
  * 
  * @author Tim Emiola
  */

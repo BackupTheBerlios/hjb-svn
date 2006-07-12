@@ -11,8 +11,8 @@ import hjb.http.cmd.PathNaming;
 import hjb.misc.HJBStrings;
 
 /**
- * <code>BrowserDescription</code> is used to provide textual description of
- * the JMS <code>QueueBrowsers</code> in HJB status messages and logs.
+ * <code>BrowserDescription</code> is used to provide a description of JMS
+ * <code>QueueBrowsers</code> in HJB status messages and logs.
  * 
  * @author Tim Emiola
  */
@@ -46,7 +46,6 @@ public class BrowserDescription extends BaseJMSObjectDescription {
         } catch (JMSException e) {}
         return result;
     }
-
 
     protected String getBaseName() {
         return PathNaming.BROWSER + "-" + getIndex();
