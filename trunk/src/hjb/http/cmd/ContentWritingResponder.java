@@ -24,7 +24,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.jms.cmd.JMSCommand;
 import hjb.misc.HJBException;
 
@@ -64,7 +64,7 @@ public class ContentWritingResponder extends BaseJMSCommandResponder {
         if (getExecutedCommand().isExecutedOK()) {
             addStatusHeader(response);
             sendOkWithContent(response);
-            response.setContentType(HJBServletConstants.HTTP_TEXT_PLAIN);
+            response.setContentType(HJBConstants.HTTP_TEXT_PLAIN);
             writeContentTo(response);
             response.flushBuffer();
         } else {

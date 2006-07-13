@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.jmock.Mock;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.jms.HJBRoot;
 import hjb.jms.cmd.CreateBrowser;
 
@@ -73,10 +73,10 @@ public class CreateBrowserGeneratorTest extends BaseJMSCommandGeneratorTestCase 
 
     protected Map generateMockParameterMap() {
         Map parameterMap = new HashMap();
-        parameterMap.put(HJBServletConstants.MESSAGE_SELECTOR, new String[] {
+        parameterMap.put(HJBConstants.MESSAGE_SELECTOR, new String[] {
             "*"
         });
-        parameterMap.put(HJBServletConstants.DESTINATION_URL, new String[] {
+        parameterMap.put(HJBConstants.DESTINATION_URL, new String[] {
             "/context/servlet/testProvider/destination/testDestination/with/slashes"
         });
         return Collections.unmodifiableMap(parameterMap);

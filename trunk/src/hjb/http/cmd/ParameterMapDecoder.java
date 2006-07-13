@@ -24,7 +24,7 @@ import java.util.*;
 
 import org.apache.log4j.Logger;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.misc.HJBStrings;
 import hjb.msg.codec.OrderedTypedValueCodec;
 
@@ -126,15 +126,15 @@ public class ParameterMapDecoder {
     }
 
     public static String[] MUST_BE_DECODED = new String[] {
-            HJBServletConstants.CONSUMER_NOLOCAL,
-            HJBServletConstants.DELIVERY_MODE,
-            HJBServletConstants.DISABLE_TIMESTAMPS,
-            HJBServletConstants.DISABLE_MESSAGE_IDS,
-            HJBServletConstants.PRIORITY,
-            HJBServletConstants.SESSION_ACKNOWLEDGEMENT_MODE,
-            HJBServletConstants.SESSION_TRANSACTED,
-            HJBServletConstants.TIME_TO_LIVE,
-            HJBServletConstants.TIMEOUT,
+            HJBConstants.CONSUMER_NOLOCAL,
+            HJBConstants.DELIVERY_MODE,
+            HJBConstants.DISABLE_TIMESTAMPS,
+            HJBConstants.DISABLE_MESSAGE_IDS,
+            HJBConstants.PRIORITY,
+            HJBConstants.SESSION_ACKNOWLEDGEMENT_MODE,
+            HJBConstants.SESSION_TRANSACTED,
+            HJBConstants.TIME_TO_LIVE,
+            HJBConstants.TIMEOUT,
     };
 
     private String[] compulsoryDecodings;

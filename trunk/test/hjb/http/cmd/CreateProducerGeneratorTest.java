@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.jmock.Mock;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.jms.HJBRoot;
 import hjb.jms.cmd.CreateProducer;
 
@@ -74,7 +74,7 @@ public class CreateProducerGeneratorTest extends
 
     protected Map generateMockParameterMap() {
         Map parameterMap = new HashMap();
-        parameterMap.put(HJBServletConstants.DESTINATION_URL, new String[] {
+        parameterMap.put(HJBConstants.DESTINATION_URL, new String[] {
             "/context/servlet/testProvider/destination/testDestination/with/slashes"
         });
         return Collections.unmodifiableMap(parameterMap);

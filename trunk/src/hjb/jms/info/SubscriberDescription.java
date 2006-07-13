@@ -6,7 +6,7 @@ import java.util.TreeMap;
 import javax.jms.JMSException;
 import javax.jms.TopicSubscriber;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.misc.HJBStrings;
 import hjb.misc.PathNaming;
 
@@ -30,11 +30,11 @@ public class SubscriberDescription extends BaseJMSObjectDescription {
     protected Map attributesAsAMap() {
         Map result = new TreeMap();
         try {
-            result.put(HJBServletConstants.SUBSCRIBER_NAME,
+            result.put(HJBConstants.SUBSCRIBER_NAME,
                        getTheSubscriber().getTopic().getTopicName());
-            result.put(HJBServletConstants.CONSUMER_NOLOCAL,
+            result.put(HJBConstants.CONSUMER_NOLOCAL,
                        getCodec().encode(new Boolean(getTheSubscriber().getNoLocal())));
-            result.put(HJBServletConstants.MESSAGE_SELECTOR,
+            result.put(HJBConstants.MESSAGE_SELECTOR,
                        (null == getTheSubscriber().getMessageSelector() ? ""
                                : getTheSubscriber().getMessageSelector()));
         } catch (JMSException e) {}

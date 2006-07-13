@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.jmock.Mock;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.jms.HJBRoot;
 import hjb.jms.cmd.CreateConsumer;
 
@@ -74,13 +74,13 @@ public class CreateConsumerGeneratorTest extends
 
     protected Map generateMockParameterMap() {
         Map parameterMap = new HashMap();
-        parameterMap.put(HJBServletConstants.MESSAGE_SELECTOR, new String[] {
+        parameterMap.put(HJBConstants.MESSAGE_SELECTOR, new String[] {
             "*"
         });
-        parameterMap.put(HJBServletConstants.CONSUMER_NOLOCAL, new String[] {
+        parameterMap.put(HJBConstants.CONSUMER_NOLOCAL, new String[] {
             "(boolean false)"
         });
-        parameterMap.put(HJBServletConstants.DESTINATION_URL, new String[] {
+        parameterMap.put(HJBConstants.DESTINATION_URL, new String[] {
             "/context/servlet/testProvider/destination/testDestination/with/slashes"
         });
         return Collections.unmodifiableMap(parameterMap);

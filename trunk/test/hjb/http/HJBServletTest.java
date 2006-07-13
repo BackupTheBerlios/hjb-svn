@@ -30,11 +30,11 @@ public class HJBServletTest extends MockObjectTestCase {
 
         mockConfig.expects(once())
             .method("getInitParameter")
-            .with(eq(HJBServletConstants.COMMAND_TIMEOUT_CONFIG))
+            .with(eq(HJBConstants.COMMAND_TIMEOUT_CONFIG))
             .will(returnValue("1000"));
         mockConfig.expects(once())
             .method("getInitParameter")
-            .with(eq(HJBServletConstants.ROOT_PATH_CONFIG))
+            .with(eq(HJBConstants.ROOT_PATH_CONFIG))
             .will(returnValue(testRootPath.getAbsolutePath()));
 
         HJBServlet testServlet = new HJBServletUsingAMockServletConfig(mockConfig);
@@ -51,11 +51,11 @@ public class HJBServletTest extends MockObjectTestCase {
             .will(returnValue((ServletContext) mockContext.proxy()));
         mockConfig.stubs()
             .method("getInitParameter")
-            .with(eq(HJBServletConstants.COMMAND_TIMEOUT_CONFIG))
+            .with(eq(HJBConstants.COMMAND_TIMEOUT_CONFIG))
             .will(returnValue("1000"));
         mockConfig.stubs()
             .method("getInitParameter")
-            .with(eq(HJBServletConstants.ROOT_PATH_CONFIG))
+            .with(eq(HJBConstants.ROOT_PATH_CONFIG))
             .will(returnValue(testRootPath.getAbsolutePath()));
 
         mockContext.expects(once())
@@ -168,11 +168,11 @@ public class HJBServletTest extends MockObjectTestCase {
         mockConfig.stubs().method("getInitParameter").will(returnValue(null));
         mockConfig.stubs()
             .method("getInitParameter")
-            .with(eq(HJBServletConstants.COMMAND_TIMEOUT_CONFIG))
+            .with(eq(HJBConstants.COMMAND_TIMEOUT_CONFIG))
             .will(returnValue("1000"));
         mockConfig.stubs()
             .method("getInitParameter")
-            .with(eq(HJBServletConstants.ROOT_PATH_CONFIG))
+            .with(eq(HJBConstants.ROOT_PATH_CONFIG))
             .will(returnValue(testRootPath.getAbsolutePath()));
         HJBApplication application = new HJBApplication((ServletConfig) mockConfig.proxy(),
                                                         timer);
@@ -202,5 +202,5 @@ public class HJBServletTest extends MockObjectTestCase {
     private MockHJBRuntime mockHJB;
     private JMSCommandRunner testCommandRunner;
     private File testRootPath;
-    private HJBServletConstants CONSTANTS = new HJBServletConstants();
+    private HJBConstants CONSTANTS = new HJBConstants();
 }

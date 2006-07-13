@@ -1,6 +1,6 @@
 package hjb.http.cmd;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.jms.HJBProvider;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBClientException;
@@ -26,14 +26,14 @@ import org.jmock.MockObjectTestCase;
 public class JMSArgumentFinderTest extends MockObjectTestCase {
 
     public void testFindsHJBMessageIfOneIsPresent() {
-        decodedParameters.put(HJBServletConstants.MESSAGE_TO_SEND,
+        decodedParameters.put(HJBConstants.MESSAGE_TO_SEND,
                               "testMessage");
         String[] keysToBeExcludedFromTheHeader = new String[] {
-                HJBServletConstants.MESSAGE_TO_SEND,
-                HJBServletConstants.DELIVERY_MODE,
-                HJBServletConstants.TIME_TO_LIVE,
-                HJBServletConstants.DESTINATION_URL,
-                HJBServletConstants.PRIORITY,
+                HJBConstants.MESSAGE_TO_SEND,
+                HJBConstants.DELIVERY_MODE,
+                HJBConstants.TIME_TO_LIVE,
+                HJBConstants.DESTINATION_URL,
+                HJBConstants.PRIORITY,
         };
         for (int i = 0; i < keysToBeExcludedFromTheHeader.length; i++) {
             decodedParameters.put(keysToBeExcludedFromTheHeader[i],
@@ -52,12 +52,12 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
             new JMSArgumentFinder().findHJBMessage(decodedParameters);
             fail("Should have thrown an HJBClientException");
         } catch (HJBClientException e) {}
-        decodedParameters.put(HJBServletConstants.MESSAGE_TO_SEND, null);
+        decodedParameters.put(HJBConstants.MESSAGE_TO_SEND, null);
         try {
             new JMSArgumentFinder().findHJBMessage(decodedParameters);
             fail("Should have thrown an HJBClientException");
         } catch (HJBClientException e) {}
-        decodedParameters.put(HJBServletConstants.MESSAGE_TO_SEND, new Object());
+        decodedParameters.put(HJBConstants.MESSAGE_TO_SEND, new Object());
         try {
             new JMSArgumentFinder().findHJBMessage(decodedParameters);
             fail("Should have thrown an HJBClientException");
@@ -77,43 +77,43 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
 
     public void testFindsMessageSelectorIfOneIsPresent() {
         assertNull(new JMSArgumentFinder().findMessageSelector(decodedParameters));
-        decodedParameters.put(HJBServletConstants.MESSAGE_SELECTOR,
+        decodedParameters.put(HJBConstants.MESSAGE_SELECTOR,
                               "a selector");
         assertNotNull(new JMSArgumentFinder().findMessageSelector(decodedParameters));
     }
 
     public void testFindsClientIdIfOneIsPresent() {
         assertNull(new JMSArgumentFinder().findMessageSelector(decodedParameters));
-        decodedParameters.put(HJBServletConstants.CLIENT_ID, "testClientId");
+        decodedParameters.put(HJBConstants.CLIENT_ID, "testClientId");
         assertNotNull(new JMSArgumentFinder().findClientId(decodedParameters));
     }
 
     public void testFindsDisableTimestampsCorrectly() {
         assertFalse(new JMSArgumentFinder().findDisableTimestamps(decodedParameters));
-        decodedParameters.put(HJBServletConstants.DISABLE_TIMESTAMPS,
+        decodedParameters.put(HJBConstants.DISABLE_TIMESTAMPS,
                               Boolean.FALSE);
         assertFalse(new JMSArgumentFinder().findDisableTimestamps(decodedParameters));
-        decodedParameters.put(HJBServletConstants.DISABLE_TIMESTAMPS,
+        decodedParameters.put(HJBConstants.DISABLE_TIMESTAMPS,
                               Boolean.TRUE);
         assertTrue(new JMSArgumentFinder().findDisableTimestamps(decodedParameters));
     }
 
     public void testFindsDisableMessageIdsCorrectly() {
         assertFalse(new JMSArgumentFinder().findDisableTimestamps(decodedParameters));
-        decodedParameters.put(HJBServletConstants.DISABLE_MESSAGE_IDS,
+        decodedParameters.put(HJBConstants.DISABLE_MESSAGE_IDS,
                               Boolean.FALSE);
         assertFalse(new JMSArgumentFinder().findDisableMessageIds(decodedParameters));
-        decodedParameters.put(HJBServletConstants.DISABLE_MESSAGE_IDS,
+        decodedParameters.put(HJBConstants.DISABLE_MESSAGE_IDS,
                               Boolean.TRUE);
         assertTrue(new JMSArgumentFinder().findDisableMessageIds(decodedParameters));
     }
 
     public void testFindsNoLocalCorrectly() {
         assertFalse(new JMSArgumentFinder().findDisableTimestamps(decodedParameters));
-        decodedParameters.put(HJBServletConstants.CONSUMER_NOLOCAL,
+        decodedParameters.put(HJBConstants.CONSUMER_NOLOCAL,
                               Boolean.FALSE);
         assertFalse(new JMSArgumentFinder().findNoLocal(decodedParameters));
-        decodedParameters.put(HJBServletConstants.CONSUMER_NOLOCAL,
+        decodedParameters.put(HJBConstants.CONSUMER_NOLOCAL,
                               Boolean.TRUE);
         assertTrue(new JMSArgumentFinder().findNoLocal(decodedParameters));
     }
@@ -123,9 +123,9 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
     }
 
     public void testReturnsNullIfDeliveryModeIsInvalid() throws Exception {
-        decodedParameters.put(HJBServletConstants.DELIVERY_MODE, new Object());
+        decodedParameters.put(HJBConstants.DELIVERY_MODE, new Object());
         assertNull(new JMSArgumentFinder().findDeliveryMode(decodedParameters));
-        decodedParameters.put(HJBServletConstants.DELIVERY_MODE, new Integer(5));
+        decodedParameters.put(HJBConstants.DELIVERY_MODE, new Integer(5));
         assertNull(new JMSArgumentFinder().findDeliveryMode(decodedParameters));
     }
 
@@ -135,7 +135,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
         };
         for (int i = 0; i < validDeliveryModes.length; i++) {
             decodedParameters.clear();
-            decodedParameters.put(HJBServletConstants.DELIVERY_MODE,
+            decodedParameters.put(HJBConstants.DELIVERY_MODE,
                                   new Integer(validDeliveryModes[i]));
             assertEquals(new Integer(validDeliveryModes[i]),
                          new JMSArgumentFinder().findDeliveryMode(decodedParameters));
@@ -148,12 +148,12 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
         };
         for (int i = 0; i < invalidPriorities.length; i++) {
             decodedParameters.clear();
-            decodedParameters.put(HJBServletConstants.PRIORITY,
+            decodedParameters.put(HJBConstants.PRIORITY,
                                   new Integer(invalidPriorities[i]));
             assertNull(new JMSArgumentFinder().findPriority(decodedParameters));
         }
         decodedParameters.clear();
-        decodedParameters.put(HJBServletConstants.PRIORITY, new Object());
+        decodedParameters.put(HJBConstants.PRIORITY, new Object());
         assertNull(new JMSArgumentFinder().findPriority(decodedParameters));
     }
 
@@ -163,7 +163,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
         };
         for (int i = 0; i < validPriorities.length; i++) {
             decodedParameters.clear();
-            decodedParameters.put(HJBServletConstants.PRIORITY,
+            decodedParameters.put(HJBConstants.PRIORITY,
                                   new Integer(validPriorities[i]));
             assertEquals(new Integer(validPriorities[i]),
                          new JMSArgumentFinder().findPriority(decodedParameters));
@@ -172,32 +172,32 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
 
     public void testReturnsNullIfTimeoutIsNotPresentOrIsInvalid() {
         assertNull(new JMSArgumentFinder().findTimeout(decodedParameters));
-        decodedParameters.put(HJBServletConstants.TIMEOUT, new Object());
+        decodedParameters.put(HJBConstants.TIMEOUT, new Object());
         assertNull(new JMSArgumentFinder().findTimeout(decodedParameters));
     }
 
     public void testReturnsTimeoutIfItIsPresentAndValid() throws Exception {
-        decodedParameters.put(HJBServletConstants.TIMEOUT, new Long(1000));
+        decodedParameters.put(HJBConstants.TIMEOUT, new Long(1000));
         assertEquals(new Long(1000),
                      new JMSArgumentFinder().findTimeout(decodedParameters));
     }
 
     public void testReturnsNullIfTimeToLiveIsNotPresentOrInvalid() {
         assertNull(new JMSArgumentFinder().findTimeToLive(decodedParameters));
-        decodedParameters.put(HJBServletConstants.TIME_TO_LIVE, new Object());
+        decodedParameters.put(HJBConstants.TIME_TO_LIVE, new Object());
         assertNull(new JMSArgumentFinder().findTimeToLive(decodedParameters));
     }
 
     public void testReturnsTimeToLiveIfItIsPresentAndValid() throws Exception {
-        decodedParameters.put(HJBServletConstants.TIME_TO_LIVE, new Long(1000));
+        decodedParameters.put(HJBConstants.TIME_TO_LIVE, new Long(1000));
         assertEquals(new Long(1000),
                      new JMSArgumentFinder().findTimeToLive(decodedParameters));
     }
 
     public void testFindsProducerArgumentsIfTheyArePresent() {
-        decodedParameters.put(HJBServletConstants.TIME_TO_LIVE, new Long(1000));
-        decodedParameters.put(HJBServletConstants.PRIORITY, new Integer(1));
-        decodedParameters.put(HJBServletConstants.DELIVERY_MODE,
+        decodedParameters.put(HJBConstants.TIME_TO_LIVE, new Long(1000));
+        decodedParameters.put(HJBConstants.PRIORITY, new Integer(1));
+        decodedParameters.put(HJBConstants.DELIVERY_MODE,
                               new Integer(DeliveryMode.NON_PERSISTENT));
         MessageProducerArguments expectedArguments = new MessageProducerArguments(false,
                                                                                   false,
@@ -218,11 +218,11 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
     }
 
     public void testReturnsDefaultAcknowledgeModeIfItsNotPresentOrInvalid() {
-        assertEquals(HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE,
+        assertEquals(HJBConstants.DEFAULT_ACKNOWLEDGEMENT_MODE,
                      new JMSArgumentFinder().findAcknowledgementMode(decodedParameters));
-        decodedParameters.put(HJBServletConstants.SESSION_ACKNOWLEDGEMENT_MODE,
+        decodedParameters.put(HJBConstants.SESSION_ACKNOWLEDGEMENT_MODE,
                               new Object());
-        assertEquals(HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE,
+        assertEquals(HJBConstants.DEFAULT_ACKNOWLEDGEMENT_MODE,
                      new JMSArgumentFinder().findAcknowledgementMode(decodedParameters));
     }
 
@@ -234,7 +234,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
                 Session.SESSION_TRANSACTED,
         };
         for (int i = 0; i < validAcknowledegementModes.length; i++) {
-            decodedParameters.put(HJBServletConstants.SESSION_ACKNOWLEDGEMENT_MODE,
+            decodedParameters.put(HJBConstants.SESSION_ACKNOWLEDGEMENT_MODE,
                                   new Integer(validAcknowledegementModes[i]));
             assertEquals(validAcknowledegementModes[i],
                          new JMSArgumentFinder().findAcknowledgementMode(decodedParameters));
@@ -244,10 +244,10 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
 
     public void testFindsTransactedCorrectly() {
         assertFalse(new JMSArgumentFinder().findTransacted(decodedParameters));
-        decodedParameters.put(HJBServletConstants.SESSION_TRANSACTED,
+        decodedParameters.put(HJBConstants.SESSION_TRANSACTED,
                               Boolean.FALSE);
         assertFalse(new JMSArgumentFinder().findTransacted(decodedParameters));
-        decodedParameters.put(HJBServletConstants.SESSION_TRANSACTED,
+        decodedParameters.put(HJBConstants.SESSION_TRANSACTED,
                               Boolean.TRUE);
         assertTrue(new JMSArgumentFinder().findTransacted(decodedParameters));
     }
@@ -257,12 +257,12 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
             new JMSArgumentFinder().findSubscriberName(decodedParameters);
             fail("Should have thrown an HJBClientException");
         } catch (HJBClientException e) {}
-        decodedParameters.put(HJBServletConstants.SUBSCRIBER_NAME, null);
+        decodedParameters.put(HJBConstants.SUBSCRIBER_NAME, null);
         try {
             new JMSArgumentFinder().findSubscriberName(decodedParameters);
             fail("Should have thrown an HJBClientException");
         } catch (HJBClientException e) {}
-        decodedParameters.put(HJBServletConstants.SUBSCRIBER_NAME, new Object());
+        decodedParameters.put(HJBConstants.SUBSCRIBER_NAME, new Object());
         try {
             new JMSArgumentFinder().findSubscriberName(decodedParameters);
             fail("Should have thrown an HJBClientException");
@@ -270,7 +270,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
     }
 
     public void testFindsSubscriberIfOneIsPresentAndValid() throws Exception {
-        decodedParameters.put(HJBServletConstants.SUBSCRIBER_NAME,
+        decodedParameters.put(HJBConstants.SUBSCRIBER_NAME,
                               "testSubscriberName");
         assertEquals("testSubscriberName",
                      new JMSArgumentFinder().findSubscriberName(decodedParameters));
@@ -278,7 +278,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
 
     public void testFindsRequiredDestinationIfItIsAvailable() {
         Mock mockDestination = mock(Destination.class);
-        decodedParameters.put(HJBServletConstants.DESTINATION_URL,
+        decodedParameters.put(HJBConstants.DESTINATION_URL,
                               "/foo/bar/testProvider/destination/testDestination");
         mockHJB.make1Destination(root,
                                  "testProvider",
@@ -292,7 +292,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
     public void testThrowsExceptionIfExpectedDestinationUrlIsInvalid()
             throws Exception {
         Mock mockDestination = mock(Destination.class);
-        decodedParameters.put(HJBServletConstants.DESTINATION_URL,
+        decodedParameters.put(HJBConstants.DESTINATION_URL,
                               "/foobar/testProvider/destination/testDestination");
         mockHJB.make1Destination(root,
                                  "testProvider",
@@ -304,7 +304,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
                                                             "testProvider");
             fail("should have thrown an HJBClientException");
         } catch (HJBClientException e) {}
-        decodedParameters.put(HJBServletConstants.DESTINATION_URL, new Object());
+        decodedParameters.put(HJBConstants.DESTINATION_URL, new Object());
         try {
             new JMSArgumentFinder().findRequiredDestination(decodedParameters,
                                                             root,
@@ -315,7 +315,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
 
     public void testThrowsExceptionIfSessionProviderDoesNotMatchSessionProvider() {
         Mock mockDestination = mock(Destination.class);
-        decodedParameters.put(HJBServletConstants.DESTINATION_URL,
+        decodedParameters.put(HJBConstants.DESTINATION_URL,
                               "/foobar/testProvider/destination/testDestination");
         mockHJB.make1Destination(root,
                                  "testProvider",
@@ -331,7 +331,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
 
     public void testThrowsExceptionIfRequiredDestinationIsNotAvailable() {
         Mock mockDestination = mock(Destination.class);
-        decodedParameters.put(HJBServletConstants.DESTINATION_URL,
+        decodedParameters.put(HJBConstants.DESTINATION_URL,
                               "/foobar/testProvider/destination/notThere");
         mockHJB.make1Destination(root,
                                  "sessionProvider",
@@ -347,7 +347,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
 
     public void testFindsOptionalDestinationIfOneIsPresent() {
         Mock mockDestination = mock(Destination.class);
-        decodedParameters.put(HJBServletConstants.DESTINATION_URL,
+        decodedParameters.put(HJBConstants.DESTINATION_URL,
                               "/foo/bar/testProvider/destination/testDestination");
         mockHJB.make1Destination(root,
                                  "testProvider",
@@ -361,7 +361,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
     public void testReturnsNullIfOptionalDestinationIsNotPresent()
             throws Exception {
         Mock mockDestination = mock(Destination.class);
-        decodedParameters.put(HJBServletConstants.DESTINATION_URL,
+        decodedParameters.put(HJBConstants.DESTINATION_URL,
                               "/foo/bar/testProvider/destination/notThere");
         mockHJB.make1Destination(root,
                                  "testProvider",
@@ -374,7 +374,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
 
     public void testFindsQueueIfOneIsPresentAndValid() {
         Mock mockDestination = mock(Queue.class);
-        decodedParameters.put(HJBServletConstants.DESTINATION_URL,
+        decodedParameters.put(HJBConstants.DESTINATION_URL,
                               "/foo/bar/testProvider/destination/testDestination");
         mockHJB.make1Destination(root,
                                  "testProvider",
@@ -387,7 +387,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
 
     public void testThrowsExceptionIfQueueIsNotPresentOrIsInvalid() {
         Mock mockDestination = mock(Destination.class);
-        decodedParameters.put(HJBServletConstants.DESTINATION_URL,
+        decodedParameters.put(HJBConstants.DESTINATION_URL,
                               "/foo/bar/testProvider/destination/notHere");
         mockHJB.make1Destination(root,
                                  "testProvider",
@@ -399,7 +399,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
                                                             "testProvider"));
             fail("should have thrown HJBNotFoundException");
         } catch (HJBClientException e) {}
-        decodedParameters.put(HJBServletConstants.DESTINATION_URL,
+        decodedParameters.put(HJBConstants.DESTINATION_URL,
                               "/foo/bar/testProvider/destination/testDestination");
         try {
             assertNotNull(new JMSArgumentFinder().findQueue(decodedParameters,
@@ -411,7 +411,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
 
     public void testFindsTopicIfOneIsPresentAndValid() {
         Mock mockDestination = mock(Topic.class);
-        decodedParameters.put(HJBServletConstants.DESTINATION_URL,
+        decodedParameters.put(HJBConstants.DESTINATION_URL,
                               "/foo/bar/testProvider/destination/testDestination");
         mockHJB.make1Destination(root,
                                  "testProvider",
@@ -424,7 +424,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
 
     public void testThrowsExceptionIfTopicIsNotPresentOrIsInvalid() {
         Mock mockDestination = mock(Destination.class);
-        decodedParameters.put(HJBServletConstants.DESTINATION_URL,
+        decodedParameters.put(HJBConstants.DESTINATION_URL,
                               "/foo/bar/testProvider/destination/notHere");
         mockHJB.make1Destination(root,
                                  "testProvider",
@@ -436,7 +436,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
                                                             "testProvider"));
             fail("should have thrown HJBNotFoundException");
         } catch (HJBClientException e) {}
-        decodedParameters.put(HJBServletConstants.DESTINATION_URL,
+        decodedParameters.put(HJBConstants.DESTINATION_URL,
                               "/foo/bar/testProvider/destination/testDestination");
         try {
             assertNotNull(new JMSArgumentFinder().findTopic(decodedParameters,

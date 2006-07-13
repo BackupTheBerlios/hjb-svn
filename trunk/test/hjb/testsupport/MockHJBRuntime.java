@@ -30,7 +30,7 @@ import javax.naming.Context;
 
 import org.jmock.Mock;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.jms.HJBProvider;
 import hjb.jms.HJBRoot;
 
@@ -64,8 +64,8 @@ public class MockHJBRuntime {
         root.getProvider(providerName)
             .getConnectionFactory(factoryName)
             .getConnection(0)
-            .createSession(HJBServletConstants.DEFAULT_TRANSACTED,
-                           HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE);
+            .createSession(HJBConstants.DEFAULT_TRANSACTED,
+                           HJBConstants.DEFAULT_ACKNOWLEDGEMENT_MODE);
     }
 
     public void make1SessionAnd1Destination(HJBRoot root,
@@ -99,8 +99,8 @@ public class MockHJBRuntime {
         root.getProvider(providerName)
             .getConnectionFactory(factoryName)
             .getConnection(0)
-            .createSession(HJBServletConstants.DEFAULT_TRANSACTED,
-                           HJBServletConstants.DEFAULT_ACKNOWLEDGEMENT_MODE);
+            .createSession(HJBConstants.DEFAULT_TRANSACTED,
+                           HJBConstants.DEFAULT_ACKNOWLEDGEMENT_MODE);
     }
 
     public void make1Destination(HJBRoot root,

@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.jmock.Mock;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.jms.HJBRoot;
 import hjb.jms.cmd.CreateSession;
 
@@ -67,9 +67,9 @@ public class CreateSessionGeneratorTest extends BaseJMSCommandGeneratorTestCase 
 
     protected Map generateMockParameterMap() {
         Map parameterMap = new HashMap();
-        parameterMap.put(HJBServletConstants.SESSION_ACKNOWLEDGEMENT_MODE,
+        parameterMap.put(HJBConstants.SESSION_ACKNOWLEDGEMENT_MODE,
                          new Integer(Session.CLIENT_ACKNOWLEDGE));
-        parameterMap.put(HJBServletConstants.SESSION_TRANSACTED,
+        parameterMap.put(HJBConstants.SESSION_TRANSACTED,
                          new Boolean(false));
         return Collections.unmodifiableMap(parameterMap);
     }

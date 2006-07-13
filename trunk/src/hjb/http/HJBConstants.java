@@ -23,12 +23,12 @@ package hjb.http;
 import javax.jms.Session;
 
 /**
- * <code>HJBServletConstants</code> contains constants used during processing
- * of <code>HttpServletRequests</code> by the <code>HJBServlet</code>.
+ * <code>HJBConstants</code> contains constants throughout
+ * the <code>HJB</code>.
  * 
  * @author Tim Emiola
  */
-public final class HJBServletConstants {
+public final class HJBConstants {
         
     /**
      * Constant that holds the name of the attribute used to store HJB Application in

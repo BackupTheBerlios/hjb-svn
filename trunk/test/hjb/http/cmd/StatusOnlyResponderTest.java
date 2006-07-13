@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.jms.cmd.JMSCommand;
 import hjb.misc.HJBException;
 
@@ -53,7 +53,7 @@ public class StatusOnlyResponderTest extends MockObjectTestCase {
         Mock mockResponse = mock(HttpServletResponse.class);
         mockResponse.expects(once())
             .method("addHeader")
-            .with(eq(HJBServletConstants.HJB_STATUS_HEADER), eq("test Status"));
+            .with(eq(HJBConstants.HJB_STATUS_HEADER), eq("test Status"));
         mockResponse.expects(once())
             .method("sendError")
             .with(eq(HttpServletResponse.SC_INTERNAL_SERVER_ERROR),
@@ -76,7 +76,7 @@ public class StatusOnlyResponderTest extends MockObjectTestCase {
         Mock mockResponse = mock(HttpServletResponse.class);
         mockResponse.expects(once())
             .method("addHeader")
-            .with(eq(HJBServletConstants.HJB_STATUS_HEADER), eq("test status"));
+            .with(eq(HJBConstants.HJB_STATUS_HEADER), eq("test status"));
         mockResponse.expects(once()).method("flushBuffer");
         mockResponse.expects(once()).method("setContentLength").with(eq(0));
         mockResponse.expects(once())

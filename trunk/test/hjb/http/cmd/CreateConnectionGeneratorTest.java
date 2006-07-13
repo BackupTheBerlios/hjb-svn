@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.jmock.Mock;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.jms.HJBRoot;
 import hjb.jms.cmd.CreateConnection;
 
@@ -65,9 +65,9 @@ public class CreateConnectionGeneratorTest extends
 
     protected Map generateMockParameterMap() {
         Map parameterMap = new HashMap();
-        parameterMap.put(HJBServletConstants.CONNECTION_USERNAME,
+        parameterMap.put(HJBConstants.CONNECTION_USERNAME,
                          "testUsername");
-        parameterMap.put(HJBServletConstants.CONNECTION_PASSWORD,
+        parameterMap.put(HJBConstants.CONNECTION_PASSWORD,
                          "testPassword");
         return Collections.unmodifiableMap(parameterMap);
     }

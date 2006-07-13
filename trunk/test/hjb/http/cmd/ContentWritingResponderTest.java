@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.jms.cmd.JMSCommand;
 import hjb.misc.HJBException;
 
@@ -63,7 +63,7 @@ public class ContentWritingResponderTest extends MockObjectTestCase {
         Mock mockResponse = mock(HttpServletResponse.class);
         mockResponse.expects(once())
             .method("addHeader")
-            .with(eq(HJBServletConstants.HJB_STATUS_HEADER), eq("test Status"));
+            .with(eq(HJBConstants.HJB_STATUS_HEADER), eq("test Status"));
         mockResponse.expects(once())
             .method("sendError")
             .with(eq(HttpServletResponse.SC_INTERNAL_SERVER_ERROR),
@@ -88,14 +88,14 @@ public class ContentWritingResponderTest extends MockObjectTestCase {
         Writer testWriter = new StringWriter();
         mockResponse.expects(once())
             .method("addHeader")
-            .with(eq(HJBServletConstants.HJB_STATUS_HEADER), eq("test status"));
+            .with(eq(HJBConstants.HJB_STATUS_HEADER), eq("test status"));
         mockResponse.expects(once()).method("flushBuffer");
         mockResponse.expects(once())
             .method("setStatus")
             .with(eq(HttpServletResponse.SC_OK));
         mockResponse.expects(once())
             .method("setContentType")
-            .with(eq(HJBServletConstants.HTTP_TEXT_PLAIN));
+            .with(eq(HJBConstants.HTTP_TEXT_PLAIN));
         mockResponse.expects(once())
             .method("getWriter")
             .will(returnValue(new PrintWriter(testWriter)));

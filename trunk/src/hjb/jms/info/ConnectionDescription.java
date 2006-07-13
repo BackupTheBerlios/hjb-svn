@@ -7,7 +7,7 @@ import java.util.TreeMap;
 import javax.jms.JMSException;
 import javax.jms.Connection;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.misc.HJBStrings;
 import hjb.misc.PathNaming;
 
@@ -30,7 +30,7 @@ public class ConnectionDescription extends BaseJMSObjectDescription {
     protected Map attributesAsAMap() {
         Map result = new TreeMap();
         try {
-            result.put(HJBServletConstants.CLIENT_ID,
+            result.put(HJBConstants.CLIENT_ID,
                        null == getTheConnection().getClientID() ? ""
                                : getTheConnection().getClientID());
             result.putAll(getModifiedMetadataMap());

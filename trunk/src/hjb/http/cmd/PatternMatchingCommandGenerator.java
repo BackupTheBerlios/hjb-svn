@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.jms.HJBRoot;
 import hjb.jms.cmd.JMSCommandRunner;
 import hjb.misc.HJBException;
@@ -169,10 +169,10 @@ public abstract class PatternMatchingCommandGenerator implements
 
     protected String applyURLDecoding(String s) {
         try {
-            return URLDecoder.decode(s, HJBServletConstants.JAVA_CHARSET_UTF8);
+            return URLDecoder.decode(s, HJBConstants.JAVA_CHARSET_UTF8);
         } catch (UnsupportedEncodingException e) {
             String message = strings().getString(HJBStrings.ENCODING_NOT_SUPPORTED,
-                                                 HJBServletConstants.JAVA_CHARSET_UTF8);
+                                                 HJBConstants.JAVA_CHARSET_UTF8);
             throw new HJBException(message);
         }
     }

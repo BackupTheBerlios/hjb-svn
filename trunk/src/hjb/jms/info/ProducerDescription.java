@@ -6,7 +6,7 @@ import java.util.TreeMap;
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.misc.HJBStrings;
 import hjb.misc.PathNaming;
 
@@ -29,15 +29,15 @@ public class ProducerDescription extends BaseJMSObjectDescription {
     protected Map attributesAsAMap() {
         Map result = new TreeMap();
         try {
-            result.put(HJBServletConstants.DISABLE_MESSAGE_IDS,
+            result.put(HJBConstants.DISABLE_MESSAGE_IDS,
                        getCodec().encode(new Boolean(getTheProducer().getDisableMessageID())));
-            result.put(HJBServletConstants.DISABLE_TIMESTAMPS,
+            result.put(HJBConstants.DISABLE_TIMESTAMPS,
                        getCodec().encode(new Boolean(getTheProducer().getDisableMessageTimestamp())));
-            result.put(HJBServletConstants.TIME_TO_LIVE,
+            result.put(HJBConstants.TIME_TO_LIVE,
                        getCodec().encode(new Long(getTheProducer().getTimeToLive())));
-            result.put(HJBServletConstants.PRIORITY,
+            result.put(HJBConstants.PRIORITY,
                        getCodec().encode((new Integer(getTheProducer().getPriority()))));
-            result.put(HJBServletConstants.DELIVERY_MODE,
+            result.put(HJBConstants.DELIVERY_MODE,
                        getCodec().encode((new Integer(getTheProducer().getDeliveryMode()))));
         } catch (JMSException e) {}
         return result;

@@ -21,7 +21,7 @@ public class RuntimeExceptionHandlerTest extends MockObjectTestCase {
         Mock mockResponse = mock(HttpServletResponse.class);
         String statusText = "test status Text";
         
-        mockResponse.expects(once()).method("addHeader").with(eq(HJBServletConstants.HJB_STATUS_HEADER), eq(statusText));
+        mockResponse.expects(once()).method("addHeader").with(eq(HJBConstants.HJB_STATUS_HEADER), eq(statusText));
         mockResponse.expects(once()).method("sendError").with(ANYTHING, eq(statusText ));
         RuntimeExceptionHandler handler = new RuntimeExceptionHandler();
         handler.sendHJBFault((HttpServletResponse) mockResponse.proxy(), new RuntimeException(), statusText);

@@ -24,7 +24,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.http.RuntimeExceptionHandler;
 import hjb.jms.cmd.JMSCommand;
 import hjb.misc.HJBStrings;
@@ -59,14 +59,14 @@ public abstract class BaseJMSCommandResponder implements JMSCommandResponder {
      * command.
      * <p>
      * The name of header is the value of
-     * {@link HJBServletConstants#HJB_STATUS_HEADER}.
+     * {@link HJBConstants#HJB_STATUS_HEADER}.
      * </p>
      * 
      * @param response
      *            a <code>HttpServletResponse</code>
      */
     protected void addStatusHeader(HttpServletResponse response) {
-        response.addHeader(HJBServletConstants.HJB_STATUS_HEADER,
+        response.addHeader(HJBConstants.HJB_STATUS_HEADER,
                            getStatusText());
     }
 

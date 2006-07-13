@@ -54,7 +54,7 @@ public class HJBServlet extends HttpServlet {
     public synchronized void init() throws ServletException {
         super.init();
         try {
-            getServletContext().setAttribute(HJBServletConstants.HJB_APPLICATION_ATTRIBUTE,
+            getServletContext().setAttribute(HJBConstants.HJB_APPLICATION_ATTRIBUTE,
                                              new HJBApplication(getServletConfig(),
                                                                 new Timer()));
             LOG.info(strings().getString(HJBStrings.HELLO_FROM_HJB));
@@ -122,7 +122,7 @@ public class HJBServlet extends HttpServlet {
      *             <code>HJBApplication</code> can't be found
      */
     protected HJBApplication findApplication() throws ServletException {
-        HJBApplication application = (HJBApplication) getServletContext().getAttribute(HJBServletConstants.HJB_APPLICATION_ATTRIBUTE);
+        HJBApplication application = (HJBApplication) getServletContext().getAttribute(HJBConstants.HJB_APPLICATION_ATTRIBUTE);
         if (null == application) {
             throw new ServletException(strings().getString(HJBStrings.HJB_ROOT_IS_AWOL));
         }

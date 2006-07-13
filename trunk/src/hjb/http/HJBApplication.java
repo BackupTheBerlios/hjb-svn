@@ -128,7 +128,7 @@ public class HJBApplication {
     }
 
     private void findHJBRoot(ServletConfig config) {
-        String hjbRootPath = config.getInitParameter(HJBServletConstants.ROOT_PATH_CONFIG);
+        String hjbRootPath = config.getInitParameter(HJBConstants.ROOT_PATH_CONFIG);
         root = new HJBRoot(new File(hjbRootPath));
     }
 
@@ -136,7 +136,7 @@ public class HJBApplication {
             throws ServletException {
         try {
             this.commandTimeout = MILLISECONDS
-                    * Long.parseLong(config.getInitParameter(HJBServletConstants.COMMAND_TIMEOUT_CONFIG));
+                    * Long.parseLong(config.getInitParameter(HJBConstants.COMMAND_TIMEOUT_CONFIG));
         } catch (NumberFormatException e) {
             throw new ServletException(e);
         }

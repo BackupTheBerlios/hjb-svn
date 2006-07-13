@@ -6,7 +6,7 @@ import java.util.TreeMap;
 import javax.jms.JMSException;
 import javax.jms.QueueBrowser;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.misc.HJBStrings;
 import hjb.misc.PathNaming;
 
@@ -40,7 +40,7 @@ public class BrowserDescription extends BaseJMSObjectDescription {
     protected Map attributesAsAMap() {
         Map result = new TreeMap();
         try {
-            result.put(HJBServletConstants.MESSAGE_SELECTOR,
+            result.put(HJBConstants.MESSAGE_SELECTOR,
                        (null == getTheBrowser().getMessageSelector() ? ""
                                : getTheBrowser().getMessageSelector()));
         } catch (JMSException e) {}

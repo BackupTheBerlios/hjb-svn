@@ -6,7 +6,7 @@ import java.util.TreeMap;
 import javax.jms.JMSException;
 import javax.jms.Session;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.misc.HJBStrings;
 import hjb.misc.PathNaming;
 
@@ -29,9 +29,9 @@ public class SessionDescription extends BaseJMSObjectDescription {
     protected Map attributesAsAMap() {
         Map result = new TreeMap();
         try {
-            result.put(HJBServletConstants.SESSION_TRANSACTED,
+            result.put(HJBConstants.SESSION_TRANSACTED,
                        getCodec().encode(new Boolean(getTheSession().getTransacted())));
-            result.put(HJBServletConstants.SESSION_ACKNOWLEDGEMENT_MODE,
+            result.put(HJBConstants.SESSION_ACKNOWLEDGEMENT_MODE,
                        getCodec().encode(new Integer(getTheSession().getAcknowledgeMode())));
         } catch (JMSException e) {}
         return result;

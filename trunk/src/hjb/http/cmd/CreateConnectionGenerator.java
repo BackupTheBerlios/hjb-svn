@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.jms.HJBConnectionFactory;
 import hjb.jms.HJBRoot;
 import hjb.jms.cmd.CreateConnection;
@@ -76,9 +76,9 @@ public class CreateConnectionGenerator extends PatternMatchingCommandGenerator {
         // get the username and password from the decoded parameters, then
         // create the JMSCommand
         Map decodedParameters = getDecoder().decode(request.getParameterMap());
-        Object rawUsername = decodedParameters.get(HJBServletConstants.CONNECTION_USERNAME);
+        Object rawUsername = decodedParameters.get(HJBConstants.CONNECTION_USERNAME);
         String username = null == rawUsername ? null : "" + rawUsername;
-        Object rawPassword = decodedParameters.get(HJBServletConstants.CONNECTION_PASSWORD);
+        Object rawPassword = decodedParameters.get(HJBConstants.CONNECTION_PASSWORD);
         String password = null == rawPassword ? null : "" + rawPassword;
         this.generatedCommand = new CreateConnection(factory,
                                                      username,

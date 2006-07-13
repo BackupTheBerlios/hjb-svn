@@ -38,7 +38,7 @@ public class HJBApplicationTest extends MockObjectTestCase {
         mockConfig.stubs().method("getInitParameter").will(returnValue(null));
         mockConfig.stubs()
             .method("getInitParameter")
-            .with(eq(HJBServletConstants.ROOT_PATH_CONFIG))
+            .with(eq(HJBConstants.ROOT_PATH_CONFIG))
             .will(returnValue(testRootPath.getAbsolutePath()));
         try {
             new HJBApplication((ServletConfig) mockConfig.proxy(), new Timer());
@@ -52,7 +52,7 @@ public class HJBApplicationTest extends MockObjectTestCase {
         mockConfig.stubs().method("getInitParameter").will(returnValue(null));
         mockConfig.stubs()
             .method("getInitParameter")
-            .with(eq(HJBServletConstants.COMMAND_TIMEOUT_CONFIG))
+            .with(eq(HJBConstants.COMMAND_TIMEOUT_CONFIG))
             .will(returnValue("1000"));
         try {
             new HJBApplication((ServletConfig) mockConfig.proxy(), new Timer());
@@ -149,7 +149,7 @@ public class HJBApplicationTest extends MockObjectTestCase {
                 .will(throwException(possibleException[i]));
             mockResponse.expects(once())
                 .method("addHeader")
-                .with(eq(HJBServletConstants.HJB_STATUS_HEADER),
+                .with(eq(HJBConstants.HJB_STATUS_HEADER),
                       eq("thrown as a test"));
             mockResponse.expects(once())
                 .method("sendError")
@@ -243,11 +243,11 @@ public class HJBApplicationTest extends MockObjectTestCase {
         mockConfig.stubs().method("getInitParameter").will(returnValue(null));
         mockConfig.stubs()
             .method("getInitParameter")
-            .with(eq(HJBServletConstants.COMMAND_TIMEOUT_CONFIG))
+            .with(eq(HJBConstants.COMMAND_TIMEOUT_CONFIG))
             .will(returnValue("1000"));
         mockConfig.stubs()
             .method("getInitParameter")
-            .with(eq(HJBServletConstants.ROOT_PATH_CONFIG))
+            .with(eq(HJBConstants.ROOT_PATH_CONFIG))
             .will(returnValue(testRootPath.getAbsolutePath()));
         HJBApplication application = new HJBApplication((ServletConfig) mockConfig.proxy(),
                                                         timer);

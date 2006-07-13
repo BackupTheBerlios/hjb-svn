@@ -24,7 +24,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.jms.cmd.JMSCommand;
 import hjb.misc.HJBException;
 
@@ -68,7 +68,7 @@ public class StatusOnlyResponder extends BaseJMSCommandResponder {
     protected void sendOkNoContent(HttpServletResponse response)
             throws IOException {
         response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-        response.setContentLength(HJBServletConstants.NO_CONTENT_LENGTH);
+        response.setContentLength(HJBConstants.NO_CONTENT_LENGTH);
         response.flushBuffer();
     }
 }

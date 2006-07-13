@@ -69,7 +69,7 @@ public class RuntimeExceptionHandler {
             LOG.error(message, exception);
             return;
         }
-        response.addHeader(HJBServletConstants.HJB_STATUS_HEADER,
+        response.addHeader(HJBConstants.HJB_STATUS_HEADER,
                            (null != statusText) ? statusText
                                    : strings().getString(HJBStrings.UNKNOWN_CAUSE));
         if (exception instanceof HJBNotFoundException) {

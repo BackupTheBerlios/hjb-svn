@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.jmock.Mock;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.jms.HJBRoot;
 import hjb.jms.cmd.SendHJBMessage;
 
@@ -70,7 +70,7 @@ public class SendHJBMessageGeneratorTest extends
 
     protected Map generateMockParameterMap() {
         Map parameterMap = new HashMap();
-        parameterMap.put(HJBServletConstants.MESSAGE_TO_SEND, new String[] {
+        parameterMap.put(HJBConstants.MESSAGE_TO_SEND, new String[] {
             "Dummy message"
         });
         return Collections.unmodifiableMap(parameterMap);

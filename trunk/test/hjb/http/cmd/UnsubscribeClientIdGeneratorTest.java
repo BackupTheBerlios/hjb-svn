@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import hjb.http.HJBServletConstants;
+import hjb.http.HJBConstants;
 import hjb.jms.HJBRoot;
 import hjb.jms.cmd.UnsubscribeClientId;
 
@@ -65,7 +65,7 @@ public class UnsubscribeClientIdGeneratorTest extends
     
     protected Map generateMockParameterMap() {
         Map parameterMap = new HashMap();
-        parameterMap.put(HJBServletConstants.CLIENT_ID, new String[] {
+        parameterMap.put(HJBConstants.CLIENT_ID, new String[] {
             "testClientId"
         });
         return Collections.unmodifiableMap(parameterMap);
