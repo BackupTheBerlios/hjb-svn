@@ -114,8 +114,8 @@ public class HJBServlet extends HttpServlet {
     }
 
     /**
-     * Locates the instance of <code>HJBApplication</code> bound to
-     * this servlet.
+     * Locates the instance of <code>HJBApplication</code> bound to this
+     * servlet.
      * 
      * @return the <code>HJBApplication</code>
      * @throws ServletException
