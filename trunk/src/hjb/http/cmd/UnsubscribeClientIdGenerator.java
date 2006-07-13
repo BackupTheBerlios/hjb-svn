@@ -33,6 +33,7 @@ import hjb.jms.cmd.RollbackSession;
 import hjb.jms.cmd.UnsubscribeClientId;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
+import hjb.misc.PathNaming;
 
 /**
  * <code>RollbackSessionGenerator</code> is the

@@ -7,8 +7,8 @@ import javax.jms.JMSException;
 import javax.jms.Session;
 
 import hjb.http.HJBServletConstants;
-import hjb.http.cmd.PathNaming;
 import hjb.misc.HJBStrings;
+import hjb.misc.PathNaming;
 
 /**
  * <code>SessionDescription</code> is used to provide a description of JMS

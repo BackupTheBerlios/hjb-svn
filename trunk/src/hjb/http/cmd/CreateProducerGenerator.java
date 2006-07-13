@@ -33,6 +33,7 @@ import hjb.jms.cmd.CreateProducer;
 import hjb.jms.cmd.JMSCommand;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
+import hjb.misc.PathNaming;
 
 /**
  * <code>CreateProducerGenerator</code> is the

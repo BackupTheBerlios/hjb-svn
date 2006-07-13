@@ -30,6 +30,7 @@ import hjb.jms.cmd.JMSCommand;
 import hjb.jms.cmd.RegisterDestination;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
+import hjb.misc.PathNaming;
 
 /**
  * <code>RegisterDestinationGenerator</code> is the

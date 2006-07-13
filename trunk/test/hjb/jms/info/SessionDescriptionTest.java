@@ -4,8 +4,8 @@ import javax.jms.Session;
 
 import org.jmock.Mock;
 
-import hjb.http.cmd.PathNaming;
 import hjb.misc.HJBStrings;
+import hjb.misc.PathNaming;
 
 public class SessionDescriptionTest extends BaseDescriptionTestCase {
 

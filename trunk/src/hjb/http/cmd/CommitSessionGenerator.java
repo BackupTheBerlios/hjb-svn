@@ -31,6 +31,7 @@ import hjb.jms.cmd.CommitSession;
 import hjb.jms.cmd.JMSCommand;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
+import hjb.misc.PathNaming;
 
 /**
  * <code>CommitSessionGenerator</code> is the <code>JMSCommandGenerator</code>

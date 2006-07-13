@@ -6,6 +6,7 @@ import junit.framework.TestCase;
 
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBNotFoundException;
+import hjb.misc.PathNaming;
 import hjb.testsupport.MockHJBRuntime;
 
 public class HJBTreeWalkerTest extends TestCase {

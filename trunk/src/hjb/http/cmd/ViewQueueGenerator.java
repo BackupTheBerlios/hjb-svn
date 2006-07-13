@@ -32,6 +32,7 @@ import hjb.jms.cmd.JMSCommand;
 import hjb.jms.cmd.ViewQueue;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
+import hjb.misc.PathNaming;
 
 /**
  * <code>ViewQueueGenerator</code> is the <code>JMSCommandGenerator</code>

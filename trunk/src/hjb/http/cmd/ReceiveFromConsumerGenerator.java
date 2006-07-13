@@ -33,6 +33,7 @@ import hjb.jms.cmd.JMSCommand;
 import hjb.jms.cmd.ReceiveFromConsumer;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
+import hjb.misc.PathNaming;
 
 /**
  * <code>ReceiveFromConsumerGenerator</code> is the

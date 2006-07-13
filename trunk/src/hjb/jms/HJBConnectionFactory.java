@@ -35,7 +35,7 @@ import hjb.misc.HJBStrings;
 
 /**
  * HJBConnectionFactory decorates a {@link javax.jms.ConnectionFactory}, and
- * adds extra methods that allow it access the connections it creates.
+ * adds methods that allow it to access the connections it creates.
  * 
  * <p />
  * It provides:

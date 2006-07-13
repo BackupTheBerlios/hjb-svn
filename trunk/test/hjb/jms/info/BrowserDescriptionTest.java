@@ -5,7 +5,7 @@ import javax.jms.QueueBrowser;
 
 import org.jmock.Mock;
 
-import hjb.http.cmd.PathNaming;
+import hjb.misc.PathNaming;
 
 public class BrowserDescriptionTest extends BaseDescriptionTestCase {
 

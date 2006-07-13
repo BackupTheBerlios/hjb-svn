@@ -33,6 +33,7 @@ import hjb.jms.cmd.JMSCommand;
 import hjb.jms.cmd.ReceiveFromSubscriber;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
+import hjb.misc.PathNaming;
 
 /**
  * <code>ReceiveFromSubscriberGenerator</code> is the

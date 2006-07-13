@@ -6,7 +6,7 @@ import javax.jms.MessageProducer;
 
 import org.jmock.Mock;
 
-import hjb.http.cmd.PathNaming;
+import hjb.misc.PathNaming;
 
 public class ProducerDescriptionTest extends BaseDescriptionTestCase {
 

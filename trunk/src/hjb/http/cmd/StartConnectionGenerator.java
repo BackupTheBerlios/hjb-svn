@@ -31,6 +31,7 @@ import hjb.jms.cmd.JMSCommand;
 import hjb.jms.cmd.StartConnection;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
+import hjb.misc.PathNaming;
 
 /**
  * <code>StartConnectionGenerator</code> is the

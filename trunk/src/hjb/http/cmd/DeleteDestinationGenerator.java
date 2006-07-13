@@ -30,6 +30,7 @@ import hjb.jms.cmd.DeleteDestination;
 import hjb.jms.cmd.JMSCommand;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
+import hjb.misc.PathNaming;
 
 /**
  * <code>DeleteDestinationGenerator</code> is the

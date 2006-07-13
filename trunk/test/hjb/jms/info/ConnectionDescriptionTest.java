@@ -9,7 +9,7 @@ import javax.jms.ConnectionMetaData;
 
 import org.jmock.Mock;
 
-import hjb.http.cmd.PathNaming;
+import hjb.misc.PathNaming;
 
 public class ConnectionDescriptionTest extends BaseDescriptionTestCase {
 

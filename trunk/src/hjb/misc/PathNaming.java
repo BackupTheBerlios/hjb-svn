@@ -18,9 +18,8 @@
  USA
 
  */
-package hjb.http.cmd;
+package hjb.misc;
 
-import hjb.misc.HJBStrings;
 
 /**
  * <code>PathNaming</code> provides access to the values used in HJB URLs.

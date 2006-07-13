@@ -31,6 +31,7 @@ import hjb.jms.cmd.DeleteSession;
 import hjb.jms.cmd.JMSCommand;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
+import hjb.misc.PathNaming;
 
 /**
  * <code>DeleteSessionGenerator</code> is the <code>JMSCommandGenerator</code>

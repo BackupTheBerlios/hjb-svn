@@ -31,6 +31,7 @@ import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
 import hjb.misc.HJBNotFoundException;
 import hjb.misc.HJBStrings;
+import hjb.misc.PathNaming;
 
 /**
  * <code>HJBTreeWalker</code> is used to locate various HJB object instances

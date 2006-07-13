@@ -7,8 +7,8 @@ import javax.jms.JMSException;
 import javax.jms.TopicSubscriber;
 
 import hjb.http.HJBServletConstants;
-import hjb.http.cmd.PathNaming;
 import hjb.misc.HJBStrings;
+import hjb.misc.PathNaming;
 
 /**
  * <code>SubscriberDescription</code> is used to a provide description of JMS

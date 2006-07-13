@@ -33,6 +33,7 @@ import hjb.jms.cmd.CreateSession;
 import hjb.jms.cmd.JMSCommand;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
+import hjb.misc.PathNaming;
 
 /**
  * <code>CreateSessionGenerator</code> is the <code>JMSCommandGenerator</code>
