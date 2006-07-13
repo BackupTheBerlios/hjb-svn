@@ -33,6 +33,7 @@ import org.apache.log4j.Logger;
 import hjb.http.cmd.HttpDeleteGeneratorFactory;
 import hjb.http.cmd.HttpGetGeneratorFactory;
 import hjb.http.cmd.HttpPostGeneratorFactory;
+import hjb.misc.HJBConstants;
 import hjb.misc.HJBStrings;
 
 /**

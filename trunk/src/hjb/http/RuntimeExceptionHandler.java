@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import hjb.misc.HJBClientException;
+import hjb.misc.HJBConstants;
 import hjb.misc.HJBStrings;
 import hjb.misc.HJBNotFoundException;
 

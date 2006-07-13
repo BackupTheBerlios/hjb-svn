@@ -1,9 +1,9 @@
 package hjb.http.cmd;
 
-import hjb.http.HJBConstants;
 import hjb.jms.HJBProvider;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBClientException;
+import hjb.misc.HJBConstants;
 import hjb.misc.HJBNotFoundException;
 import hjb.misc.MessageProducerArguments;
 import hjb.msg.HJBMessage;

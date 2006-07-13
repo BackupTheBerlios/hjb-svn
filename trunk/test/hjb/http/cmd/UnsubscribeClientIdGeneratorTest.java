@@ -24,9 +24,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import hjb.http.HJBConstants;
 import hjb.jms.HJBRoot;
 import hjb.jms.cmd.UnsubscribeClientId;
+import hjb.misc.HJBConstants;
 
 import javax.servlet.http.HttpServletRequest;
 

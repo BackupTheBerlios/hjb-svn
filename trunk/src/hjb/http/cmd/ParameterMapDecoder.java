@@ -24,7 +24,7 @@ import java.util.*;
 
 import org.apache.log4j.Logger;
 
-import hjb.http.HJBConstants;
+import hjb.misc.HJBConstants;
 import hjb.misc.HJBStrings;
 import hjb.msg.codec.OrderedTypedValueCodec;
 

@@ -24,9 +24,9 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 
-import hjb.http.HJBConstants;
 import hjb.http.RuntimeExceptionHandler;
 import hjb.jms.cmd.JMSCommand;
+import hjb.misc.HJBConstants;
 import hjb.misc.HJBStrings;
 
 /**

@@ -32,7 +32,6 @@ import javax.jms.*;
 
 import org.apache.log4j.Logger;
 
-import hjb.http.HJBConstants;
 import hjb.jms.HJBProvider;
 import hjb.jms.HJBRoot;
 import hjb.misc.*;

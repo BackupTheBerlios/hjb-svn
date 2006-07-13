@@ -28,9 +28,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.jmock.Mock;
 
-import hjb.http.HJBConstants;
 import hjb.jms.HJBRoot;
 import hjb.jms.cmd.CreateConnection;
+import hjb.misc.HJBConstants;
 
 public class CreateConnectionGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {

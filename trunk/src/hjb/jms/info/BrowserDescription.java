@@ -6,7 +6,7 @@ import java.util.TreeMap;
 import javax.jms.JMSException;
 import javax.jms.QueueBrowser;
 
-import hjb.http.HJBConstants;
+import hjb.misc.HJBConstants;
 import hjb.misc.HJBStrings;
 import hjb.misc.PathNaming;
 

@@ -15,6 +15,7 @@ import hjb.http.cmd.JMSCommandGenerator;
 import hjb.http.cmd.JMSCommandGeneratorFactory;
 import hjb.jms.cmd.DeleteProvider;
 import hjb.jms.cmd.JMSCommandRunner;
+import hjb.misc.HJBConstants;
 import hjb.misc.HJBException;
 import hjb.testsupport.MockHJBRuntime;
 

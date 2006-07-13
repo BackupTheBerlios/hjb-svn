@@ -18,7 +18,7 @@
  USA
 
  */
-package hjb.http;
+package hjb.misc;
 
 import javax.jms.Session;
 

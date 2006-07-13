@@ -29,8 +29,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
-import hjb.http.HJBConstants;
 import hjb.jms.cmd.JMSCommand;
+import hjb.misc.HJBConstants;
 import hjb.misc.HJBException;
 
 public class ContentWritingResponderTest extends MockObjectTestCase {

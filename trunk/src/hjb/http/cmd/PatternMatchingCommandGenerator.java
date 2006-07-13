@@ -29,9 +29,9 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import hjb.http.HJBConstants;
 import hjb.jms.HJBRoot;
 import hjb.jms.cmd.JMSCommandRunner;
+import hjb.misc.HJBConstants;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 

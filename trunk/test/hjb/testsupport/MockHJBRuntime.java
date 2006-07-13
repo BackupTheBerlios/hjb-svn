@@ -30,9 +30,9 @@ import javax.naming.Context;
 
 import org.jmock.Mock;
 
-import hjb.http.HJBConstants;
 import hjb.jms.HJBProvider;
 import hjb.jms.HJBRoot;
+import hjb.misc.HJBConstants;
 
 public class MockHJBRuntime {
 

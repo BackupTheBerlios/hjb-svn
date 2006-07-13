@@ -14,6 +14,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import hjb.jms.cmd.JMSCommandRunner;
+import hjb.misc.HJBConstants;
 import hjb.testsupport.MockHJBRuntime;
 
 public class HJBServletTest extends MockObjectTestCase {

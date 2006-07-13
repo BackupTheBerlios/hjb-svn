@@ -8,6 +8,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import hjb.misc.HJBClientException;
+import hjb.misc.HJBConstants;
 import hjb.misc.HJBNotFoundException;
 
 public class RuntimeExceptionHandlerTest extends MockObjectTestCase {

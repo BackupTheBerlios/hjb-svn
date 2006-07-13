@@ -17,6 +17,7 @@ import hjb.http.cmd.JMSCommandGenerator;
 import hjb.http.cmd.JMSCommandGeneratorFactory;
 import hjb.jms.HJBRoot;
 import hjb.jms.cmd.JMSCommand;
+import hjb.misc.HJBConstants;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 

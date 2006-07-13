@@ -27,11 +27,11 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
-import hjb.http.HJBConstants;
 import hjb.jms.HJBConnectionFactory;
 import hjb.jms.HJBRoot;
 import hjb.jms.cmd.CreateConnection;
 import hjb.jms.cmd.JMSCommand;
+import hjb.misc.HJBConstants;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 import hjb.misc.PathNaming;
