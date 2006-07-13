@@ -27,6 +27,7 @@ import javax.jms.Session;
 
 import org.apache.log4j.Logger;
 
+import hjb.jms.info.SessionDescription;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 

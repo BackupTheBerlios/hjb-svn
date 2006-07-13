@@ -23,7 +23,7 @@ package hjb.jms.cmd;
 import javax.jms.JMSException;
 
 import hjb.jms.HJBConnection;
-import hjb.jms.MetadataReaderAssistant;
+import hjb.jms.info.MetadataReaderAssistant;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 

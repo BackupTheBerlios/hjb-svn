@@ -26,6 +26,7 @@ import javax.jms.*;
 
 import org.apache.log4j.Logger;
 
+import hjb.jms.info.*;
 import hjb.misc.*;
 import hjb.msg.AttributeCopier;
 import hjb.msg.HJBMessage;

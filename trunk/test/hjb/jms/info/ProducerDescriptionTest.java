@@ -1,4 +1,4 @@
-package hjb.jms;
+package hjb.jms.info;
 
 import javax.jms.DeliveryMode;
 import javax.jms.Destination;

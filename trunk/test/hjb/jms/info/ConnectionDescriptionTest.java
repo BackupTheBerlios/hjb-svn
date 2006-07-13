@@ -1,4 +1,4 @@
-package hjb.jms;
+package hjb.jms.info;
 
 import java.util.Arrays;
 import java.util.Collections;

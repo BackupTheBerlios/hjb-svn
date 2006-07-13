@@ -1,4 +1,4 @@
-package hjb.jms;
+package hjb.jms.info;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -14,7 +14,8 @@ import hjb.msg.codec.OrderedTypedValueCodec;
  * <code>BaseJMSObjectDescription</code> is the base class for the various
  * XXXDescription classes.
  * 
- * It provides useful protected methods to each of its subclasses.
+ * It provides defines a number of template methods which allow its subclasses
+ * to customize its behaviour by overriding its protected methods.
  * 
  * @author Tim Emiola
  */
@@ -64,7 +65,7 @@ public class BaseJMSObjectDescription {
     }
 
     /**
-     * @return a Map containing the JMS object's attributes. 
+     * @return a Map containing the JMS object's attributes.
      */
     protected Map attributesAsAMap() {
         return Collections.EMPTY_MAP;
@@ -105,7 +106,6 @@ public class BaseJMSObjectDescription {
     protected int getIndex() {
         return index;
     }
-
 
     protected HJBStrings strings() {
         return STRINGS;

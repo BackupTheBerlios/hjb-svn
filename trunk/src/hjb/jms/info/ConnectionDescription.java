@@ -1,4 +1,4 @@
-package hjb.jms;
+package hjb.jms.info;
 
 import java.util.Iterator;
 import java.util.Map;

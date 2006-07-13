@@ -18,7 +18,7 @@
  USA
 
  */
-package hjb.jms;
+package hjb.jms.info;
 
 import java.util.ArrayList;
 import java.util.Collections;

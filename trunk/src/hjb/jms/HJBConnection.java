@@ -27,6 +27,8 @@ import javax.jms.*;
 import org.apache.log4j.Logger;
 
 import hjb.jms.cmd.JMSCommandRunner;
+import hjb.jms.info.ConnectionDescription;
+import hjb.jms.info.SessionDescription;
 import hjb.misc.HJBException;
 import hjb.misc.HJBNotFoundException;
 import hjb.misc.HJBStrings;
