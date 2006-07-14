@@ -56,7 +56,7 @@ public class HJBConnectionFactory implements ConnectionFactory {
             throw new IllegalArgumentException(strings().needsANonNull(ConnectionFactory.class.getName()));
         }
         this.connectionFactory = connectionFactory;
-        this.activeConnections = Collections.synchronizedMap(new HashMap());
+        this.activeConnections = Collections.synchronizedMap(new TreeMap());
         this.connectionIndices = Collections.synchronizedList(new ArrayList());
     }
 
@@ -96,7 +96,7 @@ public class HJBConnectionFactory implements ConnectionFactory {
                 connectionIndices.add(index);
                 HJBConnection result = new HJBConnection(connectionFactory.createConnection(),
                                                          clientId,
-                                                         0);
+                                                         index.intValue());
                 activeConnections.put(index, result);
                 return index.intValue();
             } catch (JMSException e) {
