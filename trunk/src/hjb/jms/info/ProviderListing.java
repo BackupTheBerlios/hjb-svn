@@ -4,14 +4,15 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Iterator;
+import java.util.Map;
 
 import hjb.jms.HJBProvider;
 import hjb.misc.HJBStrings;
 
 /**
- * <code>ProviderListing</code> is used generate a text list of the connection
- * factories and destinations that are registered with HJB for a particular
- * provider.
+ * <code>ProviderListing</code> is used to generate a text list of the
+ * connection factories and destinations that are registered with HJB for a
+ * particular provider.
  * 
  * <p>
  * Each factory or destination is entered on a separate line, with the
@@ -99,9 +100,8 @@ public class ProviderListing {
 
     protected void writeConnectionFactoryListings(PrintWriter aWriter,
                                                   String prefixEndingInSlash) {
-        for (Iterator i = getTheProvider().getConnectionFactories()
-            .keySet()
-            .iterator(); i.hasNext();) {
+        Map connectionFactories = getTheProvider().getConnectionFactories();
+        for (Iterator i = connectionFactories.keySet().iterator(); i.hasNext();) {
             String factoryName = (String) i.next();
             aWriter.println();
             aWriter.print(prefixEndingInSlash + factoryName);
@@ -112,9 +112,8 @@ public class ProviderListing {
 
     protected void writeConnectionFactories(PrintWriter aWriter,
                                             String prefixEndingInSlash) {
-        for (Iterator i = getTheProvider().getConnectionFactories()
-            .keySet()
-            .iterator(); i.hasNext();) {
+        Map connectionFactories = getTheProvider().getConnectionFactories();
+        for (Iterator i = connectionFactories.keySet().iterator(); i.hasNext();) {
             String factoryName = (String) i.next();
             aWriter.print(prefixEndingInSlash + factoryName);
             if (i.hasNext()) {
@@ -125,9 +124,8 @@ public class ProviderListing {
 
     protected void writeDestinations(PrintWriter aWriter,
                                      String prefixEndingInSlash) {
-        for (Iterator i = getTheProvider().getDestinations()
-            .keySet()
-            .iterator(); i.hasNext();) {
+        Map destinations = getTheProvider().getDestinations();
+        for (Iterator i = destinations.keySet().iterator(); i.hasNext();) {
             String destinationName = (String) i.next();
             aWriter.println(prefixEndingInSlash + destinationName);
         }

@@ -38,6 +38,7 @@ import hjb.msg.HJBMessage;
 import hjb.msg.MessageCopierFactory;
 import hjb.testsupport.MessageAttributeInvoker;
 import hjb.testsupport.MockHJBRuntime;
+import hjb.testsupport.MockSessionBuilder;
 
 public class ReceiveFromConsumerTest extends MockObjectTestCase {
 
@@ -73,15 +74,15 @@ public class ReceiveFromConsumerTest extends MockObjectTestCase {
             .will(returnValue(testMessage));
         MessageConsumer testConsumer = (MessageConsumer) mockConsumer.proxy();
 
-        Mock mockSession = mock(Session.class);
-        mockSession.stubs().method("getTransacted").will(returnValue(false));
+        Mock mockSession = new MockSessionBuilder().createMockSession();
         mockSession.stubs()
             .method("createConsumer")
             .will(returnValue(testConsumer));
-        Session testSession = (Session) mockSession.proxy();
-
         HJBRoot root = new HJBRoot(testRootPath);
-        mockHJB.make1Session(root, testSession, "testProvider", "testFactory");
+        mockHJB.make1Session(root,
+                             (Session) mockSession.proxy(),
+                             "testProvider",
+                             "testFactory");
         HJBConnection testConnection = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
             .getConnection(0);
@@ -113,9 +114,8 @@ public class ReceiveFromConsumerTest extends MockObjectTestCase {
                 .method("receive")
                 .will(throwException(possibleExceptions[i]));
             MessageConsumer testConsumer = (MessageConsumer) mockConsumer.proxy();
-
-            Mock mockSession = mock(Session.class);
-            mockSession.stubs().method("getTransacted").will(returnValue(false));
+            Mock mockSession = new MockSessionBuilder().createMockSession();
+            registerToVerify(mockSession);
             mockSession.stubs()
                 .method("createConsumer")
                 .will(returnValue(testConsumer));

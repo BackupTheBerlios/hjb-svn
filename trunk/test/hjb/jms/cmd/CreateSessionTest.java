@@ -32,6 +32,7 @@ import org.jmock.MockObjectTestCase;
 import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
+import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockHJBRuntime;
 
 public class CreateSessionTest extends MockObjectTestCase {
@@ -73,10 +74,8 @@ public class CreateSessionTest extends MockObjectTestCase {
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
             HJBRoot root = new HJBRoot(testRootPath);
-            Mock mockConnection = mock(Connection.class);
-            mockConnection.stubs()
-                .method("setExceptionListener")
-                .withAnyArguments();
+            Mock mockConnection = new MockConnectionBuilder().createMockConnection();
+            registerToVerify(mockConnection);
             mockConnection.expects(once())
                 .method("createSession")
                 .will(throwException(possibleExceptions[i]));

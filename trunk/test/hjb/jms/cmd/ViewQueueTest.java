@@ -41,6 +41,7 @@ import hjb.msg.HJBMessage;
 import hjb.msg.MessageCopierFactory;
 import hjb.testsupport.MessageAttributeInvoker;
 import hjb.testsupport.MockHJBRuntime;
+import hjb.testsupport.MockSessionBuilder;
 
 public class ViewQueueTest extends MockObjectTestCase {
 
@@ -78,19 +79,17 @@ public class ViewQueueTest extends MockObjectTestCase {
             .will(returnValue(Collections.enumeration(testMessages)));
         QueueBrowser testBrowser = (QueueBrowser) mockBrowser.proxy();
 
-        Mock mockSession = mock(Session.class);
-        mockSession.stubs().method("getTransacted").will(returnValue(false));
+        Mock mockSession = new MockSessionBuilder().createMockSession();
+        registerToVerify(mockSession);
         mockSession.stubs()
             .method("createBrowser")
             .will(returnValue(testBrowser));
-        Session testSession = (Session) mockSession.proxy();
-
         Mock mockQueue = mock(Queue.class);
         Queue testQueue = (Queue) mockQueue.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath);
         mockHJB.make1SessionAnd1Destination(root,
-                                            testSession,
+                                            (Session) mockSession.proxy(),
                                             "testProvider",
                                             "testFactory",
                                             "testDestination",
@@ -128,19 +127,17 @@ public class ViewQueueTest extends MockObjectTestCase {
                 .will(throwException(possibleExceptions[i]));
             QueueBrowser testBrowser = (QueueBrowser) mockBrowser.proxy();
 
-            Mock mockSession = mock(Session.class);
-            mockSession.stubs().method("getTransacted").will(returnValue(false));
+            Mock mockSession = new MockSessionBuilder().createMockSession();
+            registerToVerify(mockSession);
             mockSession.stubs()
                 .method("createBrowser")
                 .will(returnValue(testBrowser));
-            Session testSession = (Session) mockSession.proxy();
-
             Mock mockQueue = mock(Queue.class);
             Queue testQueue = (Queue) mockQueue.proxy();
 
             HJBRoot root = new HJBRoot(testRootPath);
             mockHJB.make1SessionAnd1Destination(root,
-                                                testSession,
+                                                (Session) mockSession.proxy(),
                                                 "testProvider",
                                                 "testFactory",
                                                 "testDestination",

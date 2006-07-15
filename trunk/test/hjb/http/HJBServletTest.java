@@ -1,7 +1,6 @@
 package hjb.http;
 
 import java.io.File;
-import java.util.Map;
 import java.util.Timer;
 
 import javax.servlet.ServletConfig;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
-import hjb.jms.cmd.JMSCommandRunner;
 import hjb.misc.HJBConstants;
 import hjb.testsupport.MockHJBRuntime;
 
@@ -197,11 +195,10 @@ public class HJBServletTest extends MockObjectTestCase {
         }
 
         private Mock servletConfigMock;
-        private Map servletContext;
+        private static final long serialVersionUID = 1;
     }
 
     private MockHJBRuntime mockHJB;
-    private JMSCommandRunner testCommandRunner;
     private File testRootPath;
     private HJBConstants CONSTANTS = new HJBConstants();
 }

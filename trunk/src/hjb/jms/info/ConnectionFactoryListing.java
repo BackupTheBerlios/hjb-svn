@@ -11,8 +11,8 @@ import hjb.jms.HJBConnectionFactory;
 import hjb.misc.HJBStrings;
 
 /**
- * <code>ConnectionFactoryListing</code> is used generate a text list of the
- * connections created by a given <code>HJBConnectionFactory</code>.
+ * <code>ConnectionFactoryListing</code> is used to generate a text list of
+ * the connections created by a given <code>HJBConnectionFactory</code>.
  * 
  * <p>
  * If a recursive listing is required, each connection appends its own recursive
@@ -34,10 +34,6 @@ public class ConnectionFactoryListing {
      * Returns text corresponding to the path portion of the URI's of the
      * connections created by the <code>HJBConnectionFactory</code>.
      * 
-     * <p>
-     * The destinations are listed first.
-     * </p>
-     * 
      * @param prefix
      *            the prefix to use in constructing the paths
      * @return text containing connection URIs
@@ -49,10 +45,6 @@ public class ConnectionFactoryListing {
     /**
      * Returns text corresponding to the path portion of the URI's of the
      * connections created by the <code>HJBConnectionFactory</code>.
-     * 
-     * <p>
-     * The destinations are listed first.
-     * </p>
      * 
      * @param prefix
      *            the prefix to use in constructing the paths
@@ -70,10 +62,6 @@ public class ConnectionFactoryListing {
     /**
      * Writes the text corresponding to the path portion of the URI's of the
      * connections created by the <code>HJBConnectionFactory</code>.
-     * 
-     * <p>
-     * The destinations are listed first.
-     * </p>
      * 
      * @param aWriter
      *            the Writer to which the listing is written

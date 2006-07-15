@@ -82,25 +82,25 @@ public class SendHJBMessageTest extends MockObjectTestCase {
             .method("getDeliveryMode")
             .will(returnValue(Message.DEFAULT_DELIVERY_MODE));
         mockProducer.stubs().method("getDestination").will(returnValue(null));
-        
+
         mockProducer.expects(once()).method("send");
         mockProducer.expects(atLeastOnce())
             .method("setDisableMessageTimestamp");
         mockProducer.expects(atLeastOnce()).method("setDisableMessageID");
         MessageProducer testProducer = (MessageProducer) mockProducer.proxy();
-
-        Mock mockSession = mock(Session.class);
+        Mock mockSession = new MockSessionBuilder().createMockSession();
+        registerToVerify(mockSession);
         mockSession.stubs()
             .method("createProducer")
             .will(returnValue(testProducer));
-        mockSession.stubs().method("getTransacted").will(returnValue(false));
         mockSession.expects(once())
             .method("createTextMessage")
             .will(returnValue(testMessage));
-        Session testSession = (Session) mockSession.proxy();
-
         HJBRoot root = new HJBRoot(testRootPath);
-        mockHJB.make1Session(root, testSession, "testProvider", "testFactory");
+        mockHJB.make1Session(root,
+                             (Session) mockSession.proxy(),
+                             "testProvider",
+                             "testFactory");
         HJBConnection testConnection = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
             .getConnection(0);
@@ -165,21 +165,17 @@ public class SendHJBMessageTest extends MockObjectTestCase {
                 .will(returnValue(Message.DEFAULT_DELIVERY_MODE));
             MessageProducer testProducer = (MessageProducer) mockProducer.proxy();
 
-            Mock mockSession = mock(Session.class);
+            Mock mockSession = new MockSessionBuilder().createMockSession();
+            registerToVerify(mockSession);
             mockSession.stubs()
                 .method("createProducer")
                 .will(returnValue(testProducer));
-            mockSession.stubs()
-                .method("getTransacted")
-                .will(returnValue(false));
             mockSession.expects(once())
                 .method("createTextMessage")
                 .will(returnValue(testMessage));
-            Session testSession = (Session) mockSession.proxy();
-
             HJBRoot root = new HJBRoot(testRootPath);
             mockHJB.make1Session(root,
-                                 testSession,
+                                 (Session) mockSession.proxy(),
                                  "testProvider",
                                  "testFactory");
             HJBConnection testConnection = root.getProvider("testProvider")

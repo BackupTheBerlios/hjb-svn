@@ -32,6 +32,7 @@ import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
 import hjb.testsupport.MockHJBRuntime;
+import hjb.testsupport.MockSessionBuilder;
 
 public class DeleteSessionTest extends MockObjectTestCase {
 
@@ -73,14 +74,12 @@ public class DeleteSessionTest extends MockObjectTestCase {
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
             HJBRoot root = new HJBRoot(testRootPath);
-            Mock mockSession = mock(Session.class);
+            Mock mockSession = new MockSessionBuilder().createMockSession();
             mockSession.expects(once())
                 .method("close")
                 .will(throwException(possibleExceptions[i]));
-            mockSession.stubs().method("getTransacted").will(returnValue(false));
-            Session testSession = (Session) mockSession.proxy();
             mockHJB.make1Session(root,
-                                 testSession,
+                                 (Session) mockSession.proxy(),
                                  "testProvider",
                                  "testFactory");
             HJBConnection testConnection = root.getProvider("testProvider")

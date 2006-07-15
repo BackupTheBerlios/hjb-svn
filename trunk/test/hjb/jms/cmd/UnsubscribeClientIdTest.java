@@ -32,6 +32,7 @@ import org.jmock.MockObjectTestCase;
 import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
+import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockHJBRuntime;
 
 public class UnsubscribeClientIdTest extends MockObjectTestCase {
@@ -42,8 +43,7 @@ public class UnsubscribeClientIdTest extends MockObjectTestCase {
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
         try {
-            Mock mockConnection = mock(Connection.class);
-            mockConnection.stubs().method("setExceptionListener");
+            Mock mockConnection = new MockConnectionBuilder().createMockConnection();
             new UnsubscribeClientId(new HJBConnection((Connection) mockConnection.proxy(),
                                                       0),
                                     1,

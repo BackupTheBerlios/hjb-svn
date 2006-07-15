@@ -38,6 +38,7 @@ import hjb.msg.HJBMessage;
 import hjb.msg.MessageCopierFactory;
 import hjb.testsupport.MessageAttributeInvoker;
 import hjb.testsupport.MockHJBRuntime;
+import hjb.testsupport.MockSessionBuilder;
 
 public class ReceiveFromSubscriberTest extends MockObjectTestCase {
 
@@ -74,20 +75,17 @@ public class ReceiveFromSubscriberTest extends MockObjectTestCase {
             .method("receive")
             .will(returnValue(testMessage));
         TopicSubscriber testSubscriber = (TopicSubscriber) mockSubscriber.proxy();
-
-        Mock mockSession = mock(Session.class);
-        mockSession.stubs().method("getTransacted").will(returnValue(false));
+        Mock mockSession = new MockSessionBuilder().createMockSession();
+        registerToVerify(mockSession);
         mockSession.stubs()
             .method("createDurableSubscriber")
             .will(returnValue(testSubscriber));
-        Session testSession = (Session) mockSession.proxy();
-
         Mock mockTopic = mock(Topic.class);
         Topic testTopic = (Topic) mockTopic.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath);
         mockHJB.make1SessionAnd1Destination(root,
-                                            testSession,
+                                            (Session) mockSession.proxy(),
                                             "testProvider",
                                             "testFactory",
                                             "testDestination",
@@ -124,20 +122,17 @@ public class ReceiveFromSubscriberTest extends MockObjectTestCase {
                 .method("receive")
                 .will(throwException(possibleExceptions[i]));
             TopicSubscriber testSubscriber = (TopicSubscriber) mockSubscriber.proxy();
-
-            Mock mockSession = mock(Session.class);
-            mockSession.stubs().method("getTransacted").will(returnValue(false));
+            Mock mockSession = new MockSessionBuilder().createMockSession();
+            registerToVerify(mockSession);
             mockSession.stubs()
                 .method("createDurableSubscriber")
                 .will(returnValue(testSubscriber));
-            Session testSession = (Session) mockSession.proxy();
-
             Mock mockTopic = mock(Topic.class);
             Topic testTopic = (Topic) mockTopic.proxy();
 
             HJBRoot root = new HJBRoot(testRootPath);
             mockHJB.make1SessionAnd1Destination(root,
-                                                testSession,
+                                                (Session) mockSession.proxy(),
                                                 "testProvider",
                                                 "testFactory",
                                                 "testDestination",

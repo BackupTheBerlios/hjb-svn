@@ -30,6 +30,7 @@ import org.jmock.MockObjectTestCase;
 import hjb.jms.HJBProvider;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
+import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockHJBRuntime;
 
 public class DeleteProviderTest extends MockObjectTestCase {
@@ -69,15 +70,13 @@ public class DeleteProviderTest extends MockObjectTestCase {
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
             HJBRoot root = new HJBRoot(testRootPath);
-            Mock connectionMock = mock(Connection.class);
-            connectionMock.expects(once())
-                .method("setExceptionListener")
-                .withAnyArguments();
-            connectionMock.expects(once())
+            Mock mockConnection = new MockConnectionBuilder().createMockConnection();
+            registerToVerify(mockConnection);
+            mockConnection.expects(once())
                 .method("stop")
                 .will(throwException(possibleExceptions[i]));
             mockHJB.make1Connection(root,
-                                    (Connection) connectionMock.proxy(),
+                                    (Connection) mockConnection.proxy(),
                                     "testProvider",
                                     "testFactory");
 

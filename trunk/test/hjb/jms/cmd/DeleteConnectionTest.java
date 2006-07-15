@@ -31,6 +31,7 @@ import hjb.jms.HJBConnectionFactory;
 import hjb.jms.HJBProvider;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
+import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockHJBRuntime;
 
 public class DeleteConnectionTest extends MockObjectTestCase {
@@ -44,15 +45,13 @@ public class DeleteConnectionTest extends MockObjectTestCase {
 
     public void testExecuteDeletesAConnection() {
         HJBRoot root = new HJBRoot(testRootPath);
-        Mock connectionMock = mock(Connection.class);
-        Connection testConnection = (Connection) connectionMock.proxy();
-        connectionMock.expects(once()).method("stop");
-        connectionMock.expects(once()).method("close");
-        connectionMock.stubs().method("setExceptionListener");
-        connectionMock.stubs().method("getClientID").will(returnValue(null));
+        Mock mockConnection = new MockConnectionBuilder().createMockConnection();
+        registerToVerify(mockConnection);
+        mockConnection.expects(once()).method("stop");
+        mockConnection.expects(once()).method("close");
 
         mockHJB.make1Connection(root,
-                                testConnection,
+                                (Connection) mockConnection.proxy(),
                                 "testProvider",
                                 "testFactory");
         HJBConnectionFactory testFactory = root.getProvider("testProvider")
@@ -76,16 +75,13 @@ public class DeleteConnectionTest extends MockObjectTestCase {
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
             HJBRoot root = new HJBRoot(testRootPath);
-            Mock connectionMock = mock(Connection.class);
-            connectionMock.expects(once())
-                .method("setExceptionListener")
-                .withAnyArguments();
-            connectionMock.stubs().method("getClientID").will(returnValue(null));
-            connectionMock.expects(once())
+            Mock mockConnection = new MockConnectionBuilder().createMockConnection();
+            registerToVerify(mockConnection);
+            mockConnection.expects(once())
                 .method("stop")
                 .will(throwException(possibleExceptions[i]));
             mockHJB.make1Connection(root,
-                                    (Connection) connectionMock.proxy(),
+                                    (Connection) mockConnection.proxy(),
                                     "testProvider",
                                     "testFactory");
 

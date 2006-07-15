@@ -34,6 +34,7 @@ import org.jmock.MockObjectTestCase;
 import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
+import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockHJBRuntime;
 
 public class ReadMetaDataTest extends MockObjectTestCase {
@@ -70,16 +71,14 @@ public class ReadMetaDataTest extends MockObjectTestCase {
 
     public void testExecuteStartsAConnection() {
         HJBRoot root = new HJBRoot(testRootPath);
-        Mock connectionMock = mock(Connection.class);
-        Connection testConnection = (Connection) connectionMock.proxy();
-        connectionMock.expects(once())
+        Mock mockConnection = new MockConnectionBuilder().createMockConnection();
+        registerToVerify(mockConnection);
+        mockConnection.expects(once())
             .method("getMetaData")
             .will(returnValue(makeMockMetaData()));
-        connectionMock.stubs().method("setExceptionListener");
-        connectionMock.stubs().method("getClientID").will(returnValue(null));
 
         mockHJB.make1Connection(root,
-                                testConnection,
+                                (Connection) mockConnection.proxy(),
                                 "testProvider",
                                 "testFactory");
         HJBConnection testHJBConnection = root.getProvider("testProvider")
@@ -106,15 +105,14 @@ public class ReadMetaDataTest extends MockObjectTestCase {
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
             HJBRoot root = new HJBRoot(testRootPath);
-            Mock connectionMock = mock(Connection.class);
-            Connection testConnection = (Connection) connectionMock.proxy();
-            connectionMock.expects(once())
+            Mock mockConnection = new MockConnectionBuilder().createMockConnection();
+            registerToVerify(mockConnection);
+            mockConnection.expects(once())
                 .method("getMetaData")
                 .will(throwException(possibleExceptions[i]));
-            connectionMock.stubs().method("setExceptionListener");
 
             mockHJB.make1Connection(root,
-                                    testConnection,
+                                    (Connection) mockConnection.proxy(),
                                     "testProvider",
                                     "testFactory");
             HJBConnection testHJBConnection = root.getProvider("testProvider")

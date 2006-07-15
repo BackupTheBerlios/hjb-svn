@@ -20,6 +20,8 @@
  */
 package hjb.misc;
 
+import javax.jms.DeliveryMode;
+
 /**
  * <code>MessageProducerArguments</code> groups the set of values that are
  * optionally used to configure a <code>MessageProducer</code>.
@@ -27,6 +29,14 @@ package hjb.misc;
  * @author Tim Emiola
  */
 public class MessageProducerArguments {
+
+    public MessageProducerArguments() {
+        this(false,
+             false,
+             null,
+             null,
+             null);
+    }
 
     public MessageProducerArguments(boolean disableTimestamps,
                                     boolean disableMessageIds,

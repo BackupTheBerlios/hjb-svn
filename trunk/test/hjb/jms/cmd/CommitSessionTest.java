@@ -32,6 +32,7 @@ import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
 import hjb.testsupport.MockHJBRuntime;
+import hjb.testsupport.MockSessionBuilder;
 
 public class CommitSessionTest extends MockObjectTestCase {
 
@@ -44,11 +45,12 @@ public class CommitSessionTest extends MockObjectTestCase {
 
     public void testExecuteCommitsASession() {
         HJBRoot root = new HJBRoot(testRootPath);
-        Mock mockSession = mock(Session.class);
+        Mock mockSession = new MockSessionBuilder().createMockSession();
         mockSession.expects(once()).method("commit");
-        mockSession.stubs().method("getTransacted").will(returnValue(true));
-        Session testSession = (Session) mockSession.proxy();
-        mockHJB.make1Session(root, testSession, "testProvider", "testFactory");
+        mockHJB.make1Session(root,
+                             (Session) mockSession.proxy(),
+                             "testProvider",
+                             "testFactory");
         HJBConnection testConnection = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
             .getConnection(0);
@@ -72,14 +74,13 @@ public class CommitSessionTest extends MockObjectTestCase {
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
             HJBRoot root = new HJBRoot(testRootPath);
-            Mock mockSession = mock(Session.class);
-            mockSession.stubs().method("getTransacted").will(returnValue(true));
+
+            Mock mockSession = new MockSessionBuilder().createMockSession();
             mockSession.expects(once())
                 .method("commit")
                 .will(throwException(possibleExceptions[i]));
-            Session testSession = (Session) mockSession.proxy();
             mockHJB.make1Session(root,
-                                 testSession,
+                                 (Session) mockSession.proxy(),
                                  "testProvider",
                                  "testFactory");
             HJBConnection testConnection = root.getProvider("testProvider")

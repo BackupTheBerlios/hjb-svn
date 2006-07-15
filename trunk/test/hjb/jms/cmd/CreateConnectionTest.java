@@ -23,6 +23,7 @@ package hjb.jms.cmd;
 import hjb.jms.HJBConnectionFactory;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
+import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockHJBRuntime;
 
 import java.io.File;
@@ -106,16 +107,16 @@ public class CreateConnectionTest extends MockObjectTestCase {
     public void testExecuteDoesNotUseTheSuppliedClientIdIfTheProviderSuppliesOne() {
         HJBRoot root = new HJBRoot(testRootPath);
 
-        Mock connectionMock = mock(Connection.class);
-        Connection testConnection = (Connection) connectionMock.proxy();
-        connectionMock.stubs().method("setExceptionListener");
-        connectionMock.expects(atLeastOnce())
+        
+        Mock mockConnection = new MockConnectionBuilder().createMockConnection();
+        registerToVerify(mockConnection);
+        mockConnection.expects(atLeastOnce())
             .method("getClientID")
             .will(returnValue("testProviderClientId"));
-        connectionMock.expects(never()).method("setClientID");
+        mockConnection.expects(never()).method("setClientID");
 
         mockHJB.make1Factory(root,
-                             testConnection,
+                             (Connection) mockConnection.proxy(),
                              "testProvider",
                              "testFactory");
         HJBConnectionFactory testFactory = root.getProvider("testProvider")
@@ -141,18 +142,17 @@ public class CreateConnectionTest extends MockObjectTestCase {
     public void testExecuteUsesTheSuppliedClientIdIfTheProviderDoesNotSupplyOne() {
         HJBRoot root = new HJBRoot(testRootPath);
 
-        Mock connectionMock = mock(Connection.class);
-        Connection testConnection = (Connection) connectionMock.proxy();
-        connectionMock.stubs().method("setExceptionListener");
-        connectionMock.expects(atLeastOnce())
+        Mock mockConnection = new MockConnectionBuilder().createMockConnection();
+        registerToVerify(mockConnection);
+        mockConnection.expects(atLeastOnce())
             .method("getClientID")
             .will(returnValue(null));
-        connectionMock.expects(once())
+        mockConnection.expects(once())
             .method("setClientID")
             .with(eq("newClientId"));
 
         mockHJB.make1Factory(root,
-                             testConnection,
+                             (Connection) mockConnection.proxy(),
                              "testProvider",
                              "testFactory");
         HJBConnectionFactory testFactory = root.getProvider("testProvider")

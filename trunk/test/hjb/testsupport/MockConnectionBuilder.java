@@ -35,11 +35,7 @@ public class MockConnectionBuilder {
     }
 
     public Mock createMockConnection() {
-        Mock result = new Mock(Connection.class);
-        result.stubs()
-            .method("createSession")
-            .will(new ReturnStub(sessionBuilder.createMockSession()));
-        return result;
+        return createMockConnection((Session) sessionBuilder.createMockSession().proxy());
     }
 
     public Mock createMockConnection(Session testSession) {
@@ -58,7 +54,7 @@ public class MockConnectionBuilder {
         result.stubs().method("getClientID").will(new ReturnStub(null));
         result.stubs()
             .method("createSession")
-            .will(new ReturnStub(sessionBuilder.createMockSession()));
+            .will(new ReturnStub((Session) sessionBuilder.createMockSession().proxy()));
         return result;
     }
 

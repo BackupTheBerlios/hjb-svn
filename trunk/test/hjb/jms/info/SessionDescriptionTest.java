@@ -6,6 +6,7 @@ import org.jmock.Mock;
 
 import hjb.misc.HJBStrings;
 import hjb.misc.PathNaming;
+import hjb.testsupport.MockSessionBuilder;
 
 public class SessionDescriptionTest extends BaseDescriptionTestCase {
 
@@ -29,8 +30,7 @@ public class SessionDescriptionTest extends BaseDescriptionTestCase {
         Mock mockSession = mock(Session.class);
         mockSession.stubs().method("getTransacted").will(returnValue(false));
 
-        Session testSession = (Session) mockSession.proxy();
-        SessionDescription testDescription = new SessionDescription(testSession,
+        SessionDescription testDescription = new SessionDescription(((Session) mockSession.proxy()),
                                                                     0);
         assertContains(testDescription.toString(), "0");
         assertContains(testDescription.toString(), PathNaming.SESSION);
@@ -39,11 +39,10 @@ public class SessionDescriptionTest extends BaseDescriptionTestCase {
     }
 
     public void testToStringHasXtraInfoForTransactedSessions() {
-        Mock mockSession = mock(Session.class);
+        Mock mockSession = new MockSessionBuilder().createMockSession();
+        registerToVerify(mockSession);
         mockSession.stubs().method("getTransacted").will(returnValue(true));
-
-        Session testSession = (Session) mockSession.proxy();
-        SessionDescription testDescription = new SessionDescription(testSession,
+        SessionDescription testDescription = new SessionDescription(((Session) mockSession.proxy()),
                                                                     0);
         assertContains(testDescription.toString(), "0");
         assertContains(testDescription.toString(), PathNaming.SESSION);

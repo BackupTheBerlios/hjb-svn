@@ -204,9 +204,9 @@ public class HJBSessionConsumersTest extends MockObjectTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         initialiseMockBuilders();
+        mockSession = new MockSessionBuilder().createMockSession();
+        registerToVerify(mockSession);
 
-        mockSession = new Mock(Session.class);
-        mockSession.stubs().method("getTransacted").will(returnValue(false));
         testSession = (Session) mockSession.proxy();
 
         mockDestination = new Mock(Destination.class);
@@ -222,8 +222,7 @@ public class HJBSessionConsumersTest extends MockObjectTestCase {
 
     protected void updateConnectionMock(Session aSession) {
         mockConnection = connectionBuilder.createMockConnection(aSession);
-        mockConnection.stubs().method("setExceptionListener");
-        mockConnection.stubs().method("getClientID").will(returnValue(null));
+        registerToVerify(mockConnection);
         Connection aConnection = (Connection) mockConnection.proxy();
         testConnection = new HJBConnection(aConnection, 0);
     }

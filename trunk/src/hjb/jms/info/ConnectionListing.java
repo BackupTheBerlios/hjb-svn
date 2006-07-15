@@ -10,8 +10,8 @@ import hjb.jms.HJBConnection;
 import hjb.misc.HJBStrings;
 
 /**
- * <code>ConnectionListing</code> is used generate a text list of the sessions
- * created by a given <code>HJBConnection</code>.
+ * <code>ConnectionListing</code> is used to generate a text list of the
+ * sessions created by a given <code>HJBConnection</code>.
  * 
  * <p>
  * If a recursive listing is required, each session appends its own recursive
@@ -33,10 +33,6 @@ public class ConnectionListing {
      * Returns text corresponding to the path portion of the URI's of the
      * sessions created by the <code>HJBConnection</code>.
      * 
-     * <p>
-     * The destinations are listed first.
-     * </p>
-     * 
      * @param prefix
      *            the prefix to use in constructing the paths
      * @return text containing session URIs
@@ -48,10 +44,6 @@ public class ConnectionListing {
     /**
      * Returns text corresponding to the path portion of the URI's of the
      * sessions created by the <code>HJBConnection</code>.
-     * 
-     * <p>
-     * The destinations are listed first.
-     * </p>
      * 
      * @param prefix
      *            the prefix to use in constructing the paths
@@ -69,10 +61,6 @@ public class ConnectionListing {
     /**
      * Writes the text corresponding to the path portion of the URI's of the
      * sessions created by the <code>HJBConnection</code>.
-     * 
-     * <p>
-     * The destinations are listed first.
-     * </p>
      * 
      * @param aWriter
      *            the Writer to which the listing is written

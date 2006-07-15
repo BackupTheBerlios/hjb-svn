@@ -171,8 +171,8 @@ public class HJBSessionQueueBrowsersTest extends MockObjectTestCase {
         super.setUp();
         initialiseMockBuilders();
 
-        mockSession = new Mock(Session.class);
-        mockSession.stubs().method("getTransacted").will(returnValue(false));
+        mockSession = new MockSessionBuilder().createMockSession();
+        registerToVerify(mockSession);
         testSession = (Session) mockSession.proxy();
 
         mockQueue = new Mock(Queue.class);
@@ -188,8 +188,7 @@ public class HJBSessionQueueBrowsersTest extends MockObjectTestCase {
 
     protected void updateConnectionMock(Session aSession) {
         mockConnection = connectionBuilder.createMockConnection(aSession);
-        mockConnection.stubs().method("setExceptionListener");
-        mockConnection.stubs().method("getClientID").will(returnValue(null));
+        registerToVerify(mockConnection);
         Connection aConnection = (Connection) mockConnection.proxy();
         testConnection = new HJBConnection(aConnection, 0);
     }

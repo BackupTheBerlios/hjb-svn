@@ -59,7 +59,7 @@ public class RuntimeExceptionHandler {
      * @param statusText
      *            a status message
      * @throws IOException
-     *             if a problem occurs while sending the response
+     *            if a problem occurs while sending the response
      */
     public void sendHJBFault(HttpServletResponse response,
                              RuntimeException exception,
