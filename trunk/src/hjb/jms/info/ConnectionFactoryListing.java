@@ -9,6 +9,7 @@ import java.util.Map;
 import hjb.jms.HJBConnection;
 import hjb.jms.HJBConnectionFactory;
 import hjb.misc.HJBStrings;
+import hjb.misc.PathNaming;
 
 /**
  * <code>ConnectionFactoryListing</code> is used to generate a text list of
@@ -88,9 +89,13 @@ public class ConnectionFactoryListing {
         for (Iterator i = activeConnections.keySet().iterator(); i.hasNext();) {
             HJBConnection aConnection = (HJBConnection) activeConnections.get(i.next());
             aWriter.println();
-            aWriter.print(prefixEndingInSlash + aConnection);
-            // new
-            // ConnectionListing(aConnection).
+            aWriter.println(prefixEndingInSlash + aConnection);
+            new ConnectionListing(aConnection).writeListing(aWriter,
+                                                            prefixEndingInSlash
+                                                                    + PathNaming.CONNECTION
+                                                                    + "-"
+                                                                    + aConnection.getConnectionIndex(),
+                                                            true);
         }
     }
 
@@ -100,9 +105,7 @@ public class ConnectionFactoryListing {
         for (Iterator i = activeConnections.keySet().iterator(); i.hasNext();) {
             HJBConnection aConnection = (HJBConnection) activeConnections.get(i.next());
             aWriter.print(prefixEndingInSlash + aConnection);
-            if (i.hasNext()) {
-                aWriter.println();
-            }
+            aWriter.println();
         }
     }
 

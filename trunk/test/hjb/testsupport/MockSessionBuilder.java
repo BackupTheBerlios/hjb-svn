@@ -35,6 +35,9 @@ public class MockSessionBuilder {
         mockSession.stubs()
             .method("getTransacted")
             .will(new ReturnStub(new Boolean(false)));
+        mockSession.stubs()
+            .method("getAcknowledgeMode")
+            .will(new ReturnStub(new Integer(Session.AUTO_ACKNOWLEDGE)));
         setupDefaultReturnValues(mockSession);
         return mockSession;
     }

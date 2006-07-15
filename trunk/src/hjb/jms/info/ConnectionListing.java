@@ -87,9 +87,10 @@ public class ConnectionListing {
             Integer sessionIndex = (Integer) i.next();
             SessionDescription sd = getTheConnection().getSessionDescription(sessionIndex.intValue());
             aWriter.println();
-            aWriter.print(prefixEndingInSlash + sd);
-            // new
-            // SessionListing(aConnection).
+            aWriter.println(prefixEndingInSlash + sd.longDescription());
+            new SessionListing(getTheConnection(), sessionIndex.intValue()).writeListing(aWriter,
+                                                                                         prefixEndingInSlash,
+                                                                                         true);
         }
     }
 
@@ -99,9 +100,7 @@ public class ConnectionListing {
             Integer sessionIndex = (Integer) i.next();
             SessionDescription sd = getTheConnection().getSessionDescription(sessionIndex.intValue());
             aWriter.print(prefixEndingInSlash + sd);
-            if (i.hasNext()) {
-                aWriter.println();
-            }
+            aWriter.println();
         }
     }
 

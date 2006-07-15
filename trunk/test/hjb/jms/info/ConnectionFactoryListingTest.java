@@ -31,9 +31,9 @@ public class ConnectionFactoryListingTest extends MockObjectTestCase {
     public void testRecurseListingAddsSessionListings() {
         StringWriter sw = new StringWriter();
         String expectedOutput = createSomeConnections();
-        expectedOutput = expectedOutput + CR
-                + "/testProvider/testFactory/connection-1" + CR
-                + "/testProvider/testFactory/connection-0";
+        expectedOutput = expectedOutput
+                + CR + "/testProvider/testFactory/connection-1" + CR
+                + CR + "/testProvider/testFactory/connection-0" + CR;
 
         new ConnectionFactoryListing(testFactory).writeListing(sw,
                                                                "/testProvider/testFactory",
@@ -42,10 +42,10 @@ public class ConnectionFactoryListingTest extends MockObjectTestCase {
     }
 
     protected String createSomeConnections() {
-        testFactory.createConnection();
+        testFactory.createConnection();        
         testFactory.createConnection();
         String expectedOutput = "/testProvider/testFactory/connection-1" + CR
-                + "/testProvider/testFactory/connection-0";
+                + "/testProvider/testFactory/connection-0" + CR;
         return expectedOutput;
     }
 

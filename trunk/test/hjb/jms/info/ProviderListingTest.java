@@ -36,8 +36,12 @@ public class ProviderListingTest extends MockObjectTestCase {
     public void testRecurseListingAddsConnectionFactoryListings() {
         StringWriter sw = new StringWriter();
         String expectedOutput = registerSomeObjects();
-        expectedOutput = expectedOutput + CR + "/testProvider/fooBarFactory"
-                + CR + "/testProvider/barFooFactory";
+        testProvider.getConnectionFactory("fooBarFactory")
+            .createHJBConnection(null);
+        expectedOutput = expectedOutput + CR + "/testProvider/fooBarFactory" +CR
+                + "/testProvider/fooBarFactory/connection-0" + CR + CR
+                + "/testProvider/fooBarFactory/connection-0" + CR + CR
+                + "/testProvider/barFooFactory" + CR;
 
         new ProviderListing(testProvider).writeListing(sw,
                                                        "/testProvider",
@@ -54,7 +58,7 @@ public class ProviderListingTest extends MockObjectTestCase {
         String expectedOutput = "/testProvider/bazbarDestination" + CR
                 + "/testProvider/barBazDestination" + CR
                 + "/testProvider/fooBarFactory" + CR
-                + "/testProvider/barFooFactory";
+                + "/testProvider/barFooFactory" + CR;
 
         return expectedOutput;
     }

@@ -104,10 +104,15 @@ public class ProviderListing {
         for (Iterator i = connectionFactories.keySet().iterator(); i.hasNext();) {
             String factoryName = (String) i.next();
             aWriter.println();
-            aWriter.print(prefixEndingInSlash + factoryName);
-            // new
-            // ConnectionFactoryListing(getTheProvider().getConnectionFactory(factoryName)).
+            aWriter.println(prefixEndingInSlash + factoryName);
+            listingFor(factoryName).writeListing(aWriter,
+                                                 prefixEndingInSlash + factoryName + "/",
+                                                 true);
         }
+    }
+
+    protected ConnectionFactoryListing listingFor(String factoryName) {
+        return new ConnectionFactoryListing(getTheProvider().getConnectionFactory(factoryName));
     }
 
     protected void writeConnectionFactories(PrintWriter aWriter,
@@ -116,9 +121,7 @@ public class ProviderListing {
         for (Iterator i = connectionFactories.keySet().iterator(); i.hasNext();) {
             String factoryName = (String) i.next();
             aWriter.print(prefixEndingInSlash + factoryName);
-            if (i.hasNext()) {
-                aWriter.println();
-            }
+            aWriter.println();
         }
     }
 
