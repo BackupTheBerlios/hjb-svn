@@ -22,7 +22,7 @@ import hjb.misc.PathNaming;
  * 
  * @author Tim Emiola
  */
-public class ConnectionFactoryListing {
+public class ConnectionFactoryListing implements JMSObjectListing {
 
     public ConnectionFactoryListing(HJBConnectionFactory theConnectionFactory) {
         if (null == theConnectionFactory) {
@@ -32,7 +32,7 @@ public class ConnectionFactoryListing {
     }
 
     /**
-     * Returns text corresponding to the path portion of the URI's of the
+     * Returns text corresponding to the path portion of the URIs of the
      * connections created by the <code>HJBConnectionFactory</code>.
      * 
      * @param prefix
@@ -44,7 +44,7 @@ public class ConnectionFactoryListing {
     }
 
     /**
-     * Returns text corresponding to the path portion of the URI's of the
+     * Returns text corresponding to the path portion of the URIs of the
      * connections created by the <code>HJBConnectionFactory</code>.
      * 
      * @param prefix
@@ -61,7 +61,7 @@ public class ConnectionFactoryListing {
     }
 
     /**
-     * Writes the text corresponding to the path portion of the URI's of the
+     * Writes the text corresponding to the path portion of the URIs of the
      * connections created by the <code>HJBConnectionFactory</code>.
      * 
      * @param aWriter

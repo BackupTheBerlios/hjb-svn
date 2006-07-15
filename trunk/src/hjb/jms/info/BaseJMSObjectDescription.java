@@ -14,7 +14,7 @@ import hjb.msg.codec.OrderedTypedValueCodec;
  * <code>BaseJMSObjectDescription</code> is the base class for the various
  * XXXDescription classes.
  * 
- * It provides defines a number of template methods which allow its subclasses
+ * It defines a number of template methods which allow its subclasses
  * to customize its behaviour by overriding its protected methods.
  * 
  * @author Tim Emiola

@@ -25,7 +25,7 @@ import hjb.misc.HJBStrings;
  * 
  * @author Tim Emiola
  */
-public class ProviderListing {
+public class ProviderListing implements JMSObjectListing {
 
     public ProviderListing(HJBProvider theProvider) {
         if (null == theProvider) {
@@ -35,7 +35,7 @@ public class ProviderListing {
     }
 
     /**
-     * Returns text corresponding to the path portion of the URI's of the
+     * Returns text corresponding to the path portion of the URIs of the
      * destinations and connection factories registered with the provider.
      * 
      * <p>
@@ -51,7 +51,7 @@ public class ProviderListing {
     }
 
     /**
-     * Returns text corresponding to the path portion of the URI's of the
+     * Returns text corresponding to the path portion of the URIs of the
      * destinations and connection factories registered with the provider.
      * 
      * <p>
@@ -72,7 +72,7 @@ public class ProviderListing {
     }
 
     /**
-     * Writes the text corresponding to the path portion of the URI's of the
+     * Writes the text corresponding to the path portion of the URIs of the
      * destinations and connection factories registered with the provider.
      * 
      * <p>
@@ -111,7 +111,7 @@ public class ProviderListing {
         }
     }
 
-    protected ConnectionFactoryListing listingFor(String factoryName) {
+    protected JMSObjectListing listingFor(String factoryName) {
         return new ConnectionFactoryListing(getTheProvider().getConnectionFactory(factoryName));
     }
 

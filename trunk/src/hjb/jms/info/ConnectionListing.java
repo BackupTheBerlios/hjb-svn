@@ -20,7 +20,7 @@ import hjb.misc.HJBStrings;
  * 
  * @author Tim Emiola
  */
-public class ConnectionListing {
+public class ConnectionListing implements JMSObjectListing {
 
     public ConnectionListing(HJBConnection theConnection) {
         if (null == theConnection) {
@@ -30,7 +30,7 @@ public class ConnectionListing {
     }
 
     /**
-     * Returns text corresponding to the path portion of the URI's of the
+     * Returns text corresponding to the path portion of the URIs of the
      * sessions created by the <code>HJBConnection</code>.
      * 
      * @param prefix
@@ -42,7 +42,7 @@ public class ConnectionListing {
     }
 
     /**
-     * Returns text corresponding to the path portion of the URI's of the
+     * Returns text corresponding to the path portion of the URIs of the
      * sessions created by the <code>HJBConnection</code>.
      * 
      * @param prefix
@@ -59,7 +59,7 @@ public class ConnectionListing {
     }
 
     /**
-     * Writes the text corresponding to the path portion of the URI's of the
+     * Writes the text corresponding to the path portion of the URIs of the
      * sessions created by the <code>HJBConnection</code>.
      * 
      * @param aWriter

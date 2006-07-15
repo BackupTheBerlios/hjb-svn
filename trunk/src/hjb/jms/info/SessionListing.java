@@ -22,7 +22,7 @@ import hjb.misc.PathNaming;
  * 
  * @author Tim Emiola
  */
-public class SessionListing {
+public class SessionListing implements JMSObjectListing {
 
     public SessionListing(HJBConnection theConnection, int sessionIndex) {
         if (null == theConnection) {
@@ -33,7 +33,7 @@ public class SessionListing {
     }
 
     /**
-     * Returns text corresponding to the path portion of the URI's of the JMS
+     * Returns text corresponding to the path portion of the URIs of the JMS
      * objects created by the JMS <code>Session</code>.
      * 
      * @param prefix
@@ -45,7 +45,7 @@ public class SessionListing {
     }
 
     /**
-     * Returns text corresponding to the path portion of the URI's of the JMS
+     * Returns text corresponding to the path portion of the URIs of the JMS
      * objects created by the JMS <code>Session</code>.
      * 
      * @param prefix
@@ -62,7 +62,7 @@ public class SessionListing {
     }
 
     /**
-     * Writes the text corresponding to the path portion of the URI's of the JMS
+     * Writes the text corresponding to the path portion of the URIs of the JMS
      * objects created by the JMS <code>Session</code>.
      * 
      * @param aWriter

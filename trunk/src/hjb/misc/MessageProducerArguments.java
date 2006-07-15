@@ -20,7 +20,6 @@
  */
 package hjb.misc;
 
-import javax.jms.DeliveryMode;
 
 /**
  * <code>MessageProducerArguments</code> groups the set of values that are
