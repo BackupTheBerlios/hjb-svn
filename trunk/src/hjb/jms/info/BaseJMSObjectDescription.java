@@ -77,7 +77,7 @@ public class BaseJMSObjectDescription {
      * The basename is the final part of the JMS object's URI.
      * </p>
      * 
-     * @return
+     * @return the basename of a JMS object
      */
     protected String getBaseName() {
         return "";
