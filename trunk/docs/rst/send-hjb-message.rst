@@ -10,7 +10,7 @@ Send HJB Message
 
   (required) message-to-send
 
-  (required) hjb.core.jms-class (a message header)
+  (required) hjb_jms_message_interface (a message header)
 
   (optional) destination-url
 
