@@ -6,6 +6,7 @@ import javax.jms.TopicSubscriber;
 import org.jmock.Mock;
 
 import hjb.misc.PathNaming;
+import hjb.testsupport.BaseHJBTestCase;
 
 public class SubscriberDescriptionTest extends BaseHJBTestCase {
 

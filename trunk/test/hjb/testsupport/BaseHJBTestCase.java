@@ -1,4 +1,4 @@
-package hjb.jms.info;
+package hjb.testsupport;
 
 import junit.framework.AssertionFailedError;
 

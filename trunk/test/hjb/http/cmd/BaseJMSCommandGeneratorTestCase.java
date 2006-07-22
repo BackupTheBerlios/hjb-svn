@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.jmock.Mock;
 
-import hjb.jms.info.BaseHJBTestCase;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockHJBRuntime;
 
 public abstract class BaseJMSCommandGeneratorTestCase extends

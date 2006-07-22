@@ -7,6 +7,7 @@ import org.jmock.Mock;
 
 import hjb.jms.HJBConnection;
 import hjb.misc.PathNaming;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
 
 public class ConnectionDescriptionTest extends BaseHJBTestCase {

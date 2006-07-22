@@ -6,6 +6,7 @@ import org.jmock.Mock;
 
 import hjb.misc.HJBStrings;
 import hjb.misc.PathNaming;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockSessionBuilder;
 
 public class SessionDescriptionTest extends BaseHJBTestCase {

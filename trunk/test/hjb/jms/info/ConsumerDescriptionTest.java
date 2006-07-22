@@ -5,6 +5,7 @@ import javax.jms.MessageConsumer;
 import org.jmock.Mock;
 
 import hjb.misc.PathNaming;
+import hjb.testsupport.BaseHJBTestCase;
 
 public class ConsumerDescriptionTest extends BaseHJBTestCase {
 
