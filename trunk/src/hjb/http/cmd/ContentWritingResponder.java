@@ -63,6 +63,7 @@ public class ContentWritingResponder extends BaseJMSCommandResponder {
             throws IOException {
         if (getExecutedCommand().isExecutedOK()) {
             addStatusHeader(response);
+            addCacheControlHeader(response);
             sendOkWithContent(response);
             response.setContentType(HJBConstants.HTTP_TEXT_PLAIN);
             writeContentTo(response);

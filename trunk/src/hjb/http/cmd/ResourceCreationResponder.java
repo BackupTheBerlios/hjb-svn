@@ -70,6 +70,7 @@ public class ResourceCreationResponder extends BaseJMSCommandResponder {
             throws IOException {
         if (getExecutedCommand().isExecutedOK()) {
             addStatusHeader(response);
+            addCacheControlHeader(response);
             addLocationHeaderTo(response);
             sendCreatedOK(response);
         } else {

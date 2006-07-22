@@ -59,7 +59,7 @@ public class RuntimeExceptionHandler {
      * @param statusText
      *            a status message
      * @throws IOException
-     *            if a problem occurs while sending the response
+     *             if a problem occurs while sending the response
      */
     public void sendHJBFault(HttpServletResponse response,
                              RuntimeException exception,
@@ -70,6 +70,8 @@ public class RuntimeExceptionHandler {
             LOG.error(message, exception);
             return;
         }
+        response.addHeader(HJBConstants.HTTP_CACHE_CONTROL,
+                           HJBConstants.HJB_DEFAULT_CACHE_CONTROL);
         response.addHeader(HJBConstants.HJB_STATUS_HEADER,
                            (null != statusText) ? statusText
                                    : strings().getString(HJBStrings.UNKNOWN_CAUSE));

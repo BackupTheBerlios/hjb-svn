@@ -23,21 +23,21 @@ package hjb.misc;
 import javax.jms.Session;
 
 /**
- * <code>HJBConstants</code> contains constants throughout
- * the <code>HJB</code>.
+ * <code>HJBConstants</code> contains constants throughout the
+ * <code>HJB</code>.
  * 
  * @author Tim Emiola
  */
 public final class HJBConstants {
-        
+
     /**
-     * Constant that holds the name of the attribute used to store HJB Application in
-     * the servlet context.
+     * Constant that holds the name of the attribute used to store HJB
+     * Application in the servlet context.
      * <p />
      * The value of this constant is "hjb.runtime.application".
      */
     public static final String HJB_APPLICATION_ATTRIBUTE = "hjb.runtime.application";
-    
+
     /**
      * Constant that holds the name of the servlet parameter used to configure
      * HJBRoot's storage path.
@@ -63,12 +63,20 @@ public final class HJBConstants {
     public static final String HTTP_LOCATION = "Location";
 
     /**
-     * Constant that holds the standard HTTP response header for specifying a
-     * location.
+     * Constant that holds the standard HTTP response header for specifying
+     * cache control parameters.
      * <p />
-     * The value of this constant is "Location".
+     * The value of this constant is "Cache-Control".
      */
-    public static final String HTTP_CACHE_CONTROL = "Location";
+    public static final String HTTP_CACHE_CONTROL = "Cache-Control";
+
+    /**
+     * Constant that holds the default HJB cache control response header value.
+     * <p />
+     * The value of this constant is "no-store".
+     */
+    public static final String HJB_DEFAULT_CACHE_CONTROL = "no-store";
+
 
     /**
      * Constant that holds the standard MIME type for plain text
@@ -228,7 +236,7 @@ public final class HJBConstants {
 
     /**
      * Constant that holds the name of the request parameter that HJB uses to
-     * identify a clientId for use in some JMS API calls. 
+     * identify a clientId for use in some JMS API calls.
      * <p />
      * The value of this constant is "clientId".
      */

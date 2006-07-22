@@ -59,6 +59,7 @@ public class StatusOnlyResponder extends BaseJMSCommandResponder {
             throws HJBException, IOException {
         if (getExecutedCommand().isExecutedOK()) {
             addStatusHeader(response);
+            addCacheControlHeader(response);
             sendOkNoContent(response);
         } else {
             sendHJBFault(response);

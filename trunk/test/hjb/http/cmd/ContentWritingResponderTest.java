@@ -65,6 +65,10 @@ public class ContentWritingResponderTest extends MockObjectTestCase {
             .method("addHeader")
             .with(eq(HJBConstants.HJB_STATUS_HEADER), eq("test Status"));
         mockResponse.expects(once())
+            .method("addHeader")
+            .with(eq(HJBConstants.HTTP_CACHE_CONTROL),
+                  eq(HJBConstants.HJB_DEFAULT_CACHE_CONTROL));
+        mockResponse.expects(once())
             .method("sendError")
             .with(eq(HttpServletResponse.SC_INTERNAL_SERVER_ERROR),
                   eq("test Status"));
@@ -89,6 +93,11 @@ public class ContentWritingResponderTest extends MockObjectTestCase {
         mockResponse.expects(once())
             .method("addHeader")
             .with(eq(HJBConstants.HJB_STATUS_HEADER), eq("test status"));
+        mockResponse.expects(once())
+            .method("addHeader")
+            .with(eq(HJBConstants.HTTP_CACHE_CONTROL),
+                  eq(HJBConstants.HJB_DEFAULT_CACHE_CONTROL));
+
         mockResponse.expects(once()).method("flushBuffer");
         mockResponse.expects(once())
             .method("setStatus")

@@ -153,6 +153,10 @@ public class HJBApplicationTest extends MockObjectTestCase {
                 .with(eq(HJBConstants.HJB_STATUS_HEADER),
                       eq("thrown as a test"));
             mockResponse.expects(once())
+                .method("addHeader")
+                .with(eq(HJBConstants.HTTP_CACHE_CONTROL),
+                      eq(HJBConstants.HJB_DEFAULT_CACHE_CONTROL));
+            mockResponse.expects(once())
                 .method("sendError")
                 .with(eq(HttpServletResponse.SC_INTERNAL_SERVER_ERROR),
                       eq("thrown as a test"));
@@ -163,7 +167,6 @@ public class HJBApplicationTest extends MockObjectTestCase {
 
         }
     }
-
 
     public void testInvokesFirstCommandGeneratorThatMatches() throws Exception {
         Mock mockGeneratorFactory = mock(JMSCommandGeneratorFactory.class);

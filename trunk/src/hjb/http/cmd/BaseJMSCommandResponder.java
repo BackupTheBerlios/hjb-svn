@@ -71,6 +71,23 @@ public abstract class BaseJMSCommandResponder implements JMSCommandResponder {
     }
 
     /**
+     * Used by the various methods that write the response to add cache
+     * control instructions to the HTTP response
+     * <p>
+     * The name of header is the value of
+     * {@link HJBConstants#HTTP_CACHE_CONTROL}.
+     * </p>
+     * 
+     * @param response
+     *            a <code>HttpServletResponse</code>
+     */
+    protected void addCacheControlHeader(HttpServletResponse response) {
+        response.addHeader(HJBConstants.HTTP_CACHE_CONTROL,
+                           HJBConstants.HJB_DEFAULT_CACHE_CONTROL);
+    }
+
+
+    /**
      * Used by the various methods that write the response to signal that a
      * problem has occurred.
      * 
