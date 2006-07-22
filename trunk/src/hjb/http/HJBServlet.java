@@ -135,6 +135,6 @@ public class HJBServlet extends HttpServlet {
     }
 
     private static final HJBStrings STRINGS = new HJBStrings();
-    private static Logger LOG = Logger.getLogger(HJBServlet.class);
+    private static final Logger LOG = Logger.getLogger(HJBServlet.class);
     private static final long serialVersionUID = 9018271691826775148L;
 }
