@@ -29,12 +29,12 @@ import javax.jms.Destination;
 import javax.servlet.http.HttpServletRequest;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
+import hjb.jms.info.BaseHJBTestCase;
 import hjb.testsupport.MockHJBRuntime;
 
 public abstract class BaseJMSCommandGeneratorTestCase extends
-        MockObjectTestCase {
+        BaseHJBTestCase {
 
     public void testGetGeneratedCommandThrowsIllegalStateExceptionIfNoCommandHasBeenGenerated() {
         assertGetGeneratedCommandThrowsIllegalStateException(generator);

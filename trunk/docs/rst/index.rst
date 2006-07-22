@@ -6,7 +6,7 @@ Mission
 -------
 
 HJB provides access to JMS resources via HTTP. It provides a REST
-equivalent of the JMS API, making it possible to perform JMS
+equivalent of the JMS 1.1 API, making it possible to perform JMS
 operations by accessing JMS objects as REST resources via HTTP.
 
 Scope
@@ -35,7 +35,8 @@ HJB
 * is deployed as a servlet (HJBServlet), that can run on any compliant
   Servlet specification 2.4 container.
 
-* will work with any messaging vendor that provides a JMS interface.
+* will work with any messaging vendor that provides a JMS 1.1
+  interface.
 
 * aims to do one thing well. Its role is to act as an HTTP gateway
   server allowing access to JMS object as REST resources. Other

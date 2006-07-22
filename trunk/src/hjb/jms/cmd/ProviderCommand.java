@@ -34,7 +34,7 @@ public abstract class ProviderCommand extends BaseJMSCommand {
         if (null == provider)
             throw new IllegalArgumentException(strings().needsANonNull(HJBProvider.class.getName()));
         if (null == name)
-            throw new IllegalArgumentException(strings().needsANonNull("'destination name'"));
+            throw new IllegalArgumentException(strings().needsANonNull("'jms admin object name'"));
         this.name = name;
         this.provider = provider;
     }

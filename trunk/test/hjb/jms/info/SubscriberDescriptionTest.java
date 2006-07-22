@@ -7,7 +7,7 @@ import org.jmock.Mock;
 
 import hjb.misc.PathNaming;
 
-public class SubscriberDescriptionTest extends BaseDescriptionTestCase {
+public class SubscriberDescriptionTest extends BaseHJBTestCase {
 
     public void testConstructorShouldThrowOnNegativeIndices() {
         Mock mockSubscriber = mock(TopicSubscriber.class);

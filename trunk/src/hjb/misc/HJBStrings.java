@@ -185,6 +185,8 @@ public final class HJBStrings {
 
     public static final String DESCRIPTION_OF_SESSION_ROLLBACK = "description.of.session.rollback";
 
+    public static final String DESCRIPTION_OF_LISTING = "description.of.listing";
+
     public static final String DESCRIPTION_OF_READ_META_DATA = "description.of.read.meta.data";
 
     public static final String SUCCESS_MESSAGE_OF_READ_META_DATA = "success.message.of.read.meta.data";
@@ -216,6 +218,8 @@ public final class HJBStrings {
     public static final String SUCCESS_MESSAGE_OF_SESSION_COMMIT = "success.message.of.session.commit";
 
     public static final String SUCCESS_MESSAGE_OF_SESSION_ROLLBACK = "success.message.of.session.rollback";
+
+    public static final String SUCCESS_MESSAGE_OF_LISTING = "success.message.of.listing";
 
     public static final String MESSAGE_SENT_OK = "message.sent.ok";
 

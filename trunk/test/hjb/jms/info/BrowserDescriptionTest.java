@@ -7,7 +7,7 @@ import org.jmock.Mock;
 
 import hjb.misc.PathNaming;
 
-public class BrowserDescriptionTest extends BaseDescriptionTestCase {
+public class BrowserDescriptionTest extends BaseHJBTestCase {
 
     public void testConstructorShouldThrowOnNegativeIndices() {
         Mock mockBrowser = mock(QueueBrowser.class);       

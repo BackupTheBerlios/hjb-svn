@@ -96,6 +96,14 @@ public final class HJBConstants {
 
     /**
      * Constant that holds the name of the request parameter that HJB uses to
+     * indicate that listing should be recursive.
+     * <p />
+     * The value of this constant is "recurse".
+     */
+    public static final String LISTING_RECURSE = "recurse";
+
+    /**
+     * Constant that holds the name of the request parameter that HJB uses to
      * identify a subscriber name for use in configuration of a JMS
      * <code>DurableSubscriber</code>
      * <p />

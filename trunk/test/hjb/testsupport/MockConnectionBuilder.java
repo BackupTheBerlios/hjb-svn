@@ -20,7 +20,12 @@
  */
 package hjb.testsupport;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
+
 import javax.jms.Connection;
+import javax.jms.ConnectionMetaData;
 import javax.jms.JMSException;
 import javax.jms.Session;
 
@@ -66,6 +71,41 @@ public class MockConnectionBuilder {
         result.stubs().method("setExceptionListener");
         return result;
     }
+
+    public Mock createConnectionMetaDataMock() {
+        Mock mockMetaData = new Mock(ConnectionMetaData.class);
+        for (int i = 0; i < METADATA_TEST_VALUES.length; i++) {
+            mockMetaData.stubs()
+                .method("" + METADATA_TEST_VALUES[i][0])
+                .will(new ReturnStub(METADATA_TEST_VALUES[i][1]));
+        }
+        String[] fakeCustomMetaDataNames = {
+                "fakeMetaData1", "fakeMetaData2"
+        };
+        Enumeration fakeNames = Collections.enumeration(Arrays.asList(fakeCustomMetaDataNames));
+        mockMetaData.stubs()
+            .method("getJMSXPropertyNames")
+            .will(new ReturnStub(fakeNames));
+        return mockMetaData;
+    }
+
+    public Object[][] METADATA_TEST_VALUES = {
+            {
+                    "getJMSVersion", "testVersion"
+            }, {
+                    "getJMSProviderName", "testProviderName"
+            }, {
+                    "getJMSMajorVersion", new Integer(444)
+            }, {
+                    "getJMSMinorVersion", new Integer(777)
+            }, {
+                    "getProviderMajorVersion", new Integer(999)
+            }, {
+                    "getProviderMinorVersion", new Integer(999)
+            }, {
+                    "getProviderVersion", "testProviderVersion"
+            },
+    };
 
     private MockSessionBuilder sessionBuilder;
 }

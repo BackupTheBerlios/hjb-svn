@@ -8,7 +8,7 @@ import org.jmock.Mock;
 
 import hjb.misc.PathNaming;
 
-public class ProducerDescriptionTest extends BaseDescriptionTestCase {
+public class ProducerDescriptionTest extends BaseHJBTestCase {
 
     public void testConstructorShouldThrowOnNegativeIndices() {
         Mock mockProducer = mock(MessageProducer.class);

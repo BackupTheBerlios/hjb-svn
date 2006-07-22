@@ -196,7 +196,7 @@ public class HJBConnection implements Connection {
     }
 
     public String toString() {
-        return "" + new ConnectionDescription(this, getConnectionIndex());
+        return "" + new ConnectionDescription(this);
     }
 
     protected void addAndStartCommandRunner(int sessionIndex) {

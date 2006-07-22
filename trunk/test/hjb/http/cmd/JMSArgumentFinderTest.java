@@ -108,6 +108,13 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
         assertTrue(new JMSArgumentFinder().findDisableMessageIds(decodedParameters));
     }
 
+    public void testFindsIsRecursiveListingCorrectly() {
+        assertFalse(new JMSArgumentFinder().findIsRecursiveListing(decodedParameters));
+        decodedParameters.put(HJBConstants.LISTING_RECURSE,
+                              new Object());
+        assertTrue(new JMSArgumentFinder().findIsRecursiveListing(decodedParameters));
+    }
+
     public void testFindsNoLocalCorrectly() {
         assertFalse(new JMSArgumentFinder().findDisableTimestamps(decodedParameters));
         decodedParameters.put(HJBConstants.CONSUMER_NOLOCAL,

@@ -8,7 +8,7 @@ import hjb.misc.HJBStrings;
 import hjb.misc.PathNaming;
 import hjb.testsupport.MockSessionBuilder;
 
-public class SessionDescriptionTest extends BaseDescriptionTestCase {
+public class SessionDescriptionTest extends BaseHJBTestCase {
 
     public void testConstructorShouldThrowOnNegativeIndices() {
         Mock mockSession = mock(Session.class);

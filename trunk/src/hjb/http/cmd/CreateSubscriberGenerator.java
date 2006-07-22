@@ -47,8 +47,9 @@ import hjb.misc.PathNaming;
 public class CreateSubscriberGenerator extends PatternMatchingCommandGenerator {
 
     public JMSCommand getGeneratedCommand() throws HJBException {
-        if (null == generatedCommand)
+        if (null == generatedCommand) {
             throw new IllegalStateException(strings().getString(HJBStrings.JMS_COMMAND_NOT_GENERATED));
+        }
         return generatedCommand;
     }
 

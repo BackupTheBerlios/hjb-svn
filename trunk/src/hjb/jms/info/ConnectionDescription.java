@@ -7,6 +7,7 @@ import java.util.TreeMap;
 import javax.jms.JMSException;
 import javax.jms.Connection;
 
+import hjb.jms.HJBConnection;
 import hjb.misc.HJBConstants;
 import hjb.misc.HJBStrings;
 import hjb.misc.PathNaming;
@@ -19,11 +20,12 @@ import hjb.misc.PathNaming;
  */
 public class ConnectionDescription extends BaseJMSObjectDescription {
 
-    public ConnectionDescription(Connection theConnection, int sessionIndex) {
-        super(sessionIndex, HJBStrings.INVALID_CONNECTION_INDEX);
+    public ConnectionDescription(HJBConnection theConnection) {
+        super(DUMMY, HJBStrings.INVALID_CONNECTION_INDEX);
         if (null == theConnection) {
             throw new IllegalArgumentException(strings().needsANonNull(Connection.class));
         }
+        setIndex(theConnection.getConnectionIndex());
         this.theConnection = theConnection;
     }
 
@@ -73,5 +75,6 @@ public class ConnectionDescription extends BaseJMSObjectDescription {
         return theConnection;
     }
 
+    private static final int DUMMY = 0;
     private Connection theConnection;
 }

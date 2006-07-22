@@ -22,7 +22,7 @@ Running the HJB servlet requires
  * the JMS jars specific to the messaging provider you want to access.
 
 In addition to these items, all of which are required_, there are some
-useful optional_.
+useful optional_ ones.
 
 Required
 --------

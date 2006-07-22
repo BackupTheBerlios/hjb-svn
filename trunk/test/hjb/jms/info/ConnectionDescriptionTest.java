@@ -1,66 +1,57 @@
 package hjb.jms.info;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
-
 import javax.jms.Connection;
 import javax.jms.ConnectionMetaData;
 
 import org.jmock.Mock;
 
+import hjb.jms.HJBConnection;
 import hjb.misc.PathNaming;
+import hjb.testsupport.MockConnectionBuilder;
 
-public class ConnectionDescriptionTest extends BaseDescriptionTestCase {
-
-    public void testConstructorShouldThrowOnNegativeIndices() {
-        Mock mockConnection = mock(Connection.class);
-        Connection testConnection = (Connection) mockConnection.proxy();
-        try {
-            new ConnectionDescription(testConnection, -1);
-            fail("Should have thrown an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {}
-    }
+public class ConnectionDescriptionTest extends BaseHJBTestCase {
 
     public void testConstructorShouldThrowOnNullInputs() {
         try {
-            new ConnectionDescription(null, 0);
+            new ConnectionDescription(null);
             fail("Should have thrown an IllegalArgumentException");
         } catch (IllegalArgumentException e) {}
     }
 
     public void testToStringHasNoXtraInfoForNonClientIDConnections() {
-        Mock mockConnection = mock(Connection.class);
+        Mock mockConnection = new MockConnectionBuilder().createMockConnection();
         mockConnection.stubs()
             .method("getClientID")
             .will(returnValue("barfoo"));
 
         Connection testConnection = (Connection) mockConnection.proxy();
-        ConnectionDescription testDescription = new ConnectionDescription(testConnection,
-                                                                          0);
+        ConnectionDescription testDescription = new ConnectionDescription(new HJBConnection(testConnection,
+                                                                                            null,
+                                                                                            0));
         assertContains(testDescription.toString(), "0");
         assertContains(testDescription.toString(), PathNaming.CONNECTION);
         assertContains(testDescription.toString(), "barfoo");
     }
 
     public void testToStringHasXtraInfoForClientIDConnections() {
-        Mock mockConnection = mock(Connection.class);
+        Mock mockConnection = new MockConnectionBuilder().createMockConnection();
         mockConnection.stubs()
             .method("getClientID")
             .will(returnValue("foobar"));
 
         Connection testConnection = (Connection) mockConnection.proxy();
-        ConnectionDescription testDescription = new ConnectionDescription(testConnection,
-                                                                          0);
+        ConnectionDescription testDescription = new ConnectionDescription(new HJBConnection(testConnection,
+                                                                                            null,
+                                                                                            0));
         assertContains(testDescription.toString(), "0");
         assertContains(testDescription.toString(), PathNaming.CONNECTION);
         assertContains(testDescription.toString(), "foobar");
     }
 
     public void testLongDescriptionIncludeConnectionAttributes() {
-        Mock mockMetaData = createConnectionMetaDataMock();
+        Mock mockMetaData = new MockConnectionBuilder().createConnectionMetaDataMock();
         ConnectionMetaData testMetaData = (ConnectionMetaData) mockMetaData.proxy();
-        Mock mockConnection = mock(Connection.class);
+        Mock mockConnection = new MockConnectionBuilder().createMockConnection();
         mockConnection.stubs()
             .method("getClientID")
             .will(returnValue("foobar"));
@@ -68,8 +59,9 @@ public class ConnectionDescriptionTest extends BaseDescriptionTestCase {
             .method("getMetaData")
             .will(returnValue(testMetaData));
 
-        ConnectionDescription testDescription = new ConnectionDescription((Connection) mockConnection.proxy(),
-                                                                          0);
+        ConnectionDescription testDescription = new ConnectionDescription(new HJBConnection((Connection) mockConnection.proxy(),
+                                                                                            null,
+                                                                                            1));
 
         String expectedOutput = testDescription.toString() + CR
                 + "clientId=foobar" + CR + "jms-major-version=(int 444)" + CR
@@ -81,45 +73,10 @@ public class ConnectionDescriptionTest extends BaseDescriptionTestCase {
                 + "provider-minor-version=(int 999)" + CR
                 + "provider-version=testProviderVersion";
 
-        assertContains(testDescription.toString(), "0");
+        assertContains(testDescription.toString(), "1");
         assertContains(testDescription.toString(), PathNaming.CONNECTION);
         assertContains(testDescription.toString(), "foobar");
         assertEquals(expectedOutput, testDescription.longDescription());
     }
-
-    protected Mock createConnectionMetaDataMock() {
-        Mock mockMetaData = mock(ConnectionMetaData.class);
-        for (int i = 0; i < METADATA_TEST_VALUES.length; i++) {
-            mockMetaData.stubs()
-                .method("" + METADATA_TEST_VALUES[i][0])
-                .will(returnValue(METADATA_TEST_VALUES[i][1]));
-        }
-        String[] fakeCustomMetaDataNames = {
-                "fakeMetaData1", "fakeMetaData2"
-        };
-        Enumeration fakeNames = Collections.enumeration(Arrays.asList(fakeCustomMetaDataNames));
-        mockMetaData.stubs()
-            .method("getJMSXPropertyNames")
-            .will(returnValue(fakeNames));
-        return mockMetaData;
-    }
-
-    private Object[][] METADATA_TEST_VALUES = {
-            {
-                    "getJMSVersion", "testVersion"
-            }, {
-                    "getJMSProviderName", "testProviderName"
-            }, {
-                    "getJMSMajorVersion", new Integer(444)
-            }, {
-                    "getJMSMinorVersion", new Integer(777)
-            }, {
-                    "getProviderMajorVersion", new Integer(999)
-            }, {
-                    "getProviderMinorVersion", new Integer(999)
-            }, {
-                    "getProviderVersion", "testProviderVersion"
-            },
-    };
 
 }

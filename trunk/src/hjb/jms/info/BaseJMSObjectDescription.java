@@ -106,12 +106,16 @@ public class BaseJMSObjectDescription {
     protected int getIndex() {
         return index;
     }
+    
+    protected void setIndex(int index) {
+        this.index = index;
+    }
 
     protected HJBStrings strings() {
         return STRINGS;
     }
 
-    private final int index;
+    private int index;
     private final OrderedTypedValueCodec codec;
     private static final HJBStrings STRINGS = new HJBStrings();
 }

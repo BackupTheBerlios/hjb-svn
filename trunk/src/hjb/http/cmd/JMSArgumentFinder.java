@@ -219,6 +219,10 @@ public class JMSArgumentFinder {
         return (null == rawValue) ? null : "" + rawValue;
     }
 
+    public boolean findIsRecursiveListing(Map decodedParameters) {
+        return null != decodedParameters.get(HJBConstants.LISTING_RECURSE);
+    }
+
     public Queue findQueue(Map decodedParameters,
                            HJBRoot root,
                            String sessionProviderName) {
@@ -429,6 +433,5 @@ public class JMSArgumentFinder {
     private static final Logger LOG = Logger.getLogger(JMSArgumentFinder.class);
     private static final Pattern DESTINATION_PATH_MATCHER = Pattern.compile("^/[^/]*/[^/]*/(\\w+)/"
             + PathNaming.DESTINATION + "/(.+)/?$");
-    private static final HJBStrings STRINGS = new HJBStrings();
-    
+    private static final HJBStrings STRINGS = new HJBStrings();    
 }

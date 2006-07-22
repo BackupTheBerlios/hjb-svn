@@ -6,7 +6,7 @@ import org.jmock.MockObjectTestCase;
 
 import hjb.misc.HJBStrings;
 
-public abstract class BaseDescriptionTestCase  extends MockObjectTestCase  {
+public abstract class BaseHJBTestCase  extends MockObjectTestCase  {
 
     protected void assertContains(String outer, String inner, String message)  {
         if (-1 == outer.lastIndexOf(inner)) {

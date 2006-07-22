@@ -6,7 +6,7 @@ import org.jmock.Mock;
 
 import hjb.misc.PathNaming;
 
-public class ConsumerDescriptionTest extends BaseDescriptionTestCase {
+public class ConsumerDescriptionTest extends BaseHJBTestCase {
 
     public void testConstructorShouldThrowOnNegativeIndices() {
         Mock mockConsumer = mock(MessageConsumer.class);       
