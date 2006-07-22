@@ -6,6 +6,7 @@ import java.util.TreeMap;
 import javax.jms.JMSException;
 import javax.jms.Session;
 
+import hjb.jms.HJBConnection;
 import hjb.misc.HJBConstants;
 import hjb.misc.HJBStrings;
 import hjb.misc.PathNaming;
@@ -24,6 +25,10 @@ public class SessionDescription extends BaseJMSObjectDescription {
             throw new IllegalArgumentException(strings().needsANonNull(Session.class));
         }
         this.theSession = theSession;
+    }
+
+    public SessionDescription(HJBConnection aConnection, int sessionIndex) {
+        this(aConnection.getSession(sessionIndex), sessionIndex);
     }
 
     protected Map attributesAsAMap() {

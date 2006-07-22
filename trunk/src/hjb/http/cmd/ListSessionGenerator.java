@@ -30,23 +30,23 @@ import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
 import hjb.jms.cmd.JMSCommand;
 import hjb.jms.cmd.RetrieveListing;
-import hjb.jms.info.ConnectionDescription;
-import hjb.jms.info.ConnectionListing;
+import hjb.jms.info.SessionDescription;
+import hjb.jms.info.SessionListing;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 import hjb.misc.PathNaming;
 
 /**
- * <code>ListConnectionGenerator</code> is the
- * <code>JMSCommandGenerator</code> that produces a {@link RetrieveListing}
- * for listing the JMS objects beneath a <code>HJBConnection<code>.
+ * <code>ListSessionGenerator</code> is the <code>JMSCommandGenerator</code>
+ * that produces a {@link RetrieveListing} for listing the JMS objects beneath a
+ * <code>Session<code>.
  * 
  * @see hjb.http.cmd.JMSCommandGenerator
  * @see hjb.jms.cmd.JMSCommand
  * 
  * @author Tim Emiola
  */
-public class ListConnectionGenerator extends PatternMatchingCommandGenerator {
+public class ListSessionGenerator extends PatternMatchingCommandGenerator {
 
     public JMSCommand getGeneratedCommand() throws HJBException {
         if (null == generatedCommand) {
@@ -63,17 +63,20 @@ public class ListConnectionGenerator extends PatternMatchingCommandGenerator {
         String providerName = m.group(1);
         String factoryName = applyURLDecoding(m.group(2));
         int connectionIndex = Integer.parseInt(m.group(3));
+        int sessionIndex = Integer.parseInt(m.group(4));
 
         HJBTreeWalker walker = new HJBTreeWalker(root, pathInfo);
         Map decodedParameters = getDecoder().decode(request.getParameterMap());
         HJBConnection theConnection = walker.findConnection(providerName,
                                                             factoryName,
                                                             connectionIndex);
-        this.generatedCommand = new RetrieveListing(new ConnectionListing(theConnection),
-                                                    pathInfo.substring(0, pathInfo.lastIndexOf("list")),
-                                                    new ConnectionDescription(theConnection).toString(),
+        this.generatedCommand = new RetrieveListing(new SessionListing(theConnection,
+                                                                       sessionIndex),
+                                                    pathInfo.substring(0,
+                                                                       pathInfo.lastIndexOf("list")),
+                                                    new SessionDescription(theConnection,
+                                                                           sessionIndex).toString(),
                                                     getFinder().findIsRecursiveListing(decodedParameters));
-
     }
 
     protected JMSCommandResponder createResponder() {
@@ -88,5 +91,8 @@ public class ListConnectionGenerator extends PatternMatchingCommandGenerator {
     private transient RetrieveListing generatedCommand;
 
     private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/(.+)/"
-            + PathNaming.CONNECTION + "-(\\d+)/list$");
+            + PathNaming.CONNECTION
+            + "-(\\d+)/"
+            + PathNaming.SESSION
+            + "-(\\d+)/list$");
 }

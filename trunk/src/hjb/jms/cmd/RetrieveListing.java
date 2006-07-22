@@ -16,6 +16,12 @@ public class RetrieveListing extends BaseJMSCommand {
         this.recursive = recursive;
     }
 
+    public RetrieveListing(JMSObjectListing listing,
+                           String prefix,
+                           boolean recursive) {
+        this(listing, prefix, prefix, recursive);
+    }
+
     public void execute() {
         assertNotCompleted();
         try {

@@ -20,9 +20,9 @@ public class SessionDescriptionTest extends BaseHJBTestCase {
         } catch (IllegalArgumentException e) {}
     }
 
-    public void testConstructorShouldThrowOnNullInputs() {
+    public void testConstructorShouldThrowOnNullSessionInputs() {
         try {
-            new SessionDescription(null, 0);
+            new SessionDescription((Session) null, 0);
             fail("Should have thrown an IllegalArgumentException");
         } catch (IllegalArgumentException e) {}
     }
