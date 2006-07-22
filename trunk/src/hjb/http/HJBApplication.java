@@ -128,12 +128,12 @@ public class HJBApplication {
         }
     }
 
-    private void findHJBRoot(ServletConfig config) {
+    protected void findHJBRoot(ServletConfig config) {
         String hjbRootPath = config.getInitParameter(HJBConstants.ROOT_PATH_CONFIG);
         root = new HJBRoot(new File(hjbRootPath));
     }
 
-    private void findCommandTimeout(ServletConfig config)
+    protected void findCommandTimeout(ServletConfig config)
             throws ServletException {
         try {
             this.commandTimeout = MILLISECONDS
@@ -258,7 +258,7 @@ public class HJBApplication {
      */
     public static final int MILLISECONDS = 1000;
 
-    private Logger LOG = Logger.getLogger(HJBApplication.class);
+    private static final Logger LOG = Logger.getLogger(HJBApplication.class);
     private static final HJBStrings STRINGS = new HJBStrings();
 
     public static class CommandTimeoutTask extends TimerTask {
@@ -272,5 +272,4 @@ public class HJBApplication {
 
         private boolean lastOrders;
     }
-
 }

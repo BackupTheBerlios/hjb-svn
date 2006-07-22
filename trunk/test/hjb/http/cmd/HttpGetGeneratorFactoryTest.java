@@ -11,7 +11,7 @@ public class HttpGetGeneratorFactoryTest extends TestCase {
         assertFalse(new HttpGetGeneratorFactory().equals(new Object()));
     }
     
-    public void testAtLeastOnceGeneratorIsProvided() throws Exception {
+    public void testAtLeastOneGeneratorIsProvided() throws Exception {
         assertTrue(new HttpGetGeneratorFactory().getGenerators().length > 0);
     }
   

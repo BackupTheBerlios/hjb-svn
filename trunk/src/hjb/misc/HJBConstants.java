@@ -63,6 +63,14 @@ public final class HJBConstants {
     public static final String HTTP_LOCATION = "Location";
 
     /**
+     * Constant that holds the standard HTTP response header for specifying a
+     * location.
+     * <p />
+     * The value of this constant is "Location".
+     */
+    public static final String HTTP_CACHE_CONTROL = "Location";
+
+    /**
      * Constant that holds the standard MIME type for plain text
      * <p />
      * The value of this constant is "text/plain".
