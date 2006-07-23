@@ -36,7 +36,7 @@ public class SessionListingTest extends MockObjectTestCase {
                 + CR
                 + "message-selector=testSelector"
                 + CR
-                + "/testProvider/testFactory/connection-10/session-0/subscriber-0[source=mockTopic,nolocal?=false]"
+                + "/testProvider/testFactory/connection-10/session-0/subscriber-0[(source mockTopic) (nolocal? false)]"
                 + CR
                 + "message-selector=testSelector"
                 + CR
@@ -44,7 +44,7 @@ public class SessionListingTest extends MockObjectTestCase {
                 + CR
                 + "subscriber-name=testTopic"
                 + CR
-                + "/testProvider/testFactory/connection-10/session-0/producer-0[P(-4),target=supplied-by-sender]"
+                + "/testProvider/testFactory/connection-10/session-0/producer-0[(target supplied-by-sender) (priority -4)]"
                 + CR
                 + "delivery-mode=(int 1)"
                 + CR
@@ -56,7 +56,7 @@ public class SessionListingTest extends MockObjectTestCase {
                 + CR
                 + "time-to-live=(long 1)"
                 + CR
-                + "/testProvider/testFactory/connection-10/session-0/browser-0[source=mockQueue]"
+                + "/testProvider/testFactory/connection-10/session-0/browser-0[(source mockQueue)]"
                 + CR + "message-selector=testSelector";
         new SessionListing(testConnection, 0).writeListing(sw,
                                                            "/testProvider/testFactory/connection-10",
@@ -72,11 +72,11 @@ public class SessionListingTest extends MockObjectTestCase {
         addDefaultTestBrowser();
         String expectedOutput = "/testProvider/testFactory/connection-10/session-0/consumer-0"
                 + CR
-                + "/testProvider/testFactory/connection-10/session-0/subscriber-0[source=mockTopic,nolocal?=false]"
+                + "/testProvider/testFactory/connection-10/session-0/subscriber-0[(source mockTopic) (nolocal? false)]"
                 + CR
-                + "/testProvider/testFactory/connection-10/session-0/producer-0[P(-4),target=supplied-by-sender]"
+                + "/testProvider/testFactory/connection-10/session-0/producer-0[(target supplied-by-sender) (priority -4)]"
                 + CR
-                + "/testProvider/testFactory/connection-10/session-0/browser-0[source=mockQueue]";
+                + "/testProvider/testFactory/connection-10/session-0/browser-0[(source mockQueue)]";
         return expectedOutput;
     }
 

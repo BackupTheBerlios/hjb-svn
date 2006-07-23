@@ -41,7 +41,7 @@ public class ConnectionListingTest extends MockObjectTestCase {
                 + "/testProvider/testFactory/connection-10/session-0" + CR
                 + "acknowledgement-mode=(int 1)" + CR
                 + "transacted=(boolean false)" + CR
-                + "/testProvider/testFactory/connection-10/session-0/browser-0[source=mockQueue]" + CR
+                + "/testProvider/testFactory/connection-10/session-0/browser-0[(source mockQueue)]" + CR
                 + "message-selector=testSelector";
         new ConnectionListing(testConnection).writeListing(sw,
                                                            "/testProvider/testFactory/connection-10",

@@ -200,8 +200,7 @@ public class HJBMessageWriter {
             writeAsText(someMessages[i], aWriter);
             if (i + 1 != someMessages.length) {
                 pw.println();
-                pw.print(MESSAGE_SEPARATOR);
-                pw.println();
+                pw.println(MESSAGE_SEPARATOR);
             }
         }
     }

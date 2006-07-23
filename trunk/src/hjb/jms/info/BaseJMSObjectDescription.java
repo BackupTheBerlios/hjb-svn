@@ -12,10 +12,12 @@ import hjb.msg.codec.OrderedTypedValueCodec;
 
 /**
  * <code>BaseJMSObjectDescription</code> is the base class for the various
- * XXXDescription classes.
+ * XXXDescription classes, which are used to provided descriptions of JMS
+ * objects in log and status messages.
  * 
- * It defines a number of template methods which allow its subclasses
- * to customize its behaviour by overriding its protected methods.
+ * It uses template methods to implement the behaviour of the class hierarchy,
+ * and defines a number of protected methods that its subclasse override to
+ * customize their behaviour.
  * 
  * @author Tim Emiola
  */
@@ -106,7 +108,7 @@ public class BaseJMSObjectDescription {
     protected int getIndex() {
         return index;
     }
-    
+
     protected void setIndex(int index) {
         this.index = index;
     }
