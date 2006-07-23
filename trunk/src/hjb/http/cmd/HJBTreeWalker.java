@@ -46,7 +46,7 @@ public class HJBTreeWalker {
     }
 
     /**
-     * Creates a <code>HJBTreeWalker</code>
+     * Create a <code>HJBTreeWalker</code>.
      * 
      * @param root
      *            the
