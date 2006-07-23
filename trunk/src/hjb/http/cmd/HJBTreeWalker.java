@@ -34,7 +34,7 @@ import hjb.misc.HJBStrings;
 import hjb.misc.PathNaming;
 
 /**
- * <code>HJBTreeWalker</code> is used to locate various HJB object instances
+ * <code>HJBTreeWalker</code> is used to locate various JMS object instances
  * within a <code>HJBRoot</code> at runtime.
  * 
  * @author Tim Emiola
@@ -45,6 +45,17 @@ public class HJBTreeWalker {
         this(root, requestPath, true);
     }
 
+    /**
+     * Creates a <code>HJBTreeWalker</code>
+     * 
+     * @param root
+     *            the
+     *            <code>HJBRoot<code> in which the JMS objects are to be found
+     * @param requestPath the path at which <code>root</code> is held 
+     * @param failOnMissingComponent determines whether an exception should be thrown if 
+     * no object can be located, <code>true</code> means throw and exception, 
+     * <code>false</code> means return null.
+     */
     public HJBTreeWalker(HJBRoot root,
                          String requestPath,
                          boolean failOnMissingComponent) {
