@@ -144,6 +144,7 @@ public class HJBMessageWriter {
         if (null == aMessage) return;
         writeAsText(aMessage.getHeaders(), aWriter);
         PrintWriter pw = new PrintWriter(aWriter);
+        pw.println();
         pw.println(HEADER_BODY_SEPARATOR);
         pw.println(aMessage.getBody());
     }
