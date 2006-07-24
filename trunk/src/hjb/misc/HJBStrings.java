@@ -486,4 +486,6 @@ public final class HJBStrings {
     public static final String BROWSER_DESCRIPTION = "browser.description";
 
     public static final String ANY_PRODUCER = "any.producer";
+
+    public static final String RUNNER_FOR = "runner.for";
 }

@@ -62,7 +62,7 @@ public class CreateBrowser extends BaseJMSCommand {
     public String getDescription() {
         return strings().getString(HJBStrings.DESCRIPTION_OF_CREATE_COMMANDS,
                                    QueueBrowser.class.getName(),
-                                   new Integer(getSessionIndex()));
+                                   getBrowserIndexAsText());
     }
 
     public String getStatusMessage() {
@@ -77,9 +77,17 @@ public class CreateBrowser extends BaseJMSCommand {
     public int getBrowserIndex() {
         return browserIndex;
     }
+    
+    public String getBrowserIndexAsText() {
+        if (isBrowserIndexSet()) {
+            return "" + getBrowserIndex();
+        } else {
+            return strings().getString(HJBStrings.NOT_APPLICAPLE);
+        }
+    }
 
     public boolean isBrowserIndexSet() {
-        return UNSET_BROWSER_INDEX == getBrowserIndex();
+        return UNSET_BROWSER_INDEX != getBrowserIndex();
     }
 
     protected void createBrowserAndSaveItsIndex() {

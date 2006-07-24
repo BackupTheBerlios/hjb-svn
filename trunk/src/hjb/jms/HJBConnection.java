@@ -202,8 +202,11 @@ public class HJBConnection implements Connection {
     protected void addAndStartCommandRunner(int sessionIndex) {
         JMSCommandRunner r = new JMSCommandRunner();
         addCommandRunner(r, sessionIndex);
-        Thread runnerThread = new Thread(r, "" + this + ":Session:"
-                + sessionIndex);
+        String threadName = strings().getString(HJBStrings.RUNNER_FOR,
+                                                this,
+                                                new SessionDescription(this,
+                                                                       sessionIndex).toString());
+        Thread runnerThread = new Thread(r, threadName);
         runnerThread.setDaemon(true);
         runnerThread.start();
     }

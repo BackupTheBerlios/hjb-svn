@@ -22,12 +22,14 @@ package hjb.jms;
 
 import javax.jms.Connection;
 import javax.jms.JMSException;
+import javax.jms.Session;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import hjb.misc.HJBException;
 import hjb.testsupport.MockConnectionBuilder;
+import hjb.testsupport.MockSessionBuilder;
 
 public class HJBConnectionTest extends MockObjectTestCase {
 
@@ -47,8 +49,12 @@ public class HJBConnectionTest extends MockObjectTestCase {
 
     public void testCreateSessionInvokesDecorateeConnection() {
         Mock mockConnection = connectionBuilder.createMockConnection();
+        Mock mockSession = sessionBuilder.createMockSession();
         registerToVerify(mockConnection);
-        mockConnection.expects(once()).method("createSession");
+        registerToVerify(mockSession);
+        mockConnection.expects(once())
+            .method("createSession")
+            .will(returnValue((Session) mockSession.proxy()));
         Connection testConnection = (Connection) mockConnection.proxy();
 
         HJBConnection h = new HJBConnection(testConnection, 0);
@@ -57,11 +63,15 @@ public class HJBConnectionTest extends MockObjectTestCase {
 
     public void testCreateSessionAddsANewCommandRunner() {
         Mock mockConnection = connectionBuilder.createMockConnection();
-        Connection testConnection = (Connection) mockConnection.proxy();
+        Mock mockSession = sessionBuilder.createMockSession();
         registerToVerify(mockConnection);
-        mockConnection.expects(once()).method("createSession");
+        registerToVerify(mockSession);
+        mockConnection.expects(once())
+            .method("createSession")
+            .will(returnValue((Session) mockSession.proxy()));
 
-        HJBConnection h = new HJBConnection(testConnection, 0);
+        HJBConnection h = new HJBConnection((Connection) mockConnection.proxy(),
+                                            0);
         try {
             h.getSessionCommandRunner(0);
             fail("should throw exception");
@@ -78,11 +88,15 @@ public class HJBConnectionTest extends MockObjectTestCase {
 
     public void testGetSessions() {
         Mock mockConnection = connectionBuilder.createMockConnection();
+        Mock mockSession = sessionBuilder.createMockSession();
         registerToVerify(mockConnection);
-        mockConnection.expects(atLeastOnce()).method("createSession");
-        Connection testConnection = (Connection) mockConnection.proxy();
+        registerToVerify(mockSession);
+        mockConnection.expects(once())
+            .method("createSession")
+            .will(returnValue((Session) mockSession.proxy()));
 
-        HJBConnection h = new HJBConnection(testConnection, 0);
+        HJBConnection h = new HJBConnection((Connection) mockConnection.proxy(),
+                                            0);
         h.createSession(true, 1);
         assertEquals("1 session should have been added",
                      1,
@@ -324,8 +338,10 @@ public class HJBConnectionTest extends MockObjectTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         connectionBuilder = new MockConnectionBuilder();
+        sessionBuilder = new MockSessionBuilder();
     }
 
     private MockConnectionBuilder connectionBuilder;
+    private MockSessionBuilder sessionBuilder;
 
 }

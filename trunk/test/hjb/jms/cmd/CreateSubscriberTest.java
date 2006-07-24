@@ -34,6 +34,7 @@ import hjb.jms.HJBRoot;
 import hjb.jms.HJBSessionDurableSubscribers;
 import hjb.misc.HJBException;
 import hjb.testsupport.MockHJBRuntime;
+import hjb.testsupport.MockSessionBuilder;
 
 public class CreateSubscriberTest extends MockObjectTestCase {
 
@@ -91,7 +92,8 @@ public class CreateSubscriberTest extends MockObjectTestCase {
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
             HJBRoot root = new HJBRoot(testRootPath);
-            Mock mockSession = mock(Session.class);
+            Mock mockSession = new MockSessionBuilder().createMockSession();
+            registerToVerify(mockSession);
             mockHJB.make1Session(root,
                                  (Session) mockSession.proxy(),
                                  "testProvider",

@@ -72,7 +72,7 @@ public class CreateConsumer extends BaseJMSCommand {
     public String getDescription() {
         return strings().getString(HJBStrings.DESCRIPTION_OF_CREATE_COMMANDS,
                                    MessageConsumer.class.getName(),
-                                   new Integer(getSessionIndex()));
+                                   getConsumerIndexAsText());
     }
 
     public String getStatusMessage() {
@@ -88,8 +88,16 @@ public class CreateConsumer extends BaseJMSCommand {
         return consumerIndex;
     }
 
+    public String getConsumerIndexAsText() {
+        if (isConsumerIndexSet()) {
+            return "" + getConsumerIndex();
+        } else {
+            return strings().getString(HJBStrings.NOT_APPLICAPLE);
+        }
+    }
+
     public boolean isConsumerIndexSet() {
-        return UNSET_CONSUMER_INDEX == getConsumerIndex();
+        return UNSET_CONSUMER_INDEX != getConsumerIndex();
     }
 
     protected void createConsumerAndSaveItsIndex() {

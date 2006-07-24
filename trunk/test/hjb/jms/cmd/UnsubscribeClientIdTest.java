@@ -34,6 +34,7 @@ import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
 import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockHJBRuntime;
+import hjb.testsupport.MockSessionBuilder;
 
 public class UnsubscribeClientIdTest extends MockObjectTestCase {
 
@@ -54,7 +55,8 @@ public class UnsubscribeClientIdTest extends MockObjectTestCase {
 
     public void testExecuteUnsubscribesAClientId() {
         HJBRoot root = new HJBRoot(testRootPath);
-        Mock mockSession = mock(Session.class);
+        Mock mockSession = new MockSessionBuilder().createMockSession();
+        registerToVerify(mockSession);
         mockSession.expects(once())
             .method("unsubscribe")
             .with(eq("testClientId"));
@@ -85,7 +87,8 @@ public class UnsubscribeClientIdTest extends MockObjectTestCase {
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
             HJBRoot root = new HJBRoot(testRootPath);
-            Mock mockSession = mock(Session.class);
+            Mock mockSession = new MockSessionBuilder().createMockSession();
+            registerToVerify(mockSession);
             mockSession.expects(once())
                 .method("unsubscribe")
                 .will(throwException(possibleExceptions[i]));

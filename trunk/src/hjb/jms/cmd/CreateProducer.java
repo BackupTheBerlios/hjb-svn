@@ -65,7 +65,7 @@ public class CreateProducer extends BaseJMSCommand {
     public String getDescription() {
         return strings().getString(HJBStrings.DESCRIPTION_OF_CREATE_COMMANDS,
                                    MessageProducer.class.getName(),
-                                   new Integer(getSessionIndex()));
+                                   getProducerIndexAsText());
     }
 
     public String getStatusMessage() {
@@ -81,8 +81,16 @@ public class CreateProducer extends BaseJMSCommand {
         return producerIndex;
     }
 
+    public String getProducerIndexAsText() {
+        if (isProducerIndexSet()) {
+            return "" + getProducerIndex();
+        } else {
+            return strings().getString(HJBStrings.NOT_APPLICAPLE);
+        }
+    }
+
     public boolean isProducerIndexSet() {
-        return UNSET_PRODUCER_INDEX == getProducerIndex();
+        return UNSET_PRODUCER_INDEX != producerIndex;
     }
 
     protected void setProducerIndex(int producerIndex) {

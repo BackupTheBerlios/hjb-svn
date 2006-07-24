@@ -49,6 +49,9 @@ public class MockSessionBuilder {
     public Mock createMockSessionThatThrowsJMSOn(String methodName) {
         Mock result = new Mock(Session.class);
         result.stubs()
+            .method("getTransacted")
+            .will(new ReturnStub(new Boolean(false)));
+        result.stubs()
             .method(methodName)
             .will(new ThrowStub(new JMSException("thrown as a test")));
         return result;

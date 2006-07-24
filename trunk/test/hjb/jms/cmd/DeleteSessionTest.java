@@ -45,7 +45,8 @@ public class DeleteSessionTest extends MockObjectTestCase {
 
     public void testExecuteDeletesASession() {
         HJBRoot root = new HJBRoot(testRootPath);
-        Mock mockSession = mock(Session.class);
+        Mock mockSession = new MockSessionBuilder().createMockSession();
+        registerToVerify(mockSession);
         mockSession.expects(once()).method("close");
         Session testSession = (Session) mockSession.proxy();
         mockHJB.make1Session(root, testSession, "testProvider", "testFactory");
