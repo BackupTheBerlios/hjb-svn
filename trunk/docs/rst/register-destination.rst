@@ -10,9 +10,9 @@ Register Destination
 
 :Returns: N/A
 
-This **GET** Request looks up the destination identified by jndi-name 
-in the Provider's JNDI context and registers it with the HJB runtime.
-This command
+This **GET** request locates the destination identified by
+destination-jndi-name in the provider's JNDI context and registers it
+with the HJB runtime.  This command
 
 * can be invoked multiples time with the exactly the same jndi-name;
   after the first successful attempt, HJB ignores subsequent

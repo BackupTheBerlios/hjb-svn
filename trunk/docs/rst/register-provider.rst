@@ -6,18 +6,20 @@ Register Provider
 
 :URL-Pattern: *hjb-root-uri*/provider-name/register
 
-:Parameters: multiple; they are used to populate the JNDI Context environment
+:Parameters: multiple; they are used to populate the provider's JNDI
+Context environment
 
 :Returns: N/A
 
 This **POST** request registers a Provider with HJB. This command
 
-* uses the parameters to populate the Hashtable that configures
-  the Provider's JNDI Initial Context.
+* uses the parameters to populate the Hashtable used to configure the
+  Provider's JNDI Initial Context.
 
-* can be invoked multiple times with the exactly the same paramters;
-  after the first successful attempt, HJB ignores subsequent
-  invocations.
+* is idempotent during the lifetime of a particular provider instance
+  - can be invoked multiple times with the exactly the same
+  parameters; after the first successful attempt, HJB ignores
+  subsequent invocations.
 
 .. _back to commands: ./command-list.html
 

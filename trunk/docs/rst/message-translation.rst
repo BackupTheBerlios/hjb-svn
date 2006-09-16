@@ -22,12 +22,13 @@ Please refer to [JMSSpec]_ for full descriptions of each these message
 types.
 
 HJB clients can send or receive textual representations of any of
-these message types.  When sent, the message is contained in the
-parameters of the sending POST request.  When received, the message is
+these message types.  On sending, the message is contained one of the
+parameters of the sending POST request.  On receiving, the message is
 part of the body of a HTTP response.
 
-The following sections describe how the parts of each of these JMS
-message types is transformed into text in a HTTP request or response.
+The following sections describe how the parts of each of these types
+of JMS message are transformed into text in a HTTP request or
+response.
 
 Common features
 ---------------
@@ -37,8 +38,11 @@ represents as typed attributes on the JMS message class. In addition,
 they may optionally have application-specific message properties (see
 [JMSSpec]_ for a full description).  
 
-HJB allows all these values to be transferred in a simple, consistent
-fashion.
+.. [JMSSpec] `Java Message Service specification 1.1
+   <http://java.sun.com/products/jms/docs.html>`_ 
+
+HJB allows the header field and message properties to be transferred
+in a simple, consistent fashion.
 
 * The header fields are mapped to specific parameter names in a HTTP
   POST request and to field-assignment lines in a HTTP response.  The
@@ -101,7 +105,7 @@ fashion.
 
     %<CR> 
 
-    where <CR> is a platform specific line separator.
+    where <CR> is the platform specific line separator.
 
   - The message attributes and optional properties are placed on
     sequential lines. Each line consists of
@@ -129,7 +133,7 @@ fashion.
   specific named parameter (or field-assignment line) containing the
   JMS class the HJB message represents.
 
-  - The name of this required field is *hjb.core.jms-message-class*
+  - The name of this required field is *hjb_jms_message_interface*
 
   - Its value **must** be the name of the JMS interface class that the
     message represents. I.e., it should be one of:
@@ -168,7 +172,7 @@ Text Message
   N.B., TextMessages are probably the most widely used JMS message as
   they allow transmission of XML.
 
-* The value of the field 'hjb.core.jms-message-class' is 
+* The value of the field 'hjb_jms_message_interface' is 
 
   - javax.jms.TextMessage
 
@@ -183,7 +187,7 @@ Object Message
   resulting encoded message is in the S-Expression form HJB uses to
   represent byte arrays.
 
-* The value of the field 'hjb.core.jms-message-class' is
+* The value of the field 'hjb_jms_message_interface' is
 
   - javax.jms.ObjectMessage
 
@@ -197,7 +201,7 @@ Bytes Message
   Base64 encoding.  The resulting encoded message text is in the
   S-Expression form HJB uses to represent byte arrays.
 
-* The value of the field 'hjb.core.jms-message-class' is
+* The value of the field 'hjb_jms_message_interface' is
 
   - javax.jms.BytesMessage
 
@@ -211,11 +215,11 @@ Map Message
 
   name=value<CR>
 
-  where <CR> is a platform specific line separator.  The map
+  where <CR> is the platform specific line separator.  The map
   values are represented in exactly the same as the way message
   headers are written.
 
-* The value of the field 'hjb.core.jms-message-class' is
+* The value of the field 'hjb_jms_message_interface' is
 
   - javax.jms.MapMessage
 
@@ -235,7 +239,7 @@ Stream Message
 
   index=value<CR>
 
-* The value of the header field 'hjb.core.jms-message-class' is
+* The value of the header field 'hjb_jms_message_interface' is
 
   - javax.jms.StreamMessage
 
@@ -244,9 +248,6 @@ Links
 
 .. [#] `Base64 encoding <http://en.wikipedia.org/wiki/Base64>`_
 
-.. [JMSSpec] `Java Message Service specification 1.1
-   <http://java.sun.com/products/jms/docs.html>`_ 
-
-.. _HJB-encoded: ./codec.rst
+.. _HJB-encoded: ./codec.html
 
 .. Copyright (C) 2006 Tim Emiola

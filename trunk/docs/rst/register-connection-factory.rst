@@ -10,13 +10,13 @@ Register Connection Factory
 
 :Returns: N/A
 
-This **GET** request looks up the connection-factory identified by 
-jndi-name in the Provider's JNDI context and registers it with 
+This **GET** request locates the connection-factory identified by 
+factory-jndi-name in the provider's JNDI context and registers it with 
 the HJB runtime. This command
 
-* can be invoked multiple times with the exactly the same jndi-name;
-  after the first successful attempt, HJB ignores subsequent
-  invocations.
+* can be invoked multiple times with the exactly the same
+  factory-jndi-name; after the first successful attempt, HJB ignores
+  subsequent invocations.
 
 .. _back to commands: ./command-list.html
 
