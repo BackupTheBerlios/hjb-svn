@@ -20,8 +20,7 @@ encoded as described in `message translation`_.  The command
 * times out after the HJB Servlet timeout period if the timeout is not
   specified.
 
-* on timing out, the response returns with a HTTP status of *404 Not
-  Found*
+* on timing out, the response has a HTTP status of *404 Not Found*
 
 .. _back to commands: ./command-list.html
 

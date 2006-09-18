@@ -14,7 +14,7 @@ Read Connection MetaData
   supplies about the connection.
 
 This **GET** request retrieves the provider-supplied metadata about
-the connection with the specified URI.  This command
+the connection whose identified by the root of URL.  This command
 
 * is idempotent during the lifetime of a connection, i.e, it can be
   sent more than once to the same URI, and will return the same

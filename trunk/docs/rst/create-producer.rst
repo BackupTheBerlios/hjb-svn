@@ -22,7 +22,7 @@ Create Producer
   
 :Returns:
 
-  Location (HTTP header) : the URI of the created producer
+  Location (a standard HTTP response header) : the URI of the created producer
 
 This **POST** request creates a new JMS Producer by invoking the JMS
 API with the parameters derived from the request.  The command
@@ -35,15 +35,16 @@ API with the parameters derived from the request.  The command
 
 * the destination-url may refer to either a JMS Topic or a JMS Queue.
 
-* optionally modifies its behaviour using the values of
-  *delivery-mode*, *priority*, *time-to-live*, *disable-timestamps*,
-  and *disable-messageIds*.
+* optionally modifies the behaviour of the created producer as
+  specified by the values of *delivery-mode*, *priority*,
+  *time-to-live*, *disable-timestamps*, and *disable-messageIds*
+  parameters.
 
-* returns the URI of the created producer.
+* includes the URI of the producer in the standard HTTP 'Location'
+  header of the response.
 
 Consult [JMSSpec]_ for about JMS Producers and their creation,
-particularly about the meaning of the various optional arguments to
-this command.
+especially about the various optional arguments to this command.
 
 .. _back to commands: ./command-list.html
 

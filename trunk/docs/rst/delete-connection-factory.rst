@@ -10,8 +10,8 @@ Delete Connection Factory
 
 :Returns: N/A
 
-This **DELETE** request removes the registration of the connection
-factory with the specified URI from the HJB runtime. This command
+This **DELETE** request removes the connection factory with the
+specified URI from the HJB runtime application. This command
 
 * removes all the connections and sessions created by the connection
   factory. 

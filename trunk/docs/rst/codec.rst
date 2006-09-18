@@ -5,12 +5,14 @@ Encoding/Decoding
 Why encode/decode?
 ------------------
 
-The JMS API gives access to various pieces of data that HJB clients
-might want to use. These include
+The JMS API gives its clients access to various data items from a
+Provider's underlying messaging system. These include
 
 * JMS messages themselves, which consist of
 
-  - the message headers
+  - standard JMS message headers
+
+  - application-specific JMS properties
 
   - the message body
 
@@ -18,23 +20,23 @@ might want to use. These include
 
 * the parameters used to configure a JMS Provider 
 
-HJB uses HTTP, the text-based protocol of the WWW, to ensure that
-it is language-neutral. 
+One design goal of HJB is to remain useful to client programs written
+in any programminng language.  It achieves this by sending and
+receiving data using HTTP, the text-based protocol of the WWW.
 
-The JMS API is defined in terms of methods that accept Java types, so
-any system that interacts with it needs to handle the data in manner
-that preserves this type information. 
+However, the JMS API is defined in terms of methods that accept Java
+types, so HJB needs to handle the data in a manner that preserves this
+type information.
 
-Actually, many JMS API methods depend on Java's small set of native
-types, rather than more sophisticated Java object types. This means
-the task of preserving type information does not require the need of a
+Many JMS API methods depend on Java's small set of native types,
+rather than more sophisticated Java object types. This fact means the
+task of preserving type information does not require the need of a
 complex object serialization or marshalling protocol.
 
 Therefore, HJB uses the simplest way to preserve the Java type
 information in HTTP's request and response messages - it provides a
-textual mapping for each type in the set of Java native types present
-in the JMS API.  This allows all typed data in the JMS API to be
-transmitted as text in the HTTP requests and responses.
+textual mapping for each type in the small set of Java native types
+present in the JMS API.
 
 Mapped Types
 ------------

@@ -11,13 +11,13 @@ Context environment
 
 :Returns: N/A
 
-This **POST** request registers a Provider with HJB. This command
+This **POST** request registers a JMS Provider with HJB. This command
 
-* uses the parameters to populate the Hashtable used to configure the
-  Provider's JNDI Initial Context.
+* uses the parameters to populate the java Hashtable instance used to
+  configure the Provider's JNDI Initial Context.
 
 * is idempotent during the lifetime of a particular provider instance
-  - can be invoked multiple times with the exactly the same
+  i.e., it can be invoked multiple times with the exactly the same
   parameters; after the first successful attempt, HJB ignores
   subsequent invocations.
 

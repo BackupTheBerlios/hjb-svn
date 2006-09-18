@@ -25,14 +25,15 @@ Send HJB Message
 
 :Returns: N/A
 
-This **POST** request sends a single message through a vendor's messaging
-system via JMS producer.  When received by HJB, the message is encoded
-as described in `message translation`_.  The command
+This **POST** request sends a single message through a vendor's
+messaging system using a JMS producer.  The message must be encoded as
+described in `message translation`_ and included in the POST request
+as a parameter.  The command
 
-* should include a message, and a parameter indicating what type of
-  JMS message is being sent.
+* must include a parameter indicating what type of JMS message is
+  being sent.
 
-* optionally changes the default 'send' behaviour of the producer,
+* may optionally change the default 'send' behaviour of the producer,
   depending on the values of the *delivery-mode*, *priority*,
   *time-to-live* and *destination-url*.
 

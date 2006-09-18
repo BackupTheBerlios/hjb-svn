@@ -46,7 +46,7 @@ Ant 1.6.5 or later
 The HJB project is built, tested and deployed using Ant_. Ant should
 be downloaded and installed as described on the `ant website
 installation page`_. Note that Ant is required for both the source and
-binary HJB installations of HJB.  This is because it is used
+binary HJB installations of HJB.  This is because it is used by the
 post-installation task of building war files specific to messaging
 providers.
 
@@ -55,6 +55,14 @@ the JUnit library file, junit.jar, *must* be present in the Ant classpath when
 running the build scripts.  The easiest way to ensure that this is true is to
 copy the junit.jar to the ANT_HOME/lib directory of the Ant installation. For
 full details, see `installing Ant Optional Tasks`_ on the Ant website.
+
+.. _Ant: http://ant.apache.org
+
+.. _installing Ant optional tasks: http://ant.apache.org/manual/install.html#optionalTasks
+
+.. _ant website installation page: http://ant.apache.org/manual/install.htm
+
+.. _JUnit: http://www.junit.org
 
 Library Jars
 ************
@@ -72,13 +80,16 @@ Once obtained, the vendor jars will need to be deployed with the HJB
 servlet.  Both the HJB source and binary distributions include a build
 file that contains an Ant task that simplifies this procedure.
 
+.. _Sun website: http://java.sun.com/products/jms/docs.html
 
 A Servlet Container
 *******************
 
 HJB can be deployed against any servlet container, and there are a
-quite of few good ones available! During development, it was tested
-using the excellent open-source Tomcat_ servlet container.
+quite of few good ones available! During its development, it was
+tested using the excellent open-source Tomcat_ servlet container.
+
+.. _Tomcat: http://tomcat.apache.org
 
 Optional
 --------
@@ -91,6 +102,12 @@ The latest HJB source can be retrieved and viewed via anonymous
 latest, greatest version of the source code. Read the `subversion
 book`_ for advice on using subversion.
 
+.. _Subversion access: ./repository.html
+
+.. _subversion client: http://subversion.tigris.org/links.html#clients
+
+.. _subversion book: http://svnbook.red-bean.com/
+
 Eclipse
 *******
 
@@ -98,24 +115,6 @@ Most of HJB development has been performed using the `Eclipse
 SDK`_. HJB's eclipse project file and settings are included in the
 subversion repository.
 
-.. _Subversion access: ./repository.html
-
-.. _Ant: http://ant.apache.org
-
-.. _JUnit: http://www.junit.org
-
-.. _installing Ant optional tasks: http://ant.apache.org/manual/install.html#optionalTasks
-
-.. _ant website installation page: http://ant.apache.org/manual/install.htm
-
 .. _Eclipse SDK: http://www.eclipse.org
-
-.. _Tomcat: http://tomcat.apache.org
-
-.. _Sun website: http://java.sun.com/products/jms/docs.html
-
-.. _subversion client: http://subversion.tigris.org/links.html#clients
-
-.. _subversion book: http://svnbook.red-bean.com/
 
 .. Copyright (C) 2006 Tim Emiola

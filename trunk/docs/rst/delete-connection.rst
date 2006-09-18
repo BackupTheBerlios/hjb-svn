@@ -15,11 +15,11 @@ specified URI.  This command
 
 * removes all the sessions created by the connection.  
 
-  - First the sessions are closed;
-   
-  - then, the sessions JMS objects are removed from the HJB runtime;
+  - First, the sessions' JMS objects are deleted
 
-  - finally, the connection is closed and removed.
+  - Then the sessions are closed;
+   
+  - Finally, the connection is closed and removed.
 
   - Session closure and connection termination are performed in
     accordance with the guidelines in [JMSSpec]_.

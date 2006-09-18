@@ -32,14 +32,15 @@ Implementation overview
 
 HJB
 
-* is deployed as a servlet (HJBServlet), that can run on any compliant
-  Servlet specification 2.4 container.
+* is deployed as a servlet (HJBServlet), that can run on any servlet
+  container compliant with version 2.4 of the Java Servlet
+  specification.
 
 * will work with any messaging vendor that provides a JMS 1.1
   interface.
 
 * aims to do one thing well. Its role is to act as an HTTP gateway
-  server allowing access to JMS object as REST resources. Other
+  server allowing access to JMS objects as REST resources. Other
   potentially useful features are deliberately excluded, e.g,
 
   - HTTP session management

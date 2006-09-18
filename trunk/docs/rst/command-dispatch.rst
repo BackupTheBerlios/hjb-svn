@@ -5,12 +5,12 @@ Command Dispatch
 JMS Commands
 ------------
 
-The JMS API defines several interfaces and classes.  These type
-descriptions contain various methods, each of which specifies it own
-set of arguments. JMS vendors typically implement most of this API,
-though it has optional parts that vendors are not obliged to support.
+The JMS API defines a number of different interfaces and provides
+various classes that implement these interfaces.  JMS vendors
+typically implement most of this API, though it has optional parts
+that vendors are not obliged to support.
 
-Some methods in the API sometimes specific constaints on how they are
+Some of the methods in the API have constaints on how they are to be
 used at runtime.  E.g., some JMS methods imply specific timing
 constraints, others must be run on specific threads at specific points
 in a JMS object's lifecycle.
@@ -19,26 +19,17 @@ HJB attempts to support as much of the non-optional JMS API as
 possible.  To allow the methods in the JMS API to be invoked via HTTP
 in a uniform fashion, and to support additional runtime constraints on
 those API methods that need it, HJB decouples invocation of the JMS
-API methods from the processing of the HTTP request using
-*JMS Commands*.
+API methods from the processing of the HTTP request using *JMS
+Commands*.
 
 JMS Commands
 
-* uniquely map to specific URL patterns recognised by the HJB servlet.
+* map to specific URL patterns recognised by the HJB servlet.
 
-* are constructed with references to all the JMS objects and
-  invocation parameters necessary to complete their execution.
+* are created with access to all the JMS objects and invocation
+  parameters necessary to complete their execution.
 
 * are constructed by one of the `JMS Command Generators`_.
-
-* capture any exceptions that occur during execution and retain them as
-  faults.
-
-* once executed, provide a status message describing the result of the
-  command execution.
-
-* once executed, provide access to objects that may need to be returned
-  in the HTTP response, e.g, a received message, or a  retained fault.
 
 * are scheduled for execution on specific threads.
 
@@ -46,6 +37,15 @@ JMS Commands
   in execution at any time. (This resolves the threading constraint
   required of JMS Sessions once message processing begins as described
   in [JMSSpec]_).
+
+* once executed, provide access to objects that may need to be returned
+  in the HTTP response, e.g, a received message, or a  retained fault.
+
+* once executed, provide a status message describing the result of the
+  command execution.
+
+* capture any exceptions that occur during execution and retain them as
+  faults.
 
 * are inspired by the Command Pattern (cf [DesignPatterns]_), as known
   known in good OO circles, or by first-class functions/closures, as

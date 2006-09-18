@@ -14,10 +14,10 @@ This **POST** request obtains a single message from a vendor's messaging
 system via a JMS subscriber.  It is returned in the response encoded
 as described in `message translation`_.  The command
 
-* times out after the specified number of seconds if the timeout
+* times out after the specified number of milliseconds if the timeout
   parameter is supplied.
 
-* times out after a HJB preset timeout period if  timeout is
+* times out after a HJB preset timeout period if no timeout is
   specified.
 
 * on timing out, the response has a HTTP status of *404 Not Found*

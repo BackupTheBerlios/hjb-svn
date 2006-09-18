@@ -44,14 +44,14 @@ HJB Servlet allows
 
 Any JMS objects that are created are held in memory in the HJB runtime
 application, and the servlet provides access to them via URIs that
-match specific patterns.
+match specific patterns:
 
 * The HJB servlet itself is accessible via the hosting servlet
   container on a particular context path and root.  Its URI is denoted
   in rest of the text as HJB_ROOT.
 
-* Each JMS object's path is below the path of the object responsible
-  for registering or creating it.
+* Each JMS object's path is includes the path of the object responsible
+  for registering or creating it as a root URI.
 
 * Where the an object's creator or registrar can create several
   instances of the object, the object's URI is suffixed with its

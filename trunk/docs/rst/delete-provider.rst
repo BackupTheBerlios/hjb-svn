@@ -13,21 +13,24 @@ Delete Provider
 This **DELETE** request triggers shutdown of the provider with the
 specified URI.  This command
 
-* removes all the connection-factories, destinations, connections and
-  sessions supported by the Provider. 
+* is idempotent and can be invoked multiple times - if the provider
+  is no longer present, the command is ignored.
 
-  - First the sessions are closed;
+* removes all any connection-factories, destinations, connections and
+  sessions that have been registered or created while the provider has
+  been registered, as follows:
+
+  - The sessions are closed, after removing any session objects that
+    have been created
   
-  - then, the connections are stopped;
+  - Next, the connections are stopped;
 
-  - finally, all JMS objects associated with the provider are
-    removed from the HJB runtime.
+  - finally, all JMS administered objects associated with the provider
+    are removed, and the provider is deleted from the HJB runtime
+    application
 
   - Session closure and connection termination are performed in	
     accordance with the guidelines in [JMSSpec]_.
-
-* is idempotent and can be invoked multiple times - if the provider
-  is no longer present, the command is ignored.
 
 .. _back to commands: ./command-list.html
 
