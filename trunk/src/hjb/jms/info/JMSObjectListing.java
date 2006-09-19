@@ -11,7 +11,7 @@ import java.io.Writer;
 public interface JMSObjectListing {
 
     /**
-     * Returns text containing the URIs of the child JMS objects created by or
+     * Returns text containing the HJB URIs of the child JMS objects created by or
      * registered with the target JMS object.
      * 
      * @param prefix
@@ -21,7 +21,7 @@ public interface JMSObjectListing {
     public String getListing(String prefix);
 
     /**
-     * Returns text containing the URIs of the child JMS objects created by or
+     * Returns text containing the HJB URIs of the child JMS objects created by or
      * registered with the target JMS object.
      * 
      * @param prefix
@@ -34,11 +34,11 @@ public interface JMSObjectListing {
     public String getListing(String prefix, boolean recurse);
 
     /**
-     * Writes the text containing the URIs of the JMS objects created by or
-     * registered with the target JMS object.
+     * Writes the text containing the HJB URIs of the JMS objects created by or
+     * registered with the target JMS object to <code>aWriter</code>.
      * 
      * @param aWriter
-     *            the Writer to which the listing is written
+     *            the Writer to which the listing text is written
      * @param prefix
      *            the prefix to use in constructing the URIs
      * @param recurse
