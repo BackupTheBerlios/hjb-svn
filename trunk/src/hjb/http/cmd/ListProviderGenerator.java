@@ -36,7 +36,7 @@ import hjb.misc.HJBStrings;
 
 /**
  * <code>ListProviderGenerator</code> is the <code>JMSCommandGenerator</code>
- * that produces {@link RetrieveListing} for listing the JMS objects beneath a
+ * that produces a {@link RetrieveListing} for listing the JMS objects beneath a
  * <code>HJBProvider<code>.
  * 
  * @see hjb.http.cmd.JMSCommandGenerator
