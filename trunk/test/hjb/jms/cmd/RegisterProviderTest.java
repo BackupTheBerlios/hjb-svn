@@ -26,16 +26,16 @@ import java.util.Hashtable;
 import javax.naming.Context;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import hjb.jms.HJBProvider;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockContextBuilder;
 import hjb.testsupport.MockHJBRuntime;
 import hjb.testsupport.SharedMock;
 
-public class RegisterProviderTest extends MockObjectTestCase {
+public class RegisterProviderTest extends BaseHJBTestCase {
 
     public void testRegisterProviderThrowsOnNullInputs() {
         try {
@@ -43,7 +43,7 @@ public class RegisterProviderTest extends MockObjectTestCase {
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
 
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         try {
             new RegisterProvider(root, null);
             fail("should have thrown an exception");
@@ -61,7 +61,7 @@ public class RegisterProviderTest extends MockObjectTestCase {
         SharedMock sharedMock = SharedMock.getInstance();
         sharedMock.setCurrentMock(newContextMock);
 
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
 
         assertEquals(0, root.getProviders().size());
         RegisterProvider command = new RegisterProvider(root, testEnvironment);
@@ -87,7 +87,7 @@ public class RegisterProviderTest extends MockObjectTestCase {
         SharedMock sharedMock = SharedMock.getInstance();
         sharedMock.setCurrentMock(newContextMock);
 
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
 
         assertEquals(0, root.getProviders().size());
         RegisterProvider command = new RegisterProvider(root, testEnvironment);

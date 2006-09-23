@@ -5,13 +5,12 @@ import java.io.StringWriter;
 import javax.jms.ConnectionFactory;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import hjb.jms.HJBConnectionFactory;
-import hjb.jms.info.ConnectionFactoryListing;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionFactoryBuilder;
 
-public class ConnectionFactoryListingTest extends MockObjectTestCase {
+public class ConnectionFactoryListingTest extends BaseHJBTestCase {
 
     public void testGetListingIncludesAllConnections() {
         String expectedOutput = createSomeConnections();
@@ -31,9 +30,9 @@ public class ConnectionFactoryListingTest extends MockObjectTestCase {
     public void testRecurseListingAddsSessionListings() {
         StringWriter sw = new StringWriter();
         String expectedOutput = createSomeConnections();
-        expectedOutput = expectedOutput
-                + CR + "/testProvider/testFactory/connection-1" + CR
-                + CR + "/testProvider/testFactory/connection-0" + CR;
+        expectedOutput = expectedOutput + CR
+                + "/testProvider/testFactory/connection-1" + CR + CR
+                + "/testProvider/testFactory/connection-0" + CR;
 
         new ConnectionFactoryListing(testFactory).writeListing(sw,
                                                                "/testProvider/testFactory",
@@ -42,7 +41,7 @@ public class ConnectionFactoryListingTest extends MockObjectTestCase {
     }
 
     protected String createSomeConnections() {
-        testFactory.createConnection();        
+        testFactory.createConnection();
         testFactory.createConnection();
         String expectedOutput = "/testProvider/testFactory/connection-1" + CR
                 + "/testProvider/testFactory/connection-0" + CR;
@@ -51,7 +50,9 @@ public class ConnectionFactoryListingTest extends MockObjectTestCase {
 
     protected void setUp() throws Exception {
         Mock mockFactory = new MockConnectionFactoryBuilder().createMockConnectionFactory();
-        testFactory = new HJBConnectionFactory((ConnectionFactory) mockFactory.proxy());
+        testFactory = new HJBConnectionFactory((ConnectionFactory) mockFactory.proxy(),
+                                               null,
+                                               defaultTestClock());
     }
 
     protected void tearDown() throws Exception {

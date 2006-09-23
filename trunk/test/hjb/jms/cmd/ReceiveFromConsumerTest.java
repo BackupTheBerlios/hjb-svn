@@ -26,7 +26,6 @@ import java.util.HashMap;
 import javax.jms.*;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import hjb.http.cmd.HJBMessageWriter;
 import hjb.jms.HJBConnection;
@@ -36,11 +35,12 @@ import hjb.jms.HJBSessionConsumers;
 import hjb.misc.HJBException;
 import hjb.msg.HJBMessage;
 import hjb.msg.MessageCopierFactory;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MessageAttributeInvoker;
 import hjb.testsupport.MockHJBRuntime;
 import hjb.testsupport.MockSessionBuilder;
 
-public class ReceiveFromConsumerTest extends MockObjectTestCase {
+public class ReceiveFromConsumerTest extends BaseHJBTestCase {
 
     public void testCommitSessionThrowsOnNullInputs() {
         try {
@@ -78,7 +78,7 @@ public class ReceiveFromConsumerTest extends MockObjectTestCase {
         mockSession.stubs()
             .method("createConsumer")
             .will(returnValue(testConsumer));
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Session(root,
                              (Session) mockSession.proxy(),
                              "testProvider",
@@ -121,7 +121,7 @@ public class ReceiveFromConsumerTest extends MockObjectTestCase {
                 .will(returnValue(testConsumer));
             Session testSession = (Session) mockSession.proxy();
 
-            HJBRoot root = new HJBRoot(testRootPath);
+            HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
             mockHJB.make1Session(root,
                                  testSession,
                                  "testProvider",

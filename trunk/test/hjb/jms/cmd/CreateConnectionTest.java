@@ -20,12 +20,6 @@
  */
 package hjb.jms.cmd;
 
-import hjb.jms.HJBConnectionFactory;
-import hjb.jms.HJBRoot;
-import hjb.misc.HJBException;
-import hjb.testsupport.MockConnectionBuilder;
-import hjb.testsupport.MockHJBRuntime;
-
 import java.io.File;
 
 import javax.jms.Connection;
@@ -33,9 +27,15 @@ import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
-public class CreateConnectionTest extends MockObjectTestCase {
+import hjb.jms.HJBConnectionFactory;
+import hjb.jms.HJBRoot;
+import hjb.misc.HJBException;
+import hjb.testsupport.BaseHJBTestCase;
+import hjb.testsupport.MockConnectionBuilder;
+import hjb.testsupport.MockHJBRuntime;
+
+public class CreateConnectionTest extends BaseHJBTestCase {
 
     public void testCreateConnectionThrowsOnNullConnectionFactory() {
         try {
@@ -50,7 +50,7 @@ public class CreateConnectionTest extends MockObjectTestCase {
                 new RuntimeException("fire in the server room"),
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
-            HJBRoot root = new HJBRoot(testRootPath);
+            HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
             Mock mockFactory = mock(ConnectionFactory.class);
             mockHJB.make1Factory(root,
                                  (ConnectionFactory) mockFactory.proxy(),
@@ -82,7 +82,7 @@ public class CreateConnectionTest extends MockObjectTestCase {
     }
 
     public void testExecuteCreatesANewConnection() {
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Factory(root, "testProvider", "testFactory");
         HJBConnectionFactory testFactory = root.getProvider("testProvider")
             .getConnectionFactory("testFactory");
@@ -105,7 +105,7 @@ public class CreateConnectionTest extends MockObjectTestCase {
     }
 
     public void testExecuteDoesNotUseTheSuppliedClientIdIfTheProviderSuppliesOne() {
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
 
         
         Mock mockConnection = new MockConnectionBuilder().createMockConnection();
@@ -140,7 +140,7 @@ public class CreateConnectionTest extends MockObjectTestCase {
     }
 
     public void testExecuteUsesTheSuppliedClientIdIfTheProviderDoesNotSupplyOne() {
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
 
         Mock mockConnection = new MockConnectionBuilder().createMockConnection();
         registerToVerify(mockConnection);

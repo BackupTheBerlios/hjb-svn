@@ -28,12 +28,11 @@ import java.util.Map;
 
 import javax.naming.Context;
 
-import org.jmock.MockObjectTestCase;
-
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockContextBuilder;
 import hjb.testsupport.SharedMock;
 
-public class ProviderStorerTest extends MockObjectTestCase {
+public class ProviderStorerTest extends BaseHJBTestCase {
 
     public ProviderStorerTest() {
         contextBuilder = new MockContextBuilder();
@@ -41,7 +40,7 @@ public class ProviderStorerTest extends MockObjectTestCase {
     }
 
     public void testLoadAndStore() throws Exception {
-        HJBProvider p = new ProviderBuilder(testEnvironment).createProvider();
+        HJBProvider p = new ProviderBuilder(testEnvironment, defaultTestClock()).createProvider();
         ProviderStorer ps = new ProviderStorer(p, testRootPath);
         ps.store();
         File expectedFile = ps.getStoragePath(p.getName());
@@ -67,7 +66,7 @@ public class ProviderStorerTest extends MockObjectTestCase {
     }
 
     public void testAsProperties() throws Exception {
-        HJBProvider p = new ProviderBuilder(testEnvironment).createProvider();
+        HJBProvider p = new ProviderBuilder(testEnvironment, defaultTestClock()).createProvider();
         ProviderStorer ps = new ProviderStorer(p, testRootPath);
         Map asProperties = new HashMap(ps.asProperties());
         Map expectedProperties = new HashMap(testEnvironment);

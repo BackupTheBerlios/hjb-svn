@@ -27,16 +27,16 @@ import javax.jms.Queue;
 import javax.jms.Session;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
 import hjb.jms.HJBSessionQueueBrowsers;
 import hjb.misc.HJBException;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockHJBRuntime;
 import hjb.testsupport.MockSessionBuilder;
 
-public class CreateBrowserTest extends MockObjectTestCase {
+public class CreateBrowserTest extends BaseHJBTestCase {
 
     public void testCreateBrowserThrowsOnNullBrowsersOrQueue() {
         Mock mockQueue = mock(Queue.class);
@@ -46,7 +46,7 @@ public class CreateBrowserTest extends MockObjectTestCase {
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
 
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Connection(root, "testProvider", "testFactory");
         HJBConnection testConnection = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
@@ -59,7 +59,7 @@ public class CreateBrowserTest extends MockObjectTestCase {
     }
 
     public void testExecuteCreatesANewBrowser() {
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Session(root, "testProvider", "testFactory");
         HJBConnection testConnection = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
@@ -91,7 +91,7 @@ public class CreateBrowserTest extends MockObjectTestCase {
                 new RuntimeException("fire in the server room"),
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
-            HJBRoot root = new HJBRoot(testRootPath);
+            HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
             Mock mockSession = new MockSessionBuilder().createMockSession();
             registerToVerify(mockSession);
             mockHJB.make1Session(root,

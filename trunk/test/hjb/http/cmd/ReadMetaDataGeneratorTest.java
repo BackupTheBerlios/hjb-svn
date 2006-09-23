@@ -46,7 +46,7 @@ public class ReadMetaDataGeneratorTest extends BaseJMSCommandGeneratorTestCase {
             .will(returnValue("/testProvider/testFactory/with/slash/connection-0/metadata"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Session(root, "testProvider", "testFactory/with/slash");
 
         JMSCommandGenerator generator = new ReadMetaDataGenerator();

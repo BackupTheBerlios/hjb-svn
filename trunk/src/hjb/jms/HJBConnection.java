@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 import hjb.jms.cmd.JMSCommandRunner;
 import hjb.jms.info.ConnectionDescription;
 import hjb.jms.info.SessionDescription;
+import hjb.misc.Clock;
 import hjb.misc.HJBException;
 import hjb.misc.HJBNotFoundException;
 import hjb.misc.HJBStrings;
@@ -73,13 +74,20 @@ public class HJBConnection implements Connection {
      * @param connectionIndex
      *            the index of this connection in the set of connections created
      *            by a connection factory.
+     * @param clock
+     *            used to assign times to events that occur within the <code>HJBConnection</code>
      */
     public HJBConnection(Connection theConnection,
                          String clientId,
-                         int connectionIndex) {
+                         int connectionIndex,
+                         Clock aClock) {
         if (null == theConnection) {
-            throw new IllegalArgumentException(strings().needsANonNull(Connection.class.getName()));
+            throw new IllegalArgumentException(strings().needsANonNull(Connection.class));
         }
+        if (null == aClock) {
+            throw new IllegalArgumentException(strings().needsANonNull(Clock.class));            
+        }
+        this.clock = aClock;
         this.theConnection = theConnection;
         this.queueBrowsers = new HJBSessionQueueBrowsers(this);
         this.sessionConsumers = new HJBSessionConsumers(this);
@@ -102,9 +110,10 @@ public class HJBConnection implements Connection {
      * @param connectionIndex
      *            the index of this connection in the set of connections created
      *            by a connection factory.
+     * @param aClock TODO
      */
-    public HJBConnection(Connection theConnection, int connectionIndex) {
-        this(theConnection, null, connectionIndex);
+    public HJBConnection(Connection theConnection, int connectionIndex, Clock aClock) {
+        this(theConnection, null, connectionIndex, aClock);
     }
 
     public Session createSession(boolean transacted, int acknowledgeMode) {
@@ -348,19 +357,24 @@ public class HJBConnection implements Connection {
         return theConnection;
     }
 
+    protected Clock getClock() {
+        return clock;
+    }
+    
     protected HJBStrings strings() {
         return STRINGS;
     }
 
-    private int connectionIndex;
-    private List sessionIndices;
-    private Map activeSessions;
-    private Map sessionCommandRunners;
-    private HJBSessionConsumers sessionConsumers;
-    private HJBSessionDurableSubscribers sessionSubscribers;
-    private HJBSessionProducers sessionProducers;
-    private HJBSessionQueueBrowsers queueBrowsers;
-    private Connection theConnection;
+    private final int connectionIndex;
+    private final List sessionIndices;
+    private final Map activeSessions;
+    private final Map sessionCommandRunners;
+    private final HJBSessionConsumers sessionConsumers;
+    private final HJBSessionDurableSubscribers sessionSubscribers;
+    private final HJBSessionProducers sessionProducers;
+    private final HJBSessionQueueBrowsers queueBrowsers;
+    private final Connection theConnection;
+    private final Clock clock;
 
     private static final Logger LOG = Logger.getLogger(HJBConnection.class);
     private static final HJBStrings STRINGS = new HJBStrings();

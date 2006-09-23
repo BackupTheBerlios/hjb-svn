@@ -50,7 +50,7 @@ public class ListConnectionFactoryGeneratorTest extends
             .will(returnValue("/testProvider/testFactory/with/slash/list"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Session(root, "testProvider", "testFactory/with/slash");
 
         generator.generateCommand(testRequest, root);

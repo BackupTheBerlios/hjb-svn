@@ -26,17 +26,13 @@ import javax.jms.QueueBrowser;
 import javax.jms.Session;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import hjb.misc.HJBException;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockSessionBuilder;
 
-public class HJBSessionQueueBrowsersTest extends MockObjectTestCase {
-
-    public HJBSessionQueueBrowsersTest() {
-
-    }
+public class HJBSessionQueueBrowsersTest extends BaseHJBTestCase {
 
     public void testHJBSessionQueueBrowsersThrowsIllegalArgumentExceptionOnNullConnection() {
         try {
@@ -190,7 +186,7 @@ public class HJBSessionQueueBrowsersTest extends MockObjectTestCase {
         mockConnection = connectionBuilder.createMockConnection(aSession);
         registerToVerify(mockConnection);
         Connection aConnection = (Connection) mockConnection.proxy();
-        testConnection = new HJBConnection(aConnection, 0);
+        testConnection = new HJBConnection(aConnection, 0, defaultTestClock());
     }
 
     private Mock mockConnection;

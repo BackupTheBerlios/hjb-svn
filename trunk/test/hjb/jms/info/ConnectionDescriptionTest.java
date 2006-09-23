@@ -28,7 +28,7 @@ public class ConnectionDescriptionTest extends BaseHJBTestCase {
         Connection testConnection = (Connection) mockConnection.proxy();
         ConnectionDescription testDescription = new ConnectionDescription(new HJBConnection(testConnection,
                                                                                             null,
-                                                                                            0));
+                                                                                            0, defaultTestClock()));
         assertContains(testDescription.toString(), "0");
         assertContains(testDescription.toString(), PathNaming.CONNECTION);
         assertContains(testDescription.toString(), "barfoo");
@@ -43,7 +43,7 @@ public class ConnectionDescriptionTest extends BaseHJBTestCase {
         Connection testConnection = (Connection) mockConnection.proxy();
         ConnectionDescription testDescription = new ConnectionDescription(new HJBConnection(testConnection,
                                                                                             null,
-                                                                                            0));
+                                                                                            0, defaultTestClock()));
         assertContains(testDescription.toString(), "0");
         assertContains(testDescription.toString(), PathNaming.CONNECTION);
         assertContains(testDescription.toString(), "foobar");
@@ -62,7 +62,7 @@ public class ConnectionDescriptionTest extends BaseHJBTestCase {
 
         ConnectionDescription testDescription = new ConnectionDescription(new HJBConnection((Connection) mockConnection.proxy(),
                                                                                             null,
-                                                                                            1));
+                                                                                            1, defaultTestClock()));
 
         String expectedOutput = testDescription.toString() + CR
                 + "clientId=foobar" + CR + "jms-major-version=(int 444)" + CR

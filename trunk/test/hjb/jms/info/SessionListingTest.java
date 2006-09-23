@@ -5,13 +5,13 @@ import java.io.StringWriter;
 import javax.jms.*;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import hjb.jms.*;
 import hjb.misc.MessageProducerArguments;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
 
-public class SessionListingTest extends MockObjectTestCase {
+public class SessionListingTest extends BaseHJBTestCase {
 
     public void testGetListingIncludesAllConnections() {
         String expectedOutput = createSomeSessionObjects();
@@ -112,7 +112,7 @@ public class SessionListingTest extends MockObjectTestCase {
         mockConnection.stubs().method("setClientID");
         testConnection = new HJBConnection((Connection) mockConnection.proxy(),
                                            "testClientId",
-                                           10);
+                                           10, defaultTestClock());
     }
 
     protected void tearDown() throws Exception {

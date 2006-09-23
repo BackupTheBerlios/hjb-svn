@@ -26,17 +26,13 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import hjb.misc.HJBException;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockSessionBuilder;
 
-public class HJBSessionProducersTest extends MockObjectTestCase {
-
-    public HJBSessionProducersTest() {
-
-    }
+public class HJBSessionProducersTest extends BaseHJBTestCase {
 
     public void testHJBSessionProducersThrowsIllegalArgumentExceptionOnNullConnection() {
         try {
@@ -213,7 +209,7 @@ public class HJBSessionProducersTest extends MockObjectTestCase {
         mockConnection = connectionBuilder.createMockConnection(aSession);
         registerToVerify(mockConnection);
         Connection aConnection = (Connection) mockConnection.proxy();
-        testConnection = new HJBConnection(aConnection, 0);
+        testConnection = new HJBConnection(aConnection, 0, defaultTestClock());
     }
 
     private Mock mockConnection;

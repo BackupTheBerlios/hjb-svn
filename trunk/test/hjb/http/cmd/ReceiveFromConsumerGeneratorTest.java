@@ -47,7 +47,7 @@ public class ReceiveFromConsumerGeneratorTest extends
             .will(returnValue("/testProvider/testFactory/with/slash/connection-0/session-0/consumer-0/receive"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1SessionAnd1Destination(root,
                                             "testProvider",
                                             "testFactory/with/slash",

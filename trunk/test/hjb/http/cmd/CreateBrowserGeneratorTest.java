@@ -53,7 +53,7 @@ public class CreateBrowserGeneratorTest extends BaseJMSCommandGeneratorTestCase 
             .will(returnValue("/testProvider/testFactory/slash/connection-0/session-0/create-browser"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1SessionAnd1Destination(root,
                                             "testProvider",
                                             "testFactory/slash",

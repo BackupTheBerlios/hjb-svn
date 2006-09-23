@@ -46,7 +46,7 @@ public class DeleteDestinationGeneratorTest extends
             .will(returnValue("/testProvider/destination/testDestination/with/slash"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Session(root, "testProvider", "testFactory");
 
         JMSCommandGenerator generator = new DeleteDestinationGenerator();

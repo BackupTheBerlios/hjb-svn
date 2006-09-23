@@ -26,15 +26,15 @@ import javax.jms.JMSException;
 import javax.jms.Session;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockHJBRuntime;
 import hjb.testsupport.MockSessionBuilder;
 
-public class CommitSessionTest extends MockObjectTestCase {
+public class CommitSessionTest extends BaseHJBTestCase {
 
     public void testCommitSessionThrowsOnNullInputs() {
         try {
@@ -44,7 +44,7 @@ public class CommitSessionTest extends MockObjectTestCase {
     }
 
     public void testExecuteCommitsASession() {
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         Mock mockSession = new MockSessionBuilder().createMockSession();
         mockSession.expects(once()).method("commit");
         mockHJB.make1Session(root,
@@ -73,7 +73,7 @@ public class CommitSessionTest extends MockObjectTestCase {
                 new RuntimeException("fire in the server room"),
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
-            HJBRoot root = new HJBRoot(testRootPath);
+            HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
 
             Mock mockSession = new MockSessionBuilder().createMockSession();
             mockSession.expects(once())

@@ -29,15 +29,15 @@ import javax.jms.ConnectionMetaData;
 import javax.jms.JMSException;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockHJBRuntime;
 
-public class ReadMetaDataTest extends MockObjectTestCase {
+public class ReadMetaDataTest extends BaseHJBTestCase {
 
     public void testReadMetaDataThrowsOnNullConnection() {
         try {
@@ -70,7 +70,7 @@ public class ReadMetaDataTest extends MockObjectTestCase {
     }
 
     public void testExecuteStartsAConnection() {
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         Mock mockConnection = new MockConnectionBuilder().createMockConnection();
         registerToVerify(mockConnection);
         mockConnection.expects(once())
@@ -104,7 +104,7 @@ public class ReadMetaDataTest extends MockObjectTestCase {
                 new RuntimeException("fire in the server room"),
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
-            HJBRoot root = new HJBRoot(testRootPath);
+            HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
             Mock mockConnection = new MockConnectionBuilder().createMockConnection();
             registerToVerify(mockConnection);
             mockConnection.expects(once())

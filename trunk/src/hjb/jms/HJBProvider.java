@@ -29,10 +29,7 @@ import javax.naming.NamingException;
 
 import org.apache.log4j.Logger;
 
-import hjb.misc.HJBClientException;
-import hjb.misc.HJBException;
-import hjb.misc.HJBNotFoundException;
-import hjb.misc.HJBStrings;
+import hjb.misc.*;
 
 /**
  * <code>HJBProvider</code> represents a JMS Provider registered with HJB.
@@ -43,10 +40,15 @@ public class HJBProvider {
 
     public HJBProvider(String name,
                        Hashtable environment,
-                       Context providerContext) {
+                       Context providerContext,
+                       Clock aClock) {
+        if (null == aClock) {
+            throw new IllegalArgumentException(strings().needsANonNull(Clock.class));
+        }
         this.name = name;
         this.environment = new HashMap(environment);
         this.providerContext = providerContext;
+        this.clock = aClock;
         destinations = Collections.synchronizedSortedMap(new TreeMap());
         factories = Collections.synchronizedSortedMap(new TreeMap());
     }
@@ -82,7 +84,9 @@ public class HJBProvider {
                     LOG.debug(message);
                 }
             } else {
-                factories.put(name, new HJBConnectionFactory(f));
+                factories.put(name, new HJBConnectionFactory(f,
+                                                             null,
+                                                             getClock()));
             }
         }
     }
@@ -222,14 +226,14 @@ public class HJBProvider {
             return handleResourceNotFound(name, e);
         }
     }
-    
+
     /**
      * Adds a leading slash to a name.
      * 
-     * this is a kludge.
-     * TODO fix the need for this.
+     * this is a kludge. TODO fix the need for this.
      * 
-     * @param name a potential name stored in JNDI.
+     * @param name
+     *            a potential name stored in JNDI.
      * @return name with a leading '/'
      */
     protected String addInitialSlashTo(String name) {
@@ -260,6 +264,10 @@ public class HJBProvider {
         return providerContext;
     }
 
+    protected Clock getClock() {
+        return clock;
+    }
+
     protected HJBStrings strings() {
         return STRINGS;
     }
@@ -272,11 +280,13 @@ public class HJBProvider {
      */
     public static String HJB_PROVIDER_NAME = "hjb.provider.name";
 
-    private String name;
-    private Context providerContext;
-    private Map environment;
-    private Map destinations;
-    private Map factories;
+    private final String name;
+    private final Context providerContext;
+    private final Map environment;
+    private final Map destinations;
+    private final Map factories;
+    private final Clock clock;
+
     private static final Logger LOG = Logger.getLogger(HJBProvider.class);
     private static final HJBStrings STRINGS = new HJBStrings();
 }

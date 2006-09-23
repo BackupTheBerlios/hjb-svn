@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import hjb.misc.Clock;
 import hjb.misc.HJBStrings;
 
 /**
@@ -66,7 +67,7 @@ public class ProviderStorer {
     public void load(String name) throws IOException {
         Properties p = new Properties();
         p.load(new FileInputStream(getStoragePath(name)));
-        theProvider = new ProviderBuilder(p).createProvider();
+        theProvider = new ProviderBuilder(p, new Clock()).createProvider();
     }
 
     public HJBProvider getTheProvider() {

@@ -50,7 +50,7 @@ public class CreateConnectionGeneratorTest extends
             .will(returnValue("/testProvider/testFactory/slash/create"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Session(root, "testProvider", "testFactory/slash");
 
         CreateConnectionGenerator generator = new CreateConnectionGenerator();

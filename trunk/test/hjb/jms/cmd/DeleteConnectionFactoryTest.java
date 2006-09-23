@@ -25,15 +25,15 @@ import java.io.File;
 import javax.jms.Connection;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import hjb.jms.HJBProvider;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockHJBRuntime;
 
-public class DeleteConnectionFactoryTest extends MockObjectTestCase {
+public class DeleteConnectionFactoryTest extends BaseHJBTestCase {
 
     public void testDeleteConnectionFactoryThrowsOnNullInputs() {
         try {
@@ -41,7 +41,7 @@ public class DeleteConnectionFactoryTest extends MockObjectTestCase {
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
 
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Factory(root, "testProvider", "testFactory");
 
         try {
@@ -51,7 +51,7 @@ public class DeleteConnectionFactoryTest extends MockObjectTestCase {
     }
 
     public void testExecuteDeletesAConnectionFactoryAndChildConnection() {
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         Mock mockConnection = new MockConnectionBuilder().createMockConnection();
         registerToVerify(mockConnection);
         mockConnection.expects(once()).method("stop");
@@ -80,7 +80,7 @@ public class DeleteConnectionFactoryTest extends MockObjectTestCase {
     }
 
     public void testExecuteDeletesAConnectionFactory() {
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Factory(root, "testProvider", "testFactory");
 
         HJBProvider testProvider = root.getProvider("testProvider");
@@ -107,7 +107,7 @@ public class DeleteConnectionFactoryTest extends MockObjectTestCase {
             new RuntimeException("fire in the server room"),
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
-            HJBRoot root = new HJBRoot(testRootPath);
+            HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
             Mock mockConnection = new MockConnectionBuilder().createMockConnection();
             registerToVerify(mockConnection);
             mockConnection.expects(once())

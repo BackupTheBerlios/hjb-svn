@@ -27,25 +27,34 @@ import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 import org.jmock.core.stub.ReturnStub;
 
 import hjb.misc.HJBException;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockConnectionFactoryBuilder;
 
-public class HJBConnectionFactoryTest extends MockObjectTestCase {
+public class HJBConnectionFactoryTest extends BaseHJBTestCase {
 
-    public void testCannotConstructWithNull() throws Exception {
+    public void testConstructionThrowsIllegalArgumentExceptionOnNullConnectionFactory() throws Exception {
         try {
-            new HJBConnectionFactory(null);
+            new HJBConnectionFactory(null, null, defaultTestClock());
             fail("Allowed creation from a null ConnectionFactory");
         } catch (IllegalArgumentException iae) {}
     }
 
-    public void testCanConstructFromAConnectionFactory() {
+    public void testConstructionThrowsIllegalArgumentExceptionOnNullClock() throws Exception {
         try {
-            new HJBConnectionFactory(testConnectionFactory);
+            new HJBConnectionFactory(testConnectionFactory, null, null);
+            fail("Allowed creation from a null ConnectionFactory");
+        } catch (IllegalArgumentException iae) {}
+    }
+
+    public void testConstructionSucceedsWithValidArguments() {
+        try {
+            new HJBConnectionFactory(testConnectionFactory,
+                                     null,
+                                     defaultTestClock());
         } catch (Exception e) {
             fail("Disallowed creation from a valid ConnectionFactory");
         }
@@ -53,7 +62,9 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
 
     public void testCreateConnectionAddsToConnectionsOnSuccess()
             throws Exception {
-        HJBConnectionFactory rcf = new HJBConnectionFactory(testConnectionFactory);
+        HJBConnectionFactory rcf = new HJBConnectionFactory(testConnectionFactory,
+                                                            null,
+                                                            defaultTestClock());
         rcf.createConnection();
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
             .size());
@@ -64,7 +75,9 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
 
     public void testCreateHJBConnectionAddsToConnectionsOnSuccess()
             throws Exception {
-        HJBConnectionFactory rcf = new HJBConnectionFactory(testConnectionFactory);
+        HJBConnectionFactory rcf = new HJBConnectionFactory(testConnectionFactory,
+                                                            null,
+                                                            defaultTestClock());
         assertEquals("index should be 0", 0, rcf.createHJBConnection(null));
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
             .size());
@@ -76,7 +89,9 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
     }
 
     public void testGetConnectionsIsACopy() throws Exception {
-        HJBConnectionFactory rcf = new HJBConnectionFactory(testConnectionFactory);
+        HJBConnectionFactory rcf = new HJBConnectionFactory(testConnectionFactory,
+                                                            null,
+                                                            defaultTestClock());
         rcf.createConnection();
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
             .size());
@@ -95,7 +110,9 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
             .will(throwException(new JMSException("thrown as a test")));
         testConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
-        HJBConnectionFactory rcf = new HJBConnectionFactory(testConnectionFactory);
+        HJBConnectionFactory rcf = new HJBConnectionFactory(testConnectionFactory,
+                                                            null,
+                                                            defaultTestClock());
         try {
             rcf.createConnection();
             fail("Expected JMS exception was not thrown");
@@ -131,7 +148,9 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
         Mock mockFactory = factoryBuilder.createMockConnectionFactory(testConnection);
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
-        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory);
+        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
+                                                            null,
+                                                            defaultTestClock());
         rcf.createConnection("testUser", "testPassword");
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
             .size());
@@ -149,7 +168,9 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
         Mock mockFactory = factoryBuilder.createMockConnectionFactory(testConnection);
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
-        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory);
+        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
+                                                            null,
+                                                            defaultTestClock());
         rcf.createConnection("testUser", "testPassword");
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
             .size());
@@ -166,7 +187,9 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
         Mock mockFactory = factoryBuilder.createMockConnectionFactory(testConnection);
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
-        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory);
+        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
+                                                            null,
+                                                            defaultTestClock());
         rcf.createConnection("testUser", "testPassword");
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
             .size());
@@ -181,7 +204,9 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
         Mock mockFactory = factoryBuilder.createMockConnectionFactory(testConnection);
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
-        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory);
+        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
+                                                            null,
+                                                            defaultTestClock());
         try {
             rcf.startConnection(-1);
             fail("should have thrown an exception");
@@ -208,7 +233,9 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
         Mock mockFactory = factoryBuilder.createMockConnectionFactory(testConnection);
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
-        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory);
+        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
+                                                            null,
+                                                            defaultTestClock());
         rcf.createConnection("testUser", "testPassword");
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
             .size());
@@ -227,7 +254,9 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
         Mock mockFactory = factoryBuilder.createMockConnectionFactory(testConnection);
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
-        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory);
+        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
+                                                            null,
+                                                            defaultTestClock());
         rcf.createConnection("testUser", "testPassword");
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
             .size());
@@ -242,7 +271,9 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
         Mock mockFactory = factoryBuilder.createMockConnectionFactory(testConnection);
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
-        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory);
+        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
+                                                            null,
+                                                            defaultTestClock());
         try {
             rcf.stopConnection(-1);
             fail("should have thrown an exception");
@@ -270,7 +301,9 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
         Mock mockFactory = factoryBuilder.createMockConnectionFactory(testConnection);
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
-        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory);
+        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
+                                                            null,
+                                                            defaultTestClock());
         rcf.createConnection("testUser", "testPassword");
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
             .size());
@@ -285,7 +318,9 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
         Mock mockFactory = factoryBuilder.createMockConnectionFactory(testConnection);
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
-        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory);
+        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
+                                                            null,
+                                                            defaultTestClock());
         rcf.createConnection("testUser", "testPassword");
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
             .size());
@@ -303,7 +338,9 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
         Mock mockFactory = factoryBuilder.createMockConnectionFactory(testConnection);
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
-        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory);
+        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
+                                                            null,
+                                                            defaultTestClock());
         try {
             rcf.getConnectionMetaData(-1);
             fail("should have thrown an exception");
@@ -329,7 +366,9 @@ public class HJBConnectionFactoryTest extends MockObjectTestCase {
         Mock mockFactory = factoryBuilder.createMockConnectionFactory(testConnection);
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
-        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory);
+        HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
+                                                            null,
+                                                            defaultTestClock());
         rcf.createConnection("testUser", "testPassword");
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
             .size());

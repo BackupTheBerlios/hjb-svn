@@ -25,16 +25,16 @@ import java.io.File;
 import javax.jms.Connection;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import hjb.jms.HJBConnectionFactory;
 import hjb.jms.HJBProvider;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockHJBRuntime;
 
-public class DeleteConnectionTest extends MockObjectTestCase {
+public class DeleteConnectionTest extends BaseHJBTestCase {
 
     public void testDeleteConnectionThrowsOnNullConnectionFactory() {
         try {
@@ -44,7 +44,7 @@ public class DeleteConnectionTest extends MockObjectTestCase {
     }
 
     public void testExecuteDeletesAConnection() {
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         Mock mockConnection = new MockConnectionBuilder().createMockConnection();
         registerToVerify(mockConnection);
         mockConnection.expects(once()).method("stop");
@@ -74,7 +74,7 @@ public class DeleteConnectionTest extends MockObjectTestCase {
             new RuntimeException("fire in the server room"),
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
-            HJBRoot root = new HJBRoot(testRootPath);
+            HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
             Mock mockConnection = new MockConnectionBuilder().createMockConnection();
             registerToVerify(mockConnection);
             mockConnection.expects(once())

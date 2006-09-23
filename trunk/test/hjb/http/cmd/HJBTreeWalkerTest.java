@@ -2,14 +2,13 @@ package hjb.http.cmd;
 
 import java.io.File;
 
-import junit.framework.TestCase;
-
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBNotFoundException;
 import hjb.misc.PathNaming;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockHJBRuntime;
 
-public class HJBTreeWalkerTest extends TestCase {
+public class HJBTreeWalkerTest extends BaseHJBTestCase {
 
     public void testHJBTreeWalkerThrowsExceptionIfHJBRootIsNull() {
         try {
@@ -86,7 +85,7 @@ public class HJBTreeWalkerTest extends TestCase {
 
     protected void setUp() throws Exception {
         testRootPath = File.createTempFile("test", null).getParentFile();
-        root = new HJBRoot(testRootPath);
+        root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB = new MockHJBRuntime();
         mockHJB.make1Session(root, TEST_PROVIDER, TEST_FACTORY);
     }

@@ -8,15 +8,15 @@ import javax.jms.Destination;
 import javax.naming.Context;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import hjb.jms.HJBProvider;
 import hjb.jms.ProviderBuilder;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionFactoryBuilder;
 import hjb.testsupport.MockContextBuilder;
 import hjb.testsupport.SharedMock;
 
-public class ProviderListingTest extends MockObjectTestCase {
+public class ProviderListingTest extends BaseHJBTestCase {
 
     public void testGetListingIncludesAllDestinationsAndConnectionFactories() {
         String expectedOutput = registerSomeObjects();
@@ -38,8 +38,8 @@ public class ProviderListingTest extends MockObjectTestCase {
         String expectedOutput = registerSomeObjects();
         testProvider.getConnectionFactory("fooBarFactory")
             .createHJBConnection(null);
-        expectedOutput = expectedOutput + CR + "/testProvider/fooBarFactory" +CR
-                + "/testProvider/fooBarFactory/connection-0" + CR + CR
+        expectedOutput = expectedOutput + CR + "/testProvider/fooBarFactory"
+                + CR + "/testProvider/fooBarFactory/connection-0" + CR + CR
                 + "/testProvider/fooBarFactory/connection-0" + CR + CR
                 + "/testProvider/barFooFactory" + CR;
 
@@ -77,7 +77,7 @@ public class ProviderListingTest extends MockObjectTestCase {
                                                                          (Destination) mockDestination.proxy());
         sharedMock = SharedMock.getInstance();
         sharedMock.setCurrentMock(newContextMock);
-        testProvider = new ProviderBuilder(testEnvironment).createProvider();
+        testProvider = new ProviderBuilder(testEnvironment, defaultTestClock()).createProvider();
     }
 
     protected void tearDown() throws Exception {

@@ -26,14 +26,14 @@ import javax.jms.Destination;
 import javax.jms.JMSException;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import hjb.jms.HJBProvider;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockHJBRuntime;
 
-public class RegisterDestinationTest extends MockObjectTestCase {
+public class RegisterDestinationTest extends BaseHJBTestCase {
 
     public void testRegisterDestinationThrowsOnNullInputs() {
         try {
@@ -43,7 +43,7 @@ public class RegisterDestinationTest extends MockObjectTestCase {
 
         Mock mockDestination = mock(Destination.class);
         Destination testDestination = (Destination) mockDestination.proxy();
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Destination(root,
                                  "testProvider",
                                  "testDestination",
@@ -56,7 +56,7 @@ public class RegisterDestinationTest extends MockObjectTestCase {
     }
 
     public void testExecuteDeletesADestination() {
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Provider(root, "testProvider");
 
         HJBProvider testProvider = root.getProvider("testProvider");
@@ -83,7 +83,7 @@ public class RegisterDestinationTest extends MockObjectTestCase {
                 new RuntimeException("fire in the server room"),
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
-            HJBRoot root = new HJBRoot(testRootPath);
+            HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
             mockHJB.make1ProviderWithContextThatThrows(root,
                                                        "testProvider",
                                                        possibleExceptions[i]);

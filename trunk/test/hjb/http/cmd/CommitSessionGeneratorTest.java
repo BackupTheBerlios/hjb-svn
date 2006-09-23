@@ -46,7 +46,7 @@ public class CommitSessionGeneratorTest extends BaseJMSCommandGeneratorTestCase 
             .will(returnValue("/testProvider/testFactory/slash/connection-0/session-0/commit"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Session(root, "testProvider", "testFactory/slash");
 
         generator.generateCommand(testRequest, root);

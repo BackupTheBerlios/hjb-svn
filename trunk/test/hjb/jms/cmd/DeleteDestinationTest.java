@@ -25,14 +25,14 @@ import java.io.File;
 import javax.jms.Destination;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import hjb.jms.HJBProvider;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockHJBRuntime;
 
-public class DeleteDestinationTest extends MockObjectTestCase {
+public class DeleteDestinationTest extends BaseHJBTestCase {
 
     public void testDeleteDestinationThrowsOnNullInputs() {
         try {
@@ -42,7 +42,7 @@ public class DeleteDestinationTest extends MockObjectTestCase {
 
         Mock mockDestination = mock(Destination.class);
         Destination testDestination = (Destination) mockDestination.proxy();
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Destination(root,
                                  "testProvider",
                                  "testDestination",
@@ -57,7 +57,7 @@ public class DeleteDestinationTest extends MockObjectTestCase {
     public void testExecuteDeletesADestination() {
         Mock mockDestination = mock(Destination.class);
         Destination testDestination = (Destination) mockDestination.proxy();
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Destination(root,
                                  "testProvider",
                                  "testDestination",

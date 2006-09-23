@@ -31,6 +31,7 @@ import javax.naming.spi.NamingManager;
 
 import org.apache.log4j.Logger;
 
+import hjb.misc.Clock;
 import hjb.misc.HJBClientException;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
@@ -43,9 +44,16 @@ import hjb.misc.HJBStrings;
  */
 public class ProviderBuilder {
 
-    public ProviderBuilder(Hashtable environment) {
+    public ProviderBuilder(Hashtable environment, Clock aClock) {
+        if (null == environment) {
+            throw new IllegalArgumentException(strings().needsANonNull(Hashtable.class));
+        }
+        if (null == aClock) {
+            throw new IllegalArgumentException(strings().needsANonNull(Clock.class));
+        }
         verifyProviderNameIsValid(environment);
         this.environment = new Hashtable(environment);
+        this.clock = aClock;
     }
 
     public Hashtable obtainJNDIEnvironment() {
@@ -57,7 +65,8 @@ public class ProviderBuilder {
     public HJBProvider createProvider() {
         return new HJBProvider(obtainHJBProviderName(),
                                obtainJNDIEnvironment(),
-                               obtainInitialContext());
+                               obtainInitialContext(),
+                               getClock());
     }
 
     public String obtainHJBProviderName() {
@@ -108,7 +117,13 @@ public class ProviderBuilder {
         return PROVIDER_MATCHER;
     }
 
-    private Hashtable environment;
+    protected Clock getClock() {
+        return clock;
+    }
+
+    private final Hashtable environment;
+    private final Clock clock;
+
     private static final Pattern PROVIDER_MATCHER = Pattern.compile("^[_a-zA-Z]\\w*$");
     private static final HJBStrings STRINGS = new HJBStrings();
     private static final Logger LOG = Logger.getLogger(ProviderBuilder.class);

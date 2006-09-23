@@ -26,13 +26,12 @@ import java.util.Map;
 
 import javax.naming.Context;
 
-import org.jmock.MockObjectTestCase;
-
 import hjb.misc.HJBException;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockContextBuilder;
 import hjb.testsupport.SharedMock;
 
-public class HJBRootTest extends MockObjectTestCase {
+public class HJBRootTest extends BaseHJBTestCase {
 
     public HJBRootTest() {
         contextBuilder = new MockContextBuilder();
@@ -40,19 +39,19 @@ public class HJBRootTest extends MockObjectTestCase {
     }
 
     public void testCommandRunnerIsActiveOnConstruction() {
-        HJBRoot br = new HJBRoot(testRootPath);
+        HJBRoot br = new HJBRoot(testRootPath, defaultTestClock());
         assertNotNull("should be initialised", br.getCommandRunner());
         assertFalse("should not be terminated", br.getCommandRunner()
             .isTerminated());
     }
 
     public void testDeletingNonExistentProviderDoesNotThrow() {
-        HJBRoot br = new HJBRoot(testRootPath);
+        HJBRoot br = new HJBRoot(testRootPath, defaultTestClock());
         br.deleteProvider("notPresent");
     }
 
     public void testDeleteProvider() throws Exception {
-        HJBRoot br = new HJBRoot(testRootPath);
+        HJBRoot br = new HJBRoot(testRootPath, defaultTestClock());
 
         br.addProvider(testEnvironment);
         Map providers = br.getProviders();
@@ -64,7 +63,7 @@ public class HJBRootTest extends MockObjectTestCase {
     }
 
     public void testRegisterProvider() throws Exception {
-        HJBRoot br = new HJBRoot(testRootPath);
+        HJBRoot br = new HJBRoot(testRootPath, defaultTestClock());
 
         br.addProvider(testEnvironment);
         Map providers = br.getProviders();
@@ -93,7 +92,7 @@ public class HJBRootTest extends MockObjectTestCase {
     }
 
     public void testGetProvider() throws Exception {
-        HJBRoot br = new HJBRoot(testRootPath);
+        HJBRoot br = new HJBRoot(testRootPath, defaultTestClock());
         assertNull("should not be found", br.getProvider("testProvider"));
         br.addProvider(testEnvironment);
         assertNotNull("should be found", br.getProvider("testProvider"));
@@ -106,18 +105,18 @@ public class HJBRootTest extends MockObjectTestCase {
         if (doesExist.exists()) doesExist.delete();
         doesExist.mkdirs();
 
-        HJBRoot br = new HJBRoot(doesExist);
+        HJBRoot br = new HJBRoot(doesExist, defaultTestClock());
         assertNotNull("was not created", br);
 
         try {
-            br = new HJBRoot(doesNotExist);
+            br = new HJBRoot(doesNotExist, defaultTestClock());
             assertNotNull("was not created", br);
             fail("created successfully with invalid storage path");
         } catch (HJBException hje) {}
     }
 
     public void testProviders() throws Exception {
-        HJBRoot br = new HJBRoot(testRootPath);
+        HJBRoot br = new HJBRoot(testRootPath, defaultTestClock());
         br.addProvider(testEnvironment);
         Map providers = br.getProviders();
         providers.clear();

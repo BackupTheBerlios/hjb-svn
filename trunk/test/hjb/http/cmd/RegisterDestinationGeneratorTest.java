@@ -47,7 +47,7 @@ public class RegisterDestinationGeneratorTest extends
             .will(returnValue("/testProvider/destination/testDestination/with/slashes/register"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Session(root, "testProvider", "testFactory");
 
         JMSCommandGenerator generator = new RegisterDestinationGenerator();

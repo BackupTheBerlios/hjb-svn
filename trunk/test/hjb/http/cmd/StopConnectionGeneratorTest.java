@@ -47,7 +47,7 @@ public class StopConnectionGeneratorTest extends
             .will(returnValue("/testProvider/testFactory/with/slash/connection-0/stop"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Session(root, "testProvider", "testFactory/with/slash");
 
         JMSCommandGenerator generator = new StopConnectionGenerator();

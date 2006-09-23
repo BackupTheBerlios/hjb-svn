@@ -26,15 +26,15 @@ import javax.jms.Connection;
 import javax.jms.JMSException;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockHJBRuntime;
 
-public class StartConnectionTest extends MockObjectTestCase {
+public class StartConnectionTest extends BaseHJBTestCase {
 
     public void testStartConnectionThrowsOnNullConnection() {
         try {
@@ -44,7 +44,7 @@ public class StartConnectionTest extends MockObjectTestCase {
     }
 
     public void testExecuteStartsAConnection() {
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         Mock mockConnection = new MockConnectionBuilder().createMockConnection();
         registerToVerify(mockConnection);
         mockConnection.expects(once()).method("start");
@@ -84,7 +84,7 @@ public class StartConnectionTest extends MockObjectTestCase {
                 new RuntimeException("fire in the server room"),
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
-            HJBRoot root = new HJBRoot(testRootPath);
+            HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
             Mock mockConnection = new MockConnectionBuilder().createMockConnection();
             registerToVerify(mockConnection);
             mockConnection.expects(once())

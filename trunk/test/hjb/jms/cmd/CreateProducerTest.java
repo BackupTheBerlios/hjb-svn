@@ -27,17 +27,17 @@ import javax.jms.JMSException;
 import javax.jms.Session;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
 import hjb.jms.HJBSessionProducers;
 import hjb.misc.HJBException;
 import hjb.misc.MessageProducerArguments;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockHJBRuntime;
 import hjb.testsupport.MockSessionBuilder;
 
-public class CreateProducerTest extends MockObjectTestCase {
+public class CreateProducerTest extends BaseHJBTestCase {
 
     public void testCreateProducerThrowsOnNullInputs() {
         Mock mockDestination = mock(Destination.class);
@@ -47,7 +47,7 @@ public class CreateProducerTest extends MockObjectTestCase {
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
 
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Connection(root, "testProvider", "testFactory");
         HJBConnection testConnection = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
@@ -60,7 +60,7 @@ public class CreateProducerTest extends MockObjectTestCase {
     }
 
     public void testExecuteCreatesANewProducer() {
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Session(root, "testProvider", "testFactory");
         HJBConnection testConnection = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
@@ -96,7 +96,7 @@ public class CreateProducerTest extends MockObjectTestCase {
                 new RuntimeException("fire in the server room"),
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
-            HJBRoot root = new HJBRoot(testRootPath);
+            HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
             Mock mockSession = new MockSessionBuilder().createMockSession();
             registerToVerify(mockSession);
             mockHJB.make1Session(root,

@@ -26,15 +26,15 @@ import javax.jms.JMSException;
 import javax.jms.Session;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockHJBRuntime;
 import hjb.testsupport.MockSessionBuilder;
 
-public class RollbackSessionTest extends MockObjectTestCase {
+public class RollbackSessionTest extends BaseHJBTestCase {
 
     public void testRollbackSessionThrowsOnNullInputs() {
         try {
@@ -44,7 +44,7 @@ public class RollbackSessionTest extends MockObjectTestCase {
     }
 
     public void testExecuteRollbacksASession() {
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         Mock mockSession = new MockSessionBuilder().createMockSession();
         registerToVerify(mockSession);
         mockSession.expects(once()).method("rollback");
@@ -74,7 +74,7 @@ public class RollbackSessionTest extends MockObjectTestCase {
                 new RuntimeException("fire in the server room"),
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
-            HJBRoot root = new HJBRoot(testRootPath);
+            HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
             Mock mockSession = new MockSessionBuilder().createMockSession();
             registerToVerify(mockSession);
             mockSession.expects(once())

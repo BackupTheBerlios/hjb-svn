@@ -25,15 +25,15 @@ import java.io.File;
 import javax.jms.Connection;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import hjb.jms.HJBProvider;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockHJBRuntime;
 
-public class DeleteProviderTest extends MockObjectTestCase {
+public class DeleteProviderTest extends BaseHJBTestCase {
 
     public void testDeleteProviderThrowsOnNullInputs() {
         try {
@@ -41,7 +41,7 @@ public class DeleteProviderTest extends MockObjectTestCase {
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
 
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         try {
             new DeleteProvider(root, null);
             fail("should have thrown an exception");
@@ -49,7 +49,7 @@ public class DeleteProviderTest extends MockObjectTestCase {
     }
 
     public void testExecuteDeletesAProvider() {
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Provider(root, "testProvider");
 
         assertEquals(1, root.getProviders().size());
@@ -69,7 +69,7 @@ public class DeleteProviderTest extends MockObjectTestCase {
             new RuntimeException("fire in the server room"),
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
-            HJBRoot root = new HJBRoot(testRootPath);
+            HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
             Mock mockConnection = new MockConnectionBuilder().createMockConnection();
             registerToVerify(mockConnection);
             mockConnection.expects(once())

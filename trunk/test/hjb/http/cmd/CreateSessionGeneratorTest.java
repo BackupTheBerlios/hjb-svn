@@ -52,7 +52,7 @@ public class CreateSessionGeneratorTest extends BaseJMSCommandGeneratorTestCase 
             .will(returnValue("/testProvider/testFactory/with/slash/connection-0/create"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Session(root, "testProvider", "testFactory/with/slash");
 
         CreateSessionGenerator generator = new CreateSessionGenerator();

@@ -43,7 +43,7 @@ public class DeleteProviderGeneratorTest extends
             .method("getPathInfo")
             .will(returnValue("/foo"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
 
         JMSCommandGenerator generator = new DeleteProviderGenerator();
         generator.generateCommand(testRequest, root);

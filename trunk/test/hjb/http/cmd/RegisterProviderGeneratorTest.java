@@ -44,7 +44,7 @@ public class RegisterProviderGeneratorTest extends
             .will(returnValue("/foo/register"));
 
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
 
         JMSCommandGenerator generator = new RegisterProviderGenerator();
         generator.generateCommand(testRequest, root);

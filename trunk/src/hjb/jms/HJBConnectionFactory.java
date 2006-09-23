@@ -29,6 +29,7 @@ import javax.jms.JMSException;
 
 import org.apache.log4j.Logger;
 
+import hjb.misc.Clock;
 import hjb.misc.HJBException;
 import hjb.misc.HJBNotFoundException;
 import hjb.misc.HJBStrings;
@@ -51,10 +52,14 @@ import hjb.misc.HJBStrings;
  */
 public class HJBConnectionFactory implements ConnectionFactory {
 
-    public HJBConnectionFactory(ConnectionFactory connectionFactory) {
+    public HJBConnectionFactory(ConnectionFactory connectionFactory, Object newParam, Clock aClock) {
         if (null == connectionFactory) {
             throw new IllegalArgumentException(strings().needsANonNull(ConnectionFactory.class.getName()));
         }
+        if (null == aClock) {
+            throw new IllegalArgumentException(strings().needsANonNull(Clock.class));
+        }
+        this.clock = aClock;
         this.connectionFactory = connectionFactory;
         this.activeConnections = Collections.synchronizedMap(new TreeMap());
         this.connectionIndices = Collections.synchronizedList(new ArrayList());
@@ -96,7 +101,8 @@ public class HJBConnectionFactory implements ConnectionFactory {
                 connectionIndices.add(index);
                 HJBConnection result = new HJBConnection(connectionFactory.createConnection(),
                                                          clientId,
-                                                         index.intValue());
+                                                         index.intValue(),
+                                                         getClock());
                 activeConnections.put(index, result);
                 return index.intValue();
             } catch (JMSException e) {
@@ -113,7 +119,8 @@ public class HJBConnectionFactory implements ConnectionFactory {
                 connectionIndices.add(index);
                 HJBConnection result = new HJBConnection(getConnectionFactory().createConnection(),
                                                          clientId,
-                                                         0);
+                                                         0,
+                                                         getClock());
                 activeConnections.put(index, result);
                 return index.intValue();
             } catch (JMSException e) {
@@ -255,9 +262,14 @@ public class HJBConnectionFactory implements ConnectionFactory {
         return STRINGS;
     }
 
-    private ConnectionFactory connectionFactory;
-    private List connectionIndices;
-    private Map activeConnections;
+    protected Clock getClock() {
+        return clock;
+    }
+
+    private final ConnectionFactory connectionFactory;
+    private final List connectionIndices;
+    private final Map activeConnections;
+    private final Clock clock;
 
     private static final Logger LOG = Logger.getLogger(HJBConnectionFactory.class);
     private static final HJBStrings STRINGS = new HJBStrings();

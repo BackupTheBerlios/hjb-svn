@@ -52,7 +52,7 @@ public class SendHJBMessageGeneratorTest extends
             .will(returnValue("/testProvider/testFactory/with/slash/connection-0/session-0/producer-0/send"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1SessionAnd1Destination(root,
                                             "testProvider",
                                             "testFactory/with/slash",

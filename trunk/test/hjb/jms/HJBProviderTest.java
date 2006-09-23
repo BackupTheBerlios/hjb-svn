@@ -29,18 +29,18 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import hjb.misc.HJBException;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockContextBuilder;
 import hjb.testsupport.SharedMock;
 
-public class HJBProviderTest extends MockObjectTestCase {
+public class HJBProviderTest extends BaseHJBTestCase {
     public HJBProviderTest() {
         contextBuilder = new MockContextBuilder();
         sharedMock = SharedMock.getInstance();
     }
-
+    
     public void testCannotRegisterDestinationThatIsNotInTheContext()
             throws Exception {
         try {
@@ -55,7 +55,7 @@ public class HJBProviderTest extends MockObjectTestCase {
         Mock newMock = contextBuilder.lookupReturnsDestination(testEnvironment,
                                                                destination);
         sharedMock.setCurrentMock(newMock);
-        testProvider = new ProviderBuilder(testEnvironment).createProvider();
+        testProvider = new ProviderBuilder(testEnvironment, defaultTestClock()).createProvider();
         try {
             testProvider.registerDestination("testdestination");
         } catch (HJBException hjbe) {
@@ -72,7 +72,7 @@ public class HJBProviderTest extends MockObjectTestCase {
         Mock newMock = contextBuilder.lookupReturnsDestination(testEnvironment,
                                                                destination);
         sharedMock.setCurrentMock(newMock);
-        testProvider = new ProviderBuilder(testEnvironment).createProvider();
+        testProvider = new ProviderBuilder(testEnvironment, defaultTestClock()).createProvider();
         testProvider.registerDestination("testdestination");
         Map destinations = testProvider.getDestinations();
         destinations.clear();
@@ -87,7 +87,7 @@ public class HJBProviderTest extends MockObjectTestCase {
         Mock newMock = contextBuilder.lookupReturnsDestination(testEnvironment,
                                                                destination);
         sharedMock.setCurrentMock(newMock);
-        testProvider = new ProviderBuilder(testEnvironment).createProvider();
+        testProvider = new ProviderBuilder(testEnvironment, defaultTestClock()).createProvider();
         assertNull("should not exist",
                    testProvider.getDestination("testdestination"));
         testProvider.registerDestination("testdestination");
@@ -102,7 +102,7 @@ public class HJBProviderTest extends MockObjectTestCase {
         Mock newMock = contextBuilder.lookupReturnsConnectionFactory(testEnvironment,
                                                                      connectionFactory);
         sharedMock.setCurrentMock(newMock);
-        testProvider = new ProviderBuilder(testEnvironment).createProvider();
+        testProvider = new ProviderBuilder(testEnvironment, defaultTestClock()).createProvider();
         testProvider.registerConnectionFactory("testfactory");
         Map factories = testProvider.getConnectionFactories();
         factories.clear();
@@ -118,7 +118,7 @@ public class HJBProviderTest extends MockObjectTestCase {
         Mock newMock = contextBuilder.lookupReturnsConnectionFactory(testEnvironment,
                                                                      connectionFactory);
         sharedMock.setCurrentMock(newMock);
-        testProvider = new ProviderBuilder(testEnvironment).createProvider();
+        testProvider = new ProviderBuilder(testEnvironment, defaultTestClock()).createProvider();
         assertNull("should not exist",
                    testProvider.getConnectionFactory("testfactory"));
         testProvider.registerConnectionFactory("testfactory");
@@ -133,7 +133,7 @@ public class HJBProviderTest extends MockObjectTestCase {
         Mock newMock = contextBuilder.lookupThrowsNamingException(testEnvironment,
                                                                   destination);
         sharedMock.setCurrentMock(newMock);
-        testProvider = new ProviderBuilder(testEnvironment).createProvider();
+        testProvider = new ProviderBuilder(testEnvironment, defaultTestClock()).createProvider();
         try {
             testProvider.registerDestination("testdestination");
             fail("Allowed the registration of a destination when lookup throws");
@@ -159,7 +159,7 @@ public class HJBProviderTest extends MockObjectTestCase {
         Mock newMock = contextBuilder.lookupReturnsDestination(testEnvironment,
                                                                mockFactory);
         sharedMock.setCurrentMock(newMock);
-        testProvider = new ProviderBuilder(testEnvironment).createProvider();
+        testProvider = new ProviderBuilder(testEnvironment, defaultTestClock()).createProvider();
         testProvider.registerDestination("testdestination");
         try {
             testProvider.deleteDestination("testdestination");
@@ -187,7 +187,7 @@ public class HJBProviderTest extends MockObjectTestCase {
         Mock newMock = contextBuilder.lookupReturnsConnectionFactory(testEnvironment,
                                                                      mockFactory);
         sharedMock.setCurrentMock(newMock);
-        testProvider = new ProviderBuilder(testEnvironment).createProvider();
+        testProvider = new ProviderBuilder(testEnvironment, defaultTestClock()).createProvider();
         try {
             testProvider.registerConnectionFactory("testfactory");
         } catch (HJBException hjbe) {
@@ -206,7 +206,7 @@ public class HJBProviderTest extends MockObjectTestCase {
         Mock newMock = contextBuilder.lookupThrowsNamingException(testEnvironment,
                                                                   mockFactory);
         sharedMock.setCurrentMock(newMock);
-        testProvider = new ProviderBuilder(testEnvironment).createProvider();
+        testProvider = new ProviderBuilder(testEnvironment, defaultTestClock()).createProvider();
         try {
             testProvider.registerConnectionFactory("testfactory");
             fail("Allowed the registration of a connection factory when lookup throws");
@@ -233,7 +233,7 @@ public class HJBProviderTest extends MockObjectTestCase {
         Mock newMock = contextBuilder.lookupReturnsConnectionFactory(testEnvironment,
                                                                      mockFactory);
         sharedMock.setCurrentMock(newMock);
-        testProvider = new ProviderBuilder(testEnvironment).createProvider();
+        testProvider = new ProviderBuilder(testEnvironment, defaultTestClock()).createProvider();
         testProvider.registerConnectionFactory("testfactory");
         try {
             testProvider.deleteConnectionFactory("testfactory");
@@ -252,7 +252,10 @@ public class HJBProviderTest extends MockObjectTestCase {
         Hashtable environment = new Hashtable();
         environment.put("foo", "bar");
         Context aContext = new InitialContext();
-        HJBProvider aProvider = new HJBProvider("test1", environment, aContext);
+        HJBProvider aProvider = new HJBProvider("test1",
+                                                environment,
+                                                aContext,
+                                                defaultTestClock());
         assertFalse("Providers share their copies of their environments",
                     aProvider.getEnvironment() == environment);
     }
@@ -268,15 +271,20 @@ public class HJBProviderTest extends MockObjectTestCase {
         Context sameContext = new InitialContext();
         HJBProvider aProvider = new HJBProvider("test1",
                                                 environment,
-                                                sameContext);
+                                                sameContext,
+                                                defaultTestClock());
         HJBProvider anotherProvider = new HJBProvider("test2",
                                                       similarEnvironment,
-                                                      sameContext);
+                                                      sameContext,
+                                                      defaultTestClock());
         assertEquals("Providers with different names but the same environment should be equal",
                      aProvider,
                      anotherProvider);
         environment.put("foo", "baz");
-        aProvider = new HJBProvider("test2", environment, sameContext);
+        aProvider = new HJBProvider("test2",
+                                    environment,
+                                    sameContext,
+                                    defaultTestClock());
         assertFalse("Providers with the same names but different environments should not be equal",
                     aProvider.equals(anotherProvider));
     }
@@ -287,7 +295,7 @@ public class HJBProviderTest extends MockObjectTestCase {
                             "hjb.testsupport.MockInitialContextFactory");
         sharedMock.setCurrentMock(contextBuilder.returnsEnvironment(testEnvironment));
         testEnvironment.put(HJBProvider.HJB_PROVIDER_NAME, "testProvider");
-        testProvider = new ProviderBuilder(testEnvironment).createProvider();
+        testProvider = new ProviderBuilder(testEnvironment, defaultTestClock()).createProvider();
     }
 
     protected void tearDown() throws Exception {

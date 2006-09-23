@@ -21,6 +21,7 @@
 package hjb.jms;
 
 import hjb.jms.cmd.JMSCommandRunner;
+import hjb.misc.Clock;
 import hjb.misc.HJBClientException;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
@@ -47,13 +48,31 @@ public class HJBRoot {
      * <code>HJBRoot</code>'s command runner.
      * 
      * @param storagePath
-     *            the path to persist provider details, should this be required.
+     *            the path to persist provider details, should this be required
      */
     public HJBRoot(File storagePath) {
+        this(storagePath, new Clock());
+    }
+
+
+    /**
+     * Verifies that <code>storagePath</code> is accessible and starts this
+     * <code>HJBRoot</code>'s command runner.
+     * 
+     * @param storagePath
+     *            the path to persist provider details, should this be required
+     * @param aClock
+     *            used to give times for various HJB events 
+     */
+    public HJBRoot(File storagePath, Clock aClock) {
         storagePathIsValid(storagePath);
+        if (null == aClock) {
+            throw new IllegalArgumentException(strings().needsANonNull(Clock.class));
+        }
         this.providers = Collections.synchronizedMap(new HashMap());
         this.storagePath = storagePath;
         startCommandRunner();
+        this.clock = aClock;
     }
 
     /**
@@ -81,9 +100,13 @@ public class HJBRoot {
         return commandRunner;
     }
 
+    public Clock getClock() {
+        return clock;
+    }
+
     public void addProvider(Hashtable environment) {
         synchronized (providers) {
-            HJBProvider provider = new ProviderBuilder(environment).createProvider();
+            HJBProvider provider = new ProviderBuilder(environment, getClock()).createProvider();
             if (isTheSameProviderAlreadyRegistered(provider)) {
                 if (LOG.isDebugEnabled()) {
                     String message = strings().getString(HJBStrings.PROVIDER_ALREADY_REGISTERED,
@@ -169,9 +192,10 @@ public class HJBRoot {
         return STRINGS;
     }
 
-    private Map providers;
+    private final Map providers;
     private JMSCommandRunner commandRunner;
-    private File storagePath;
+    private final File storagePath;
+    private final Clock clock;
 
     /**
      * Constant that holds the name given to the thread which runs the HJBRoot

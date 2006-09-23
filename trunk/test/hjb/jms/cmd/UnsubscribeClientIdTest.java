@@ -27,16 +27,16 @@ import javax.jms.JMSException;
 import javax.jms.Session;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBException;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockHJBRuntime;
 import hjb.testsupport.MockSessionBuilder;
 
-public class UnsubscribeClientIdTest extends MockObjectTestCase {
+public class UnsubscribeClientIdTest extends BaseHJBTestCase {
 
     public void testUnsubscribeThrowsOnNullInputs() {
         try {
@@ -46,7 +46,8 @@ public class UnsubscribeClientIdTest extends MockObjectTestCase {
         try {
             Mock mockConnection = new MockConnectionBuilder().createMockConnection();
             new UnsubscribeClientId(new HJBConnection((Connection) mockConnection.proxy(),
-                                                      0),
+                                                      0,
+                                                      defaultTestClock()),
                                     1,
                                     null);
             fail("should have thrown an exception");
@@ -54,7 +55,7 @@ public class UnsubscribeClientIdTest extends MockObjectTestCase {
     }
 
     public void testExecuteUnsubscribesAClientId() {
-        HJBRoot root = new HJBRoot(testRootPath);
+        HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         Mock mockSession = new MockSessionBuilder().createMockSession();
         registerToVerify(mockSession);
         mockSession.expects(once())
@@ -86,7 +87,7 @@ public class UnsubscribeClientIdTest extends MockObjectTestCase {
                 new RuntimeException("fire in the server room"),
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
-            HJBRoot root = new HJBRoot(testRootPath);
+            HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
             Mock mockSession = new MockSessionBuilder().createMockSession();
             registerToVerify(mockSession);
             mockSession.expects(once())

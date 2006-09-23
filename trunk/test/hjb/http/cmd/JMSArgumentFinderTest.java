@@ -1,5 +1,14 @@
 package hjb.http.cmd;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
+
+import javax.jms.*;
+
+import org.jmock.Mock;
+
 import hjb.jms.HJBProvider;
 import hjb.jms.HJBRoot;
 import hjb.misc.HJBClientException;
@@ -7,23 +16,10 @@ import hjb.misc.HJBConstants;
 import hjb.misc.HJBNotFoundException;
 import hjb.misc.MessageProducerArguments;
 import hjb.msg.HJBMessage;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockHJBRuntime;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
-
-import javax.jms.DeliveryMode;
-import javax.jms.Destination;
-import javax.jms.Queue;
-import javax.jms.Session;
-import javax.jms.Topic;
-
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-
-public class JMSArgumentFinderTest extends MockObjectTestCase {
+public class JMSArgumentFinderTest extends BaseHJBTestCase {
 
     public void testFindsHJBMessageIfOneIsPresent() {
         decodedParameters.put(HJBConstants.MESSAGE_TO_SEND,
@@ -455,7 +451,7 @@ public class JMSArgumentFinderTest extends MockObjectTestCase {
 
     protected void setUp() throws Exception {
         testRootPath = File.createTempFile("test", null).getParentFile();
-        root = new HJBRoot(testRootPath);
+        root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB = new MockHJBRuntime();
         decodedParameters.clear();
     }

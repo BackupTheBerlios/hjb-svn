@@ -25,6 +25,7 @@ import java.util.Hashtable;
 import hjb.jms.HJBProvider;
 import hjb.jms.HJBRoot;
 import hjb.jms.ProviderBuilder;
+import hjb.misc.Clock;
 import hjb.misc.HJBStrings;
 
 public class RegisterProvider extends RootCommand {
@@ -48,14 +49,14 @@ public class RegisterProvider extends RootCommand {
 
     public String getDescription() {
         return strings().getString(HJBStrings.DESCRIPTION_OF_REGISTRATION_COMMANDS,
-                                   new ProviderBuilder(getEnvironment()).obtainHJBProviderName(),
+                                   new ProviderBuilder(getEnvironment(), new Clock()).obtainHJBProviderName(),
                                    HJBProvider.class.getName());
     }
 
     public String getStatusMessage() {
         if (isExecutedOK()) {
             return strings().getString(HJBStrings.SUCCESS_MESSAGE_OF_REGISTRATION_COMMANDS,
-                                       new ProviderBuilder(getEnvironment()).obtainHJBProviderName(),
+                                       new ProviderBuilder(getEnvironment(), getRoot().getClock()).obtainHJBProviderName(),
                                        HJBProvider.class.getName());
         } else {
             return getFault().getMessage();

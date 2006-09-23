@@ -24,50 +24,55 @@ import java.util.Hashtable;
 
 import javax.naming.Context;
 
-import org.jmock.MockObjectTestCase;
-
 import hjb.misc.HJBException;
+import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockContextBuilder;
 import hjb.testsupport.SharedMock;
 
-public class ProviderBuilderTest extends MockObjectTestCase {
+public class ProviderBuilderTest extends BaseHJBTestCase {
 
     public ProviderBuilderTest() {
         contextBuilder = new MockContextBuilder();
         sharedMock = SharedMock.getInstance();
     }
 
-    public void testProviderBuilder() {
+    public void testConstructionThrowsIllegalArgumentExceptionOnANullHashTable() {
+        try {
+            ProviderBuilder pc = new ProviderBuilder(null, defaultTestClock());
+            fail("should have thrown an IllegalArgumentException");
+        } catch (IllegalArgumentException e) {}        
+    }
+
+    public void testConstructionThrowsIllegalArgumentExceptionOnANullClock() {
+        try {
+            ProviderBuilder pc = new ProviderBuilder(testEnvironment, null);
+            fail("should have thrown an IllegalArgumentException");
+        } catch (IllegalArgumentException e) {}        
+    }
+
+    public void testConstructionRequiresAHashTableWithAProviderName() {
         Hashtable environment = new Hashtable();
         ProviderBuilder pc = null;
         try {
-            pc = new ProviderBuilder(environment);
+            pc = new ProviderBuilder(environment, defaultTestClock());
             fail("construction succeeded with a Hashtable without a "
                     + HJBProvider.HJB_PROVIDER_NAME);
         } catch (HJBException hjbe) {}
         environment.put(HJBProvider.HJB_PROVIDER_NAME, "testProvider");
-        pc = new ProviderBuilder(environment);
+        pc = new ProviderBuilder(environment, defaultTestClock());
         assertNotNull("ProviderBuilder was succesfully created", pc);
-    }
-
-    public void testProviderBuilderThrowsOnNoName() {
-        testEnvironment.remove(HJBProvider.HJB_PROVIDER_NAME);
-        try {
-            new ProviderBuilder(testEnvironment);
-            fail("should have thrown an exception");
-        } catch (HJBException e) {}
     }
 
     public void testProviderBuilderThrowsOnInvalidName() {
         testEnvironment.put(HJBProvider.HJB_PROVIDER_NAME, "1willfail");
         try {
-            new ProviderBuilder(testEnvironment);
+            new ProviderBuilder(testEnvironment, defaultTestClock());
             fail("should have thrown an exception");
         } catch (HJBException e) {}
     }
 
     public void testObtainJNDIEnvironment() throws Exception {
-        ProviderBuilder pc = new ProviderBuilder(testEnvironment);
+        ProviderBuilder pc = new ProviderBuilder(testEnvironment, defaultTestClock());
         Hashtable jndi = pc.obtainJNDIEnvironment();
         assertNotNull("the jndi environment was not found", jndi);
         assertTrue("the jndi initial context factory value was not present",
@@ -78,13 +83,13 @@ public class ProviderBuilderTest extends MockObjectTestCase {
     }
 
     public void testCreateProvider() {
-        ProviderBuilder pc = new ProviderBuilder(testEnvironment);
+        ProviderBuilder pc = new ProviderBuilder(testEnvironment, defaultTestClock());
         HJBProvider p = pc.createProvider();
         assertNotNull("the hjb provider was not created", p);
     }
 
     public void testObtainHJBProviderName() {
-        ProviderBuilder pc = new ProviderBuilder(testEnvironment);
+        ProviderBuilder pc = new ProviderBuilder(testEnvironment, defaultTestClock());
         String testName = pc.obtainHJBProviderName();
         assertNotNull("the hjb provider name was not found", testName);
         assertEquals("the hjb provider name had the wrong value",
@@ -93,7 +98,7 @@ public class ProviderBuilderTest extends MockObjectTestCase {
     }
 
     public void testObtainInitialContext() throws Exception {
-        ProviderBuilder pc = new ProviderBuilder(testEnvironment);
+        ProviderBuilder pc = new ProviderBuilder(testEnvironment, defaultTestClock());
         Context testContext = pc.obtainInitialContext();
         assertNotNull("the initial context was not found", testContext);
         assertEquals("the configured initial context factory was not used",
