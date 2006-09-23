@@ -29,359 +29,202 @@ import org.jmock.Mock;
 import hjb.misc.HJBException;
 import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
+import hjb.testsupport.DecoraterMock;
 import hjb.testsupport.MockSessionBuilder;
 
 public class HJBConnectionTest extends BaseHJBTestCase {
 
-    public void testHJBConnectionSetsExceptionListenerOnConstruction() {
-        Mock mockConnection = connectionBuilder.createMockConnection();
-        registerToVerify(mockConnection);
-        Connection testConnection = (Connection) mockConnection.proxy();
-        new HJBConnection(testConnection, 0, defaultTestClock());
+    public void testConstructionSetsExceptionListener() {
+        mockConnection.reset();
+        mockConnection.expects(once()).method("setExceptionListener");
+        new HJBConnection(((Connection) mockConnection.proxy()), 0, defaultTestClock());
     }
 
-    public void testHJBConnectionThrowsIllegalArgumentExceptionOnNullClock() {
+    public void testConstructionThrowsIllegalArgumentExceptionOnNullClock() {
         try {
-            Mock mockConnection = connectionBuilder.createMockConnection();
-            registerToVerify(mockConnection);
             Connection testConnection = (Connection) mockConnection.proxy();
             new HJBConnection(testConnection, 0, null);
             fail("An IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {}
     }
 
-    public void testHJBConnectionThrowsIllegalArgumentExceptionOnNullConnection() {
+    public void testConstructionThrowsIllegalArgumentExceptionOnNullConnection() {
         try {
             new HJBConnection(null, 0, defaultTestClock());
             fail("An IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {}
     }
 
-
     public void testCreateSessionInvokesDecorateeConnection() {
-        Mock mockConnection = connectionBuilder.createMockConnection();
         Mock mockSession = sessionBuilder.createMockSession();
-        registerToVerify(mockConnection);
         registerToVerify(mockSession);
         mockConnection.expects(once())
             .method("createSession")
             .will(returnValue((Session) mockSession.proxy()));
-        Connection testConnection = (Connection) mockConnection.proxy();
-
-        HJBConnection h = new HJBConnection(testConnection,
-                                            0,
-                                            defaultTestClock());
-        h.createSession(true, 1);
+        testConnection.createSession(true, 1);
     }
 
     public void testCreateSessionAddsANewCommandRunner() {
-        Mock mockConnection = connectionBuilder.createMockConnection();
         Mock mockSession = sessionBuilder.createMockSession();
-        registerToVerify(mockConnection);
         registerToVerify(mockSession);
         mockConnection.expects(once())
             .method("createSession")
             .will(returnValue((Session) mockSession.proxy()));
-
-        HJBConnection h = new HJBConnection((Connection) mockConnection.proxy(),
-                                            0,
-                                            defaultTestClock());
         try {
-            h.getSessionCommandRunner(0);
+            testConnection.getSessionCommandRunner(0);
             fail("should throw exception");
         } catch (IndexOutOfBoundsException e) {}
-        h.createSession(true, 1);
-        assertNotNull("should exist", h.getSessionCommandRunner(0));
+        testConnection.createSession(true, 1);
+        assertNotNull("should exist", testConnection.getSessionCommandRunner(0));
         try {
-            h.getSessionCommandRunner(1);
+            testConnection.getSessionCommandRunner(1);
             fail("should throw exception");
         } catch (IndexOutOfBoundsException e) {}
-        h.createSession(true, 1);
-        assertNotNull("should exist", h.getSessionCommandRunner(1));
+        testConnection.createSession(true, 1);
+        assertNotNull("should exist", testConnection.getSessionCommandRunner(1));
     }
 
     public void testGetSessions() {
-        Mock mockConnection = connectionBuilder.createMockConnection();
         Mock mockSession = sessionBuilder.createMockSession();
-        registerToVerify(mockConnection);
         registerToVerify(mockSession);
         mockConnection.expects(once())
             .method("createSession")
             .will(returnValue((Session) mockSession.proxy()));
-
-        HJBConnection h = new HJBConnection((Connection) mockConnection.proxy(),
-                                            0,
-                                            defaultTestClock());
-        h.createSession(true, 1);
+        testConnection.createSession(true, 1);
         assertEquals("1 session should have been added",
                      1,
-                     h.getActiveSessions().size());
-        h.createSession(true, 1);
+                     testConnection.getActiveSessions().size());
+        testConnection.createSession(true, 1);
         assertEquals("2 sessions should have been added",
                      2,
-                     h.getActiveSessions().size());
+                     testConnection.getActiveSessions().size());
     }
 
     public void testCreateSessionThrowsHJBExceptionOnJMSException() {
-        Mock mockConnection = connectionBuilder.createMockConnection();
-        registerToVerify(mockConnection);
         mockConnection.expects(once())
             .method("createSession")
             .will(throwException(new JMSException("thrown as a test")));
-        Connection testConnection = (Connection) mockConnection.proxy();
-
         try {
-            HJBConnection h = new HJBConnection(testConnection,
-                                                0,
-                                                defaultTestClock());
-            h.createSession(true, 1);
+            testConnection.createSession(true, 1);
             fail("An HJBException should have been thrown");
         } catch (HJBException e) {}
     }
 
     public void testGetClientIDInvokesDecorateeConnection() throws Exception {
-        Mock mockConnection = connectionBuilder.createMockConnection();
-        registerToVerify(mockConnection);
-        Connection testConnection = (Connection) mockConnection.proxy();
-
-        HJBConnection h = new HJBConnection(testConnection,
-                                            0,
-                                            defaultTestClock());
-        h.getClientID();
+        decoraterMock.expectDecorateeToBeInvoked("getClientID");
     }
 
-    public void testGetClientIDPropagatesJMSException() throws Exception {
-        Mock mockConnection = connectionBuilder.createMockConnection();
-        registerToVerify(mockConnection);
-        mockConnection.expects(once())
-            .method("getClientID")
-            .will(throwException(new JMSException("thrown as a test")));
-        Connection testConnection = (Connection) mockConnection.proxy();
-
-        HJBConnection h = new HJBConnection(testConnection,
-                                            0,
-                                            defaultTestClock());
+    public void testGetClientIDPropagatesJMSException() throws Throwable {
         try {
-            h.getClientID();
+            decoraterMock.expectDecorateeToThrow("getClientID",
+                                                 new JMSException("thrown as a test"));
             fail("A JMSException should have been thrown");
         } catch (JMSException e) {}
     }
 
     public void testSetClientIDInvokesDecorateeInstance() throws Exception {
-        Mock mockConnection = connectionBuilder.createMockConnection();
-        registerToVerify(mockConnection);
-        mockConnection.expects(once()).method("setClientID");
-        Connection testConnection = (Connection) mockConnection.proxy();
-
-        HJBConnection h = new HJBConnection(testConnection,
-                                            0,
-                                            defaultTestClock());
-        h.setClientID("test");
+        decoraterMock.expectDecorateeToBeInvoked("setClientID", new Object[] {
+            "test"
+        }, new Class[] {
+            String.class
+        });
     }
 
-    public void testSetClientIDPropagatesJMSException() throws Exception {
-        Mock mockConnection = connectionBuilder.createMockConnection();
-        registerToVerify(mockConnection);
-        mockConnection.expects(once())
-            .method("setClientID")
-            .will(throwException(new JMSException("thrown as a test")));
-        Connection testConnection = (Connection) mockConnection.proxy();
-
-        HJBConnection h = new HJBConnection(testConnection,
-                                            0,
-                                            defaultTestClock());
+    public void testSetClientIDPropagatesJMSException() throws Throwable {
         try {
-            h.setClientID("test");
+            decoraterMock.expectDecorateeToThrow("setClientID", new Object[] {
+                "test"
+            }, new Class[] {
+                String.class
+            }, new JMSException("thrown as a test"));
             fail("A JMSException should have been thrown");
         } catch (JMSException e) {}
     }
 
     public void testGetMetaDataInvokesDecorateeConnection() throws Exception {
-        Mock mockConnection = connectionBuilder.createMockConnection();
-        registerToVerify(mockConnection);
-        mockConnection.expects(once()).method("getMetaData");
-        Connection testConnection = (Connection) mockConnection.proxy();
-
-        HJBConnection h = new HJBConnection(testConnection,
-                                            0,
-                                            defaultTestClock());
-        h.getMetaData();
+        decoraterMock.expectDecorateeToBeInvoked("getMetaData");
     }
 
-    public void testGetMetaDataPropagatesJMSException() throws Exception {
-        Mock mockConnection = connectionBuilder.createMockConnection();
-        registerToVerify(mockConnection);
-        mockConnection.expects(once())
-            .method("getMetaData")
-            .will(throwException(new JMSException("thrown as test")));
-        Connection testConnection = (Connection) mockConnection.proxy();
-
-        HJBConnection h = new HJBConnection(testConnection,
-                                            0,
-                                            defaultTestClock());
+    public void testGetMetaDataPropagatesJMSException() throws Throwable {
         try {
-            h.getMetaData();
+            decoraterMock.expectDecorateeToThrow("getMetaData",
+                                                 new JMSException("thrown as a test"));
             fail("A JMSException should have been thrown");
         } catch (JMSException e) {}
     }
 
     public void testGetExceptionListenerInvokesDecorateeConnection()
             throws Exception {
-        Mock mockConnection = connectionBuilder.createMockConnection();
-        registerToVerify(mockConnection);
-        mockConnection.expects(once()).method("getExceptionListener");
-        Connection testConnection = (Connection) mockConnection.proxy();
-
-        HJBConnection h = new HJBConnection(testConnection,
-                                            0,
-                                            defaultTestClock());
-        h.getExceptionListener();
+        decoraterMock.expectDecorateeToBeInvoked("getExceptionListener");
     }
 
     public void testGetExceptionListenerPropagatesJMSException()
-            throws Exception {
-        Mock mockConnection = connectionBuilder.createMockConnection();
-        registerToVerify(mockConnection);
-        mockConnection.expects(once())
-            .method("getExceptionListener")
-            .will(throwException(new JMSException("thrown as test")));
-        Connection testConnection = (Connection) mockConnection.proxy();
-
-        HJBConnection h = new HJBConnection(testConnection,
-                                            0,
-                                            defaultTestClock());
+            throws Throwable {
         try {
-            h.getExceptionListener();
+            decoraterMock.expectDecorateeToThrow("getExceptionListener",
+                                                 new JMSException("thrown as a test"));
             fail("A JMSException should have been thrown");
         } catch (JMSException e) {}
     }
 
-    public void testSetExceptionListenerNeverInvokesDecorateeConnection() {
-        Mock mockConnection = connectionBuilder.createMockConnection();
-        registerToVerify(mockConnection);
-        Connection testConnection = (Connection) mockConnection.proxy();
-
-        HJBConnection h = new HJBConnection(testConnection,
-                                            0,
-                                            defaultTestClock());
-        h.setExceptionListener(null);
-        h.setExceptionListener(null);
-    }
-
     public void testStartInvokesDecorateeConnection() throws Exception {
-        Mock mockConnection = connectionBuilder.createMockConnection();
-        registerToVerify(mockConnection);
-        mockConnection.expects(once()).method("start");
-        Connection testConnection = (Connection) mockConnection.proxy();
-
-        HJBConnection h = new HJBConnection(testConnection,
-                                            0,
-                                            defaultTestClock());
-        h.start();
+        decoraterMock.expectDecorateeToBeInvoked("start");
     }
 
-    public void testStartPropagatesJMSException() throws Exception {
-        Mock mockConnection = connectionBuilder.createMockConnection();
-        registerToVerify(mockConnection);
-        mockConnection.expects(once())
-            .method("start")
-            .will(throwException(new JMSException("thrown as test")));
-        Connection testConnection = (Connection) mockConnection.proxy();
-
-        HJBConnection h = new HJBConnection(testConnection,
-                                            0,
-                                            defaultTestClock());
+    public void testStartPropagatesJMSException() throws Throwable {
         try {
-            h.start();
+            decoraterMock.expectDecorateeToThrow("start",
+                                                 new JMSException("thrown as a test"));
             fail("A JMSException should have been thrown");
         } catch (JMSException e) {}
     }
 
     public void testStopInvokesDecorateeConnection() throws Exception {
-        Mock mockConnection = connectionBuilder.createMockConnection();
-        registerToVerify(mockConnection);
-        mockConnection.expects(once()).method("stop");
-        Connection testConnection = (Connection) mockConnection.proxy();
-
-        HJBConnection h = new HJBConnection(testConnection,
-                                            0,
-                                            defaultTestClock());
-        h.stop();
+        decoraterMock.expectDecorateeToBeInvoked("stop");
     }
 
-    public void testStopPropagatesJMSException() throws Exception {
-        Mock mockConnection = connectionBuilder.createMockConnection();
-        registerToVerify(mockConnection);
-        mockConnection.expects(once())
-            .method("stop")
-            .will(throwException(new JMSException("thrown as test")));
-        Connection testConnection = (Connection) mockConnection.proxy();
-
-        HJBConnection h = new HJBConnection(testConnection,
-                                            0,
-                                            defaultTestClock());
+    public void testStopPropagatesJMSException() throws Throwable {
         try {
-            h.stop();
+            decoraterMock.expectDecorateeToThrow("stop",
+                                                 new JMSException("thrown as a test"));
             fail("A JMSException should have been thrown");
         } catch (JMSException e) {}
     }
 
     public void testCloseInvokesDecorateeConnection() throws Exception {
-        Mock mockConnection = connectionBuilder.createMockConnection();
-        registerToVerify(mockConnection);
-        mockConnection.expects(once()).method("close");
-        Connection testConnection = (Connection) mockConnection.proxy();
-
-        HJBConnection h = new HJBConnection(testConnection,
-                                            0,
-                                            defaultTestClock());
-        h.close();
+        decoraterMock.expectDecorateeToBeInvoked("close");
     }
 
-    public void testClosePropagatesJMSException() throws Exception {
-        Mock mockConnection = connectionBuilder.createMockConnection();
-        registerToVerify(mockConnection);
-        mockConnection.expects(once())
-            .method("close")
-            .will(throwException(new JMSException("thrown as test")));
-        Connection testConnection = (Connection) mockConnection.proxy();
-
-        HJBConnection h = new HJBConnection(testConnection,
-                                            0,
-                                            defaultTestClock());
+    public void testClosePropagatesJMSException() throws Throwable {
         try {
-            h.close();
+            decoraterMock.expectDecorateeToThrow("close",
+                                                 new JMSException("thrown as a test"));
             fail("A JMSException should have been thrown");
         } catch (JMSException e) {}
     }
 
-    public void testCreateConnectionConsumerAlwaysThrowsHJBException() {
-        Mock mockConnection = connectionBuilder.createMockConnection();
-        registerToVerify(mockConnection);
-        mockConnection.expects(never()).method("createConnectionConsumer");
-        Connection testConnection = (Connection) mockConnection.proxy();
+    public void testSetExceptionListenerNeverInvokesDecorateeConnection() {
+        testConnection.setExceptionListener(null);
+        testConnection.setExceptionListener(null);
+    }
 
-        HJBConnection h = new HJBConnection(testConnection,
-                                            0,
-                                            defaultTestClock());
+    public void testCreateConnectionConsumerAlwaysThrowsHJBException() {
+        mockConnection.expects(never()).method("createConnectionConsumer");
         try {
-            h.createConnectionConsumer(null, null, null, 0);
+            testConnection.createConnectionConsumer(null, null, null, 0);
             fail("An HJBException should have been thrown");
         } catch (HJBException e) {}
     }
 
     public void testCreateDurableConnectionConsumerAlwaysThrowsHJBException() {
-        Mock mockConnection = connectionBuilder.createMockConnection();
-        registerToVerify(mockConnection);
         mockConnection.expects(never())
             .method("createDurableConnectionConsumer");
-        Connection testConnection = (Connection) mockConnection.proxy();
-
-        HJBConnection h = new HJBConnection(testConnection,
-                                            0,
-                                            defaultTestClock());
         try {
-            h.createDurableConnectionConsumer(null, null, null, null, 0);
+            testConnection.createDurableConnectionConsumer(null,
+                                                           null,
+                                                           null,
+                                                           null,
+                                                           0);
             fail("An HJBException should have been thrown");
         } catch (HJBException e) {}
     }
@@ -390,9 +233,18 @@ public class HJBConnectionTest extends BaseHJBTestCase {
         super.setUp();
         connectionBuilder = new MockConnectionBuilder();
         sessionBuilder = new MockSessionBuilder();
+        mockConnection = connectionBuilder.createMockConnection();
+        registerToVerify(mockConnection);
+
+        testConnection = new HJBConnection(((Connection) mockConnection.proxy()),
+                                           0,
+                                           defaultTestClock());
+        decoraterMock = new DecoraterMock(mockConnection, testConnection);
     }
 
+    private Mock mockConnection;
+    private HJBConnection testConnection;
     private MockConnectionBuilder connectionBuilder;
     private MockSessionBuilder sessionBuilder;
-
+    private DecoraterMock decoraterMock;
 }

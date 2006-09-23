@@ -75,7 +75,8 @@ public class HJBConnection implements Connection {
      *            the index of this connection in the set of connections created
      *            by a connection factory.
      * @param clock
-     *            used to assign times to events that occur within the <code>HJBConnection</code>
+     *            used to assign times to events that occur within the
+     *            <code>HJBConnection</code>
      */
     public HJBConnection(Connection theConnection,
                          String clientId,
@@ -85,7 +86,7 @@ public class HJBConnection implements Connection {
             throw new IllegalArgumentException(strings().needsANonNull(Connection.class));
         }
         if (null == aClock) {
-            throw new IllegalArgumentException(strings().needsANonNull(Clock.class));            
+            throw new IllegalArgumentException(strings().needsANonNull(Clock.class));
         }
         this.clock = aClock;
         this.theConnection = theConnection;
@@ -95,6 +96,7 @@ public class HJBConnection implements Connection {
         this.sessionSubscribers = new HJBSessionDurableSubscribers(this);
         this.sessionIndices = Collections.synchronizedList(new ArrayList());
         this.activeSessions = Collections.synchronizedMap(new HashMap());
+        this.sessionCreationTimes = Collections.synchronizedMap(new HashMap());
         this.sessionCommandRunners = Collections.synchronizedMap(new HashMap());
         assignExceptionListener();
         assignClientIdIfNecessary(clientId);
@@ -110,9 +112,13 @@ public class HJBConnection implements Connection {
      * @param connectionIndex
      *            the index of this connection in the set of connections created
      *            by a connection factory.
-     * @param aClock TODO
+     * @param clock
+     *            used to assign times to events that occur within the
+     *            <code>HJBConnection</code>
      */
-    public HJBConnection(Connection theConnection, int connectionIndex, Clock aClock) {
+    public HJBConnection(Connection theConnection,
+                         int connectionIndex,
+                         Clock aClock) {
         this(theConnection, null, connectionIndex, aClock);
     }
 
@@ -160,6 +166,7 @@ public class HJBConnection implements Connection {
                 deleteCommandRunner(sessionIndex);
                 getSession(sessionIndex).close();
                 activeSessions.remove(new Integer(sessionIndex));
+                sessionCreationTimes.remove(new Integer(sessionIndex));
                 getSessionConsumers().removeConsumers(sessionIndex);
                 getSessionSubscribers().removeSubscribers(sessionIndex);
                 getSessionProducers().removeProducers(sessionIndex);
@@ -360,7 +367,7 @@ public class HJBConnection implements Connection {
     protected Clock getClock() {
         return clock;
     }
-    
+
     protected HJBStrings strings() {
         return STRINGS;
     }
@@ -368,6 +375,7 @@ public class HJBConnection implements Connection {
     private final int connectionIndex;
     private final List sessionIndices;
     private final Map activeSessions;
+    private final Map sessionCreationTimes;
     private final Map sessionCommandRunners;
     private final HJBSessionConsumers sessionConsumers;
     private final HJBSessionDurableSubscribers sessionSubscribers;
