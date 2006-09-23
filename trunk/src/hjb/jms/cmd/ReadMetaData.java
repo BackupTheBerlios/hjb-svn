@@ -31,13 +31,12 @@ public class ReadMetaData extends ConnectionCommand {
 
     public ReadMetaData(HJBConnection theConnection) {
         super(theConnection);
-        this.assistant = new MetadataReaderAssistant();
     }
 
     public void execute() {
         assertNotCompleted();
         try {
-            setMetaDataAsText(assistant.asText(getTheConnection().getMetaData()));
+            setMetaDataAsText(readConnectionMetadata());
         } catch (RuntimeException e) {
             recordFault(e);
         } catch (JMSException e) {
@@ -64,10 +63,13 @@ public class ReadMetaData extends ConnectionCommand {
         return metaDataAsText;
     }
 
-    public void setMetaDataAsText(String metaDataAsText) {
+    protected String readConnectionMetadata() throws JMSException {
+        return new MetadataReaderAssistant().asText(getTheConnection().getMetaData());
+    }
+
+    protected void setMetaDataAsText(String metaDataAsText) {
         this.metaDataAsText = metaDataAsText;
     }
 
     private String metaDataAsText;
-    private MetadataReaderAssistant assistant;
 }
