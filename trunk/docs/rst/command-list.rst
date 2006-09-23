@@ -17,6 +17,8 @@ specified URLs and HTTP request methods.
 +----------------------------------+--------------------------------------------------------+
 |`Delete Provider`_ (*D*)          |*hjb-root-uri*/*provider-name*                          |
 +----------------------------------+--------------------------------------------------------+
+|`List Provider`_ (*G*)            |*hjb-root-uri*/*provider-name*/list                     |
++----------------------------------+--------------------------------------------------------+
 |`Register Destination`_ (*G*)     |*provider-uri*/destination/*jndi-name*/register         |
 +----------------------------------+--------------------------------------------------------+
 |`Delete Destination`_ (*D*)       |*provider-uri*/destination/*jndi-name*                  |
@@ -25,6 +27,8 @@ specified URLs and HTTP request methods.
 |(*G*)                             |                                                        |
 +----------------------------------+--------------------------------------------------------+
 |`Delete Connection Factory`_ (*D*)|*provider-uri*/*jndi-name*                              |
++----------------------------------+--------------------------------------------------------+
+|`List Connection Factory`_ (*A*)  |*provider-uri*/*jndi-name*/list                         |
 +----------------------------------+--------------------------------------------------------+
 |`Create Connection`_ (*P*)        |*factory-uri*/create                                    |
 +----------------------------------+--------------------------------------------------------+
@@ -36,6 +40,8 @@ specified URLs and HTTP request methods.
 +----------------------------------+--------------------------------------------------------+
 |`Delete Connection`_ (*D*)        |*factory-uri*/connection-*nnn*                          |
 +----------------------------------+--------------------------------------------------------+
+|`List Connection`_ (*G*)          |*factory-uri*/connection-*nnn*/list                     |
++----------------------------------+--------------------------------------------------------+
 |`Create Session`_ (*P*)           |*connection-uri*/create                                 |
 +----------------------------------+--------------------------------------------------------+
 |`Rollback Session`_ (*G*)         |*connection-uri*/session-*nnn*/rollback                 |
@@ -45,6 +51,8 @@ specified URLs and HTTP request methods.
 |`Commit Session`_ (*P*)           |*connection-uri*/session-*nnn*/commit                   |
 +----------------------------------+--------------------------------------------------------+
 |`Delete Session`_ (*D*)           |*connection-uri*/session-*nnn*                          |
++----------------------------------+--------------------------------------------------------+
+|`List Session`_ (*G*)             |*connection-uri*/session-*nnn*/list                     |
 +----------------------------------+--------------------------------------------------------+
 |`Create Browser`_ (*P*)           |*session-uri*/create-browser                            |
 +----------------------------------+--------------------------------------------------------+
@@ -83,20 +91,24 @@ URIs
 
 .. _Register Provider: ./register-provider.html
 .. _Delete Provider: ./delete-provider.html
+.. _List Provider: ./list-provider.html
 .. _Register Destination: ./register-destination.html
 .. _Delete Destination: ./delete-destination.html
 .. _Register Connection Factory: ./register-connection-factory.html
 .. _Delete Connection Factory: ./delete-connection-factory.html
+.. _List Connection Factory: ./list-connection-factory.html
 .. _Create Connection: ./create-connection.html
 .. _Stop Connection: ./stop-connection.html
 .. _Start Connection: ./start-connection.html
 .. _Read Connection MetaData: ./read-connection-metadata.html
 .. _Delete Connection: ./delete-connection.html
+.. _List Connection: ./list-connection.html
 .. _Create Session: ./create-session.html
 .. _Unsubscribe Client Id: ./unsubscribe-client-id.html
 .. _Rollback Session: ./rollback-session.html
 .. _Commit Session: ./commit-session.html
 .. _Delete Session: ./delete-session.html
+.. _List Session: ./list-session.html
 .. _Create Browser: ./create-browser.html
 .. _View Queue: ./view-queue.html
 .. _Create Consumer: ./create-consumer.html

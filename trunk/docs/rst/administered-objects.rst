@@ -52,6 +52,9 @@ In HJB, each registered provider
   activity on the provider's connections, followed by removal of the
   provider and any administered objects that have been registered.
 
+* list their registered administered objects when a HTTP GET request
+  is made to their /list child URL. 
+
 JMS Administered Objects
 ------------------------
 
@@ -62,12 +65,12 @@ hosted by a JMS Provider that are used by a messaging application
 There are two kinds of administered object:
 
 Connection Factories
-  These create connections that a provider uses as a transport for
-  sending messages.
+  These create the connections that a provider uses as a transport 
+  for sending messages.
 
 Destinations
-  These are sources and sinks from/to which messages are sent and
-  received.
+  These are the sources from and sinks to which messages are sent 
+  and received.
 
 Administered objects are so called because they are assigned outside
 of JMS using the messaging system's administrative interface.  As has
@@ -86,10 +89,14 @@ In HJB, each Administered Object
 * is added to the HJB runtime by sending a HTTP POST request to the
   registration URL for the administered object. Although the two
   different types of administered objects have different registration
-  URLs, in both cases it is a child URL of the object's URI.
+  URLs, in both cases the registration URL has the object's URI as its
+  root.
 
 * can be removed from the HJB runtime by sending a HTTP DELETE request
-  to their URI.
+  to its URI.
+
+Connection factories respond with a listing of their active
+connections when they receive a GET request to their /list child URL.
 
 .. [JMSSpec] `Java Message Service specification 1.1
   <http://java.sun.com/products/jms/docs.html>`_

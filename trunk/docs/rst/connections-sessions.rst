@@ -15,11 +15,11 @@ Connections in HJB
 
 In HJB, each connection
 
-* is represented by a HTTP resource whose URI has the URI of
-  connection factory used to create the connection as its root.
+* is represented by a HTTP resource whose URI has the URI of the
+  connection factory that created it as its root.
 
 * has a URI that includes its creation index. For a given connection,
-  this is the number of connections that have been created by its root
+  this is the number of connections that have been created by its
   connection factory prior to its creation.
 
 * is created by sending a HTTP POST message to a specific child URI of
@@ -31,8 +31,11 @@ In HJB, each connection
 * can be stopped, started and removed by sending HTTP POST or GET
   requests to the appropriate child URL of its URI.
 
-* returns its metadata on receiving a HTTP GET to the appropriate
-  child URL.
+* sends its metadata as text on receiving a HTTP GET request to its
+  /metadata child URL.
+
+* lists its active sessions on receiving a HTTP GET request to its
+  /list child URL.
 
 * is configured with an ExceptionListener that writes any exceptions
   that occur on the connection to a log file.  The log file can be
@@ -62,7 +65,7 @@ In HJB, each JMS Session
 
 * has a URI that includes its creation index. For a given session,
   this is the number of other sessions that have been created by its
-  root connection prior its creation.
+  the connection that created it prior its creation.
 
 * is created by sending a HTTP POST request to the appropriate child
   URL of a connection URL.
@@ -75,6 +78,9 @@ In HJB, each JMS Session
 
 * can be removed, rolled back or committed by sending a HTTP request
   to the appropriate child URL.
+
+* lists its session objects on receiving a HTTP GET request to its
+  /list child URL.
 
 * on being removed, will terminate any requests to its
   MessageConsumers, DurableSubscribers, MessageProducers or
