@@ -1,0 +1,27 @@
+<html>
+<body bgcolor="white">
+
+Provides the classes and interface needed to allow values of various
+Java types encountered in JMS messages to be encoded into and decoded
+from strings that are suitable for inclusion in either the body or
+headers of a HTTP message.
+
+<p>
+<code>TypeValueCodec</code> defines the methods required for encoding
+and decoding any type.  There are implementations of this interface to
+support boolean, char, byte, short, int, long, byte array, double,
+float and string values.  All implementations in this package are
+actually subclasses of {@link hjb.msg.codec.BaseValueCodec}, which
+provides various utility methods used by all, and standard
+implementations of methods of {@link java.lang.Object}.
+</p>
+
+<p>
+<code>OrderedTypedValueCodec</code> is an implementation of the
+<code>TypeValueCodec</code> interface that combines all the other
+implementations in this package and should be used when the type to be
+encoded/decoded is unknown.
+</p>
+
+</body>
+</html>

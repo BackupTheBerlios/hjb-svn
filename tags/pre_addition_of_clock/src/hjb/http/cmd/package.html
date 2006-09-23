@@ -1,0 +1,51 @@
+<html>
+<body bgcolor="white">
+
+Provides the interfaces and classes used to process
+<code>HttpServletRequests</code> and send
+<code>HttpServletResponses</code> by generating {@link
+hjb.jms.cmd.JMSCommand}s, and sending appropriate
+responses back the HTTP user agent.
+
+<p>
+<code>JMSCommandGenerator</code> defines methods for matching a 
+<code>JMSCommand</code> to a request, generating a command instance, 
+and sending the appropriate response once the command is executed.
+There is an implementation of <code>JMSCommandGenerator</code> for 
+each <code>JMSCommand</code> defined in the <code>hjb.jms.cmd</code>
+package
+</p>
+
+<p>
+The <code>JMSCommandResponders</code> are used by the 
+<code>JMSCommandGenerator</code> implementations to write the
+response back to the HTTP client
+</p>
+
+<p>
+Other classes include:
+
+<ul>
+<li>
+<code>JMSCommandGeneratorFactory</code> provides
+<code>JMSCommandGenerators</code> for the relevant service methods of
+{@link hjb.http.HJBServlet} </li>
+
+<li>
+<code>HJBMessageWriter</code> is used to write
+<code>HJBMessage</code>s to the response as text</li>
+
+<li>
+<code>ParameterMapDecoder</code> decodes parameters encoded in a
+<code>HttpServletRequest</code></li>
+
+<li>
+<code>JMSArgumentFinder</code> provides methods that look for
+arguments to the JMS API methods in the decoded parameters of a
+<code>HttpServletRequest</code></li>
+
+</ul>
+</p>
+
+</body>
+</html>

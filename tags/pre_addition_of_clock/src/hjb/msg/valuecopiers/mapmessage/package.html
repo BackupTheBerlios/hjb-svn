@@ -1,0 +1,23 @@
+<html>
+<body bgcolor="white">
+
+Provides the classes used to allow values read and written from the
+fields of JMS MapMessages.
+
+<p>
+<code>MapMessageValueCopier</code> extends {@link
+hjb.msg.valuecopiers.BaseEncodedValueCopier} and serves as base class
+for the <code>EncodedValueCopiers</code> in this package.  There are
+implementations to support reading and writing of boolean, char, byte,
+short, int, long, double, float, byte array and string field values
+from <code>MapMessages</code>.
+</p>
+
+<p>
+<code>OrderedMapMessageValueCopier</code> combines all the other
+implementations and should be used when the type to be read/written is
+unknown.
+</p>
+
+</body>
+</html>
