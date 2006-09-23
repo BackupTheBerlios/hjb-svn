@@ -17,7 +17,7 @@ public class DecoraterMock {
         this.decorater = decorater;
     }
 
-    public void expectDecorateeToBeInvoked(String methodName,
+    public void invokeAndExpectOnDecoratee(String methodName,
                                            Object[] parameters,
                                            Class[] parameterTypes,
                                            Object result) throws Exception {
@@ -38,31 +38,32 @@ public class DecoraterMock {
         Method method = decorater.getClass().getMethod(methodName,
                                                        parameterTypes);
         method.invoke(decorater, parameters);
+        mockDecoratee.verify();
     }
 
-    public void expectDecorateeToBeInvoked(String methodName,
+    public void invokeAndExpectOnDecoratee(String methodName,
                                            Object[] parameters,
                                            Class[] parameterTypes)
             throws Exception {
-        expectDecorateeToBeInvoked(methodName, parameters, parameterTypes, null);
+        invokeAndExpectOnDecoratee(methodName, parameters, parameterTypes, null);
     }
 
-    public void expectDecorateeToBeInvoked(String methodName, Object result)
+    public void invokeAndExpectOnDecoratee(String methodName, Object result)
             throws Exception {
-        expectDecorateeToBeInvoked(methodName,
+        invokeAndExpectOnDecoratee(methodName,
                                    new Object[0],
                                    new Class[0],
                                    result);
     }
 
-    public void expectDecorateeToBeInvoked(String methodName) throws Exception {
-        expectDecorateeToBeInvoked(methodName, null);
+    public void invokeAndExpectOnDecoratee(String methodName) throws Exception {
+        invokeAndExpectOnDecoratee(methodName, null);
     }
 
-    public void expectDecorateeToThrow(String methodName,
-                                       Object[] parameters,
-                                       Class[] parameterTypes,
-                                       Exception e) throws Throwable {
+    public void invokeAndExpectDecorateeException(String methodName,
+                                                  Object[] parameters,
+                                                  Class[] parameterTypes,
+                                                  Exception e) throws Throwable {
         Constraint[] constraints = new Constraint[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
             constraints[i] = new IsEqual(parameters[i]);
@@ -80,9 +81,12 @@ public class DecoraterMock {
         }
     }
 
-    public void expectDecorateeToThrow(String methodName, Exception e)
+    public void invokeAndExpectDecorateeException(String methodName, Exception e)
             throws Throwable {
-        expectDecorateeToThrow(methodName, new Object[0], new Class[0], e);
+        invokeAndExpectDecorateeException(methodName,
+                                          new Object[0],
+                                          new Class[0],
+                                          e);
     }
 
     private final Mock mockDecoratee;

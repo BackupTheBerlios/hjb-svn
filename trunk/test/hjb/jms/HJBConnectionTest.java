@@ -37,7 +37,9 @@ public class HJBConnectionTest extends BaseHJBTestCase {
     public void testConstructionSetsExceptionListener() {
         mockConnection.reset();
         mockConnection.expects(once()).method("setExceptionListener");
-        new HJBConnection(((Connection) mockConnection.proxy()), 0, defaultTestClock());
+        new HJBConnection(((Connection) mockConnection.proxy()),
+                          0,
+                          defaultTestClock());
     }
 
     public void testConstructionThrowsIllegalArgumentExceptionOnNullClock() {
@@ -111,19 +113,19 @@ public class HJBConnectionTest extends BaseHJBTestCase {
     }
 
     public void testGetClientIDInvokesDecorateeConnection() throws Exception {
-        decoraterMock.expectDecorateeToBeInvoked("getClientID");
+        decoraterMock.invokeAndExpectOnDecoratee("getClientID");
     }
 
     public void testGetClientIDPropagatesJMSException() throws Throwable {
         try {
-            decoraterMock.expectDecorateeToThrow("getClientID",
-                                                 new JMSException("thrown as a test"));
+            decoraterMock.invokeAndExpectDecorateeException("getClientID",
+                                                            new JMSException("thrown as a test"));
             fail("A JMSException should have been thrown");
         } catch (JMSException e) {}
     }
 
     public void testSetClientIDInvokesDecorateeInstance() throws Exception {
-        decoraterMock.expectDecorateeToBeInvoked("setClientID", new Object[] {
+        decoraterMock.invokeAndExpectOnDecoratee("setClientID", new Object[] {
             "test"
         }, new Class[] {
             String.class
@@ -132,73 +134,76 @@ public class HJBConnectionTest extends BaseHJBTestCase {
 
     public void testSetClientIDPropagatesJMSException() throws Throwable {
         try {
-            decoraterMock.expectDecorateeToThrow("setClientID", new Object[] {
-                "test"
-            }, new Class[] {
-                String.class
-            }, new JMSException("thrown as a test"));
+            decoraterMock.invokeAndExpectDecorateeException("setClientID",
+                                                            new Object[] {
+                                                                "test"
+                                                            },
+                                                            new Class[] {
+                                                                String.class
+                                                            },
+                                                            new JMSException("thrown as a test"));
             fail("A JMSException should have been thrown");
         } catch (JMSException e) {}
     }
 
     public void testGetMetaDataInvokesDecorateeConnection() throws Exception {
-        decoraterMock.expectDecorateeToBeInvoked("getMetaData");
+        decoraterMock.invokeAndExpectOnDecoratee("getMetaData");
     }
 
     public void testGetMetaDataPropagatesJMSException() throws Throwable {
         try {
-            decoraterMock.expectDecorateeToThrow("getMetaData",
-                                                 new JMSException("thrown as a test"));
+            decoraterMock.invokeAndExpectDecorateeException("getMetaData",
+                                                            new JMSException("thrown as a test"));
             fail("A JMSException should have been thrown");
         } catch (JMSException e) {}
     }
 
     public void testGetExceptionListenerInvokesDecorateeConnection()
             throws Exception {
-        decoraterMock.expectDecorateeToBeInvoked("getExceptionListener");
+        decoraterMock.invokeAndExpectOnDecoratee("getExceptionListener");
     }
 
     public void testGetExceptionListenerPropagatesJMSException()
             throws Throwable {
         try {
-            decoraterMock.expectDecorateeToThrow("getExceptionListener",
-                                                 new JMSException("thrown as a test"));
+            decoraterMock.invokeAndExpectDecorateeException("getExceptionListener",
+                                                            new JMSException("thrown as a test"));
             fail("A JMSException should have been thrown");
         } catch (JMSException e) {}
     }
 
     public void testStartInvokesDecorateeConnection() throws Exception {
-        decoraterMock.expectDecorateeToBeInvoked("start");
+        decoraterMock.invokeAndExpectOnDecoratee("start");
     }
 
     public void testStartPropagatesJMSException() throws Throwable {
         try {
-            decoraterMock.expectDecorateeToThrow("start",
-                                                 new JMSException("thrown as a test"));
+            decoraterMock.invokeAndExpectDecorateeException("start",
+                                                            new JMSException("thrown as a test"));
             fail("A JMSException should have been thrown");
         } catch (JMSException e) {}
     }
 
     public void testStopInvokesDecorateeConnection() throws Exception {
-        decoraterMock.expectDecorateeToBeInvoked("stop");
+        decoraterMock.invokeAndExpectOnDecoratee("stop");
     }
 
     public void testStopPropagatesJMSException() throws Throwable {
         try {
-            decoraterMock.expectDecorateeToThrow("stop",
-                                                 new JMSException("thrown as a test"));
+            decoraterMock.invokeAndExpectDecorateeException("stop",
+                                                            new JMSException("thrown as a test"));
             fail("A JMSException should have been thrown");
         } catch (JMSException e) {}
     }
 
     public void testCloseInvokesDecorateeConnection() throws Exception {
-        decoraterMock.expectDecorateeToBeInvoked("close");
+        decoraterMock.invokeAndExpectOnDecoratee("close");
     }
 
     public void testClosePropagatesJMSException() throws Throwable {
         try {
-            decoraterMock.expectDecorateeToThrow("close",
-                                                 new JMSException("thrown as a test"));
+            decoraterMock.invokeAndExpectDecorateeException("close",
+                                                            new JMSException("thrown as a test"));
             fail("A JMSException should have been thrown");
         } catch (JMSException e) {}
     }
