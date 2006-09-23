@@ -89,8 +89,8 @@ def add_to_file(header, filename, checkFirst=10):
     print " : UPDATED"
     
 def main():
-    #update_license_headers()
-    change_master_command()
+    update_license_headers()
+    #change_master_command()
 
 if __name__ == '__main__':
     main()
