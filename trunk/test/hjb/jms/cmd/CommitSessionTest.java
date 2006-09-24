@@ -27,8 +27,8 @@ import javax.jms.Session;
 
 import org.jmock.Mock;
 
-import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
+import hjb.jms.HJBSession;
 import hjb.misc.HJBException;
 import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockHJBRuntime;
@@ -38,7 +38,7 @@ public class CommitSessionTest extends BaseHJBTestCase {
 
     public void testCommitSessionThrowsOnNullInputs() {
         try {
-            new CommitSession(null, 1);
+            new CommitSession(null);
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
     }
@@ -51,11 +51,11 @@ public class CommitSessionTest extends BaseHJBTestCase {
                              (Session) mockSession.proxy(),
                              "testProvider",
                              "testFactory");
-        HJBConnection testConnection = root.getProvider("testProvider")
+        HJBSession testSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
-            .getConnection(0);
+            .getConnection(0).getSession(0);
 
-        CommitSession command = new CommitSession(testConnection, 0);
+        CommitSession command = new CommitSession(testSession);
         command.execute();
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
@@ -83,11 +83,11 @@ public class CommitSessionTest extends BaseHJBTestCase {
                                  (Session) mockSession.proxy(),
                                  "testProvider",
                                  "testFactory");
-            HJBConnection testConnection = root.getProvider("testProvider")
+            HJBSession testSession = root.getProvider("testProvider")
                 .getConnectionFactory("testFactory")
-                .getConnection(0);
+                .getConnection(0).getSession(0);
 
-            CommitSession command = new CommitSession(testConnection, 0);
+            CommitSession command = new CommitSession(testSession);
             command.execute();
             assertFalse(command.isExecutedOK());
             assertTrue(command.isComplete());

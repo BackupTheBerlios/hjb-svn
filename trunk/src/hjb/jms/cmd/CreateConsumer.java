@@ -25,38 +25,36 @@ import javax.jms.MessageConsumer;
 
 import org.apache.log4j.Logger;
 
-import hjb.jms.HJBSessionConsumers;
+import hjb.jms.HJBSessionConsumersNG;
 import hjb.misc.HJBStrings;
 
 public class CreateConsumer extends BaseJMSCommand {
 
-    public CreateConsumer(HJBSessionConsumers consumers,
-                          int sessionIndex,
+    public CreateConsumer(HJBSessionConsumersNG consumers,
                           Destination destination,
                           String messageSelector,
                           boolean noLocal) {
-        if (null == consumers)
-            throw new IllegalArgumentException(strings().needsANonNull(HJBSessionConsumers.class));
-        if (null == destination)
+        if (null == consumers) {
+            throw new IllegalArgumentException(strings().needsANonNull(HJBSessionConsumersNG.class));
+        }
+        if (null == destination) {
             throw new IllegalArgumentException(strings().needsANonNull(Destination.class));
-        this.sessionIndex = sessionIndex;
+        }
         this.destination = destination;
         this.messageSelector = messageSelector;
         this.noLocal = noLocal;
         this.consumers = consumers;
     }
 
-    public CreateConsumer(HJBSessionConsumers consumers,
-                          int sessionIndex,
+    public CreateConsumer(HJBSessionConsumersNG consumers,
                           Destination destination,
                           String messageSelector) {
-        this(consumers, sessionIndex, destination, messageSelector, false);
+        this(consumers, destination, messageSelector, false);
     }
 
-    public CreateConsumer(HJBSessionConsumers consumers,
-                          int sessionIndex,
+    public CreateConsumer(HJBSessionConsumersNG consumers,
                           Destination destination) {
-        this(consumers, sessionIndex, destination, null);
+        this(consumers, destination, null);
     }
 
     public void execute() {
@@ -102,16 +100,13 @@ public class CreateConsumer extends BaseJMSCommand {
 
     protected void createConsumerAndSaveItsIndex() {
         if (null == getMessageSelector() && !noLocal) {
-            setConsumerIndex(getConsumers().createConsumer(getSessionIndex(),
-                                                           getDestination()));
+            setConsumerIndex(getConsumers().createConsumer(getDestination()));
         } else if (null != getMessageSelector() && !noLocal) {
-            
-            setConsumerIndex(getConsumers().createConsumer(getSessionIndex(),
-                                                           getDestination(),
+
+            setConsumerIndex(getConsumers().createConsumer(getDestination(),
                                                            getMessageSelector()));
         } else {
-            setConsumerIndex(getConsumers().createConsumer(getSessionIndex(),
-                                                           getDestination(),
+            setConsumerIndex(getConsumers().createConsumer(getDestination(),
                                                            getMessageSelector(),
                                                            isNoLocal()));
         }
@@ -121,21 +116,13 @@ public class CreateConsumer extends BaseJMSCommand {
         this.consumerIndex = consumerIndex;
     }
 
-    protected int getSessionIndex() {
-        return sessionIndex;
-    }
-
-    protected HJBSessionConsumers getConsumers() {
-        return consumers;
-    }
-
     protected Destination getDestination() {
         return destination;
     }
 
     protected String getMessageSelector() {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Using selector: " + messageSelector);            
+            LOG.debug("Using selector: " + messageSelector);
         }
         LOG.info("Using selector: " + messageSelector);
         return messageSelector;
@@ -145,13 +132,15 @@ public class CreateConsumer extends BaseJMSCommand {
         return noLocal;
     }
 
-    private int sessionIndex;
+    protected HJBSessionConsumersNG getConsumers() {
+        return consumers;
+    }
+
     private int consumerIndex;
-    private Destination destination;
-    private String messageSelector;
-    private boolean noLocal;
-    private HJBSessionConsumers consumers;
+    private final Destination destination;
+    private final String messageSelector;
+    private final boolean noLocal;
+    private final HJBSessionConsumersNG consumers;
     private static final Logger LOG = Logger.getLogger(CreateConsumer.class);
     public static final int UNSET_CONSUMER_INDEX = Integer.MIN_VALUE;
-    
 }

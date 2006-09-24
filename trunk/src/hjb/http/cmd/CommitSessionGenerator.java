@@ -25,8 +25,8 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
-import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
+import hjb.jms.HJBSession;
 import hjb.jms.cmd.CommitSession;
 import hjb.jms.cmd.JMSCommand;
 import hjb.misc.HJBException;
@@ -60,11 +60,12 @@ public class CommitSessionGenerator extends PatternMatchingCommandGenerator {
         int sessionIndex = Integer.parseInt(m.group(4));
 
         HJBTreeWalker walker = new HJBTreeWalker(root, pathInfo);
-        HJBConnection connection = walker.findConnection(providerName,
+        HJBSession session = walker.findSession(providerName,
                                                          factoryName,
-                                                         connectionIndex);
-        this.generatedCommand = new CommitSession(connection, sessionIndex);
-        setAssignedCommandRunner(connection.getSessionCommandRunner(sessionIndex));
+                                                         connectionIndex,
+                                                         sessionIndex);
+        this.generatedCommand = new CommitSession(session);
+        setAssignedCommandRunner(session.getCommandRunner());
     }
 
     protected Pattern getPathPattern() {

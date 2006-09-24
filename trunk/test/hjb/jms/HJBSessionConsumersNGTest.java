@@ -32,68 +32,35 @@ import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockSessionBuilder;
 
-public class HJBSessionConsumersTest extends BaseHJBTestCase {
+public class HJBSessionConsumersNGTest extends BaseHJBTestCase {
 
-    public void testHJBSessionConsumersThrowsIllegalArgumentExceptionOnNullConnection() {
+    public void testHJBSessionConsumersThrowsIllegalArgumentExceptionOnNullSession() {
         try {
-            new HJBSessionConsumers(null);
+            new HJBSessionConsumersNG(null);
             fail("An IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {}
-    }
-
-    public void testCreateConsumerThrowsIfSessionIsNotThere() throws Exception {
-        mockSession.stubs().method("createConsumer");
-        HJBSessionConsumers consumers = new HJBSessionConsumers(testConnection);
-        try {
-            consumers.createConsumer(0, testDestination);
-            fail("should have thrown an exception");
-        } catch (HJBException hjbe) {}
-
-        testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
-        try {
-            consumers.createConsumer(1, testDestination, "test-selector");
-            fail("should have thrown an exception");
-        } catch (HJBException hjbe) {}
-
-        try {
-            consumers.createConsumer(1, testDestination, "test-selector", true);
-            fail("should have thrown an exception");
-        } catch (HJBException hjbe) {}
-
-        assertEquals("Index should be 0",
-                     0,
-                     consumers.createConsumer(0, testDestination));
-        assertEquals("Index should be 1",
-                     1,
-                     consumers.createConsumer(0,
-                                              testDestination,
-                                              "test-selector"));
-        assertEquals("Index should be 2",
-                     2,
-                     consumers.createConsumer(0,
-                                              testDestination,
-                                              "test-selector",
-                                              false));
     }
 
     public void testCreateConsumerThrowsHJBExceptionOnJMSException()
             throws Exception {
         mockSession = sessionBuilder.createMockSessionThatThrowsJMSOn("createConsumer");
-        Session aSession = (Session) mockSession.proxy();
+        HJBSession aSession = new HJBSession((Session) mockSession.proxy(),
+                                             0,
+                                             defaultTestClock());
         updateConnectionMock(aSession);
 
-        HJBSessionConsumers consumers = new HJBSessionConsumers(testConnection);
+        HJBSessionConsumersNG consumers = new HJBSessionConsumersNG(aSession);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         try {
-            consumers.createConsumer(0, testDestination);
+            consumers.createConsumer(testDestination);
             fail("should have thrown an exception");
         } catch (HJBException hjbe) {}
         try {
-            consumers.createConsumer(0, testDestination, "test-selector");
+            consumers.createConsumer(testDestination, "test-selector");
             fail("should have thrown an exception");
         } catch (HJBException hjbe) {}
         try {
-            consumers.createConsumer(0, testDestination, "test-selector", false);
+            consumers.createConsumer(testDestination, "test-selector", false);
             fail("should have thrown an exception");
         } catch (HJBException hjbe) {}
     }
@@ -101,69 +68,35 @@ public class HJBSessionConsumersTest extends BaseHJBTestCase {
     public void testCreateConsumerIsInvokedOnStoredSession() throws Exception {
         mockSession.expects(atLeastOnce()).method("createConsumer");
         registerToVerify(mockSession);
-        testSession = (Session) mockSession.proxy();
+        testSession = new HJBSession((Session) mockSession.proxy(),
+                                     0,
+                                     defaultTestClock());
         updateConnectionMock(testSession);
 
-        HJBSessionConsumers consumers = new HJBSessionConsumers(testConnection);
+        HJBSessionConsumersNG consumers = new HJBSessionConsumersNG(testSession);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         assertEquals("Index should be 0",
                      0,
-                     consumers.createConsumer(0,
-                                              testDestination,
+                     consumers.createConsumer(testDestination,
                                               "test-selector",
                                               true));
         assertEquals("there should be 1 consumers",
                      1,
-                     consumers.getConsumers(0).length);
+                     consumers.asArray().length);
         assertEquals("Index should be 1",
                      1,
-                     consumers.createConsumer(0,
-                                              testDestination,
-                                              "test-selector"));
+                     consumers.createConsumer(testDestination, "test-selector"));
         assertEquals("there should be 2 consumers",
                      2,
-                     consumers.getConsumers(0).length);
+                     consumers.asArray().length);
         assertEquals("Index should be 2",
                      2,
-                     consumers.createConsumer(0,
-                                              testDestination,
+                     consumers.createConsumer(testDestination,
                                               "test-selector",
                                               true));
         assertEquals("there should be 3 consumers",
                      3,
-                     consumers.getConsumers(0).length);
-    }
-
-    public void testGetConsumersThrowsIfSessionIsNotThere() throws Exception {
-        HJBSessionConsumers consumers = new HJBSessionConsumers(testConnection);
-        try {
-            consumers.getConsumers(0);
-            fail("should have thrown an exception");
-        } catch (HJBException hjbe) {}
-    }
-
-    public void testGetConsumersReturnsEmptyForNewEmptySessions()
-            throws Exception {
-        HJBSessionConsumers consumers = new HJBSessionConsumers(testConnection);
-        testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
-        assertEquals(0, consumers.getConsumers(0).length);
-    }
-
-    public void testGetConsumerThrowsIfSessionIsNotThere() throws Exception {
-        HJBSessionConsumers consumers = new HJBSessionConsumers(testConnection);
-        try {
-            consumers.getConsumer(0, 0);
-            fail("should have thrown an exception");
-        } catch (HJBException hjbe) {}
-    }
-
-    public void testGetConsumerThrowsForNewEmptySessions() throws Exception {
-        HJBSessionConsumers consumers = new HJBSessionConsumers(testConnection);
-        testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
-        try {
-            consumers.getConsumer(0, 0);
-            fail("should have thrown an exception");
-        } catch (HJBException hjbe) {}
+                     consumers.asArray().length);
     }
 
     public void testGetConsumerThrowsForInvalidConsumer() throws Exception {
@@ -173,11 +106,11 @@ public class HJBSessionConsumersTest extends BaseHJBTestCase {
             .method("createConsumer")
             .will(returnValue(testMessageConsumer));
 
-        HJBSessionConsumers consumers = new HJBSessionConsumers(testConnection);
+        HJBSessionConsumersNG consumers = new HJBSessionConsumersNG(testSession);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
-        consumers.createConsumer(0, testDestination);
+        consumers.createConsumer(testDestination);
         try {
-            consumers.getConsumer(0, 1);
+            consumers.getConsumer(1);
             fail("should have thrown an exception - consumer 1 does not exist yet");
         } catch (HJBException hjbe) {}
     }
@@ -189,16 +122,15 @@ public class HJBSessionConsumersTest extends BaseHJBTestCase {
             .method("createConsumer")
             .will(returnValue(testMessageConsumer));
 
-        HJBSessionConsumers consumers = new HJBSessionConsumers(testConnection);
-        testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
+        HJBSessionConsumersNG consumers = new HJBSessionConsumersNG(testSession);
         assertEquals("Index should be 0",
                      0,
-                     consumers.createConsumer(0, testDestination));
-        assertNotNull("got first consumer", consumers.getConsumer(0, 0));
+                     consumers.createConsumer(testDestination));
+        assertNotNull("got first consumer", consumers.getConsumer(0));
         assertEquals("Index should be 1",
                      1,
-                     consumers.createConsumer(0, testDestination));
-        assertNotNull("got second consumer", consumers.getConsumer(0, 1));
+                     consumers.createConsumer(testDestination));
+        assertNotNull("got second consumer", consumers.getConsumer(1));
     }
 
     protected void setUp() throws Exception {
@@ -207,7 +139,9 @@ public class HJBSessionConsumersTest extends BaseHJBTestCase {
         mockSession = new MockSessionBuilder().createMockSession();
         registerToVerify(mockSession);
 
-        testSession = (Session) mockSession.proxy();
+        testSession = new HJBSession((Session) mockSession.proxy(),
+                                     0,
+                                     defaultTestClock());
 
         mockDestination = new Mock(Destination.class);
         testDestination = (Destination) mockDestination.proxy();
@@ -232,7 +166,7 @@ public class HJBSessionConsumersTest extends BaseHJBTestCase {
     private Mock mockDestination;
     private Destination testDestination;
     private Mock mockSession;
-    private Session testSession;
+    private HJBSession testSession;
 
     private MockConnectionBuilder connectionBuilder;
     private MockSessionBuilder sessionBuilder;

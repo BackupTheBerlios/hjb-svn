@@ -28,9 +28,7 @@ import javax.jms.Topic;
 
 import org.jmock.Mock;
 
-import hjb.jms.HJBConnection;
-import hjb.jms.HJBRoot;
-import hjb.jms.HJBSessionDurableSubscribers;
+import hjb.jms.*;
 import hjb.misc.HJBException;
 import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockHJBRuntime;
@@ -42,18 +40,18 @@ public class CreateSubscriberTest extends BaseHJBTestCase {
         Mock mockTopic = mock(Topic.class);
         Topic testTopic = (Topic) mockTopic.proxy();
         try {
-            new CreateSubscriber(null, 1, testTopic, "testSelector");
+            new CreateSubscriber(null, testTopic, "testSelector");
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
 
         HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
-        mockHJB.make1Connection(root, "testProvider", "testFactory");
-        HJBConnection testConnection = root.getProvider("testProvider")
+        mockHJB.make1Session(root, "testProvider", "testFactory");
+        HJBSession testSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
-            .getConnection(0);
-        HJBSessionDurableSubscribers sessionSubscribers = new HJBSessionDurableSubscribers(testConnection);
+            .getConnection(0).getSession(0);
+        HJBSessionDurableSubscribersNG sessionSubscribers = new HJBSessionDurableSubscribersNG(testSession);
         try {
-            new CreateSubscriber(sessionSubscribers, 1, null, "testSelector");
+            new CreateSubscriber(sessionSubscribers, null, "testSelector");
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
     }
@@ -61,20 +59,20 @@ public class CreateSubscriberTest extends BaseHJBTestCase {
     public void testExecuteCreatesANewSubscriber() {
         HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Session(root, "testProvider", "testFactory");
-        HJBConnection testConnection = root.getProvider("testProvider")
-            .getConnectionFactory("testFactory")
-            .getConnection(0);
-        HJBSessionDurableSubscribers sessionSubscribers = testConnection.getSessionSubscribers();
+        HJBSession testSession = root.getProvider("testProvider")
+        .getConnectionFactory("testFactory")
+        .getConnection(0).getSession(0);
+    HJBSessionDurableSubscribersNG sessionSubscribers = new HJBSessionDurableSubscribersNG(testSession);
+
         Mock mockTopic = mock(Topic.class);
         Topic testTopic = (Topic) mockTopic.proxy();
 
-        assertEquals(0, sessionSubscribers.getSubscribers(0).length);
+        assertEquals(0, sessionSubscribers.asArray().length);
         CreateSubscriber command = new CreateSubscriber(sessionSubscribers,
-                                                        0,
                                                         testTopic,
                                                         "*");
         command.execute();
-        assertEquals(1, sessionSubscribers.getSubscribers(0).length);
+        assertEquals(1, sessionSubscribers.asArray().length);
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
         assertNull(command.getFault());
@@ -98,23 +96,22 @@ public class CreateSubscriberTest extends BaseHJBTestCase {
                                  (Session) mockSession.proxy(),
                                  "testProvider",
                                  "testFactory");
-            HJBConnection testConnection = root.getProvider("testProvider")
-                .getConnectionFactory("testFactory")
-                .getConnection(0);
-            HJBSessionDurableSubscribers sessionSubscribers = testConnection.getSessionSubscribers();
+            HJBSession testSession = root.getProvider("testProvider")
+            .getConnectionFactory("testFactory")
+            .getConnection(0).getSession(0);
+        HJBSessionDurableSubscribersNG sessionSubscribers = new HJBSessionDurableSubscribersNG(testSession);
             Mock mockTopic = mock(Topic.class);
             Topic testTopic = (Topic) mockTopic.proxy();
             mockSession.expects(once())
                 .method("createDurableSubscriber")
                 .will(throwException(possibleExceptions[i]));
 
-            assertEquals(0, sessionSubscribers.getSubscribers(0).length);
+            assertEquals(0, sessionSubscribers.asArray().length);
             CreateSubscriber command = new CreateSubscriber(sessionSubscribers,
-                                                            0,
                                                             testTopic,
                                                             "*");
             command.execute();
-            assertEquals(0, sessionSubscribers.getSubscribers(0).length);
+            assertEquals(0, sessionSubscribers.asArray().length);
             assertFalse(command.isExecutedOK());
             assertTrue(command.isComplete());
             assertNotNull(command.getFault());

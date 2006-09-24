@@ -36,23 +36,22 @@ public class SessionListingTest extends BaseHJBTestCase {
     public void testGetListingIncludesAllConnections() {
         String expectedOutput = createSomeSessionObjects();
         assertEquals(expectedOutput,
-                     new SessionListing(testConnection, 0).getListing("/testProvider/testFactory/connection-10"));
+                     new SessionListing(testSession).getListing("/testProvider/testFactory/connection-10"));
     }
 
     public void testWriteListingIncludesAllConnections() {
         StringWriter sw = new StringWriter();
         String expectedOutput = createSomeSessionObjects();
-        new SessionListing(testConnection, 0).writeListing(sw,
-                                                           "/testProvider/testFactory/connection-10",
-                                                           false);
+        new SessionListing(testSession).writeListing(sw,
+                                                     "/testProvider/testFactory/connection-10",
+                                                     false);
         assertEquals(expectedOutput, sw.toString());
     }
 
     public void testRecurseListingAddsSessionListings() {
         StringWriter sw = new StringWriter();
         createSomeSessionObjects();
-        String expectedOutput =
-        "/testProvider/testFactory/connection-10/session-0/consumer-0"
+        String expectedOutput = "/testProvider/testFactory/connection-10/session-0/consumer-0"
                 + CR
                 + "message-selector=testSelector"
                 + CR
@@ -78,14 +77,13 @@ public class SessionListingTest extends BaseHJBTestCase {
                 + CR
                 + "/testProvider/testFactory/connection-10/session-0/browser-0[(source mockQueue)]"
                 + CR + "message-selector=testSelector";
-        new SessionListing(testConnection, 0).writeListing(sw,
-                                                           "/testProvider/testFactory/connection-10",
-                                                           true);
+        new SessionListing(testSession).writeListing(sw,
+                                                     "/testProvider/testFactory/connection-10",
+                                                     true);
         assertEquals(expectedOutput, sw.toString());
     }
 
     protected String createSomeSessionObjects() {
-        testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         addDefaultTestConsumer();
         addDefaultTestProducer();
         addDefaultTestSubscriber();
@@ -101,30 +99,27 @@ public class SessionListingTest extends BaseHJBTestCase {
     }
 
     protected void addDefaultTestProducer() {
-        HJBSessionProducers sessionProducers = testConnection.getSessionProducers();
-        sessionProducers.createProducer(0,
-                                        (Destination) mock(Destination.class).proxy(),
-                                        new MessageProducerArguments());
+        HJBSessionProducersNG producers = testSession.getProducers();
+        producers.createProducer((Destination) mock(Destination.class).proxy(),
+                                 new MessageProducerArguments());
     }
 
     protected void addDefaultTestConsumer() {
-        HJBSessionConsumers sessionConsumers = testConnection.getSessionConsumers();
-        sessionConsumers.createConsumer(0,
-                                        (Destination) mock(Destination.class).proxy());
+        HJBSessionConsumersNG consumers = testSession.getConsumers();
+        consumers.createConsumer((Destination) mock(Destination.class).proxy());
     }
 
     protected void addDefaultTestBrowser() {
-        HJBSessionQueueBrowsers browsers = testConnection.getSessionBrowsers();
+        HJBSessionQueueBrowsersNG browsers = testSession.getBrowsers();
         Mock mockQueue = mock(Queue.class);
-        browsers.createBrowser(0, (Queue) mockQueue.proxy());
+        browsers.createBrowser((Queue) mockQueue.proxy());
     }
 
     protected void addDefaultTestSubscriber() {
-        HJBSessionDurableSubscribers sessionSubscribers = testConnection.getSessionSubscribers();
+        HJBSessionDurableSubscribersNG subscribers = testSession.getSubscribers();
         Mock mockTopic = mock(Topic.class);
-        sessionSubscribers.createDurableSubscriber(0,
-                                                   (Topic) mockTopic.proxy(),
-                                                   "testSubscriber");
+        subscribers.createDurableSubscriber((Topic) mockTopic.proxy(),
+                                            "testSubscriber");
     }
 
     protected void setUp() throws Exception {
@@ -132,7 +127,10 @@ public class SessionListingTest extends BaseHJBTestCase {
         mockConnection.stubs().method("setClientID");
         testConnection = new HJBConnection((Connection) mockConnection.proxy(),
                                            "testClientId",
-                                           10, defaultTestClock());
+                                           10,
+                                           defaultTestClock());
+        testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
+        testSession = testConnection.getSession(0);
     }
 
     protected void tearDown() throws Exception {
@@ -140,4 +138,5 @@ public class SessionListingTest extends BaseHJBTestCase {
 
     public static final String CR = System.getProperty("line.separator");
     private HJBConnection testConnection;
+    private HJBSession testSession;
 }

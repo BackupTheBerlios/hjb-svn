@@ -27,10 +27,7 @@ import javax.jms.*;
 
 import org.jmock.Mock;
 
-import hjb.jms.HJBConnection;
-import hjb.jms.HJBMessenger;
-import hjb.jms.HJBRoot;
-import hjb.jms.HJBSessionProducers;
+import hjb.jms.*;
 import hjb.misc.HJBException;
 import hjb.msg.HJBMessage;
 import hjb.msg.MessageCopierFactory;
@@ -101,13 +98,12 @@ public class SendHJBMessageTest extends BaseHJBTestCase {
                              (Session) mockSession.proxy(),
                              "testProvider",
                              "testFactory");
-        HJBConnection testConnection = root.getProvider("testProvider")
+        HJBSession testHJBSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
-            .getConnection(0);
+            .getConnection(0).getSession(0);
 
-        create1Producer(testConnection);
-        SendHJBMessage command = new SendHJBMessage(new HJBMessenger(testConnection,
-                                                                     0),
+        create1Producer(testHJBSession);
+        SendHJBMessage command = new SendHJBMessage(new HJBMessenger(testHJBSession),
                                                     createTestTextHJBMessage(),
                                                     0,
                                                     new MockSessionBuilder().defaultProducerArguments(),
@@ -121,17 +117,6 @@ public class SendHJBMessageTest extends BaseHJBTestCase {
             command.execute();
             fail("should have thrown an exception");
         } catch (HJBException e) {}
-    }
-
-    protected void create1Producer(HJBConnection testConnection) {
-        HJBSessionProducers sessionProducers = testConnection.getSessionProducers();
-        Mock mockDestination = mock(Destination.class);
-        Destination testDestination = (Destination) mockDestination.proxy();
-        CreateProducer command = new CreateProducer(sessionProducers,
-                                                    0,
-                                                    testDestination,
-                                                    new MockSessionBuilder().defaultProducerArguments());
-        command.execute();
     }
 
     public void testExecuteReportsAFaultOnPossibleExceptions() throws Exception {
@@ -178,13 +163,12 @@ public class SendHJBMessageTest extends BaseHJBTestCase {
                                  (Session) mockSession.proxy(),
                                  "testProvider",
                                  "testFactory");
-            HJBConnection testConnection = root.getProvider("testProvider")
+            HJBSession testHJBSession = root.getProvider("testProvider")
                 .getConnectionFactory("testFactory")
-                .getConnection(0);
+                .getConnection(0).getSession(0);
 
-            create1Producer(testConnection);
-            SendHJBMessage command = new SendHJBMessage(new HJBMessenger(testConnection,
-                                                                         0),
+            create1Producer(testHJBSession);
+            SendHJBMessage command = new SendHJBMessage(new HJBMessenger(testHJBSession),
                                                         createTestTextHJBMessage(),
                                                         0,
                                                         new MockSessionBuilder().defaultProducerArguments(),
@@ -196,6 +180,16 @@ public class SendHJBMessageTest extends BaseHJBTestCase {
             assertEquals(command.getStatusMessage(), command.getFault()
                 .getMessage());
         }
+    }
+
+    protected void create1Producer(HJBSession testSession) {
+        HJBSessionProducersNG sessionProducers = testSession.getProducers();
+        Mock mockDestination = mock(Destination.class);
+        Destination testDestination = (Destination) mockDestination.proxy();
+        CreateProducer command = new CreateProducer(sessionProducers,
+                                                    testDestination,
+                                                    new MockSessionBuilder().defaultProducerArguments());
+        command.execute();
     }
 
     protected void setUp() throws Exception {

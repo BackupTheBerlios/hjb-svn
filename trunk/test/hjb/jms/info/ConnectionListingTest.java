@@ -29,7 +29,7 @@ import javax.jms.Session;
 import org.jmock.Mock;
 
 import hjb.jms.HJBConnection;
-import hjb.jms.HJBSessionQueueBrowsers;
+import hjb.jms.HJBSessionQueueBrowsersNG;
 import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
 
@@ -98,9 +98,9 @@ public class ConnectionListingTest extends BaseHJBTestCase {
     }
 
     protected void addDefaultTestBrowser() {
-        HJBSessionQueueBrowsers browsers = testConnection.getSessionBrowsers();
+        HJBSessionQueueBrowsersNG browsers = testConnection.getSession(0).getBrowsers();
         Mock mockQueue = mock(Queue.class);
-        browsers.createBrowser(0, (Queue) mockQueue.proxy());
+        browsers.createBrowser((Queue) mockQueue.proxy());
     }
 
     public static final String CR = System.getProperty("line.separator");

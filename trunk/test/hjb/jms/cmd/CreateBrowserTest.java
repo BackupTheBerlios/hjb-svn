@@ -28,9 +28,7 @@ import javax.jms.Session;
 
 import org.jmock.Mock;
 
-import hjb.jms.HJBConnection;
-import hjb.jms.HJBRoot;
-import hjb.jms.HJBSessionQueueBrowsers;
+import hjb.jms.*;
 import hjb.misc.HJBException;
 import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockHJBRuntime;
@@ -42,18 +40,18 @@ public class CreateBrowserTest extends BaseHJBTestCase {
         Mock mockQueue = mock(Queue.class);
         Queue testQueue = (Queue) mockQueue.proxy();
         try {
-            new CreateBrowser(null, 1, testQueue, "testSelector");
+            new CreateBrowser(null, testQueue, "testSelector");
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
 
         HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
-        mockHJB.make1Connection(root, "testProvider", "testFactory");
-        HJBConnection testConnection = root.getProvider("testProvider")
+        mockHJB.make1Session(root, "testProvider", "testFactory");
+        HJBSession testSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
-            .getConnection(0);
-        HJBSessionQueueBrowsers sessionBrowsers = new HJBSessionQueueBrowsers(testConnection);
+            .getConnection(0).getSession(0);
+        HJBSessionQueueBrowsersNG sessionBrowsers = new HJBSessionQueueBrowsersNG(testSession);
         try {
-            new CreateBrowser(sessionBrowsers, 1, null, "testSelector");
+            new CreateBrowser(sessionBrowsers, null, "testSelector");
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
     }
@@ -61,20 +59,19 @@ public class CreateBrowserTest extends BaseHJBTestCase {
     public void testExecuteCreatesANewBrowser() {
         HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Session(root, "testProvider", "testFactory");
-        HJBConnection testConnection = root.getProvider("testProvider")
+        HJBSession testSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
-            .getConnection(0);
-        HJBSessionQueueBrowsers sessionBrowsers = testConnection.getSessionBrowsers();
+            .getConnection(0).getSession(0);
+        HJBSessionQueueBrowsersNG sessionBrowsers = testSession.getBrowsers();
         Mock mockQueue = mock(Queue.class);
         Queue testQueue = (Queue) mockQueue.proxy();
 
-        assertEquals(0, sessionBrowsers.getBrowsers(0).length);
+        assertEquals(0, sessionBrowsers.asArray().length);
         CreateBrowser command = new CreateBrowser(sessionBrowsers,
-                                                  0,
                                                   testQueue,
                                                   "*");
         command.execute();
-        assertEquals(1, sessionBrowsers.getBrowsers(0).length);
+        assertEquals(1, sessionBrowsers.asArray().length);
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
         assertNull(command.getFault());
@@ -98,21 +95,20 @@ public class CreateBrowserTest extends BaseHJBTestCase {
                                  (Session) mockSession.proxy(),
                                  "testProvider",
                                  "testFactory");
-            HJBConnection testConnection = root.getProvider("testProvider")
+            HJBSession testSession = root.getProvider("testProvider")
                 .getConnectionFactory("testFactory")
-                .getConnection(0);
-            HJBSessionQueueBrowsers sessionBrowsers = testConnection.getSessionBrowsers();
+                .getConnection(0).getSession(0);
+            HJBSessionQueueBrowsersNG sessionBrowsers = testSession.getBrowsers();
             Mock mockQueue = mock(Queue.class);
             mockSession.expects(once())
                 .method("createBrowser")
                 .will(throwException(possibleExceptions[i]));
-            assertEquals(0, sessionBrowsers.getBrowsers(0).length);
+            assertEquals(0, sessionBrowsers.asArray().length);
             CreateBrowser command = new CreateBrowser(sessionBrowsers,
-                                                      0,
                                                       ((Queue) mockQueue.proxy()),
                                                       "*");
             command.execute();
-            assertEquals(0, sessionBrowsers.getBrowsers(0).length);
+            assertEquals(0, sessionBrowsers.asArray().length);
             assertFalse(command.isExecutedOK());
             assertTrue(command.isComplete());
             assertNotNull(command.getFault());

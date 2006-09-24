@@ -32,73 +32,34 @@ import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockSessionBuilder;
 
-public class HJBSessionDurableSubscribersTest extends BaseHJBTestCase {
+public class HJBSessionDurableSubscribersNGTest extends BaseHJBTestCase {
 
-    public void testHJBSessionDurableSubscribersThrowsIllegalArgumentExceptionOnNullConnection() {
+    public void testConstructionsThrowsIllegalArgumentExceptionOnNullSession() {
         try {
-            new HJBSessionDurableSubscribers(null);
+            new HJBSessionDurableSubscribersNG(null);
             fail("An IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {}
     }
 
-    public void testCreateSubscriberThrowsIfSessionIsNotThere()
-            throws Exception {
-        mockSession.stubs().method("createDurableSubscriber");
-        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testConnection);
-        try {
-            subscribers.createDurableSubscriber(0, testTopic, "test");
-            fail("should have thrown an exception");
-        } catch (HJBException hjbe) {}
-
-        testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
-        try {
-            subscribers.createDurableSubscriber(1, testTopic, "test-selector");
-            fail("should have thrown an exception");
-        } catch (HJBException hjbe) {}
-
-        try {
-            subscribers.createDurableSubscriber(1, testTopic, "test-selector");
-            fail("should have thrown an exception");
-        } catch (HJBException hjbe) {}
-
-        assertEquals("Index should be 0",
-                     0,
-                     subscribers.createDurableSubscriber(0,
-                                                         testTopic,
-                                                         "test-selector"));
-        assertEquals("Index should be 1",
-                     1,
-                     subscribers.createDurableSubscriber(0,
-                                                         testTopic,
-                                                         "test-selector"));
-        assertEquals("Index should be 2",
-                     2,
-                     subscribers.createDurableSubscriber(0,
-                                                         testTopic,
-                                                         "test-selector",
-                                                         "test",
-                                                         false));
-    }
 
     public void testCreateSubscriberThrowsHJBExceptionOnJMSException()
             throws Exception {
         mockSession = sessionBuilder.createMockSessionThatThrowsJMSOn("createDurableSubscriber");
-        Session aSession = (Session) mockSession.proxy();
+        HJBSession aSession = new HJBSession((Session) mockSession.proxy(), 0, defaultTestClock());
         updateConnectionMock(aSession);
 
-        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testConnection);
+        HJBSessionDurableSubscribersNG subscribers = new HJBSessionDurableSubscribersNG(aSession);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         try {
-            subscribers.createDurableSubscriber(0, testTopic, "test-selector");
+            subscribers.createDurableSubscriber(testTopic, "test-selector");
             fail("should have thrown an exception");
         } catch (HJBException hjbe) {}
         try {
-            subscribers.createDurableSubscriber(0, testTopic, "test-selector");
+            subscribers.createDurableSubscriber(testTopic, "test-selector");
             fail("should have thrown an exception");
         } catch (HJBException hjbe) {}
         try {
-            subscribers.createDurableSubscriber(0,
-                                                testTopic,
+            subscribers.createDurableSubscriber(testTopic,
                                                 "test-selector",
                                                 "test",
                                                 false);
@@ -109,71 +70,36 @@ public class HJBSessionDurableSubscribersTest extends BaseHJBTestCase {
     public void testCreateSubscriberIsInvokedOnStoredSession() throws Exception {
         mockSession.stubs().method("createDurableSubscriber");
         registerToVerify(mockSession);
-        testSession = (Session) mockSession.proxy();
+        testSession = new HJBSession((Session) mockSession.proxy(), 0, defaultTestClock());
         updateConnectionMock(testSession);
 
-        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testConnection);
+        HJBSessionDurableSubscribersNG subscribers = new HJBSessionDurableSubscribersNG(testSession);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         assertEquals("Index should be 0",
                      0,
-                     subscribers.createDurableSubscriber(0,
-                                                         testTopic,
+                     subscribers.createDurableSubscriber(testTopic,
                                                          "test-selector",
                                                          "test",
                                                          true));
         assertEquals("there should be 1 subscribers",
                      1,
-                     subscribers.getSubscribers(0).length);
+                     subscribers.asArray().length);
         assertEquals("Index should be 1",
                      1,
-                     subscribers.createDurableSubscriber(0,
-                                                         testTopic,
+                     subscribers.createDurableSubscriber(testTopic,
                                                          "test-selector"));
         assertEquals("there should be 2 subscribers",
                      2,
-                     subscribers.getSubscribers(0).length);
+                     subscribers.asArray().length);
         assertEquals("Index should be 2",
                      2,
-                     subscribers.createDurableSubscriber(0,
-                                                         testTopic,
+                     subscribers.createDurableSubscriber(testTopic,
                                                          "test-selector",
                                                          "test",
                                                          true));
         assertEquals("there should be 3 subscribers",
                      3,
-                     subscribers.getSubscribers(0).length);
-    }
-
-    public void testGetSubscribersThrowsIfSessionIsNotThere() throws Exception {
-        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testConnection);
-        try {
-            subscribers.getSubscribers(0);
-            fail("should have thrown an exception");
-        } catch (HJBException hjbe) {}
-    }
-
-    public void testGetSubscribersReturnsEmptyForNewEmptySessions()
-            throws Exception {
-        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testConnection);
-        testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
-        assertEquals(0, subscribers.getSubscribers(0).length);
-    }
-
-    public void testGetSubscriberThrowsIfSessionIsNotThere() throws Exception {
-        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testConnection);
-        try {
-            subscribers.getSubscriber(0, 0);
-            fail("should have thrown an exception");
-        } catch (HJBException hjbe) {}
-    }
-
-    public void testGetSubscriberThrowsForNewEmptySessions() throws Exception {
-        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testConnection);
-        testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
-        try {
-            subscribers.getSubscriber(0, 0);
-            fail("should have thrown an exception");
-        } catch (HJBException hjbe) {}
+                     subscribers.asArray().length);
     }
 
     public void testGetSubscriberThrowsForInvalidSubscriber() throws Exception {
@@ -183,11 +109,11 @@ public class HJBSessionDurableSubscribersTest extends BaseHJBTestCase {
             .method("createDurableSubscriber")
             .will(returnValue(testTopicSubscriber));
 
-        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testConnection);
+        HJBSessionDurableSubscribersNG subscribers = new HJBSessionDurableSubscribersNG(testSession);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
-        subscribers.createDurableSubscriber(0, testTopic, "test");
+        subscribers.createDurableSubscriber(testTopic, "test");
         try {
-            subscribers.getSubscriber(0, 1);
+            subscribers.getSubscriber(1);
             fail("should have thrown an exception - subscriber 1 does not exist yet");
         } catch (HJBException hjbe) {}
     }
@@ -199,20 +125,19 @@ public class HJBSessionDurableSubscribersTest extends BaseHJBTestCase {
             .method("createDurableSubscriber")
             .will(returnValue(testTopicSubscriber));
 
-        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testConnection);
+        HJBSessionDurableSubscribersNG subscribers = new HJBSessionDurableSubscribersNG(testSession);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         assertEquals("Index should be 0",
                      0,
-                     subscribers.createDurableSubscriber(0,
-                                                         testTopic,
+                     subscribers.createDurableSubscriber(testTopic,
                                                          "test",
                                                          "test",
                                                          true));
-        assertNotNull("got first subscriber", subscribers.getSubscriber(0, 0));
+        assertNotNull("got first subscriber", subscribers.getSubscriber(0));
         assertEquals("Index should be 1",
                      1,
-                     subscribers.createDurableSubscriber(0, testTopic, "test"));
-        assertNotNull("got second subscriber", subscribers.getSubscriber(0, 1));
+                     subscribers.createDurableSubscriber(testTopic, "test"));
+        assertNotNull("got second subscriber", subscribers.getSubscriber(1));
     }
 
     protected void setUp() throws Exception {
@@ -221,7 +146,7 @@ public class HJBSessionDurableSubscribersTest extends BaseHJBTestCase {
 
         mockSession = new MockSessionBuilder().createMockSession();
         registerToVerify(mockSession);
-        testSession = (Session) mockSession.proxy();
+        testSession = new HJBSession((Session) mockSession.proxy(), 0, defaultTestClock());
 
         mockTopic = new Mock(Topic.class);
         testTopic = (Topic) mockTopic.proxy();
@@ -244,7 +169,7 @@ public class HJBSessionDurableSubscribersTest extends BaseHJBTestCase {
     private Mock mockConnection;
     private HJBConnection testConnection;
     private Mock mockSession;
-    private Session testSession;
+    private HJBSession testSession;
     private Mock mockTopic;
     private Topic testTopic;
 

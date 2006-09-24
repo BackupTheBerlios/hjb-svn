@@ -44,16 +44,14 @@ import hjb.msg.NamedPropertyCopier;
  */
 public class HJBMessenger {
 
-    public HJBMessenger(HJBConnection theConnection, int sessionIndex) {
-        if (null == theConnection) {
-            throw new IllegalArgumentException(strings().needsANonNull(HJBConnection.class.getName()));
+    public HJBMessenger(HJBSession theSession) {
+        if (null == theSession) {
+            throw new IllegalArgumentException(strings().needsANonNull(HJBSession.class));
         }
-        this.theConnection = theConnection;
-        this.sessionIndex = sessionIndex;
-        verifySessionIndex();
+        this.theSession = theSession;
         setTimeout(new MessagingTimeoutConfiguration().getMinimumMessageTimeout());
     }
-
+    
     public HJBMessage[] viewQueue(int index) throws HJBException {
         try {
             List inQueue = Collections.list(getBrowserFor(index).getEnumeration());
@@ -82,9 +80,9 @@ public class HJBMessenger {
     }
 
     public HJBMessage send(HJBMessage asHJB,
-                     Destination destination,
-                     MessageProducerArguments producerArguments,
-                     int index) throws HJBException {
+                           Destination destination,
+                           MessageProducerArguments producerArguments,
+                           int index) throws HJBException {
         try {
             if (null == asHJB) {
                 String message = strings().getString(HJBStrings.IGNORED_NULL_HJB_MESSAGE,
@@ -100,7 +98,7 @@ public class HJBMessenger {
             updateHeaders(asHJB, asJMS);
             if (MESSAGE_LOG.isDebugEnabled()) {
                 String message = strings().getString(HJBStrings.MESSAGE_WAS_SENT,
-                                              asHJB);
+                                                     asHJB);
                 MESSAGE_LOG.debug(message);
             }
             return asHJB;
@@ -140,13 +138,13 @@ public class HJBMessenger {
     }
 
     public int getSessionIndex() {
-        return sessionIndex;
+        return getTheSession().getSessionIndex();
     }
-    
+
     public SessionDescription getSessionDescription() {
-        return new SessionDescription(getSession(), getSessionIndex());
+        return new SessionDescription(getTheSession(), getSessionIndex());
     }
-    
+
     public ProducerDescription getProducerDescription(int index) {
         return new ProducerDescription(getProducerFor(index), index);
     }
@@ -242,7 +240,7 @@ public class HJBMessenger {
     protected HJBMessage handleReceiptFailure(Exception e) throws HJBException {
         String message = strings().getString(HJBStrings.RECEIVE_OF_MESSAGE_FAILED,
                                              getSessionDescription());
-        LOG.error(message);            
+        LOG.error(message);
         throw new HJBException(message, e);
     }
 
@@ -255,7 +253,7 @@ public class HJBMessenger {
     }
 
     protected Message createJMSMessageFor(HJBMessage source) {
-        SessionMessageFactory f = new SessionMessageFactory(getSession());
+        SessionMessageFactory f = new SessionMessageFactory(getTheSession());
         return f.createMessage(source);
     }
 
@@ -268,42 +266,31 @@ public class HJBMessenger {
     }
 
     protected MessageConsumer getConsumerFor(int index) {
-        HJBSessionConsumers consumers = getTheConnection().getSessionConsumers();
-        return consumers.getConsumer(getSessionIndex(), index);
+        HJBSessionConsumersNG consumers = getTheSession().getConsumers();
+        return consumers.getConsumer(index);
     }
 
     protected MessageProducer getProducerFor(int index) {
-        HJBSessionProducers producers = getTheConnection().getSessionProducers();
-        return producers.getProducer(getSessionIndex(), index);
+        HJBSessionProducersNG producers = getTheSession().getProducers();
+        return producers.getProducer(index);
     }
 
     protected QueueBrowser getBrowserFor(int index) {
-        HJBSessionQueueBrowsers browsers = getTheConnection().getSessionBrowsers();
-        return browsers.getBrowser(getSessionIndex(), index);
+        HJBSessionQueueBrowsersNG browsers = getTheSession().getBrowsers();
+        return browsers.getBrowser(index);
     }
 
     protected TopicSubscriber getSubscriberFor(int index) {
-        HJBSessionDurableSubscribers subscribers = getTheConnection().getSessionSubscribers();
-        return subscribers.getSubscriber(getSessionIndex(), index);
+        HJBSessionDurableSubscribersNG subscribers = getTheSession().getSubscribers();
+        return subscribers.getSubscriber(index);
     }
 
-    protected Session getSession() {
-        try {
-            return getTheConnection().getSession(getSessionIndex());
-        } catch (IndexOutOfBoundsException e) {
-            String message = strings().getString(HJBStrings.SESSION_NOT_FOUND,
-                                                 new Integer(sessionIndex));
-            LOG.error(message);
-            throw new HJBException(message);
-        }
+    protected HJBSession getTheSession() {
+        return theSession;
     }
 
     protected void verifySessionIndex() {
-        getSession();
-    }
-
-    protected HJBConnection getTheConnection() {
-        return theConnection;
+        getTheSession();
     }
 
     protected MessageCopierFactory getCopierFactory() {
@@ -327,12 +314,12 @@ public class HJBMessenger {
         return STRINGS;
     }
 
-    private HJBConnection theConnection;
-    private int sessionIndex;
+    private final HJBSession theSession;
     private long timeout;
 
     private static final MessageCopierFactory COPIER_FACTORY = new MessageCopierFactory();
     private static final Logger LOG = Logger.getLogger(HJBMessenger.class);
-    private static final Logger MESSAGE_LOG = Logger.getLogger("Messages." + HJBMessenger.class.getName());
+    private static final Logger MESSAGE_LOG = Logger.getLogger("Messages."
+            + HJBMessenger.class.getName());
     private static final HJBStrings STRINGS = new HJBStrings();
 }

@@ -38,14 +38,14 @@ public class ProviderBuilderTest extends BaseHJBTestCase {
 
     public void testConstructionThrowsIllegalArgumentExceptionOnANullHashTable() {
         try {
-            ProviderBuilder pc = new ProviderBuilder(null, defaultTestClock());
+            new ProviderBuilder(null, defaultTestClock());
             fail("should have thrown an IllegalArgumentException");
         } catch (IllegalArgumentException e) {}        
     }
 
     public void testConstructionThrowsIllegalArgumentExceptionOnANullClock() {
         try {
-            ProviderBuilder pc = new ProviderBuilder(testEnvironment, null);
+            new ProviderBuilder(testEnvironment, null);
             fail("should have thrown an IllegalArgumentException");
         } catch (IllegalArgumentException e) {}        
     }

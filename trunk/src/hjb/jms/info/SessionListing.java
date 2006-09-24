@@ -24,9 +24,12 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import javax.jms.*;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageProducer;
+import javax.jms.QueueBrowser;
+import javax.jms.TopicSubscriber;
 
-import hjb.jms.HJBConnection;
+import hjb.jms.HJBSession;
 import hjb.misc.HJBStrings;
 import hjb.misc.PathNaming;
 
@@ -44,12 +47,11 @@ import hjb.misc.PathNaming;
  */
 public class SessionListing implements JMSObjectListing {
 
-    public SessionListing(HJBConnection theConnection, int sessionIndex) {
-        if (null == theConnection) {
-            throw new IllegalArgumentException(strings().needsANonNull(HJBConnection.class));
+    public SessionListing(HJBSession theSession) {
+        if (null == theSession) {
+            throw new IllegalArgumentException(strings().needsANonNull(HJBSession.class));
         }
-        this.theConnection = theConnection;
-        this.sessionIndex = sessionIndex;
+        this.theSession = theSession;
     }
 
     /**
@@ -103,7 +105,8 @@ public class SessionListing implements JMSObjectListing {
     protected void writeJMSObjects(PrintWriter aWriter,
                                    String prefixEndingInSlash,
                                    boolean recurse) {
-        String sessionPrefix = prefixEndingInSlash + PathNaming.SESSION + "-" + getSessionIndex() + "/";
+        String sessionPrefix = prefixEndingInSlash + PathNaming.SESSION + "-"
+                + getSessionIndex() + "/";
         writeConsumers(aWriter, sessionPrefix, recurse);
         writeSubscribers(aWriter, sessionPrefix, recurse);
         writeProducers(aWriter, sessionPrefix, recurse);
@@ -113,8 +116,7 @@ public class SessionListing implements JMSObjectListing {
     protected void writeBrowsers(PrintWriter aWriter,
                                  String sessionPrefix,
                                  boolean recurse) {
-        QueueBrowser browsers[] = getTheConnection().getSessionBrowsers()
-            .getBrowsers(getSessionIndex());
+        QueueBrowser browsers[] = getTheSession().getBrowsers().asArray();
         BaseJMSObjectDescription descriptions[] = new BaseJMSObjectDescription[browsers.length];
         for (int i = 0; i < browsers.length; i++) {
             descriptions[i] = new BrowserDescription(browsers[i], i);
@@ -125,8 +127,7 @@ public class SessionListing implements JMSObjectListing {
     protected void writeProducers(PrintWriter aWriter,
                                   String sessionPrefix,
                                   boolean recurse) {
-        MessageProducer producers[] = getTheConnection().getSessionProducers()
-            .getProducers(getSessionIndex());
+        MessageProducer producers[] = getTheSession().getProducers().asArray();
         BaseJMSObjectDescription descriptions[] = new BaseJMSObjectDescription[producers.length];
         for (int i = 0; i < producers.length; i++) {
             descriptions[i] = new ProducerDescription(producers[i], i);
@@ -140,8 +141,7 @@ public class SessionListing implements JMSObjectListing {
     protected void writeConsumers(PrintWriter aWriter,
                                   String sessionPrefix,
                                   boolean recurse) {
-        MessageConsumer consumers[] = getTheConnection().getSessionConsumers()
-            .getConsumers(getSessionIndex());
+        MessageConsumer consumers[] = getTheSession().getConsumers().asArray();
         BaseJMSObjectDescription descriptions[] = new BaseJMSObjectDescription[consumers.length];
         for (int i = 0; i < consumers.length; i++) {
             descriptions[i] = new ConsumerDescription(consumers[i], i);
@@ -155,8 +155,8 @@ public class SessionListing implements JMSObjectListing {
     protected void writeSubscribers(PrintWriter aWriter,
                                     String sessionPrefix,
                                     boolean recurse) {
-        TopicSubscriber subscribers[] = getTheConnection().getSessionSubscribers()
-            .getSubscribers(getSessionIndex());
+        TopicSubscriber subscribers[] = getTheSession().getSubscribers()
+            .asArray();
         BaseJMSObjectDescription descriptions[] = new BaseJMSObjectDescription[subscribers.length];
         for (int i = 0; i < subscribers.length; i++) {
             descriptions[i] = new SubscriberDescription(subscribers[i], i);
@@ -167,10 +167,14 @@ public class SessionListing implements JMSObjectListing {
         }
     }
 
+    private HJBSession getTheSession() {
+        return theSession;
+    }
+
     protected void writeDescriptions(BaseJMSObjectDescription[] descriptions,
-                                   PrintWriter aWriter,
-                                   String sessionPrefix,
-                                   boolean recurse) {
+                                     PrintWriter aWriter,
+                                     String sessionPrefix,
+                                     boolean recurse) {
         for (int i = 0; i < descriptions.length; i++) {
             aWriter.print(sessionPrefix);
             if (recurse) {
@@ -184,19 +188,14 @@ public class SessionListing implements JMSObjectListing {
         }
     }
 
-    protected HJBConnection getTheConnection() {
-        return theConnection;
-    }
-
     protected HJBStrings strings() {
         return STRINGS;
     }
 
     protected int getSessionIndex() {
-        return sessionIndex;
+        return getTheSession().getSessionIndex();
     }
 
-    private HJBConnection theConnection;
-    private int sessionIndex;
+    private HJBSession theSession;
     private static final HJBStrings STRINGS = new HJBStrings();
 }

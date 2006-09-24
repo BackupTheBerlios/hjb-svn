@@ -27,8 +27,8 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
-import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
+import hjb.jms.HJBSession;
 import hjb.jms.cmd.CreateConsumer;
 import hjb.jms.cmd.JMSCommand;
 import hjb.misc.HJBException;
@@ -73,18 +73,19 @@ public class CreateConsumerGenerator extends PatternMatchingCommandGenerator {
         this.createdLocationFormat = new MessageFormat(formatterText);
 
         HJBTreeWalker walker = new HJBTreeWalker(root, pathInfo);
-        HJBConnection connection = walker.findConnection(providerName,
-                                                         factoryName,
-                                                         connectionIndex);
+        HJBSession session = walker.findSession(providerName,
+                                                factoryName,
+                                                connectionIndex,
+                                                sessionIndex);
+
         Map decodedParameters = getDecoder().decode(request.getParameterMap());
-        this.generatedCommand = new CreateConsumer(connection.getSessionConsumers(),
-                                                   sessionIndex,
+        this.generatedCommand = new CreateConsumer(session.getConsumers(),
                                                    getFinder().findRequiredDestination(decodedParameters,
                                                                                        root,
                                                                                        providerName),
                                                    getFinder().findMessageSelector(decodedParameters),
                                                    getFinder().findNoLocal(decodedParameters));
-        setAssignedCommandRunner(connection.getSessionCommandRunner(sessionIndex));
+        setAssignedCommandRunner(session.getCommandRunner());
     }
 
     protected JMSCommandResponder createResponder() {

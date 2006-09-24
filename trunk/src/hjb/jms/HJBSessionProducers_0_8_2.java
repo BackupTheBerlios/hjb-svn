@@ -32,15 +32,15 @@ import hjb.misc.HJBStrings;
 import hjb.misc.MessageProducerArguments;
 
 /**
- * <code>HJBSessionProducers</code> is used to maintain the JMS
+ * <code>HJBSessionProducers_0_8_2</code> is used to maintain the JMS
  * <code>Producers</code> for all the <code>Sessions</code> created by a
  * <code>HJBConnection</code>.
  * 
  * @author Tim Emiola
  */
-public class HJBSessionProducers extends HJBSessionItems {
+public class HJBSessionProducers_0_8_2 extends HJBSessionItems {
 
-    public HJBSessionProducers(HJBConnection theConnection) {
+    public HJBSessionProducers_0_8_2(HJBConnection theConnection) {
         super(theConnection);
     }
 

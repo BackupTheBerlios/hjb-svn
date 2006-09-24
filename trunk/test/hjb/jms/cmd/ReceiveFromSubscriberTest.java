@@ -28,10 +28,10 @@ import javax.jms.*;
 import org.jmock.Mock;
 
 import hjb.http.cmd.HJBMessageWriter;
-import hjb.jms.HJBConnection;
 import hjb.jms.HJBMessenger;
 import hjb.jms.HJBRoot;
-import hjb.jms.HJBSessionDurableSubscribers;
+import hjb.jms.HJBSession;
+import hjb.jms.HJBSessionDurableSubscribersNG;
 import hjb.misc.HJBException;
 import hjb.msg.HJBMessage;
 import hjb.msg.MessageCopierFactory;
@@ -90,13 +90,13 @@ public class ReceiveFromSubscriberTest extends BaseHJBTestCase {
                                             "testFactory",
                                             "testDestination",
                                             testTopic);
-        HJBConnection testConnection = root.getProvider("testProvider")
+        HJBSession testHJBSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
-            .getConnection(0);
+            .getConnection(0)
+            .getSession(0);
 
-        create1Subscriber(testConnection);
-        ReceiveFromSubscriber command = new ReceiveFromSubscriber(new HJBMessenger(testConnection,
-                                                                                   0),
+        create1Subscriber(testHJBSession);
+        ReceiveFromSubscriber command = new ReceiveFromSubscriber(new HJBMessenger(testHJBSession),
                                                                   0);
         command.execute();
         assertTrue(command.isExecutedOK());
@@ -137,13 +137,13 @@ public class ReceiveFromSubscriberTest extends BaseHJBTestCase {
                                                 "testFactory",
                                                 "testDestination",
                                                 testTopic);
-            HJBConnection testConnection = root.getProvider("testProvider")
+            HJBSession testHJBSession = root.getProvider("testProvider")
                 .getConnectionFactory("testFactory")
-                .getConnection(0);
+                .getConnection(0)
+                .getSession(0);
 
-            create1Subscriber(testConnection);
-            ReceiveFromSubscriber command = new ReceiveFromSubscriber(new HJBMessenger(testConnection,
-                                                                                       0),
+            create1Subscriber(testHJBSession);
+            ReceiveFromSubscriber command = new ReceiveFromSubscriber(new HJBMessenger(testHJBSession),
                                                                       0);
             command.execute();
             assertFalse(command.isExecutedOK());
@@ -154,12 +154,11 @@ public class ReceiveFromSubscriberTest extends BaseHJBTestCase {
         }
     }
 
-    protected void create1Subscriber(HJBConnection testConnection) {
-        HJBSessionDurableSubscribers sessionSubscribers = testConnection.getSessionSubscribers();
+    protected void create1Subscriber(HJBSession testSession) {
+        HJBSessionDurableSubscribersNG sessionSubscribers = testSession.getSubscribers();
         Mock mockTopic = mock(Topic.class);
         Topic testTopic = (Topic) mockTopic.proxy();
         CreateSubscriber command = new CreateSubscriber(sessionSubscribers,
-                                                        0,
                                                         testTopic,
                                                         "testName");
         command.execute();

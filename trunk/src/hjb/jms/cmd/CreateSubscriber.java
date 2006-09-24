@@ -23,34 +23,31 @@ package hjb.jms.cmd;
 import javax.jms.Topic;
 import javax.jms.TopicSubscriber;
 
-import hjb.jms.HJBSessionDurableSubscribers;
+import hjb.jms.HJBSessionDurableSubscribersNG;
 import hjb.misc.HJBStrings;
 
 public class CreateSubscriber extends BaseJMSCommand {
 
-    public CreateSubscriber(HJBSessionDurableSubscribers subscribers,
-                            int sessionIndex,
+    public CreateSubscriber(HJBSessionDurableSubscribersNG subscribers,
                             Topic topic,
                             String name,
                             String messageSelector,
                             boolean noLocal) {
         if (null == subscribers)
-            throw new IllegalArgumentException(strings().needsANonNull(HJBSessionDurableSubscribers.class));
+            throw new IllegalArgumentException(strings().needsANonNull(HJBSessionDurableSubscribersNG.class));
         if (null == topic)
             throw new IllegalArgumentException(strings().needsANonNull(Topic.class));
-        this.sessionIndex = sessionIndex;
         this.topic = topic;
         this.name = name;
         this.messageSelector = messageSelector;
         this.noLocal = noLocal;
-        this.subscribers = subscribers;
+        this.subscribersNG = subscribers;
     }
 
-    public CreateSubscriber(HJBSessionDurableSubscribers subscribers,
-                            int sessionIndex,
+    public CreateSubscriber(HJBSessionDurableSubscribersNG subscribers,
                             Topic topic,
                             String name) {
-        this(subscribers, sessionIndex, topic, name, null, false);
+        this(subscribers, topic, name, null, false);
     }
 
     public void execute() {
@@ -84,15 +81,13 @@ public class CreateSubscriber extends BaseJMSCommand {
 
     protected void createDurableSubscriberAndSaveItsIndex() {
         if (null == getMessageSelector() && !noLocal) {
-            setDurableSubscriberIndex(getDurableSubscribers().createDurableSubscriber(getSessionIndex(),
-                                                                                      getTopic(),
-                                                                                      getName()));
+            setDurableSubscriberIndex(getSubscribers().createDurableSubscriber(getTopic(),
+                                                                               getName()));
         } else {
-            setDurableSubscriberIndex(getDurableSubscribers().createDurableSubscriber(getSessionIndex(),
-                                                                                      getTopic(),
-                                                                                      getName(),
-                                                                                      getMessageSelector(),
-                                                                                      isNoLocal()));
+            setDurableSubscriberIndex(getSubscribers().createDurableSubscriber(getTopic(),
+                                                                               getName(),
+                                                                               getMessageSelector(),
+                                                                               isNoLocal()));
         }
     }
 
@@ -101,11 +96,11 @@ public class CreateSubscriber extends BaseJMSCommand {
     }
 
     protected int getSessionIndex() {
-        return sessionIndex;
+        return getSubscribers().getSessionIndex();
     }
 
-    protected HJBSessionDurableSubscribers getDurableSubscribers() {
-        return subscribers;
+    protected HJBSessionDurableSubscribersNG getSubscribers() {
+        return subscribersNG;
     }
 
     protected Topic getTopic() {
@@ -124,12 +119,11 @@ public class CreateSubscriber extends BaseJMSCommand {
         return noLocal;
     }
 
-    private int sessionIndex;
     private int subscriberIndex;
     private Topic topic;
     private String messageSelector;
     private String name;
     private boolean noLocal;
-    private HJBSessionDurableSubscribers subscribers;
+    private HJBSessionDurableSubscribersNG subscribersNG;
     public static final int UNSET_SUBSCRIBER_INDEX = Integer.MIN_VALUE;
 }

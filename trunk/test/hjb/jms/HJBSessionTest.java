@@ -407,7 +407,6 @@ public class HJBSessionTest extends BaseHJBTestCase {
         mockSession.verify();
         mockSession.reset();
         try {
-
             decoraterMock.invokeAndExpectDecorateeException("createDurableSubscriber",
                                                             new Object[] {
                                                                     ((Topic) mockTopic.proxy()),

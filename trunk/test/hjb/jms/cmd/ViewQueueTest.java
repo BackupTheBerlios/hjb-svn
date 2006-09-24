@@ -31,10 +31,7 @@ import javax.jms.*;
 import org.jmock.Mock;
 
 import hjb.http.cmd.HJBMessageWriter;
-import hjb.jms.HJBConnection;
-import hjb.jms.HJBMessenger;
-import hjb.jms.HJBRoot;
-import hjb.jms.HJBSessionQueueBrowsers;
+import hjb.jms.*;
 import hjb.misc.HJBException;
 import hjb.msg.HJBMessage;
 import hjb.msg.MessageCopierFactory;
@@ -94,13 +91,13 @@ public class ViewQueueTest extends BaseHJBTestCase {
                                             "testFactory",
                                             "testDestination",
                                             testQueue);
-        HJBConnection testConnection = root.getProvider("testProvider")
+        HJBSession testHJBSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
-            .getConnection(0);
+            .getConnection(0)
+            .getSession(0);
 
-        create1Browser(testConnection);
-        ViewQueue command = new ViewQueue(new HJBMessenger(testConnection, 0),
-                                          0);
+        create1Browser(testHJBSession);
+        ViewQueue command = new ViewQueue(new HJBMessenger(testHJBSession), 0);
         command.execute();
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
@@ -142,13 +139,14 @@ public class ViewQueueTest extends BaseHJBTestCase {
                                                 "testFactory",
                                                 "testDestination",
                                                 testQueue);
-            HJBConnection testConnection = root.getProvider("testProvider")
+            HJBSession testHJBSession = root.getProvider("testProvider")
                 .getConnectionFactory("testFactory")
-                .getConnection(0);
+                .getConnection(0)
+                .getSession(0);
 
-            create1Browser(testConnection);
-            ViewQueue command = new ViewQueue(new HJBMessenger(testConnection,
-                                                               0), 0);
+            create1Browser(testHJBSession);
+            ViewQueue command = new ViewQueue(new HJBMessenger(testHJBSession),
+                                              0);
             command.execute();
             assertFalse(command.isExecutedOK());
             assertTrue(command.isComplete());
@@ -158,12 +156,11 @@ public class ViewQueueTest extends BaseHJBTestCase {
         }
     }
 
-    protected void create1Browser(HJBConnection testConnection) {
-        HJBSessionQueueBrowsers sessionBrowsers = testConnection.getSessionBrowsers();
+    protected void create1Browser(HJBSession testSession) {
+        HJBSessionQueueBrowsersNG sessionBrowsers = testSession.getBrowsers();
         Mock mockQueue = mock(Queue.class);
         Queue testQueue = (Queue) mockQueue.proxy();
         CreateBrowser command = new CreateBrowser(sessionBrowsers,
-                                                  0,
                                                   testQueue,
                                                   "testName");
         command.execute();

@@ -28,10 +28,7 @@ import javax.jms.*;
 import org.jmock.Mock;
 
 import hjb.http.cmd.HJBMessageWriter;
-import hjb.jms.HJBConnection;
-import hjb.jms.HJBMessenger;
-import hjb.jms.HJBRoot;
-import hjb.jms.HJBSessionConsumers;
+import hjb.jms.*;
 import hjb.misc.HJBException;
 import hjb.msg.HJBMessage;
 import hjb.msg.MessageCopierFactory;
@@ -83,13 +80,13 @@ public class ReceiveFromConsumerTest extends BaseHJBTestCase {
                              (Session) mockSession.proxy(),
                              "testProvider",
                              "testFactory");
-        HJBConnection testConnection = root.getProvider("testProvider")
+        HJBSession testSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
-            .getConnection(0);
+            .getConnection(0)
+            .getSession(0);
 
-        create1Consumer(testConnection);
-        ReceiveFromConsumer command = new ReceiveFromConsumer(new HJBMessenger(testConnection,
-                                                                               0),
+        create1Consumer(testSession);
+        ReceiveFromConsumer command = new ReceiveFromConsumer(new HJBMessenger(testSession),
                                                               0);
         command.execute();
         assertTrue(command.isExecutedOK());
@@ -126,13 +123,13 @@ public class ReceiveFromConsumerTest extends BaseHJBTestCase {
                                  testSession,
                                  "testProvider",
                                  "testFactory");
-            HJBConnection testConnection = root.getProvider("testProvider")
+            HJBSession testHJBSession = root.getProvider("testProvider")
                 .getConnectionFactory("testFactory")
-                .getConnection(0);
+                .getConnection(0)
+                .getSession(0);
 
-            create1Consumer(testConnection);
-            ReceiveFromConsumer command = new ReceiveFromConsumer(new HJBMessenger(testConnection,
-                                                                                   0),
+            create1Consumer(testHJBSession);
+            ReceiveFromConsumer command = new ReceiveFromConsumer(new HJBMessenger(testHJBSession),
                                                                   0);
             command.execute();
             assertFalse(command.isExecutedOK());
@@ -143,12 +140,11 @@ public class ReceiveFromConsumerTest extends BaseHJBTestCase {
         }
     }
 
-    protected void create1Consumer(HJBConnection testConnection) {
-        HJBSessionConsumers sessionConsumers = testConnection.getSessionConsumers();
+    protected void create1Consumer(HJBSession testSession) {
+        HJBSessionConsumersNG sessionConsumers = testSession.getConsumers();
         Mock mockDestination = mock(Destination.class);
         Destination testDestination = (Destination) mockDestination.proxy();
         CreateConsumer command = new CreateConsumer(sessionConsumers,
-                                                    0,
                                                     testDestination);
         command.execute();
     }

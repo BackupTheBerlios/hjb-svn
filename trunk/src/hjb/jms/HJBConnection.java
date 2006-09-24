@@ -41,18 +41,8 @@ import hjb.misc.HJBStrings;
  * <ul>
  * <li>a cache of the <code>Sessions</code> created by the decorated
  * connection</li>
- * <li>automatic and exclusive use <code>HJBMessageListener</code> as the
+ * <li>automatic and exclusive use of <code>HJBMessageListener</code> as the
  * decorated connection's <code>MessageListener</code></li>
- * <li>access to the <code>MessageProducers</code> created by by the
- * connection's <code>Sessions</code></li>
- * <li>access to the <code>MessageConsumers</code> created by the
- * connection's <code>Sessions</code></li>
- * <li>access to the <code>DurableSubscribers</code> created by the
- * connection's <code>Sessions</code></li>
- * <li>access to the <code>QueueBrowsers</code> created by the connection's
- * <code>Sessions</code></li>
- * <li>access to the <code>Threads</code> on which the <code>Session</code>'s
- * methods are executed</li>
  * </ul>
  * <p />
  * <strong>N.B</strong> It does not support the optional JMS methods
@@ -90,14 +80,8 @@ public class HJBConnection implements Connection {
         }
         this.clock = aClock;
         this.theConnection = theConnection;
-        this.queueBrowsers = new HJBSessionQueueBrowsers(this);
-        this.sessionConsumers = new HJBSessionConsumers(this);
-        this.sessionProducers = new HJBSessionProducers(this);
-        this.sessionSubscribers = new HJBSessionDurableSubscribers(this);
         this.sessionIndices = Collections.synchronizedList(new ArrayList());
         this.activeSessions = Collections.synchronizedMap(new HashMap());
-        this.sessionCreationTimes = Collections.synchronizedMap(new HashMap());
-        this.sessionCommandRunners = Collections.synchronizedMap(new HashMap());
         assignExceptionListener();
         assignClientIdIfNecessary(clientId);
         this.connectionIndex = connectionIndex;
@@ -131,12 +115,13 @@ public class HJBConnection implements Connection {
                                               int acknowledgeMode) {
         synchronized (activeSessions) {
             try {
-                Session s = getTheConnection().createSession(transacted,
+                Session rawSession = getTheConnection().createSession(transacted,
                                                              acknowledgeMode);
                 Integer index = new Integer(sessionIndices.size());
                 sessionIndices.add(index);
+                HJBSession s = new HJBSession(rawSession, index.intValue(), getClock());
                 activeSessions.put(index, s);
-                addAndStartCommandRunner(index.intValue());
+                s.startCommandRunner("" + this);
                 return index.intValue();
             } catch (JMSException e) {
                 return handleCreateSessionFailure(e);
@@ -144,11 +129,11 @@ public class HJBConnection implements Connection {
         }
     }
 
-    public Session getSession(int index) {
+    public HJBSession getSession(int index) throws IndexOutOfBoundsException {
         synchronized (activeSessions) {
             if (!activeSessions.containsKey(new Integer(index)))
                 throw new IndexOutOfBoundsException("" + index);
-            return (Session) activeSessions.get(new Integer(index));
+            return (HJBSession) activeSessions.get(new Integer(index));
         }
     }
 
@@ -163,14 +148,9 @@ public class HJBConnection implements Connection {
     public void deleteSession(int sessionIndex) {
         synchronized (activeSessions) {
             try {
-                deleteCommandRunner(sessionIndex);
+                getSession(sessionIndex).stopCommandRunner();
                 getSession(sessionIndex).close();
                 activeSessions.remove(new Integer(sessionIndex));
-                sessionCreationTimes.remove(new Integer(sessionIndex));
-                getSessionConsumers().removeConsumers(sessionIndex);
-                getSessionSubscribers().removeSubscribers(sessionIndex);
-                getSessionProducers().removeProducers(sessionIndex);
-                getSessionBrowsers().removeBrowsers(sessionIndex);
             } catch (IndexOutOfBoundsException e) {
                 String message = strings().getString(HJBStrings.SESSION_NOT_FOUND,
                                                      new Integer(sessionIndex));
@@ -213,23 +193,6 @@ public class HJBConnection implements Connection {
 
     public String toString() {
         return "" + new ConnectionDescription(this);
-    }
-
-    protected void addAndStartCommandRunner(int sessionIndex) {
-        JMSCommandRunner r = new JMSCommandRunner();
-        addCommandRunner(r, sessionIndex);
-        String threadName = strings().getString(HJBStrings.RUNNER_FOR,
-                                                this,
-                                                new SessionDescription(this,
-                                                                       sessionIndex).toString());
-        Thread runnerThread = new Thread(r, threadName);
-        runnerThread.setDaemon(true);
-        runnerThread.start();
-    }
-
-    protected void deleteCommandRunner(int sessionIndex) {
-        getSessionCommandRunner(sessionIndex).terminate();
-        sessionCommandRunners.remove(new Integer(sessionIndex));
     }
 
     public String getClientID() throws JMSException {
@@ -291,24 +254,8 @@ public class HJBConnection implements Connection {
     public JMSCommandRunner getSessionCommandRunner(int sessionIndex) {
         synchronized (activeSessions) {
             assertSessionExists(sessionIndex);
-            return (JMSCommandRunner) sessionCommandRunners.get(new Integer(sessionIndex));
+            return getSession(sessionIndex).getCommandRunner();
         }
-    }
-
-    public HJBSessionQueueBrowsers getSessionBrowsers() {
-        return queueBrowsers;
-    }
-
-    public HJBSessionConsumers getSessionConsumers() {
-        return sessionConsumers;
-    }
-
-    public HJBSessionProducers getSessionProducers() {
-        return sessionProducers;
-    }
-
-    public HJBSessionDurableSubscribers getSessionSubscribers() {
-        return sessionSubscribers;
     }
 
     protected void assignClientIdIfNecessary(String clientId) {
@@ -335,17 +282,6 @@ public class HJBConnection implements Connection {
     protected boolean clientIdWasSentAndCanBeUsed(String clientId)
             throws JMSException {
         return null != clientId && null == getTheConnection().getClientID();
-    }
-
-    protected void addCommandRunner(JMSCommandRunner commandRunner,
-                                    int sessionIndex) {
-        synchronized (activeSessions) {
-            if (null == commandRunner) {
-                throw new IllegalArgumentException(strings().needsANonNull(JMSCommandRunner.class));
-            }
-            assertSessionExists(sessionIndex);
-            sessionCommandRunners.put(new Integer(sessionIndex), commandRunner);
-        }
     }
 
     protected int handleCreateSessionFailure(JMSException e) {
@@ -375,12 +311,6 @@ public class HJBConnection implements Connection {
     private final int connectionIndex;
     private final List sessionIndices;
     private final Map activeSessions;
-    private final Map sessionCreationTimes;
-    private final Map sessionCommandRunners;
-    private final HJBSessionConsumers sessionConsumers;
-    private final HJBSessionDurableSubscribers sessionSubscribers;
-    private final HJBSessionProducers sessionProducers;
-    private final HJBSessionQueueBrowsers queueBrowsers;
     private final Connection theConnection;
     private final Clock clock;
 

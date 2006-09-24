@@ -31,15 +31,15 @@ import javax.jms.TopicSubscriber;
 import hjb.misc.HJBStrings;
 
 /**
- * <code>HJBSessionDurableSubscribers</code> is used to maintain the JMS
+ * <code>HJBSessionDurableSubscribers_0_8_2</code> is used to maintain the JMS
  * Durable Subscribers for all the <code>Sessions</code> created by a
  * <code>HJBConnection</code>.
  * 
  * @author Tim Emiola
  */
-public class HJBSessionDurableSubscribers extends HJBSessionItems {
+public class HJBSessionDurableSubscribers_0_8_2 extends HJBSessionItems {
 
-    public HJBSessionDurableSubscribers(HJBConnection theConnection) {
+    public HJBSessionDurableSubscribers_0_8_2(HJBConnection theConnection) {
         super(theConnection);
     }
 

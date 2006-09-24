@@ -23,18 +23,17 @@ package hjb.jms.cmd;
 import javax.jms.Destination;
 import javax.jms.MessageProducer;
 
-import hjb.jms.HJBSessionProducers;
+import hjb.jms.HJBSessionProducersNG;
 import hjb.misc.HJBStrings;
 import hjb.misc.MessageProducerArguments;
 
 public class CreateProducer extends BaseJMSCommand {
 
-    public CreateProducer(HJBSessionProducers producers,
-                          int sessionIndex,
+    public CreateProducer(HJBSessionProducersNG producers,
                           Destination destination,
                           MessageProducerArguments producerArguments) {
         if (null == producers) {
-            throw new IllegalArgumentException(strings().needsANonNull(HJBSessionProducers.class));
+            throw new IllegalArgumentException(strings().needsANonNull(HJBSessionProducersNG.class));
         }
         if (null == destination) {
             throw new IllegalArgumentException(strings().needsANonNull(Destination.class));
@@ -42,9 +41,7 @@ public class CreateProducer extends BaseJMSCommand {
         if (null == producerArguments) {
             throw new IllegalArgumentException(strings().needsANonNull(MessageProducerArguments.class));
         }
-
         this.producerArguments = producerArguments;
-        this.sessionIndex = sessionIndex;
         this.destination = destination;
         this.producers = producers;
         setProducerIndex(UNSET_PRODUCER_INDEX);
@@ -53,8 +50,7 @@ public class CreateProducer extends BaseJMSCommand {
     public void execute() {
         assertNotCompleted();
         try {
-            setProducerIndex(getProducers().createProducer(getSessionIndex(),
-                                                           getDestination(),
+            setProducerIndex(getProducers().createProducer(getDestination(),
                                                            getProducerArguments()));
         } catch (RuntimeException e) {
             recordFault(e);
@@ -101,11 +97,7 @@ public class CreateProducer extends BaseJMSCommand {
         return producerArguments;
     }
 
-    protected int getSessionIndex() {
-        return sessionIndex;
-    }
-
-    protected HJBSessionProducers getProducers() {
+    protected HJBSessionProducersNG getProducers() {
         return producers;
     }
 
@@ -113,10 +105,9 @@ public class CreateProducer extends BaseJMSCommand {
         return destination;
     }
 
-    private MessageProducerArguments producerArguments;
-    private int sessionIndex;
     private int producerIndex;
-    private Destination destination;
-    private HJBSessionProducers producers;
+    private final MessageProducerArguments producerArguments;
+    private final Destination destination;
+    private final HJBSessionProducersNG producers;
     public static final int UNSET_PRODUCER_INDEX = Integer.MIN_VALUE;
 }

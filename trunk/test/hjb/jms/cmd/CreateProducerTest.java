@@ -28,9 +28,7 @@ import javax.jms.Session;
 
 import org.jmock.Mock;
 
-import hjb.jms.HJBConnection;
-import hjb.jms.HJBRoot;
-import hjb.jms.HJBSessionProducers;
+import hjb.jms.*;
 import hjb.misc.HJBException;
 import hjb.misc.MessageProducerArguments;
 import hjb.testsupport.BaseHJBTestCase;
@@ -43,18 +41,18 @@ public class CreateProducerTest extends BaseHJBTestCase {
         Mock mockDestination = mock(Destination.class);
         Destination testDestination = (Destination) mockDestination.proxy();
         try {
-            new CreateProducer(null, 1, testDestination, null);
+            new CreateProducer(null, testDestination, null);
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
 
         HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
-        mockHJB.make1Connection(root, "testProvider", "testFactory");
-        HJBConnection testConnection = root.getProvider("testProvider")
+        mockHJB.make1Session(root, "testProvider", "testFactory");
+        HJBSession testSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
-            .getConnection(0);
-        HJBSessionProducers sessionProducers = new HJBSessionProducers(testConnection);
+            .getConnection(0).getSession(0);
+        HJBSessionProducersNG sessionProducers = new HJBSessionProducersNG(testSession);
         try {
-            new CreateProducer(sessionProducers, 1, null, null);
+            new CreateProducer(sessionProducers, null, null);
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
     }
@@ -62,16 +60,15 @@ public class CreateProducerTest extends BaseHJBTestCase {
     public void testExecuteCreatesANewProducer() {
         HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Session(root, "testProvider", "testFactory");
-        HJBConnection testConnection = root.getProvider("testProvider")
+        HJBSession testSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
-            .getConnection(0);
-        HJBSessionProducers sessionProducers = testConnection.getSessionProducers();
+            .getConnection(0).getSession(0);
+        HJBSessionProducersNG sessionProducers = testSession.getProducers();
         Mock mockDestination = mock(Destination.class);
         Destination testDestination = (Destination) mockDestination.proxy();
 
-        assertEquals(0, sessionProducers.getProducers(0).length);
+        assertEquals(0, sessionProducers.asArray().length);
         CreateProducer command = new CreateProducer(sessionProducers,
-                                                    0,
                                                     testDestination,
                                                     new MessageProducerArguments(false,
                                                                                  false,
@@ -79,7 +76,7 @@ public class CreateProducerTest extends BaseHJBTestCase {
                                                                                  null,
                                                                                  null));
         command.execute();
-        assertEquals(1, sessionProducers.getProducers(0).length);
+        assertEquals(1, sessionProducers.asArray().length);
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
         assertNull(command.getFault());
@@ -103,19 +100,18 @@ public class CreateProducerTest extends BaseHJBTestCase {
                                  (Session) mockSession.proxy(),
                                  "testProvider",
                                  "testFactory");
-            HJBConnection testConnection = root.getProvider("testProvider")
+            HJBSession testSession = root.getProvider("testProvider")
                 .getConnectionFactory("testFactory")
-                .getConnection(0);
-            HJBSessionProducers sessionProducers = testConnection.getSessionProducers();
+                .getConnection(0).getSession(0);
+            HJBSessionProducersNG sessionProducers = testSession.getProducers();
             Mock mockDestination = mock(Destination.class);
             Destination testDestination = (Destination) mockDestination.proxy();
 
             mockSession.expects(once())
                 .method("createProducer")
                 .will(throwException(possibleExceptions[i]));
-            assertEquals(0, sessionProducers.getProducers(0).length);
+            assertEquals(0, sessionProducers.asArray().length);
             CreateProducer command = new CreateProducer(sessionProducers,
-                                                        0,
                                                         testDestination,
                                                         new MessageProducerArguments(false,
                                                                                      false,
@@ -123,7 +119,7 @@ public class CreateProducerTest extends BaseHJBTestCase {
                                                                                      null,
                                                                                      null));
             command.execute();
-            assertEquals(0, sessionProducers.getProducers(0).length);
+            assertEquals(0, sessionProducers.asArray().length);
             assertFalse(command.isExecutedOK());
             assertTrue(command.isComplete());
             assertNotNull(command.getFault());

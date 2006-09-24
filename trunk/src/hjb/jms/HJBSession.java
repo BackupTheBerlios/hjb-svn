@@ -21,11 +21,18 @@
 package hjb.jms;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.Date;
 
 import javax.jms.*;
 
+import org.apache.log4j.Logger;
+
+import hjb.jms.cmd.JMSCommandRunner;
+import hjb.jms.info.SessionDescription;
 import hjb.misc.Clock;
+import hjb.misc.HJBException;
+import hjb.misc.HJBStrings;
 
 /**
  * HJBSession decorates a {@link javax.jms.Session}.
@@ -62,6 +69,11 @@ public class HJBSession implements Session {
         this.sessionIndex = sessionIndex;
         this.clock = aClock;
         this.creationTime = aClock.getCurrentTime();
+        this.browsers = new HJBSessionQueueBrowsersNG(this);
+        this.consumers = new HJBSessionConsumersNG(this);
+        this.producers = new HJBSessionProducersNG(this);
+        this.durableSubscribers = new HJBSessionDurableSubscribersNG(this);
+        this.commandRunner = new JMSCommandRunner();
     }
 
     public BytesMessage createBytesMessage() throws JMSException {
@@ -196,7 +208,46 @@ public class HJBSession implements Session {
     public void unsubscribe(String clientId) throws JMSException {
         getTheSession().unsubscribe(clientId);
     }
+
+    public void startCommandRunner(String connectionName) {
+        String threadName = strings().getString(HJBStrings.RUNNER_FOR,
+                                                connectionName,
+                                                new SessionDescription(this,
+                                                                       sessionIndex).toString());
+        Thread runnerThread = new Thread(commandRunner, threadName);
+        runnerThread.setDaemon(true);
+        runnerThread.start();
+    }
     
+    public void stopCommandRunner() {
+        commandRunner.terminate();
+    }
+
+    public HJBSessionProducersNG getProducers() {
+        return producers;
+    }
+
+    public MessageProducer getProducer(int producerIndex) {
+        try {
+            return getProducers().getProducer(producerIndex);
+        } catch (IndexOutOfBoundsException e) {
+            handleFailure("" + producerIndex, HJBStrings.PRODUCER_NOT_FOUND, e);
+            return null;
+        }
+    }
+
+    public HJBSessionConsumersNG getConsumers() {
+        return consumers;
+    }
+
+    public HJBSessionDurableSubscribersNG getSubscribers() {
+        return durableSubscribers;
+    }
+
+    public HJBSessionQueueBrowsersNG getBrowsers() {
+        return browsers;
+    }
+
     public boolean equals(Object o) {
         return getTheSession().equals(o);
     }
@@ -213,6 +264,10 @@ public class HJBSession implements Session {
         return sessionIndex;
     }
 
+    public JMSCommandRunner getCommandRunner() {
+        return commandRunner;
+    }
+
     protected Session getTheSession() {
         return theSession;
     }
@@ -221,8 +276,47 @@ public class HJBSession implements Session {
         return clock;
     }
 
+    protected HJBStrings strings() {
+        return STRINGS;
+    }
+
+    protected void handleFailure(int index, MessageFormat formatter, Exception e) {
+        logAndThrowFailure(formatter.format(new Object[] {
+            new Integer(index)
+        }), e);
+    }
+
+    protected void handleFailure(int index, String messageKey, Exception e) {
+        logAndThrowFailure(strings().getString(messageKey, new Integer(index)),
+                           e);
+    }
+
+    protected void handleFailure(String itemDescription,
+                                 String messageKey,
+                                 Exception e) {
+        logAndThrowFailure(strings().getString(messageKey,
+                                               getSessionDescription(),
+                                               itemDescription), e);
+    }
+
+    public SessionDescription getSessionDescription() {
+        return new SessionDescription(getTheSession(), getSessionIndex());
+    }
+
+    protected void logAndThrowFailure(String message, Exception e) {
+        LOG.error(message, e);
+        throw new HJBException(message, e);
+    }
+
+    private final JMSCommandRunner commandRunner;
+    private final HJBSessionProducersNG producers;
+    private final HJBSessionConsumersNG consumers;
+    private final HJBSessionDurableSubscribersNG durableSubscribers;
+    private final HJBSessionQueueBrowsersNG browsers;
     private final Session theSession;
     private final Clock clock;
     private final int sessionIndex;
     private final Date creationTime;
+    private static final Logger LOG = Logger.getLogger(HJBSessionItems.class);
+    private static final HJBStrings STRINGS = new HJBStrings();
 }

@@ -20,30 +20,26 @@
  */
 package hjb.jms.cmd;
 
-import hjb.jms.HJBConnection;
+import javax.jms.JMSException;
+
+import hjb.jms.HJBSession;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 
-import javax.jms.JMSException;
+public class UnsubscribeClientId extends SessionCommand {
 
-public class UnsubscribeClientId extends ConnectionCommand {
-
-    public UnsubscribeClientId(HJBConnection theConnection,
-                               int sessionIndex,
-                               String clientId) {
-        super(theConnection);
+    public UnsubscribeClientId(HJBSession theSession, String clientId) {
+        super(theSession);
         if (null == clientId) {
             throw new IllegalArgumentException(strings().needsANonNull("client Id"));
         }
-        setSessionIndex(sessionIndex);
         setClientId(clientId);
     }
 
     public void execute() {
         assertNotCompleted();
         try {
-            getTheConnection().getSession(getSessionIndex())
-                .unsubscribe(getClientId());
+            getTheSession().unsubscribe(getClientId());
         } catch (RuntimeException e) {
             recordFault(e);
         } catch (JMSException e) {
@@ -70,18 +66,9 @@ public class UnsubscribeClientId extends ConnectionCommand {
         }
     }
 
-    protected int getSessionIndex() {
-        return sessionIndex;
-    }
-
-    protected void setSessionIndex(int sessionIndex) {
-        this.sessionIndex = sessionIndex;
-    }
-
     protected void setClientId(String clientId) {
         this.clientId = clientId;
     }
 
-    private int sessionIndex;
     private String clientId;
 }

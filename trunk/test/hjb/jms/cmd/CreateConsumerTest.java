@@ -28,9 +28,7 @@ import javax.jms.Session;
 
 import org.jmock.Mock;
 
-import hjb.jms.HJBConnection;
-import hjb.jms.HJBRoot;
-import hjb.jms.HJBSessionConsumers;
+import hjb.jms.*;
 import hjb.misc.HJBException;
 import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockHJBRuntime;
@@ -42,18 +40,18 @@ public class CreateConsumerTest extends BaseHJBTestCase {
         Mock mockDestination = mock(Destination.class);
         Destination testDestination = (Destination) mockDestination.proxy();
         try {
-            new CreateConsumer(null, 1, testDestination, "testSelector");
+            new CreateConsumer(null, testDestination, "testSelector");
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
 
         HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
-        mockHJB.make1Connection(root, "testProvider", "testFactory");
-        HJBConnection testConnection = root.getProvider("testProvider")
+        mockHJB.make1Session(root, "testProvider", "testFactory");
+        HJBSession testSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
-            .getConnection(0);
-        HJBSessionConsumers sessionConsumers = new HJBSessionConsumers(testConnection);
+            .getConnection(0).getSession(0);
+        HJBSessionConsumersNG sessionConsumers = new HJBSessionConsumersNG(testSession);
         try {
-            new CreateConsumer(sessionConsumers, 1, null, "testSelector");
+            new CreateConsumer(sessionConsumers, null, "testSelector");
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
     }
@@ -71,23 +69,22 @@ public class CreateConsumerTest extends BaseHJBTestCase {
                                  (Session) mockSession.proxy(),
                                  "testProvider",
                                  "testFactory");
-            HJBConnection testConnection = root.getProvider("testProvider")
+            HJBSession testSession = root.getProvider("testProvider")
                 .getConnectionFactory("testFactory")
-                .getConnection(0);
-            HJBSessionConsumers sessionConsumers = testConnection.getSessionConsumers();
+                .getConnection(0).getSession(0);
+            HJBSessionConsumersNG sessionConsumers = testSession.getConsumers();
             Mock mockDestination = mock(Destination.class);
             Destination testDestination = (Destination) mockDestination.proxy();
 
             mockSession.expects(once())
                 .method("createConsumer")
                 .will(throwException(possibleExceptions[i]));
-            assertEquals(0, sessionConsumers.getConsumers(0).length);
+            assertEquals(0, sessionConsumers.asArray().length);
             CreateConsumer command = new CreateConsumer(sessionConsumers,
-                                                        0,
                                                         testDestination,
                                                         "*");
             command.execute();
-            assertEquals(0, sessionConsumers.getConsumers(0).length);
+            assertEquals(0, sessionConsumers.asArray().length);
             assertFalse(command.isExecutedOK());
             assertTrue(command.isComplete());
             assertNotNull(command.getFault());
@@ -99,20 +96,19 @@ public class CreateConsumerTest extends BaseHJBTestCase {
     public void testExecuteCreatesANewConsumer() {
         HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
         mockHJB.make1Session(root, "testProvider", "testFactory");
-        HJBConnection testConnection = root.getProvider("testProvider")
+        HJBSession testSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
-            .getConnection(0);
-        HJBSessionConsumers sessionConsumers = testConnection.getSessionConsumers();
+            .getConnection(0).getSession(0);
+        HJBSessionConsumersNG sessionConsumers = testSession.getConsumers();
         Mock mockDestination = mock(Destination.class);
         Destination testDestination = (Destination) mockDestination.proxy();
 
-        assertEquals(0, sessionConsumers.getConsumers(0).length);
+        assertEquals(0, sessionConsumers.asArray().length);
         CreateConsumer command = new CreateConsumer(sessionConsumers,
-                                                    0,
                                                     testDestination,
                                                     "*");
         command.execute();
-        assertEquals(1, sessionConsumers.getConsumers(0).length);
+        assertEquals(1, sessionConsumers.asArray().length);
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
         assertNull(command.getFault());

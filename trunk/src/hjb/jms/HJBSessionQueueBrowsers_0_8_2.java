@@ -31,15 +31,15 @@ import javax.jms.QueueBrowser;
 import hjb.misc.HJBStrings;
 
 /**
- * <code>HJBSessionQueueBrowsers</code> is used to maintain the JMS
+ * <code>HJBSessionQueueBrowsers_0_8_2</code> is used to maintain the JMS
  * <code>QueueBrowsers<code> for all the <code>Session</code> created by a
  * <code>HJBConnection</code>.
  * 
  * @author Tim Emiola
  */
-public class HJBSessionQueueBrowsers extends HJBSessionItems {
+public class HJBSessionQueueBrowsers_0_8_2 extends HJBSessionItems {
 
-    public HJBSessionQueueBrowsers(HJBConnection theConnection) {
+    public HJBSessionQueueBrowsers_0_8_2(HJBConnection theConnection) {
         super(theConnection);
     }
 

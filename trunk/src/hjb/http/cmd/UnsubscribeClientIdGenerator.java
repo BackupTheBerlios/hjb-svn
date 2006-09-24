@@ -26,8 +26,8 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
-import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
+import hjb.jms.HJBSession;
 import hjb.jms.cmd.JMSCommand;
 import hjb.jms.cmd.RollbackSession;
 import hjb.jms.cmd.UnsubscribeClientId;
@@ -64,14 +64,15 @@ public class UnsubscribeClientIdGenerator extends
         int sessionIndex = Integer.parseInt(m.group(4));
 
         HJBTreeWalker walker = new HJBTreeWalker(root, pathInfo);
-        HJBConnection connection = walker.findConnection(providerName,
-                                                         factoryName,
-                                                         connectionIndex);
+        HJBSession session = walker.findSession(providerName,
+                                                factoryName,
+                                                connectionIndex,
+                                                sessionIndex);
+
         Map decodedParameters = getDecoder().decode(request.getParameterMap());
-        this.generatedCommand = new UnsubscribeClientId(connection,
-                                                        sessionIndex,
+        this.generatedCommand = new UnsubscribeClientId(session,
                                                         getFinder().findClientId(decodedParameters));
-        setAssignedCommandRunner(connection.getSessionCommandRunner(sessionIndex));
+        setAssignedCommandRunner(session.getCommandRunner());
     }
 
     protected Pattern getPathPattern() {

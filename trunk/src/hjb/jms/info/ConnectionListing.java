@@ -108,7 +108,7 @@ public class ConnectionListing implements JMSObjectListing {
             SessionDescription sd = getTheConnection().getSessionDescription(sessionIndex.intValue());
             aWriter.println();
             aWriter.println(prefixEndingInSlash + sd.longDescription());
-            new SessionListing(getTheConnection(), sessionIndex.intValue()).writeListing(aWriter,
+            new SessionListing(getTheConnection().getSession(sessionIndex.intValue())).writeListing(aWriter,
                                                                                          prefixEndingInSlash,
                                                                                          true);
         }

@@ -27,8 +27,8 @@ import javax.jms.Session;
 
 import org.jmock.Mock;
 
-import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
+import hjb.jms.HJBSession;
 import hjb.misc.HJBException;
 import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockHJBRuntime;
@@ -38,7 +38,7 @@ public class RollbackSessionTest extends BaseHJBTestCase {
 
     public void testRollbackSessionThrowsOnNullInputs() {
         try {
-            new RollbackSession(null, 1);
+            new RollbackSession(null);
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
     }
@@ -52,11 +52,11 @@ public class RollbackSessionTest extends BaseHJBTestCase {
                              (Session) mockSession.proxy(),
                              "testProvider",
                              "testFactory");
-        HJBConnection testConnection = root.getProvider("testProvider")
+        HJBSession testHJBSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
-            .getConnection(0);
+            .getConnection(0).getSession(0);
 
-        RollbackSession command = new RollbackSession(testConnection, 0);
+        RollbackSession command = new RollbackSession(testHJBSession);
         command.execute();
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
@@ -84,11 +84,11 @@ public class RollbackSessionTest extends BaseHJBTestCase {
                                  (Session) mockSession.proxy(),
                                  "testProvider",
                                  "testFactory");
-            HJBConnection testConnection = root.getProvider("testProvider")
+            HJBSession testHJBSession = root.getProvider("testProvider")
                 .getConnectionFactory("testFactory")
-                .getConnection(0);
+                .getConnection(0).getSession(0);
 
-            RollbackSession command = new RollbackSession(testConnection, 0);
+            RollbackSession command = new RollbackSession(testHJBSession);
             command.execute();
             assertFalse(command.isExecutedOK());
             assertTrue(command.isComplete());

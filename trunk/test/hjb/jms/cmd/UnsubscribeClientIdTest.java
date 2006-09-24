@@ -22,17 +22,15 @@ package hjb.jms.cmd;
 
 import java.io.File;
 
-import javax.jms.Connection;
 import javax.jms.JMSException;
 import javax.jms.Session;
 
 import org.jmock.Mock;
 
-import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
+import hjb.jms.HJBSession;
 import hjb.misc.HJBException;
 import hjb.testsupport.BaseHJBTestCase;
-import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockHJBRuntime;
 import hjb.testsupport.MockSessionBuilder;
 
@@ -40,15 +38,14 @@ public class UnsubscribeClientIdTest extends BaseHJBTestCase {
 
     public void testUnsubscribeThrowsOnNullInputs() {
         try {
-            new UnsubscribeClientId(null, 1, "foo");
+            new UnsubscribeClientId(null, "foo");
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
         try {
-            Mock mockConnection = new MockConnectionBuilder().createMockConnection();
-            new UnsubscribeClientId(new HJBConnection((Connection) mockConnection.proxy(),
+            Mock mockSession = new MockSessionBuilder().createMockSession();
+            new UnsubscribeClientId(new HJBSession((Session) mockSession.proxy(),
                                                       0,
                                                       defaultTestClock()),
-                                    1,
                                     null);
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
@@ -63,12 +60,11 @@ public class UnsubscribeClientIdTest extends BaseHJBTestCase {
             .with(eq("testClientId"));
         Session testSession = (Session) mockSession.proxy();
         mockHJB.make1Session(root, testSession, "testProvider", "testFactory");
-        HJBConnection testConnection = root.getProvider("testProvider")
+        HJBSession testHJBSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
-            .getConnection(0);
+            .getConnection(0).getSession(0);
 
-        UnsubscribeClientId command = new UnsubscribeClientId(testConnection,
-                                                              0,
+        UnsubscribeClientId command = new UnsubscribeClientId(testHJBSession,
                                                               "testClientId");
         command.execute();
         assertTrue(command.isExecutedOK());
@@ -98,12 +94,11 @@ public class UnsubscribeClientIdTest extends BaseHJBTestCase {
                                  testSession,
                                  "testProvider",
                                  "testFactory");
-            HJBConnection testConnection = root.getProvider("testProvider")
+            HJBSession testHJBSession = root.getProvider("testProvider")
                 .getConnectionFactory("testFactory")
-                .getConnection(0);
+                .getConnection(0).getSession(0);
 
-            UnsubscribeClientId command = new UnsubscribeClientId(testConnection,
-                                                                  0,
+            UnsubscribeClientId command = new UnsubscribeClientId(testHJBSession,
                                                                   "testClientId");
             command.execute();
             assertFalse(command.isExecutedOK());

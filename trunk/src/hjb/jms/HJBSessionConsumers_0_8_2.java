@@ -31,15 +31,15 @@ import javax.jms.MessageConsumer;
 import hjb.misc.HJBStrings;
 
 /**
- * <code>HJBSessionConsumers</code> is used to maintain the JMS
+ * <code>HJBSessionConsumers_0_8_2</code> is used to maintain the JMS
  * <code>Consumers</code> for all <code>Sessions</code> created by a
  * <code>HJBConnection</code>.
  * 
  * @author Tim Emiola
  */
-public class HJBSessionConsumers extends HJBSessionItems {
+public class HJBSessionConsumers_0_8_2 extends HJBSessionItems {
 
-    public HJBSessionConsumers(HJBConnection theConnection) {
+    public HJBSessionConsumers_0_8_2(HJBConnection theConnection) {
         super(theConnection);
     }
 

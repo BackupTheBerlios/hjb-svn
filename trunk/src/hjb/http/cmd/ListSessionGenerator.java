@@ -26,11 +26,10 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
-import hjb.jms.HJBConnection;
 import hjb.jms.HJBRoot;
+import hjb.jms.HJBSession;
 import hjb.jms.cmd.JMSCommand;
 import hjb.jms.cmd.RetrieveListing;
-import hjb.jms.info.SessionDescription;
 import hjb.jms.info.SessionListing;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
@@ -67,15 +66,15 @@ public class ListSessionGenerator extends PatternMatchingCommandGenerator {
 
         HJBTreeWalker walker = new HJBTreeWalker(root, pathInfo);
         Map decodedParameters = getDecoder().decode(request.getParameterMap());
-        HJBConnection theConnection = walker.findConnection(providerName,
-                                                            factoryName,
-                                                            connectionIndex);
-        this.generatedCommand = new RetrieveListing(new SessionListing(theConnection,
-                                                                       sessionIndex),
+        HJBSession theSession = walker.findSession(providerName,
+                                                   factoryName,
+                                                   connectionIndex,
+                                                   sessionIndex);
+        this.generatedCommand = new RetrieveListing(new SessionListing(theSession),
                                                     pathInfo.substring(0,
                                                                        pathInfo.lastIndexOf("list")),
-                                                    new SessionDescription(theConnection,
-                                                                           sessionIndex).toString(),
+                                                    theSession.getSessionDescription()
+                                                        .toString(),
                                                     getFinder().findIsRecursiveListing(decodedParameters));
     }
 

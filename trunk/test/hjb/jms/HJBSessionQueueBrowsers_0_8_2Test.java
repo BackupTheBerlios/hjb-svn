@@ -32,18 +32,18 @@ import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockSessionBuilder;
 
-public class HJBSessionQueueBrowsersTest extends BaseHJBTestCase {
+public class HJBSessionQueueBrowsers_0_8_2Test extends BaseHJBTestCase {
 
     public void testHJBSessionQueueBrowsersThrowsIllegalArgumentExceptionOnNullConnection() {
         try {
-            new HJBSessionQueueBrowsers(null);
+            new HJBSessionQueueBrowsers_0_8_2(null);
             fail("An IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {}
     }
 
     public void testCreateBrowserThrowsIfSessionIsNotThere() throws Exception {
         mockSession.stubs().method("createBrowser");
-        HJBSessionQueueBrowsers browsers = new HJBSessionQueueBrowsers(testConnection);
+        HJBSessionQueueBrowsers_0_8_2 browsers = new HJBSessionQueueBrowsers_0_8_2(testConnection);
         try {
             browsers.createBrowser(0, testQueue, "test");
             fail("should have thrown an exception");
@@ -71,7 +71,7 @@ public class HJBSessionQueueBrowsersTest extends BaseHJBTestCase {
         Session aSession = (Session) mockSession.proxy();
         updateConnectionMock(aSession);
 
-        HJBSessionQueueBrowsers browsers = new HJBSessionQueueBrowsers(testConnection);
+        HJBSessionQueueBrowsers_0_8_2 browsers = new HJBSessionQueueBrowsers_0_8_2(testConnection);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         try {
             browsers.createBrowser(0, testQueue, "test");
@@ -89,7 +89,7 @@ public class HJBSessionQueueBrowsersTest extends BaseHJBTestCase {
         testSession = (Session) mockSession.proxy();
         updateConnectionMock(testSession);
 
-        HJBSessionQueueBrowsers browsers = new HJBSessionQueueBrowsers(testConnection);
+        HJBSessionQueueBrowsers_0_8_2 browsers = new HJBSessionQueueBrowsers_0_8_2(testConnection);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         browsers.createBrowser(0, testQueue, "test");
         assertEquals("there should be 1 producer for the session",
@@ -98,7 +98,7 @@ public class HJBSessionQueueBrowsersTest extends BaseHJBTestCase {
     }
 
     public void testGetBrowsersThrowsIfSessionIsNotThere() throws Exception {
-        HJBSessionQueueBrowsers browsers = new HJBSessionQueueBrowsers(testConnection);
+        HJBSessionQueueBrowsers_0_8_2 browsers = new HJBSessionQueueBrowsers_0_8_2(testConnection);
         try {
             browsers.getBrowsers(0);
             fail("should have thrown an exception");
@@ -107,13 +107,13 @@ public class HJBSessionQueueBrowsersTest extends BaseHJBTestCase {
 
     public void testGetBrowsersReturnsEmptyForNewEmptySessions()
             throws Exception {
-        HJBSessionQueueBrowsers browsers = new HJBSessionQueueBrowsers(testConnection);
+        HJBSessionQueueBrowsers_0_8_2 browsers = new HJBSessionQueueBrowsers_0_8_2(testConnection);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         assertEquals(0, browsers.getBrowsers(0).length);
     }
 
     public void testGetBrowserThrowsIfSessionIsNotThere() throws Exception {
-        HJBSessionQueueBrowsers browsers = new HJBSessionQueueBrowsers(testConnection);
+        HJBSessionQueueBrowsers_0_8_2 browsers = new HJBSessionQueueBrowsers_0_8_2(testConnection);
         try {
             browsers.getBrowser(0, 0);
             fail("should have thrown an exception");
@@ -121,7 +121,7 @@ public class HJBSessionQueueBrowsersTest extends BaseHJBTestCase {
     }
 
     public void testGetBrowserThrowsForNewEmptySessions() throws Exception {
-        HJBSessionQueueBrowsers browsers = new HJBSessionQueueBrowsers(testConnection);
+        HJBSessionQueueBrowsers_0_8_2 browsers = new HJBSessionQueueBrowsers_0_8_2(testConnection);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         try {
             browsers.getBrowser(0, 0);
@@ -136,7 +136,7 @@ public class HJBSessionQueueBrowsersTest extends BaseHJBTestCase {
             .method("createBrowser")
             .will(returnValue(testQueueBrowser));
 
-        HJBSessionQueueBrowsers browsers = new HJBSessionQueueBrowsers(testConnection);
+        HJBSessionQueueBrowsers_0_8_2 browsers = new HJBSessionQueueBrowsers_0_8_2(testConnection);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         browsers.createBrowser(0, testQueue);
         try {
@@ -152,7 +152,7 @@ public class HJBSessionQueueBrowsersTest extends BaseHJBTestCase {
             .method("createBrowser")
             .will(returnValue(testQueueBrowser));
 
-        HJBSessionQueueBrowsers browsers = new HJBSessionQueueBrowsers(testConnection);
+        HJBSessionQueueBrowsers_0_8_2 browsers = new HJBSessionQueueBrowsers_0_8_2(testConnection);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         assertEquals("Index should be 0", 0, browsers.createBrowser(0,
                                                                     testQueue));

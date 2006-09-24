@@ -26,9 +26,9 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
-import hjb.jms.HJBConnection;
 import hjb.jms.HJBMessenger;
 import hjb.jms.HJBRoot;
+import hjb.jms.HJBSession;
 import hjb.jms.cmd.JMSCommand;
 import hjb.jms.cmd.ReceiveFromSubscriber;
 import hjb.misc.HJBException;
@@ -66,22 +66,21 @@ public class ReceiveFromSubscriberGenerator extends
         int subscriberIndex = Integer.parseInt(m.group(5));
 
         HJBTreeWalker walker = new HJBTreeWalker(root, pathInfo);
-        HJBConnection connection = walker.findConnection(providerName,
-                                                         factoryName,
-                                                         connectionIndex);
+        HJBSession session = walker.findSession(providerName,
+                                                factoryName,
+                                                connectionIndex,
+                                                sessionIndex);
         Map decodedParameters = getDecoder().decode(request.getParameterMap());
         Long timeout = getFinder().findTimeout(decodedParameters);
         if (null == timeout) {
-            this.generatedCommand = new ReceiveFromSubscriber(new HJBMessenger(connection,
-                                                                               sessionIndex),
+            this.generatedCommand = new ReceiveFromSubscriber(new HJBMessenger(session),
                                                               subscriberIndex);
         } else {
-            this.generatedCommand = new ReceiveFromSubscriber(new HJBMessenger(connection,
-                                                                               sessionIndex),
+            this.generatedCommand = new ReceiveFromSubscriber(new HJBMessenger(session),
                                                               subscriberIndex,
                                                               timeout.longValue());
         }
-        setAssignedCommandRunner(connection.getSessionCommandRunner(sessionIndex));
+        setAssignedCommandRunner(session.getCommandRunner());
     }
 
     protected JMSCommandResponder createResponder() {

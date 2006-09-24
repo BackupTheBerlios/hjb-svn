@@ -24,10 +24,7 @@ import javax.jms.Destination;
 
 import org.apache.log4j.Logger;
 
-import hjb.jms.HJBConnection;
-import hjb.jms.HJBConnectionFactory;
-import hjb.jms.HJBProvider;
-import hjb.jms.HJBRoot;
+import hjb.jms.*;
 import hjb.misc.HJBException;
 import hjb.misc.HJBNotFoundException;
 import hjb.misc.HJBStrings;
@@ -126,6 +123,30 @@ public class HJBTreeWalker {
         }
     }
 
+    public HJBSession findSession(String providerName,
+                                  String factoryName,
+                                  int connectionIndex,
+                                  int sessionIndex) {
+        try {
+            HJBConnection connection = findConnection(providerName,
+                                                      factoryName,
+                                                      connectionIndex);
+            if (null == connection) {
+                return null;
+            }
+            HJBSession result = connection.getSession(connectionIndex);
+            if (null == result) {
+                handleMissingComponent("" + PathNaming.SESSION + ""
+                        + sessionIndex);
+            }
+            return result;
+        } catch (IndexOutOfBoundsException e) {
+            handleMissingComponent("" + PathNaming.SESSION + ""
+                    + sessionIndex);
+            return null;
+        }
+    }
+
     protected void handleMissingComponent(String component) throws HJBException {
         if (failsOnMissingComponent()) {
             String message = strings().getString(HJBStrings.ALLOWED_PATH_NOT_FOUND,
@@ -162,6 +183,7 @@ public class HJBTreeWalker {
     private HJBRoot root;
     private String requestPath;
     private boolean failOnMissingComponent;
+    
     private static final HJBStrings STRINGS = new HJBStrings();
     private static final Logger LOG = Logger.getLogger(HJBTreeWalker.class);
 }

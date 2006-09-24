@@ -26,9 +26,9 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
-import hjb.jms.HJBConnection;
 import hjb.jms.HJBMessenger;
 import hjb.jms.HJBRoot;
+import hjb.jms.HJBSession;
 import hjb.jms.cmd.JMSCommand;
 import hjb.jms.cmd.ReceiveFromConsumer;
 import hjb.misc.HJBException;
@@ -65,23 +65,21 @@ public class ReceiveFromConsumerGenerator extends
         int consumerIndex = Integer.parseInt(m.group(5));
 
         HJBTreeWalker walker = new HJBTreeWalker(root, pathInfo);
-        HJBConnection connection = walker.findConnection(providerName,
-                                                         factoryName,
-                                                         connectionIndex);
-
+        HJBSession session = walker.findSession(providerName,
+                                                factoryName,
+                                                connectionIndex,
+                                                sessionIndex);
         Map decodedParameters = getDecoder().decode(request.getParameterMap());
         Long timeout = getFinder().findTimeout(decodedParameters);
         if (null == timeout) {
-            this.generatedCommand = new ReceiveFromConsumer(new HJBMessenger(connection,
-                                                                             sessionIndex),
+            this.generatedCommand = new ReceiveFromConsumer(new HJBMessenger(session),
                                                             consumerIndex);
         } else {
-            this.generatedCommand = new ReceiveFromConsumer(new HJBMessenger(connection,
-                                                                             sessionIndex),
+            this.generatedCommand = new ReceiveFromConsumer(new HJBMessenger(session),
                                                             consumerIndex,
                                                             timeout.longValue());
         }
-        setAssignedCommandRunner(connection.getSessionCommandRunner(sessionIndex));
+        setAssignedCommandRunner(session.getCommandRunner());
     }
 
     protected JMSCommandResponder createResponder() {

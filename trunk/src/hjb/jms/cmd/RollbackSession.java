@@ -22,21 +22,20 @@ package hjb.jms.cmd;
 
 import javax.jms.JMSException;
 
-import hjb.jms.HJBConnection;
+import hjb.jms.HJBSession;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 
-public class RollbackSession extends ConnectionCommand {
+public class RollbackSession extends SessionCommand {
 
-    public RollbackSession(HJBConnection theConnection, int sessionIndex) {
-        super(theConnection);
-        setSessionIndex(sessionIndex);
+    public RollbackSession(HJBSession theSession) {
+        super(theSession);
     }
 
     public void execute() {
         assertNotCompleted();
         try {
-            getTheConnection().getSession(getSessionIndex()).rollback();
+            getTheSession().rollback();
         } catch (RuntimeException e) {
             recordFault(e);
         } catch (JMSException e) {
@@ -47,25 +46,15 @@ public class RollbackSession extends ConnectionCommand {
 
     public String getDescription() {
         return strings().getString(HJBStrings.DESCRIPTION_OF_SESSION_ROLLBACK,
-                                   getTheConnection().getSessionDescription(getSessionIndex()));
+                                   getTheSession().getSessionDescription());
     }
 
     public String getStatusMessage() {
         if (isExecutedOK()) {
             return strings().getString(HJBStrings.SUCCESS_MESSAGE_OF_SESSION_ROLLBACK,
-                                       getTheConnection().getSessionDescription(getSessionIndex()));
+                                       getTheSession().getSessionDescription());
         } else {
             return getFault().getMessage();
         }
     }
-
-    protected int getSessionIndex() {
-        return sessionIndex;
-    }
-
-    protected void setSessionIndex(int sessionIndex) {
-        this.sessionIndex = sessionIndex;
-    }
-
-    private int sessionIndex;
 }
