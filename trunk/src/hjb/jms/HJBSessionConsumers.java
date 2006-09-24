@@ -27,7 +27,7 @@ import javax.jms.MessageConsumer;
 import hjb.misc.HJBStrings;
 
 /**
- * <code>HJBSessionConsumers_0_8_2</code> is used to maintain the JMS
+ * <code>HJBSessionConsumers</code> is used to maintain the JMS
  * <code>Consumers</code> created by a <code>HJBSession</code>.
  * 
  * @author Tim Emiola

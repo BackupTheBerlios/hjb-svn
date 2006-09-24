@@ -28,7 +28,7 @@ import hjb.misc.HJBStrings;
 import hjb.misc.MessageProducerArguments;
 
 /**
- * <code>HJBSessionProducers_0_8_2</code> is used to maintain the JMS
+ * <code>HJBSessionProducers</code> is used to maintain the JMS
  * <code>Producers</code> created by a <code>HJBSession</code>.
  * 
  * @author Tim Emiola

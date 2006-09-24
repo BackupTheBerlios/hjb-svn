@@ -27,7 +27,7 @@ import javax.jms.TopicSubscriber;
 import hjb.misc.HJBStrings;
 
 /**
- * <code>HJBSessionDurableSubscribers_0_8_2</code> is used to maintain the JMS
+ * <code>HJBSessionDurableSubscribers</code> is used to maintain the JMS
  * Durable Subscribers created by a <code>HJBSession</code>.
  * 
  * @author Tim Emiola

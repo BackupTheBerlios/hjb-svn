@@ -27,7 +27,7 @@ import javax.jms.QueueBrowser;
 import hjb.misc.HJBStrings;
 
 /**
- * <code>HJBSessionQueueBrowsers_0_8_2</code> is used to maintain the JMS
+ * <code>HJBSessionQueueBrowsers</code> is used to maintain the JMS
  * <code>QueueBrowsers<code> created by a
  * <code>HJBSession</code>.
  * 
