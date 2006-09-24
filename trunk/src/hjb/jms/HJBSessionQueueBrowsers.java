@@ -33,7 +33,7 @@ import hjb.misc.HJBStrings;
  * 
  * @author Tim Emiola
  */
-public class HJBSessionQueueBrowsers extends HJBSessionItemsNG {
+public class HJBSessionQueueBrowsers extends HJBSessionItems {
 
     public HJBSessionQueueBrowsers(HJBSession theSession) {
         super(theSession);

@@ -33,7 +33,7 @@ import hjb.misc.MessageProducerArguments;
  * 
  * @author Tim Emiola
  */
-public class HJBSessionProducers extends HJBSessionItemsNG {
+public class HJBSessionProducers extends HJBSessionItems {
 
     public HJBSessionProducers(HJBSession theSession) {
         super(theSession);

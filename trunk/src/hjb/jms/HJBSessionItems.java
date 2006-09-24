@@ -35,9 +35,9 @@ import hjb.misc.HJBStrings;
  * 
  * @author Tim Emiola
  */
-public abstract class HJBSessionItemsNG {
+public abstract class HJBSessionItems {
 
-    public HJBSessionItemsNG(HJBSession theSession) {
+    public HJBSessionItems(HJBSession theSession) {
         if (null == theSession) {
             throw new IllegalArgumentException(strings().needsANonNull(HJBSession.class));
         }
@@ -100,6 +100,6 @@ public abstract class HJBSessionItemsNG {
     private final HJBSession theSession;
     private final List items;
 
-    private static final Logger LOG = Logger.getLogger(HJBSessionItemsNG.class);
+    private static final Logger LOG = Logger.getLogger(HJBSessionItems.class);
     private static final HJBStrings STRINGS = new HJBStrings();
 }
