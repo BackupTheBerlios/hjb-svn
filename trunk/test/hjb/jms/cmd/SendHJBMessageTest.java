@@ -183,7 +183,7 @@ public class SendHJBMessageTest extends BaseHJBTestCase {
     }
 
     protected void create1Producer(HJBSession testSession) {
-        HJBSessionProducersNG sessionProducers = testSession.getProducers();
+        HJBSessionProducers sessionProducers = testSession.getProducers();
         Mock mockDestination = mock(Destination.class);
         Destination testDestination = (Destination) mockDestination.proxy();
         CreateProducer command = new CreateProducer(sessionProducers,

@@ -141,7 +141,7 @@ public class ReceiveFromConsumerTest extends BaseHJBTestCase {
     }
 
     protected void create1Consumer(HJBSession testSession) {
-        HJBSessionConsumersNG sessionConsumers = testSession.getConsumers();
+        HJBSessionConsumers sessionConsumers = testSession.getConsumers();
         Mock mockDestination = mock(Destination.class);
         Destination testDestination = (Destination) mockDestination.proxy();
         CreateConsumer command = new CreateConsumer(sessionConsumers,

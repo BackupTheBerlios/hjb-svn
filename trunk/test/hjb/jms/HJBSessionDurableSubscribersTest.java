@@ -32,11 +32,11 @@ import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockSessionBuilder;
 
-public class HJBSessionDurableSubscribersNGTest extends BaseHJBTestCase {
+public class HJBSessionDurableSubscribersTest extends BaseHJBTestCase {
 
     public void testConstructionsThrowsIllegalArgumentExceptionOnNullSession() {
         try {
-            new HJBSessionDurableSubscribersNG(null);
+            new HJBSessionDurableSubscribers(null);
             fail("An IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {}
     }
@@ -48,7 +48,7 @@ public class HJBSessionDurableSubscribersNGTest extends BaseHJBTestCase {
         HJBSession aSession = new HJBSession((Session) mockSession.proxy(), 0, defaultTestClock());
         updateConnectionMock(aSession);
 
-        HJBSessionDurableSubscribersNG subscribers = new HJBSessionDurableSubscribersNG(aSession);
+        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(aSession);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         try {
             subscribers.createDurableSubscriber(testTopic, "test-selector");
@@ -73,7 +73,7 @@ public class HJBSessionDurableSubscribersNGTest extends BaseHJBTestCase {
         testSession = new HJBSession((Session) mockSession.proxy(), 0, defaultTestClock());
         updateConnectionMock(testSession);
 
-        HJBSessionDurableSubscribersNG subscribers = new HJBSessionDurableSubscribersNG(testSession);
+        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testSession);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         assertEquals("Index should be 0",
                      0,
@@ -109,7 +109,7 @@ public class HJBSessionDurableSubscribersNGTest extends BaseHJBTestCase {
             .method("createDurableSubscriber")
             .will(returnValue(testTopicSubscriber));
 
-        HJBSessionDurableSubscribersNG subscribers = new HJBSessionDurableSubscribersNG(testSession);
+        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testSession);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         subscribers.createDurableSubscriber(testTopic, "test");
         try {
@@ -125,7 +125,7 @@ public class HJBSessionDurableSubscribersNGTest extends BaseHJBTestCase {
             .method("createDurableSubscriber")
             .will(returnValue(testTopicSubscriber));
 
-        HJBSessionDurableSubscribersNG subscribers = new HJBSessionDurableSubscribersNG(testSession);
+        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testSession);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         assertEquals("Index should be 0",
                      0,

@@ -49,7 +49,7 @@ public class CreateBrowserTest extends BaseHJBTestCase {
         HJBSession testSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
             .getConnection(0).getSession(0);
-        HJBSessionQueueBrowsersNG sessionBrowsers = new HJBSessionQueueBrowsersNG(testSession);
+        HJBSessionQueueBrowsers sessionBrowsers = new HJBSessionQueueBrowsers(testSession);
         try {
             new CreateBrowser(sessionBrowsers, null, "testSelector");
             fail("should have thrown an exception");
@@ -62,7 +62,7 @@ public class CreateBrowserTest extends BaseHJBTestCase {
         HJBSession testSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
             .getConnection(0).getSession(0);
-        HJBSessionQueueBrowsersNG sessionBrowsers = testSession.getBrowsers();
+        HJBSessionQueueBrowsers sessionBrowsers = testSession.getBrowsers();
         Mock mockQueue = mock(Queue.class);
         Queue testQueue = (Queue) mockQueue.proxy();
 
@@ -98,7 +98,7 @@ public class CreateBrowserTest extends BaseHJBTestCase {
             HJBSession testSession = root.getProvider("testProvider")
                 .getConnectionFactory("testFactory")
                 .getConnection(0).getSession(0);
-            HJBSessionQueueBrowsersNG sessionBrowsers = testSession.getBrowsers();
+            HJBSessionQueueBrowsers sessionBrowsers = testSession.getBrowsers();
             Mock mockQueue = mock(Queue.class);
             mockSession.expects(once())
                 .method("createBrowser")

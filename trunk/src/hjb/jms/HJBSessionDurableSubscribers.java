@@ -32,9 +32,9 @@ import hjb.misc.HJBStrings;
  * 
  * @author Tim Emiola
  */
-public class HJBSessionDurableSubscribersNG extends HJBSessionItemsNG {
+public class HJBSessionDurableSubscribers extends HJBSessionItemsNG {
 
-    public HJBSessionDurableSubscribersNG(HJBSession theSession) {
+    public HJBSessionDurableSubscribers(HJBSession theSession) {
         super(theSession);
     }
 

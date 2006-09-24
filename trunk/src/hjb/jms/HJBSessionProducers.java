@@ -20,10 +20,6 @@
  */
 package hjb.jms;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
@@ -33,53 +29,39 @@ import hjb.misc.MessageProducerArguments;
 
 /**
  * <code>HJBSessionProducers_0_8_2</code> is used to maintain the JMS
- * <code>Producers</code> for all the <code>Sessions</code> created by a
- * <code>HJBConnection</code>.
+ * <code>Producers</code> created by a <code>HJBSession</code>.
  * 
  * @author Tim Emiola
  */
-public class HJBSessionProducers_0_8_2 extends HJBSessionItems {
+public class HJBSessionProducers extends HJBSessionItemsNG {
 
-    public HJBSessionProducers_0_8_2(HJBConnection theConnection) {
-        super(theConnection);
+    public HJBSessionProducers(HJBSession theSession) {
+        super(theSession);
     }
 
-    public int createProducer(int sessionIndex,
-                              Destination aDestination,
+    public int createProducer(Destination aDestination,
                               MessageProducerArguments producerArguments) {
         try {
-            MessageProducer p = getSession(sessionIndex).createProducer(aDestination);
+            MessageProducer p = getTheSession().createProducer(aDestination);
             configureProducer(p, producerArguments);
-            return addSessionItemAndReturnItsIndex(getProducers(),
-                                                   sessionIndex,
-                                                   p);
+            return addSessionItemAndReturnItsIndex(p);
         } catch (JMSException e) {
-            handleFailure(sessionIndex, HJBStrings.COULD_NOT_CREATE_PRODUCER, e);
+            handleFailure(HJBStrings.COULD_NOT_CREATE_PRODUCER, e);
             return HJBStrings.INTEGER_NOT_REACHED;
         }
     }
 
-    public MessageProducer getProducer(int sessionIndex, int producerIndex) {
+    public MessageProducer getProducer(int producerIndex) {
         try {
-            return getProducers(sessionIndex)[producerIndex];
+            return asArray()[producerIndex];
         } catch (IndexOutOfBoundsException e) {
-            handleFailure(sessionIndex, "" + producerIndex, HJBStrings.PRODUCER_NOT_FOUND, e);
+            handleFailure("" + producerIndex, HJBStrings.PRODUCER_NOT_FOUND, e);
             return null;
         }
     }
 
-    public MessageProducer[] getProducers(int sessionIndex) {
-        try {
-            List items = new ArrayList(getItems(getProducers(), sessionIndex));
-            return (MessageProducer[]) items.toArray(new MessageProducer[0]);
-        } catch (IndexOutOfBoundsException e) {
-            handleFailure(sessionIndex, HJBStrings.SESSION_NOT_FOUND, e);
-            return new MessageProducer[0];
-        }
-    }
-
-    public void removeProducers(int sessionIndex) {
-        removeSessionItems(getProducers(), sessionIndex);
+    public MessageProducer[] asArray() {
+        return (MessageProducer[]) getItems().toArray(new MessageProducer[0]);
     }
 
     protected void configureProducer(MessageProducer producer,
@@ -96,9 +78,5 @@ public class HJBSessionProducers_0_8_2 extends HJBSessionItems {
         if (producerArguments.isTimeToLiveSet()) {
             producer.setTimeToLive(producerArguments.getTimeToLive());
         }
-    }
-
-    protected Map getProducers() {
-        return getItems();
     }
 }

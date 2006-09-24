@@ -157,7 +157,7 @@ public class ViewQueueTest extends BaseHJBTestCase {
     }
 
     protected void create1Browser(HJBSession testSession) {
-        HJBSessionQueueBrowsersNG sessionBrowsers = testSession.getBrowsers();
+        HJBSessionQueueBrowsers sessionBrowsers = testSession.getBrowsers();
         Mock mockQueue = mock(Queue.class);
         Queue testQueue = (Queue) mockQueue.proxy();
         CreateBrowser command = new CreateBrowser(sessionBrowsers,

@@ -23,18 +23,18 @@ package hjb.jms.cmd;
 import javax.jms.Topic;
 import javax.jms.TopicSubscriber;
 
-import hjb.jms.HJBSessionDurableSubscribersNG;
+import hjb.jms.HJBSessionDurableSubscribers;
 import hjb.misc.HJBStrings;
 
 public class CreateSubscriber extends BaseJMSCommand {
 
-    public CreateSubscriber(HJBSessionDurableSubscribersNG subscribers,
+    public CreateSubscriber(HJBSessionDurableSubscribers subscribers,
                             Topic topic,
                             String name,
                             String messageSelector,
                             boolean noLocal) {
         if (null == subscribers)
-            throw new IllegalArgumentException(strings().needsANonNull(HJBSessionDurableSubscribersNG.class));
+            throw new IllegalArgumentException(strings().needsANonNull(HJBSessionDurableSubscribers.class));
         if (null == topic)
             throw new IllegalArgumentException(strings().needsANonNull(Topic.class));
         this.topic = topic;
@@ -44,7 +44,7 @@ public class CreateSubscriber extends BaseJMSCommand {
         this.subscribersNG = subscribers;
     }
 
-    public CreateSubscriber(HJBSessionDurableSubscribersNG subscribers,
+    public CreateSubscriber(HJBSessionDurableSubscribers subscribers,
                             Topic topic,
                             String name) {
         this(subscribers, topic, name, null, false);
@@ -99,7 +99,7 @@ public class CreateSubscriber extends BaseJMSCommand {
         return getSubscribers().getSessionIndex();
     }
 
-    protected HJBSessionDurableSubscribersNG getSubscribers() {
+    protected HJBSessionDurableSubscribers getSubscribers() {
         return subscribersNG;
     }
 
@@ -124,6 +124,6 @@ public class CreateSubscriber extends BaseJMSCommand {
     private String messageSelector;
     private String name;
     private boolean noLocal;
-    private HJBSessionDurableSubscribersNG subscribersNG;
+    private HJBSessionDurableSubscribers subscribersNG;
     public static final int UNSET_SUBSCRIBER_INDEX = Integer.MIN_VALUE;
 }

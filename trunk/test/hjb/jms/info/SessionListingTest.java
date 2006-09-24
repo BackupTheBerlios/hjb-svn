@@ -99,24 +99,24 @@ public class SessionListingTest extends BaseHJBTestCase {
     }
 
     protected void addDefaultTestProducer() {
-        HJBSessionProducersNG producers = testSession.getProducers();
+        HJBSessionProducers producers = testSession.getProducers();
         producers.createProducer((Destination) mock(Destination.class).proxy(),
                                  new MessageProducerArguments());
     }
 
     protected void addDefaultTestConsumer() {
-        HJBSessionConsumersNG consumers = testSession.getConsumers();
+        HJBSessionConsumers consumers = testSession.getConsumers();
         consumers.createConsumer((Destination) mock(Destination.class).proxy());
     }
 
     protected void addDefaultTestBrowser() {
-        HJBSessionQueueBrowsersNG browsers = testSession.getBrowsers();
+        HJBSessionQueueBrowsers browsers = testSession.getBrowsers();
         Mock mockQueue = mock(Queue.class);
         browsers.createBrowser((Queue) mockQueue.proxy());
     }
 
     protected void addDefaultTestSubscriber() {
-        HJBSessionDurableSubscribersNG subscribers = testSession.getSubscribers();
+        HJBSessionDurableSubscribers subscribers = testSession.getSubscribers();
         Mock mockTopic = mock(Topic.class);
         subscribers.createDurableSubscriber((Topic) mockTopic.proxy(),
                                             "testSubscriber");

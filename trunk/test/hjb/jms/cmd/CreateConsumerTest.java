@@ -49,7 +49,7 @@ public class CreateConsumerTest extends BaseHJBTestCase {
         HJBSession testSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
             .getConnection(0).getSession(0);
-        HJBSessionConsumersNG sessionConsumers = new HJBSessionConsumersNG(testSession);
+        HJBSessionConsumers sessionConsumers = new HJBSessionConsumers(testSession);
         try {
             new CreateConsumer(sessionConsumers, null, "testSelector");
             fail("should have thrown an exception");
@@ -72,7 +72,7 @@ public class CreateConsumerTest extends BaseHJBTestCase {
             HJBSession testSession = root.getProvider("testProvider")
                 .getConnectionFactory("testFactory")
                 .getConnection(0).getSession(0);
-            HJBSessionConsumersNG sessionConsumers = testSession.getConsumers();
+            HJBSessionConsumers sessionConsumers = testSession.getConsumers();
             Mock mockDestination = mock(Destination.class);
             Destination testDestination = (Destination) mockDestination.proxy();
 
@@ -99,7 +99,7 @@ public class CreateConsumerTest extends BaseHJBTestCase {
         HJBSession testSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
             .getConnection(0).getSession(0);
-        HJBSessionConsumersNG sessionConsumers = testSession.getConsumers();
+        HJBSessionConsumers sessionConsumers = testSession.getConsumers();
         Mock mockDestination = mock(Destination.class);
         Destination testDestination = (Destination) mockDestination.proxy();
 

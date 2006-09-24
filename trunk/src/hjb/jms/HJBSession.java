@@ -69,10 +69,10 @@ public class HJBSession implements Session {
         this.sessionIndex = sessionIndex;
         this.clock = aClock;
         this.creationTime = aClock.getCurrentTime();
-        this.browsers = new HJBSessionQueueBrowsersNG(this);
-        this.consumers = new HJBSessionConsumersNG(this);
-        this.producers = new HJBSessionProducersNG(this);
-        this.durableSubscribers = new HJBSessionDurableSubscribersNG(this);
+        this.browsers = new HJBSessionQueueBrowsers(this);
+        this.consumers = new HJBSessionConsumers(this);
+        this.producers = new HJBSessionProducers(this);
+        this.durableSubscribers = new HJBSessionDurableSubscribers(this);
         this.commandRunner = new JMSCommandRunner();
     }
 
@@ -223,7 +223,7 @@ public class HJBSession implements Session {
         commandRunner.terminate();
     }
 
-    public HJBSessionProducersNG getProducers() {
+    public HJBSessionProducers getProducers() {
         return producers;
     }
 
@@ -236,15 +236,15 @@ public class HJBSession implements Session {
         }
     }
 
-    public HJBSessionConsumersNG getConsumers() {
+    public HJBSessionConsumers getConsumers() {
         return consumers;
     }
 
-    public HJBSessionDurableSubscribersNG getSubscribers() {
+    public HJBSessionDurableSubscribers getSubscribers() {
         return durableSubscribers;
     }
 
-    public HJBSessionQueueBrowsersNG getBrowsers() {
+    public HJBSessionQueueBrowsers getBrowsers() {
         return browsers;
     }
 
@@ -309,14 +309,14 @@ public class HJBSession implements Session {
     }
 
     private final JMSCommandRunner commandRunner;
-    private final HJBSessionProducersNG producers;
-    private final HJBSessionConsumersNG consumers;
-    private final HJBSessionDurableSubscribersNG durableSubscribers;
-    private final HJBSessionQueueBrowsersNG browsers;
+    private final HJBSessionProducers producers;
+    private final HJBSessionConsumers consumers;
+    private final HJBSessionDurableSubscribers durableSubscribers;
+    private final HJBSessionQueueBrowsers browsers;
     private final Session theSession;
     private final Clock clock;
     private final int sessionIndex;
     private final Date creationTime;
-    private static final Logger LOG = Logger.getLogger(HJBSessionItems.class);
+    private static final Logger LOG = Logger.getLogger(HJBSession.class);
     private static final HJBStrings STRINGS = new HJBStrings();
 }

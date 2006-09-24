@@ -25,17 +25,17 @@ import javax.jms.MessageConsumer;
 
 import org.apache.log4j.Logger;
 
-import hjb.jms.HJBSessionConsumersNG;
+import hjb.jms.HJBSessionConsumers;
 import hjb.misc.HJBStrings;
 
 public class CreateConsumer extends BaseJMSCommand {
 
-    public CreateConsumer(HJBSessionConsumersNG consumers,
+    public CreateConsumer(HJBSessionConsumers consumers,
                           Destination destination,
                           String messageSelector,
                           boolean noLocal) {
         if (null == consumers) {
-            throw new IllegalArgumentException(strings().needsANonNull(HJBSessionConsumersNG.class));
+            throw new IllegalArgumentException(strings().needsANonNull(HJBSessionConsumers.class));
         }
         if (null == destination) {
             throw new IllegalArgumentException(strings().needsANonNull(Destination.class));
@@ -46,13 +46,13 @@ public class CreateConsumer extends BaseJMSCommand {
         this.consumers = consumers;
     }
 
-    public CreateConsumer(HJBSessionConsumersNG consumers,
+    public CreateConsumer(HJBSessionConsumers consumers,
                           Destination destination,
                           String messageSelector) {
         this(consumers, destination, messageSelector, false);
     }
 
-    public CreateConsumer(HJBSessionConsumersNG consumers,
+    public CreateConsumer(HJBSessionConsumers consumers,
                           Destination destination) {
         this(consumers, destination, null);
     }
@@ -132,7 +132,7 @@ public class CreateConsumer extends BaseJMSCommand {
         return noLocal;
     }
 
-    protected HJBSessionConsumersNG getConsumers() {
+    protected HJBSessionConsumers getConsumers() {
         return consumers;
     }
 
@@ -140,7 +140,7 @@ public class CreateConsumer extends BaseJMSCommand {
     private final Destination destination;
     private final String messageSelector;
     private final boolean noLocal;
-    private final HJBSessionConsumersNG consumers;
+    private final HJBSessionConsumers consumers;
     private static final Logger LOG = Logger.getLogger(CreateConsumer.class);
     public static final int UNSET_CONSUMER_INDEX = Integer.MIN_VALUE;
 }

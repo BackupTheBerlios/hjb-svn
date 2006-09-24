@@ -21,8 +21,8 @@
 package hjb.jms;
 
 import javax.jms.Connection;
-import javax.jms.Queue;
-import javax.jms.QueueBrowser;
+import javax.jms.Destination;
+import javax.jms.MessageProducer;
 import javax.jms.Session;
 
 import org.jmock.Mock;
@@ -32,63 +32,76 @@ import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockSessionBuilder;
 
-public class HJBSessionQueueBrowsersNGTest extends BaseHJBTestCase {
+public class HJBSessionProducersTest extends BaseHJBTestCase {
 
-    public void testHJBSessionQueueBrowsersThrowsIllegalArgumentExceptionOnNullSession() {
+    public void testHJBSessionProducersThrowsIllegalArgumentExceptionOnNullSession() {
         try {
-            new HJBSessionQueueBrowsersNG(null);
+            new HJBSessionProducers(null);
             fail("An IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {}
     }
 
-    public void testCreateBrowserThrowsHJBExceptionOnJMSException()
+    public void testCreateProducerThrowsHJBExceptionOnJMSException()
             throws Exception {
-        mockSession = sessionBuilder.createMockSessionThatThrowsJMSOn("createBrowser");
+        mockSession = sessionBuilder.createMockSessionThatThrowsJMSOn("createProducer");
         HJBSession aSession = new HJBSession((Session) mockSession.proxy(), 0, defaultTestClock());
         updateConnectionMock(aSession);
 
-        HJBSessionQueueBrowsersNG browsers = new HJBSessionQueueBrowsersNG(aSession);
+        HJBSessionProducers producers = new HJBSessionProducers(aSession);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         try {
-            browsers.createBrowser(testQueue, "test");
-            fail("should have thrown an exception");
-        } catch (HJBException hjbe) {}
-        try {
-            browsers.createBrowser(testQueue);
+            producers.createProducer(testDestination,
+                                     sessionBuilder.defaultProducerArguments());
             fail("should have thrown an exception");
         } catch (HJBException hjbe) {}
     }
-
-    public void testGetBrowserThrowsForInvalidBrowser() throws Exception {
-        Mock mockQueueBrowser = new Mock(QueueBrowser.class);
-        QueueBrowser testQueueBrowser = (QueueBrowser) mockQueueBrowser.proxy();
+    
+    public void testGetProducerThrowsForInvalidProducer() throws Exception {
+        Mock mockMessageProducer = new Mock(MessageProducer.class);
+        MessageProducer testMessageProducer = (MessageProducer) mockMessageProducer.proxy();
         mockSession.stubs()
-            .method("createBrowser")
-            .will(returnValue(testQueueBrowser));
+            .method("createProducer")
+            .will(returnValue(testMessageProducer));
+        mockMessageProducer.expects(atLeastOnce())
+            .method("setDisableMessageTimestamp");
+        mockMessageProducer.expects(atLeastOnce())
+            .method("setDisableMessageID");
 
-        HJBSessionQueueBrowsersNG browsers = new HJBSessionQueueBrowsersNG(testSession);
+        HJBSessionProducers producers = new HJBSessionProducers(testSession);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
-        browsers.createBrowser(testQueue);
+        assertEquals("Index should be 0",
+                     0,
+                     producers.createProducer(testDestination,
+                                              sessionBuilder.defaultProducerArguments()));
         try {
-            browsers.getBrowser(1);
+            producers.getProducer(1);
             fail("should have thrown an exception - producer 1 does not exist yet");
         } catch (HJBException hjbe) {}
     }
 
-    public void testGetBrowserReturnsCreatedBrowsers() throws Exception {
-        Mock mockQueueBrowser = new Mock(QueueBrowser.class);
-        QueueBrowser testQueueBrowser = (QueueBrowser) mockQueueBrowser.proxy();
+    public void testGetProducerReturnsCreatedProducers() throws Exception {
+        Mock mockMessageProducer = new Mock(MessageProducer.class);
+        MessageProducer testMessageProducer = (MessageProducer) mockMessageProducer.proxy();
         mockSession.stubs()
-            .method("createBrowser")
-            .will(returnValue(testQueueBrowser));
+            .method("createProducer")
+            .will(returnValue(testMessageProducer));
+        mockMessageProducer.expects(atLeastOnce())
+            .method("setDisableMessageTimestamp");
+        mockMessageProducer.expects(atLeastOnce())
+            .method("setDisableMessageID");
 
-        HJBSessionQueueBrowsersNG browsers = new HJBSessionQueueBrowsersNG(testSession);
+        HJBSessionProducers producers = new HJBSessionProducers(testSession);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
-        assertEquals("Index should be 0", 0, browsers.createBrowser(testQueue));
-        assertNotNull("got first browser", browsers.getBrowser(0));
-        assertEquals("Index should be 1", 1, browsers.createBrowser(testQueue,
-                                                                    "test"));
-        assertNotNull("got second browser", browsers.getBrowser(1));
+        assertEquals("Index should be 0",
+                     0,
+                     producers.createProducer(testDestination,
+                                              sessionBuilder.defaultProducerArguments()));
+        assertNotNull("got first producer", producers.getProducer(0));
+        assertEquals("Index should be 1",
+                     1,
+                     producers.createProducer(testDestination,
+                                              sessionBuilder.defaultProducerArguments()));
+        assertNotNull("got second producer", producers.getProducer(1));
     }
 
     protected void setUp() throws Exception {
@@ -99,8 +112,8 @@ public class HJBSessionQueueBrowsersNGTest extends BaseHJBTestCase {
         registerToVerify(mockSession);
         testSession = new HJBSession((Session) mockSession.proxy(), 0, defaultTestClock());
 
-        mockQueue = new Mock(Queue.class);
-        testQueue = (Queue) mockQueue.proxy();
+        mockDestination = new Mock(Destination.class);
+        testDestination = (Destination) mockDestination.proxy();
 
         updateConnectionMock(testSession);
     }
@@ -119,8 +132,8 @@ public class HJBSessionQueueBrowsersNGTest extends BaseHJBTestCase {
 
     private Mock mockConnection;
     private HJBConnection testConnection;
-    private Mock mockQueue;
-    private Queue testQueue;
+    private Mock mockDestination;
+    private Destination testDestination;
     private Mock mockSession;
     private HJBSession testSession;
 

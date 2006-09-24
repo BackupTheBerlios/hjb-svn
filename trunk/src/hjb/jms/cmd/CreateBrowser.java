@@ -23,16 +23,16 @@ package hjb.jms.cmd;
 import javax.jms.Queue;
 import javax.jms.QueueBrowser;
 
-import hjb.jms.HJBSessionQueueBrowsersNG;
+import hjb.jms.HJBSessionQueueBrowsers;
 import hjb.misc.HJBStrings;
 
 public class CreateBrowser extends BaseJMSCommand {
 
-    public CreateBrowser(HJBSessionQueueBrowsersNG browsers,
+    public CreateBrowser(HJBSessionQueueBrowsers browsers,
                          Queue queue,
                          String messageSelector) {
         if (null == browsers)
-            throw new IllegalArgumentException(strings().needsANonNull(HJBSessionQueueBrowsersNG.class));
+            throw new IllegalArgumentException(strings().needsANonNull(HJBSessionQueueBrowsers.class));
         if (null == queue)
             throw new IllegalArgumentException(strings().needsANonNull(Queue.class));
         this.browsers = browsers;
@@ -41,7 +41,7 @@ public class CreateBrowser extends BaseJMSCommand {
         setBrowserIndex(UNSET_BROWSER_INDEX);
     }
 
-    public CreateBrowser(HJBSessionQueueBrowsersNG browsers, Queue queue) {
+    public CreateBrowser(HJBSessionQueueBrowsers browsers, Queue queue) {
         this(browsers, queue, null);
     }
 
@@ -99,7 +99,7 @@ public class CreateBrowser extends BaseJMSCommand {
         this.browserIndex = browserIndex;
     }
 
-    protected HJBSessionQueueBrowsersNG getBrowsers() {
+    protected HJBSessionQueueBrowsers getBrowsers() {
         return browsers;
     }
 
@@ -114,6 +114,6 @@ public class CreateBrowser extends BaseJMSCommand {
     private int browserIndex;
     private final String messageSelector;
     private final Queue queue;
-    private final HJBSessionQueueBrowsersNG browsers;
+    private final HJBSessionQueueBrowsers browsers;
     public static final int UNSET_BROWSER_INDEX = Integer.MIN_VALUE;
 }

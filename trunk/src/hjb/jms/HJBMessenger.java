@@ -266,22 +266,22 @@ public class HJBMessenger {
     }
 
     protected MessageConsumer getConsumerFor(int index) {
-        HJBSessionConsumersNG consumers = getTheSession().getConsumers();
+        HJBSessionConsumers consumers = getTheSession().getConsumers();
         return consumers.getConsumer(index);
     }
 
     protected MessageProducer getProducerFor(int index) {
-        HJBSessionProducersNG producers = getTheSession().getProducers();
+        HJBSessionProducers producers = getTheSession().getProducers();
         return producers.getProducer(index);
     }
 
     protected QueueBrowser getBrowserFor(int index) {
-        HJBSessionQueueBrowsersNG browsers = getTheSession().getBrowsers();
+        HJBSessionQueueBrowsers browsers = getTheSession().getBrowsers();
         return browsers.getBrowser(index);
     }
 
     protected TopicSubscriber getSubscriberFor(int index) {
-        HJBSessionDurableSubscribersNG subscribers = getTheSession().getSubscribers();
+        HJBSessionDurableSubscribers subscribers = getTheSession().getSubscribers();
         return subscribers.getSubscriber(index);
     }
 

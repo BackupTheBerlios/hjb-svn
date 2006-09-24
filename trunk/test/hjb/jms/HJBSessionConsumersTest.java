@@ -32,11 +32,11 @@ import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
 import hjb.testsupport.MockSessionBuilder;
 
-public class HJBSessionConsumersNGTest extends BaseHJBTestCase {
+public class HJBSessionConsumersTest extends BaseHJBTestCase {
 
     public void testHJBSessionConsumersThrowsIllegalArgumentExceptionOnNullSession() {
         try {
-            new HJBSessionConsumersNG(null);
+            new HJBSessionConsumers(null);
             fail("An IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {}
     }
@@ -49,7 +49,7 @@ public class HJBSessionConsumersNGTest extends BaseHJBTestCase {
                                              defaultTestClock());
         updateConnectionMock(aSession);
 
-        HJBSessionConsumersNG consumers = new HJBSessionConsumersNG(aSession);
+        HJBSessionConsumers consumers = new HJBSessionConsumers(aSession);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         try {
             consumers.createConsumer(testDestination);
@@ -73,7 +73,7 @@ public class HJBSessionConsumersNGTest extends BaseHJBTestCase {
                                      defaultTestClock());
         updateConnectionMock(testSession);
 
-        HJBSessionConsumersNG consumers = new HJBSessionConsumersNG(testSession);
+        HJBSessionConsumers consumers = new HJBSessionConsumers(testSession);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         assertEquals("Index should be 0",
                      0,
@@ -106,7 +106,7 @@ public class HJBSessionConsumersNGTest extends BaseHJBTestCase {
             .method("createConsumer")
             .will(returnValue(testMessageConsumer));
 
-        HJBSessionConsumersNG consumers = new HJBSessionConsumersNG(testSession);
+        HJBSessionConsumers consumers = new HJBSessionConsumers(testSession);
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         consumers.createConsumer(testDestination);
         try {
@@ -122,7 +122,7 @@ public class HJBSessionConsumersNGTest extends BaseHJBTestCase {
             .method("createConsumer")
             .will(returnValue(testMessageConsumer));
 
-        HJBSessionConsumersNG consumers = new HJBSessionConsumersNG(testSession);
+        HJBSessionConsumers consumers = new HJBSessionConsumers(testSession);
         assertEquals("Index should be 0",
                      0,
                      consumers.createConsumer(testDestination));

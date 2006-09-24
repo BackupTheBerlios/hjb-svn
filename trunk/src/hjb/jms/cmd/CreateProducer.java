@@ -23,17 +23,17 @@ package hjb.jms.cmd;
 import javax.jms.Destination;
 import javax.jms.MessageProducer;
 
-import hjb.jms.HJBSessionProducersNG;
+import hjb.jms.HJBSessionProducers;
 import hjb.misc.HJBStrings;
 import hjb.misc.MessageProducerArguments;
 
 public class CreateProducer extends BaseJMSCommand {
 
-    public CreateProducer(HJBSessionProducersNG producers,
+    public CreateProducer(HJBSessionProducers producers,
                           Destination destination,
                           MessageProducerArguments producerArguments) {
         if (null == producers) {
-            throw new IllegalArgumentException(strings().needsANonNull(HJBSessionProducersNG.class));
+            throw new IllegalArgumentException(strings().needsANonNull(HJBSessionProducers.class));
         }
         if (null == destination) {
             throw new IllegalArgumentException(strings().needsANonNull(Destination.class));
@@ -97,7 +97,7 @@ public class CreateProducer extends BaseJMSCommand {
         return producerArguments;
     }
 
-    protected HJBSessionProducersNG getProducers() {
+    protected HJBSessionProducers getProducers() {
         return producers;
     }
 
@@ -108,6 +108,6 @@ public class CreateProducer extends BaseJMSCommand {
     private int producerIndex;
     private final MessageProducerArguments producerArguments;
     private final Destination destination;
-    private final HJBSessionProducersNG producers;
+    private final HJBSessionProducers producers;
     public static final int UNSET_PRODUCER_INDEX = Integer.MIN_VALUE;
 }

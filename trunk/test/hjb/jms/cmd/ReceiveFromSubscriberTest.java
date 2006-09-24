@@ -31,7 +31,7 @@ import hjb.http.cmd.HJBMessageWriter;
 import hjb.jms.HJBMessenger;
 import hjb.jms.HJBRoot;
 import hjb.jms.HJBSession;
-import hjb.jms.HJBSessionDurableSubscribersNG;
+import hjb.jms.HJBSessionDurableSubscribers;
 import hjb.misc.HJBException;
 import hjb.msg.HJBMessage;
 import hjb.msg.MessageCopierFactory;
@@ -155,7 +155,7 @@ public class ReceiveFromSubscriberTest extends BaseHJBTestCase {
     }
 
     protected void create1Subscriber(HJBSession testSession) {
-        HJBSessionDurableSubscribersNG sessionSubscribers = testSession.getSubscribers();
+        HJBSessionDurableSubscribers sessionSubscribers = testSession.getSubscribers();
         Mock mockTopic = mock(Topic.class);
         Topic testTopic = (Topic) mockTopic.proxy();
         CreateSubscriber command = new CreateSubscriber(sessionSubscribers,
