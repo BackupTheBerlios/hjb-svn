@@ -24,11 +24,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
-import javax.jms.QueueBrowser;
-import javax.jms.TopicSubscriber;
-
 import hjb.jms.HJBSession;
 import hjb.misc.HJBStrings;
 import hjb.misc.PathNaming;
@@ -115,54 +110,53 @@ public class SessionListing implements JMSObjectListing {
 
     protected void writeBrowsers(PrintWriter aWriter,
                                  String sessionPrefix,
-                                 boolean recurse) {
-        QueueBrowser browsers[] = getTheSession().getBrowsers().asArray();
-        BaseJMSObjectDescription descriptions[] = new BaseJMSObjectDescription[browsers.length];
-        for (int i = 0; i < browsers.length; i++) {
-            descriptions[i] = new BrowserDescription(browsers[i], i);
-        }
-        writeDescriptions(descriptions, aWriter, sessionPrefix, recurse);
+                                 boolean useLongDescription) {
+        BaseJMSObjectDescription descriptions[] = getTheSession().getBrowsers()
+            .getItemDescriptions();
+        writeDescriptions(descriptions,
+                          aWriter,
+                          sessionPrefix,
+                          useLongDescription);
     }
 
     protected void writeProducers(PrintWriter aWriter,
                                   String sessionPrefix,
-                                  boolean recurse) {
-        MessageProducer producers[] = getTheSession().getProducers().asArray();
-        BaseJMSObjectDescription descriptions[] = new BaseJMSObjectDescription[producers.length];
-        for (int i = 0; i < producers.length; i++) {
-            descriptions[i] = new ProducerDescription(producers[i], i);
-        }
-        writeDescriptions(descriptions, aWriter, sessionPrefix, recurse);
-        if (producers.length > 0) {
+                                  boolean useLongDescription) {
+        BaseJMSObjectDescription descriptions[] = getTheSession().getProducers()
+            .getItemDescriptions();
+        writeDescriptions(descriptions,
+                          aWriter,
+                          sessionPrefix,
+                          useLongDescription);
+        if (descriptions.length > 0) {
             aWriter.println();
         }
     }
 
     protected void writeConsumers(PrintWriter aWriter,
                                   String sessionPrefix,
-                                  boolean recurse) {
-        MessageConsumer consumers[] = getTheSession().getConsumers().asArray();
-        BaseJMSObjectDescription descriptions[] = new BaseJMSObjectDescription[consumers.length];
-        for (int i = 0; i < consumers.length; i++) {
-            descriptions[i] = new ConsumerDescription(consumers[i], i);
-        }
-        writeDescriptions(descriptions, aWriter, sessionPrefix, recurse);
-        if (consumers.length > 0) {
+                                  boolean useLongDescription) {
+        BaseJMSObjectDescription descriptions[] = getTheSession().getConsumers()
+            .getItemDescriptions();
+        writeDescriptions(descriptions,
+                          aWriter,
+                          sessionPrefix,
+                          useLongDescription);
+        if (descriptions.length > 0) {
             aWriter.println();
         }
     }
 
     protected void writeSubscribers(PrintWriter aWriter,
                                     String sessionPrefix,
-                                    boolean recurse) {
-        TopicSubscriber subscribers[] = getTheSession().getSubscribers()
-            .asArray();
-        BaseJMSObjectDescription descriptions[] = new BaseJMSObjectDescription[subscribers.length];
-        for (int i = 0; i < subscribers.length; i++) {
-            descriptions[i] = new SubscriberDescription(subscribers[i], i);
-        }
-        writeDescriptions(descriptions, aWriter, sessionPrefix, recurse);
-        if (subscribers.length > 0) {
+                                    boolean useLongDescription) {
+        BaseJMSObjectDescription descriptions[] = getTheSession().getSubscribers()
+            .getItemDescriptions();
+        writeDescriptions(descriptions,
+                          aWriter,
+                          sessionPrefix,
+                          useLongDescription);
+        if (descriptions.length > 0) {
             aWriter.println();
         }
     }
@@ -174,14 +168,15 @@ public class SessionListing implements JMSObjectListing {
     protected void writeDescriptions(BaseJMSObjectDescription[] descriptions,
                                      PrintWriter aWriter,
                                      String sessionPrefix,
-                                     boolean recurse) {
+                                     boolean useLongDescription) {
         for (int i = 0; i < descriptions.length; i++) {
             aWriter.print(sessionPrefix);
-            if (recurse) {
+            if (useLongDescription) {
                 aWriter.print(descriptions[i].longDescription());
             } else {
                 aWriter.print(descriptions[i]);
             }
+            // don't add a carriage return to the last line
             if (i + 1 != descriptions.length) {
                 aWriter.println();
             }

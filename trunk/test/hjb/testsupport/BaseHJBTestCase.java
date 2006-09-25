@@ -60,15 +60,18 @@ public abstract class BaseHJBTestCase  extends MockObjectTestCase  {
         return new DummyClock(aTime);
     }
     
-    protected Clock defaultTestClock() {
+    protected synchronized Clock defaultTestClock() {
         Calendar c = Calendar.getInstance();
         c.set(2003, 12, 25, 0, 0, 0);
-        Date christmas_day_2003 = c.getTime();
-        return clockAtTime(christmas_day_2003);
+        if (null == XMAS_DAY_2004) {
+            XMAS_DAY_2004 = c.getTime();
+        }
+        return clockAtTime(XMAS_DAY_2004);
     }
     
     private static final HJBStrings STRINGS = new HJBStrings();
     public static final String CR = System.getProperty("line.separator");
+    protected static Date XMAS_DAY_2004;
     
     protected static class DummyClock extends Clock {
         private Date currentTime;

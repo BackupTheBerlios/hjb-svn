@@ -73,7 +73,7 @@ public class ListSessionGenerator extends PatternMatchingCommandGenerator {
         this.generatedCommand = new RetrieveListing(new SessionListing(theSession),
                                                     pathInfo.substring(0,
                                                                        pathInfo.lastIndexOf("list")),
-                                                    theSession.getSessionDescription()
+                                                    theSession.getDescription()
                                                         .toString(),
                                                     getFinder().findIsRecursiveListing(decodedParameters));
     }

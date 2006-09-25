@@ -24,6 +24,9 @@ import javax.jms.JMSException;
 import javax.jms.Queue;
 import javax.jms.QueueBrowser;
 
+import hjb.jms.info.BaseJMSObjectDescription;
+import hjb.jms.info.BrowserDescription;
+import hjb.misc.Clock;
 import hjb.misc.HJBStrings;
 
 /**
@@ -35,8 +38,8 @@ import hjb.misc.HJBStrings;
  */
 public class HJBSessionQueueBrowsers extends HJBSessionItems {
 
-    public HJBSessionQueueBrowsers(HJBSession theSession) {
-        super(theSession);
+    public HJBSessionQueueBrowsers(HJBSession theSession, Clock aClock) {
+        super(theSession, aClock);
     }
 
     public int createBrowser(Queue aQueue) {
@@ -76,5 +79,14 @@ public class HJBSessionQueueBrowsers extends HJBSessionItems {
             handleFailure(HJBStrings.SESSION_NOT_FOUND, e);
             return new QueueBrowser[0];
         }
+    }
+
+    public BaseJMSObjectDescription[] getItemDescriptions() {
+        final QueueBrowser[] browsers = asArray();
+        BaseJMSObjectDescription result[] = new BaseJMSObjectDescription[browsers.length];
+        for (int i = 0; i < browsers.length; i++) {
+            result[i] = new BrowserDescription(browsers[i], i);
+        }
+        return result;
     }
 }

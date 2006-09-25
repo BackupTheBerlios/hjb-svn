@@ -24,8 +24,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.jms.JMSException;
 import javax.jms.Connection;
+import javax.jms.JMSException;
 
 import hjb.jms.HJBConnection;
 import hjb.misc.HJBConstants;
@@ -95,6 +95,6 @@ public class ConnectionDescription extends BaseJMSObjectDescription {
         return theConnection;
     }
 
+    private final Connection theConnection;
     private static final int DUMMY = 0;
-    private Connection theConnection;
 }

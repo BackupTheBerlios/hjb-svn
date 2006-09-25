@@ -24,6 +24,9 @@ import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
 
+import hjb.jms.info.BaseJMSObjectDescription;
+import hjb.jms.info.ProducerDescription;
+import hjb.misc.Clock;
 import hjb.misc.HJBStrings;
 import hjb.misc.MessageProducerArguments;
 
@@ -35,8 +38,8 @@ import hjb.misc.MessageProducerArguments;
  */
 public class HJBSessionProducers extends HJBSessionItems {
 
-    public HJBSessionProducers(HJBSession theSession) {
-        super(theSession);
+    public HJBSessionProducers(HJBSession theSession, Clock aClock) {
+        super(theSession, aClock);
     }
 
     public int createProducer(Destination aDestination,
@@ -62,6 +65,15 @@ public class HJBSessionProducers extends HJBSessionItems {
 
     public MessageProducer[] asArray() {
         return (MessageProducer[]) getItems().toArray(new MessageProducer[0]);
+    }
+
+    public BaseJMSObjectDescription[] getItemDescriptions() {
+        final MessageProducer[] producers = asArray();
+        BaseJMSObjectDescription result[] = new BaseJMSObjectDescription[producers.length];
+        for (int i = 0; i < producers.length; i++) {
+            result[i] = new ProducerDescription(producers[i], i);
+        }
+        return result;
     }
 
     protected void configureProducer(MessageProducer producer,

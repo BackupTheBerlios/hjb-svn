@@ -36,7 +36,17 @@ public class HJBSessionConsumersTest extends BaseHJBTestCase {
 
     public void testHJBSessionConsumersThrowsIllegalArgumentExceptionOnNullSession() {
         try {
-            new HJBSessionConsumers(null);
+            new HJBSessionConsumers(null, defaultTestClock());
+            fail("An IllegalArgumentException should have been thrown");
+        } catch (IllegalArgumentException e) {}
+    }
+
+    public void testHJBSessionConsumersThrowsIllegalArgumentExceptionOnNullClock() {
+        try {
+            HJBSession aSession = new HJBSession((Session) mockSession.proxy(),
+                                                 0,
+                                                 defaultTestClock());
+            new HJBSessionConsumers(aSession, null);
             fail("An IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {}
     }
@@ -49,7 +59,8 @@ public class HJBSessionConsumersTest extends BaseHJBTestCase {
                                              defaultTestClock());
         updateConnectionMock(aSession);
 
-        HJBSessionConsumers consumers = new HJBSessionConsumers(aSession);
+        HJBSessionConsumers consumers = new HJBSessionConsumers(aSession,
+                                                                defaultTestClock());
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         try {
             consumers.createConsumer(testDestination);
@@ -73,7 +84,8 @@ public class HJBSessionConsumersTest extends BaseHJBTestCase {
                                      defaultTestClock());
         updateConnectionMock(testSession);
 
-        HJBSessionConsumers consumers = new HJBSessionConsumers(testSession);
+        HJBSessionConsumers consumers = new HJBSessionConsumers(testSession,
+                                                                defaultTestClock());
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         assertEquals("Index should be 0",
                      0,
@@ -99,6 +111,22 @@ public class HJBSessionConsumersTest extends BaseHJBTestCase {
                      consumers.asArray().length);
     }
 
+    public void testShouldReturnTheCorrectNumberOfItemDescriptions() throws Exception {
+        testSession = new HJBSession((Session) mockSession.proxy(),
+                                     0,
+                                     defaultTestClock());
+        updateConnectionMock(testSession);
+
+        HJBSessionConsumers consumers = new HJBSessionConsumers(testSession,
+                                                                defaultTestClock());
+        testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
+        assertEquals(0, consumers.getItemDescriptions().length);
+        consumers.createConsumer(testDestination, "test-selector", true);
+        assertEquals(1, consumers.getItemDescriptions().length);
+        consumers.createConsumer(testDestination, "test-selector");
+        assertEquals(2, consumers.getItemDescriptions().length);
+    }
+
     public void testGetConsumerThrowsForInvalidConsumer() throws Exception {
         Mock mockMessageConsumer = new Mock(MessageConsumer.class);
         MessageConsumer testMessageConsumer = (MessageConsumer) mockMessageConsumer.proxy();
@@ -106,7 +134,8 @@ public class HJBSessionConsumersTest extends BaseHJBTestCase {
             .method("createConsumer")
             .will(returnValue(testMessageConsumer));
 
-        HJBSessionConsumers consumers = new HJBSessionConsumers(testSession);
+        HJBSessionConsumers consumers = new HJBSessionConsumers(testSession,
+                                                                defaultTestClock());
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         consumers.createConsumer(testDestination);
         try {
@@ -122,7 +151,8 @@ public class HJBSessionConsumersTest extends BaseHJBTestCase {
             .method("createConsumer")
             .will(returnValue(testMessageConsumer));
 
-        HJBSessionConsumers consumers = new HJBSessionConsumers(testSession);
+        HJBSessionConsumers consumers = new HJBSessionConsumers(testSession,
+                                                                defaultTestClock());
         assertEquals("Index should be 0",
                      0,
                      consumers.createConsumer(testDestination));
@@ -170,5 +200,4 @@ public class HJBSessionConsumersTest extends BaseHJBTestCase {
 
     private MockConnectionBuilder connectionBuilder;
     private MockSessionBuilder sessionBuilder;
-
 }

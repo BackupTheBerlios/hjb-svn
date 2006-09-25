@@ -36,19 +36,31 @@ public class HJBSessionDurableSubscribersTest extends BaseHJBTestCase {
 
     public void testConstructionsThrowsIllegalArgumentExceptionOnNullSession() {
         try {
-            new HJBSessionDurableSubscribers(null);
+            new HJBSessionDurableSubscribers(null, defaultTestClock());
             fail("An IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {}
     }
 
+    public void testConstructionsThrowsIllegalArgumentExceptionOnNullClock() {
+        try {
+            HJBSession aSession = new HJBSession((Session) mockSession.proxy(),
+                                                 0,
+                                                 defaultTestClock());
+            new HJBSessionDurableSubscribers(aSession, null);
+            fail("An IllegalArgumentException should have been thrown");
+        } catch (IllegalArgumentException e) {}
+    }
 
     public void testCreateSubscriberThrowsHJBExceptionOnJMSException()
             throws Exception {
         mockSession = sessionBuilder.createMockSessionThatThrowsJMSOn("createDurableSubscriber");
-        HJBSession aSession = new HJBSession((Session) mockSession.proxy(), 0, defaultTestClock());
+        HJBSession aSession = new HJBSession((Session) mockSession.proxy(),
+                                             0,
+                                             defaultTestClock());
         updateConnectionMock(aSession);
 
-        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(aSession);
+        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(aSession,
+                                                                                    defaultTestClock());
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         try {
             subscribers.createDurableSubscriber(testTopic, "test-selector");
@@ -70,10 +82,13 @@ public class HJBSessionDurableSubscribersTest extends BaseHJBTestCase {
     public void testCreateSubscriberIsInvokedOnStoredSession() throws Exception {
         mockSession.stubs().method("createDurableSubscriber");
         registerToVerify(mockSession);
-        testSession = new HJBSession((Session) mockSession.proxy(), 0, defaultTestClock());
+        testSession = new HJBSession((Session) mockSession.proxy(),
+                                     0,
+                                     defaultTestClock());
         updateConnectionMock(testSession);
 
-        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testSession);
+        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testSession,
+                                                                                    defaultTestClock());
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         assertEquals("Index should be 0",
                      0,
@@ -109,7 +124,8 @@ public class HJBSessionDurableSubscribersTest extends BaseHJBTestCase {
             .method("createDurableSubscriber")
             .will(returnValue(testTopicSubscriber));
 
-        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testSession);
+        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testSession,
+                                                                                    defaultTestClock());
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         subscribers.createDurableSubscriber(testTopic, "test");
         try {
@@ -125,7 +141,8 @@ public class HJBSessionDurableSubscribersTest extends BaseHJBTestCase {
             .method("createDurableSubscriber")
             .will(returnValue(testTopicSubscriber));
 
-        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testSession);
+        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testSession,
+                                                                                    defaultTestClock());
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         assertEquals("Index should be 0",
                      0,
@@ -140,17 +157,35 @@ public class HJBSessionDurableSubscribersTest extends BaseHJBTestCase {
         assertNotNull("got second subscriber", subscribers.getSubscriber(1));
     }
 
+    public void testShouldReturnTheCorrectNumberOfItemDescriptions()
+            throws Exception {
+        Mock mockTopic = new Mock(TopicSubscriber.class);
+        TopicSubscriber testTopicSubscriber = (TopicSubscriber) mockTopic.proxy();
+        mockSession.stubs()
+            .method("createDurableSubscriber")
+            .will(returnValue(testTopicSubscriber));
+
+        HJBSessionDurableSubscribers subscribers = new HJBSessionDurableSubscribers(testSession,
+                                                                                    defaultTestClock());
+        testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
+        assertEquals(0, subscribers.getItemDescriptions().length);
+        subscribers.createDurableSubscriber(testTopic, "test", "test", true);
+        assertEquals(1, subscribers.getItemDescriptions().length);
+        subscribers.createDurableSubscriber(testTopic, "test");
+        assertEquals(2, subscribers.getItemDescriptions().length);
+    }
+
     protected void setUp() throws Exception {
         super.setUp();
         initialiseMockBuilders();
 
         mockSession = new MockSessionBuilder().createMockSession();
         registerToVerify(mockSession);
-        testSession = new HJBSession((Session) mockSession.proxy(), 0, defaultTestClock());
-
+        testSession = new HJBSession((Session) mockSession.proxy(),
+                                     0,
+                                     defaultTestClock());
         mockTopic = new Mock(Topic.class);
         testTopic = (Topic) mockTopic.proxy();
-
         updateConnectionMock(testSession);
     }
 

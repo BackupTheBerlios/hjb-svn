@@ -49,7 +49,7 @@ public class CreateBrowserTest extends BaseHJBTestCase {
         HJBSession testSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
             .getConnection(0).getSession(0);
-        HJBSessionQueueBrowsers sessionBrowsers = new HJBSessionQueueBrowsers(testSession);
+        HJBSessionQueueBrowsers sessionBrowsers = new HJBSessionQueueBrowsers(testSession, defaultTestClock());
         try {
             new CreateBrowser(sessionBrowsers, null, "testSelector");
             fail("should have thrown an exception");

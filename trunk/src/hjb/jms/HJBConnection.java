@@ -27,6 +27,7 @@ import javax.jms.*;
 import org.apache.log4j.Logger;
 
 import hjb.jms.cmd.JMSCommandRunner;
+import hjb.jms.info.BaseJMSObjectDescription;
 import hjb.jms.info.ConnectionDescription;
 import hjb.jms.info.SessionDescription;
 import hjb.misc.Clock;
@@ -85,6 +86,7 @@ public class HJBConnection implements Connection {
         assignExceptionListener();
         assignClientIdIfNecessary(clientId);
         this.connectionIndex = connectionIndex;
+        this.creationTime = aClock.getCurrentTime();
     }
 
     /**
@@ -116,10 +118,12 @@ public class HJBConnection implements Connection {
         synchronized (activeSessions) {
             try {
                 Session rawSession = getTheConnection().createSession(transacted,
-                                                             acknowledgeMode);
+                                                                      acknowledgeMode);
                 Integer index = new Integer(sessionIndices.size());
                 sessionIndices.add(index);
-                HJBSession s = new HJBSession(rawSession, index.intValue(), getClock());
+                HJBSession s = new HJBSession(rawSession,
+                                              index.intValue(),
+                                              getClock());
                 activeSessions.put(index, s);
                 s.startCommandRunner("" + this);
                 return index.intValue();
@@ -137,7 +141,7 @@ public class HJBConnection implements Connection {
         }
     }
 
-    public SessionDescription getSessionDescription(int index) {
+    public BaseJMSObjectDescription getSessionDescription(int index) {
         return new SessionDescription(getSession(index), index);
     }
 
@@ -190,9 +194,13 @@ public class HJBConnection implements Connection {
     public int getConnectionIndex() {
         return connectionIndex;
     }
+    
+    public BaseJMSObjectDescription getDescrption() {
+        return new ConnectionDescription(this);
+    }
 
     public String toString() {
-        return "" + new ConnectionDescription(this);
+        return "" + getDescrption();
     }
 
     public String getClientID() throws JMSException {
@@ -257,6 +265,10 @@ public class HJBConnection implements Connection {
             return getSession(sessionIndex).getCommandRunner();
         }
     }
+    
+    public Date getCreationTime() {
+        return creationTime;
+    }
 
     protected void assignClientIdIfNecessary(String clientId) {
         try {
@@ -313,6 +325,7 @@ public class HJBConnection implements Connection {
     private final Map activeSessions;
     private final Connection theConnection;
     private final Clock clock;
+    private final Date creationTime;
 
     private static final Logger LOG = Logger.getLogger(HJBConnection.class);
     private static final HJBStrings STRINGS = new HJBStrings();

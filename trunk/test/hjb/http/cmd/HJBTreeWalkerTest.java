@@ -103,6 +103,30 @@ public class HJBTreeWalkerTest extends BaseHJBTestCase {
         assertNull(tw.findConnection(TEST_PROVIDER, TEST_FACTORY, 1));
     }
 
+    public void testFindsSessionIfOneIsPresent() {
+        HJBTreeWalker tw = new HJBTreeWalker(root, TEST_PROVIDER + "/"
+                + TEST_FACTORY + "/" + PathNaming.CONNECTION + "-0/"
+                + PathNaming.SESSION + "-0");
+        assertNotNull(tw.findSession(TEST_PROVIDER, TEST_FACTORY, 0, 0));
+    }
+
+    public void testThrowsIfSessionIsNotPresentAndFailsOnMissingComponent() {
+        HJBTreeWalker tw = new HJBTreeWalker(root, TEST_PROVIDER + "/"
+                + TEST_FACTORY + "/" + PathNaming.CONNECTION + "-0/"
+                + PathNaming.SESSION + "-1");
+        try {
+            tw.findSession(TEST_PROVIDER, TEST_FACTORY, 0, 1);
+            fail("Should have thrown an HJBNotFoundException");
+        } catch (HJBNotFoundException e) {}
+    }
+
+    public void testReturnsNullIfSessionIsNotPresentAndNotFailsOnMissingComponent() {
+        HJBTreeWalker tw = new HJBTreeWalker(root, TEST_PROVIDER + "/"
+                + TEST_FACTORY + "/" + PathNaming.CONNECTION + "-0/"
+                + PathNaming.SESSION + "-1", false);
+        assertNull(tw.findSession(TEST_PROVIDER, TEST_FACTORY, 0, 1));
+    }
+
     protected void setUp() throws Exception {
         testRootPath = File.createTempFile("test", null).getParentFile();
         root = new HJBRoot(testRootPath, defaultTestClock());

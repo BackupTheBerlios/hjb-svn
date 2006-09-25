@@ -25,7 +25,8 @@ import java.util.*;
 
 import org.apache.log4j.Logger;
 
-import hjb.jms.info.SessionDescription;
+import hjb.jms.info.BaseJMSObjectDescription;
+import hjb.misc.Clock;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 
@@ -37,18 +38,36 @@ import hjb.misc.HJBStrings;
  */
 public abstract class HJBSessionItems {
 
-    public HJBSessionItems(HJBSession theSession) {
+    public HJBSessionItems(HJBSession theSession, Clock aClock) {
         if (null == theSession) {
             throw new IllegalArgumentException(strings().needsANonNull(HJBSession.class));
         }
+        if (null == aClock) {
+            throw new IllegalArgumentException(strings().needsANonNull(Clock.class));
+        }
         this.theSession = theSession;
-        this.items = Collections.synchronizedList(new ArrayList());
+        this.clock = aClock;
+        this.itemsWithTheirCreationTime = Collections.synchronizedList(new ArrayList());
     }
 
     public int getSessionIndex() {
         return getTheSession().getSessionIndex();
     }
-    
+
+    /**
+     * Returns an array containing the <code>BaseJMSObjectDescrptions</code>
+     * of the items held by this instance
+     * 
+     * <p>
+     * Subclasses implement this method by constructing an array of the
+     * appropriate BaseJMSObjectDescription subclass.
+     * </p>
+     * 
+     * @return an array containing the <code>BaseJMSObjectDescrptions</code>
+     *         of the items held by this instance
+     */
+    public abstract BaseJMSObjectDescription[] getItemDescriptions();
+
     protected void handleFailure(MessageFormat formatter, Exception e) {
         logAndThrowFailure(formatter.format(new Object[] {
             new Integer(getSessionIndex())
@@ -56,7 +75,8 @@ public abstract class HJBSessionItems {
     }
 
     protected void handleFailure(String messageKey, Exception e) {
-        logAndThrowFailure(strings().getString(messageKey, new Integer(getSessionIndex())),
+        logAndThrowFailure(strings().getString(messageKey,
+                                               new Integer(getSessionIndex())),
                            e);
     }
 
@@ -68,20 +88,31 @@ public abstract class HJBSessionItems {
                                                itemDescription), e);
     }
 
-
     protected void logAndThrowFailure(String message, Exception e) {
         LOG.error(message, e);
         throw new HJBException(message, e);
     }
 
     protected List getItems() {
-        return items;
+        List result = new ArrayList();
+        for (Iterator i = getItemsWithTheirCreationTime().iterator(); i.hasNext();) {
+            SessionItem o = (SessionItem) i.next();
+            result.add(o.getObject());
+        }
+        return result;
     }
-    
+
+    protected List getItemsWithTheirCreationTime() {
+        synchronized (itemsWithTheirCreationTime) {
+            return new ArrayList(itemsWithTheirCreationTime);
+        }
+    }
+
     protected int addSessionItemAndReturnItsIndex(Object value) {
-        synchronized (items) {
-            items.add(value);
-            return items.size() - 1;
+        synchronized (itemsWithTheirCreationTime) {
+            itemsWithTheirCreationTime.add(new SessionItem(value,
+                                                           clock.getCurrentTime()));
+            return itemsWithTheirCreationTime.size() - 1;
         }
     }
 
@@ -89,17 +120,46 @@ public abstract class HJBSessionItems {
         return theSession;
     }
 
-    protected SessionDescription getSessionDescription() {
-        return getTheSession().getSessionDescription();
+    protected BaseJMSObjectDescription getSessionDescription() {
+        return getTheSession().getDescription();
     }
 
     protected HJBStrings strings() {
         return STRINGS;
     }
 
+    protected Clock getClock() {
+        return clock;
+    }
+
     private final HJBSession theSession;
-    private final List items;
+    private final List itemsWithTheirCreationTime;
+    private final Clock clock;
 
     private static final Logger LOG = Logger.getLogger(HJBSessionItems.class);
     private static final HJBStrings STRINGS = new HJBStrings();
+
+    /**
+     * <code>SessionItem</code> stores an object reference and its creation
+     * time.
+     * 
+     * @author Tim Emiola
+     */
+    protected static class SessionItem {
+        public SessionItem(Object o, Date creationTime) {
+            this.object = o;
+            this.creationTime = creationTime;
+        }
+
+        public Date getCreationTime() {
+            return creationTime;
+        }
+
+        public Object getObject() {
+            return object;
+        }
+
+        private final Object object;
+        private final Date creationTime;
+    }
 }

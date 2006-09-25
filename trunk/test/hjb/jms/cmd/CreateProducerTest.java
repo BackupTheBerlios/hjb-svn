@@ -50,7 +50,7 @@ public class CreateProducerTest extends BaseHJBTestCase {
         HJBSession testSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
             .getConnection(0).getSession(0);
-        HJBSessionProducers sessionProducers = new HJBSessionProducers(testSession);
+        HJBSessionProducers sessionProducers = new HJBSessionProducers(testSession, defaultTestClock());
         try {
             new CreateProducer(sessionProducers, null, null);
             fail("should have thrown an exception");

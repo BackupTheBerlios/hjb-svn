@@ -49,7 +49,7 @@ public class CreateSubscriberTest extends BaseHJBTestCase {
         HJBSession testSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
             .getConnection(0).getSession(0);
-        HJBSessionDurableSubscribers sessionSubscribers = new HJBSessionDurableSubscribers(testSession);
+        HJBSessionDurableSubscribers sessionSubscribers = new HJBSessionDurableSubscribers(testSession, defaultTestClock());
         try {
             new CreateSubscriber(sessionSubscribers, null, "testSelector");
             fail("should have thrown an exception");
@@ -62,7 +62,7 @@ public class CreateSubscriberTest extends BaseHJBTestCase {
         HJBSession testSession = root.getProvider("testProvider")
         .getConnectionFactory("testFactory")
         .getConnection(0).getSession(0);
-    HJBSessionDurableSubscribers sessionSubscribers = new HJBSessionDurableSubscribers(testSession);
+    HJBSessionDurableSubscribers sessionSubscribers = new HJBSessionDurableSubscribers(testSession, defaultTestClock());
 
         Mock mockTopic = mock(Topic.class);
         Topic testTopic = (Topic) mockTopic.proxy();
@@ -99,7 +99,7 @@ public class CreateSubscriberTest extends BaseHJBTestCase {
             HJBSession testSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
             .getConnection(0).getSession(0);
-        HJBSessionDurableSubscribers sessionSubscribers = new HJBSessionDurableSubscribers(testSession);
+        HJBSessionDurableSubscribers sessionSubscribers = new HJBSessionDurableSubscribers(testSession, defaultTestClock());
             Mock mockTopic = mock(Topic.class);
             Topic testTopic = (Topic) mockTopic.proxy();
             mockSession.expects(once())

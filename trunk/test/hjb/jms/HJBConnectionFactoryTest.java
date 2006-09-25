@@ -36,18 +36,27 @@ import hjb.testsupport.MockConnectionFactoryBuilder;
 
 public class HJBConnectionFactoryTest extends BaseHJBTestCase {
 
-    public void testConstructionThrowsIllegalArgumentExceptionOnNullConnectionFactory() throws Exception {
+    public void testConstructionThrowsIllegalArgumentExceptionOnNullConnectionFactory()
+            throws Exception {
         try {
             new HJBConnectionFactory(null, null, defaultTestClock());
             fail("Allowed creation from a null ConnectionFactory");
         } catch (IllegalArgumentException iae) {}
     }
 
-    public void testConstructionThrowsIllegalArgumentExceptionOnNullClock() throws Exception {
+    public void testConstructionThrowsIllegalArgumentExceptionOnNullClock()
+            throws Exception {
         try {
             new HJBConnectionFactory(testConnectionFactory, null, null);
             fail("Allowed creation from a null ConnectionFactory");
         } catch (IllegalArgumentException iae) {}
+    }
+
+    public void testConstructionSetsCreationTimeCorrectly() {
+        HJBConnectionFactory f = new HJBConnectionFactory(testConnectionFactory,
+                                                          null,
+                                                          defaultTestClock());
+        assertEquals(f.getCreationTime(), defaultTestClock().getCurrentTime());
     }
 
     public void testConstructionSucceedsWithValidArguments() {

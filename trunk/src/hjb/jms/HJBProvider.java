@@ -49,6 +49,7 @@ public class HJBProvider {
         this.environment = new HashMap(environment);
         this.providerContext = providerContext;
         this.clock = aClock;
+        this.creationTime = aClock.getCurrentTime();
         destinations = Collections.synchronizedSortedMap(new TreeMap());
         factories = Collections.synchronizedSortedMap(new TreeMap());
     }
@@ -161,6 +162,10 @@ public class HJBProvider {
         if (!(obj instanceof HJBProvider)) return false;
         return ((HJBProvider) obj).getEnvironment()
             .equals(this.getEnvironment());
+    }
+
+    public Date getCreationTime() {
+        return creationTime;
     }
 
     /**
@@ -286,6 +291,7 @@ public class HJBProvider {
     private final Map destinations;
     private final Map factories;
     private final Clock clock;
+    private final Date creationTime;
 
     private static final Logger LOG = Logger.getLogger(HJBProvider.class);
     private static final HJBStrings STRINGS = new HJBStrings();

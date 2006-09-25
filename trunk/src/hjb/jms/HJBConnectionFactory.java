@@ -60,6 +60,7 @@ public class HJBConnectionFactory implements ConnectionFactory {
             throw new IllegalArgumentException(strings().needsANonNull(Clock.class));
         }
         this.clock = aClock;
+        this.creationTime = aClock.getCurrentTime();
         this.connectionFactory = connectionFactory;
         this.activeConnections = Collections.synchronizedMap(new TreeMap());
         this.connectionIndices = Collections.synchronizedList(new ArrayList());
@@ -194,6 +195,10 @@ public class HJBConnectionFactory implements ConnectionFactory {
             }
         }
     }
+    
+    public Date getCreationTime() {
+        return creationTime;
+    }
 
     protected void stopThenCloseConnection(HJBConnection c) {
         try {
@@ -270,6 +275,7 @@ public class HJBConnectionFactory implements ConnectionFactory {
     private final List connectionIndices;
     private final Map activeConnections;
     private final Clock clock;
+    private final Date creationTime;
 
     private static final Logger LOG = Logger.getLogger(HJBConnectionFactory.class);
     private static final HJBStrings STRINGS = new HJBStrings();

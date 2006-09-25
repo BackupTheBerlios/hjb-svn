@@ -29,6 +29,7 @@ import javax.jms.*;
 import org.apache.log4j.Logger;
 
 import hjb.jms.cmd.JMSCommandRunner;
+import hjb.jms.info.BaseJMSObjectDescription;
 import hjb.jms.info.SessionDescription;
 import hjb.misc.Clock;
 import hjb.misc.HJBException;
@@ -60,19 +61,19 @@ public class HJBSession implements Session {
 
     public HJBSession(Session theSession, int sessionIndex, Clock aClock) {
         if (null == aClock) {
-            throw new IllegalArgumentException("");
+            throw new IllegalArgumentException(strings().needsANonNull(Clock.class));
         }
         if (null == theSession) {
-            throw new IllegalArgumentException("");
+            throw new IllegalArgumentException(strings().needsANonNull(Session.class));
         }
         this.theSession = theSession;
         this.sessionIndex = sessionIndex;
         this.clock = aClock;
         this.creationTime = aClock.getCurrentTime();
-        this.browsers = new HJBSessionQueueBrowsers(this);
-        this.consumers = new HJBSessionConsumers(this);
-        this.producers = new HJBSessionProducers(this);
-        this.durableSubscribers = new HJBSessionDurableSubscribers(this);
+        this.browsers = new HJBSessionQueueBrowsers(this, aClock);
+        this.consumers = new HJBSessionConsumers(this, aClock);
+        this.producers = new HJBSessionProducers(this, aClock);
+        this.durableSubscribers = new HJBSessionDurableSubscribers(this, aClock);
         this.commandRunner = new JMSCommandRunner();
     }
 
@@ -218,7 +219,7 @@ public class HJBSession implements Session {
         runnerThread.setDaemon(true);
         runnerThread.start();
     }
-    
+
     public void stopCommandRunner() {
         commandRunner.terminate();
     }
@@ -295,11 +296,11 @@ public class HJBSession implements Session {
                                  String messageKey,
                                  Exception e) {
         logAndThrowFailure(strings().getString(messageKey,
-                                               getSessionDescription(),
+                                               getDescription(),
                                                itemDescription), e);
     }
 
-    public SessionDescription getSessionDescription() {
+    public BaseJMSObjectDescription getDescription() {
         return new SessionDescription(getTheSession(), getSessionIndex());
     }
 

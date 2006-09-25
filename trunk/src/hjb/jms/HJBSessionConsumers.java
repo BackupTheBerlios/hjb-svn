@@ -24,6 +24,9 @@ import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 
+import hjb.jms.info.BaseJMSObjectDescription;
+import hjb.jms.info.ConsumerDescription;
+import hjb.misc.Clock;
 import hjb.misc.HJBStrings;
 
 /**
@@ -34,8 +37,8 @@ import hjb.misc.HJBStrings;
  */
 public class HJBSessionConsumers extends HJBSessionItems {
 
-    public HJBSessionConsumers(HJBSession theSession) {
-        super(theSession);
+    public HJBSessionConsumers(HJBSession theSession, Clock aClock) {
+        super(theSession, aClock);
     }
 
     public int createConsumer(Destination aDestination,
@@ -55,8 +58,7 @@ public class HJBSessionConsumers extends HJBSessionItems {
         }
     }
 
-    public int createConsumer(Destination aDestination,
-                              String messageSelector) {
+    public int createConsumer(Destination aDestination, String messageSelector) {
         try {
             MessageConsumer c = getTheSession().createConsumer(aDestination,
                                                                messageSelector);
@@ -94,5 +96,14 @@ public class HJBSessionConsumers extends HJBSessionItems {
 
     public MessageConsumer[] asArray() {
         return (MessageConsumer[]) getItems().toArray(new MessageConsumer[0]);
+    }
+
+    public BaseJMSObjectDescription[] getItemDescriptions() {
+        final MessageConsumer[] consumers = asArray();
+        BaseJMSObjectDescription result[] = new BaseJMSObjectDescription[consumers.length];
+        for (int i = 0; i < consumers.length; i++) {
+            result[i] = new ConsumerDescription(consumers[i], i);
+        }
+        return result;
     }
 }

@@ -34,9 +34,19 @@ import hjb.testsupport.MockSessionBuilder;
 
 public class HJBSessionProducersTest extends BaseHJBTestCase {
 
-    public void testHJBSessionProducersThrowsIllegalArgumentExceptionOnNullSession() {
+    public void testConstructionThrowsIllegalArgumentExceptionOnNullSession() {
         try {
-            new HJBSessionProducers(null);
+            new HJBSessionProducers(null, defaultTestClock());
+            fail("An IllegalArgumentException should have been thrown");
+        } catch (IllegalArgumentException e) {}
+    }
+
+    public void testConstructionThrowsIllegalArgumentExceptionOnNullClock() {
+        try {
+            HJBSession aSession = new HJBSession((Session) mockSession.proxy(),
+                                                 0,
+                                                 defaultTestClock());
+            new HJBSessionProducers(aSession, null);
             fail("An IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {}
     }
@@ -44,10 +54,13 @@ public class HJBSessionProducersTest extends BaseHJBTestCase {
     public void testCreateProducerThrowsHJBExceptionOnJMSException()
             throws Exception {
         mockSession = sessionBuilder.createMockSessionThatThrowsJMSOn("createProducer");
-        HJBSession aSession = new HJBSession((Session) mockSession.proxy(), 0, defaultTestClock());
+        HJBSession aSession = new HJBSession((Session) mockSession.proxy(),
+                                             0,
+                                             defaultTestClock());
         updateConnectionMock(aSession);
 
-        HJBSessionProducers producers = new HJBSessionProducers(aSession);
+        HJBSessionProducers producers = new HJBSessionProducers(aSession,
+                                                                defaultTestClock());
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         try {
             producers.createProducer(testDestination,
@@ -55,7 +68,7 @@ public class HJBSessionProducersTest extends BaseHJBTestCase {
             fail("should have thrown an exception");
         } catch (HJBException hjbe) {}
     }
-    
+
     public void testGetProducerThrowsForInvalidProducer() throws Exception {
         Mock mockMessageProducer = new Mock(MessageProducer.class);
         MessageProducer testMessageProducer = (MessageProducer) mockMessageProducer.proxy();
@@ -67,7 +80,8 @@ public class HJBSessionProducersTest extends BaseHJBTestCase {
         mockMessageProducer.expects(atLeastOnce())
             .method("setDisableMessageID");
 
-        HJBSessionProducers producers = new HJBSessionProducers(testSession);
+        HJBSessionProducers producers = new HJBSessionProducers(testSession,
+                                                                defaultTestClock());
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         assertEquals("Index should be 0",
                      0,
@@ -90,18 +104,43 @@ public class HJBSessionProducersTest extends BaseHJBTestCase {
         mockMessageProducer.expects(atLeastOnce())
             .method("setDisableMessageID");
 
-        HJBSessionProducers producers = new HJBSessionProducers(testSession);
+        HJBSessionProducers producers = new HJBSessionProducers(testSession,
+                                                                defaultTestClock());
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         assertEquals("Index should be 0",
                      0,
                      producers.createProducer(testDestination,
                                               sessionBuilder.defaultProducerArguments()));
-        assertNotNull("got first producer", producers.getProducer(0));
+        assertNotNull("did not find first producer", producers.getProducer(0));
         assertEquals("Index should be 1",
                      1,
                      producers.createProducer(testDestination,
                                               sessionBuilder.defaultProducerArguments()));
-        assertNotNull("got second producer", producers.getProducer(1));
+        assertNotNull("did not find second producer", producers.getProducer(1));
+    }
+
+    public void testShouldReturnTheCorrectNumberOfItemDescriptions()
+            throws Exception {
+        Mock mockMessageProducer = new Mock(MessageProducer.class);
+        MessageProducer testMessageProducer = (MessageProducer) mockMessageProducer.proxy();
+        mockSession.stubs()
+            .method("createProducer")
+            .will(returnValue(testMessageProducer));
+        mockMessageProducer.expects(atLeastOnce())
+            .method("setDisableMessageTimestamp");
+        mockMessageProducer.expects(atLeastOnce())
+            .method("setDisableMessageID");
+
+        HJBSessionProducers producers = new HJBSessionProducers(testSession,
+                                                                defaultTestClock());
+        testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
+        assertEquals(0, producers.getItemDescriptions().length);
+        producers.createProducer(testDestination,
+                                 sessionBuilder.defaultProducerArguments());
+        assertEquals(1, producers.getItemDescriptions().length);
+        producers.createProducer(testDestination,
+                                 sessionBuilder.defaultProducerArguments());
+        assertEquals(2, producers.getItemDescriptions().length);
     }
 
     protected void setUp() throws Exception {
@@ -110,7 +149,9 @@ public class HJBSessionProducersTest extends BaseHJBTestCase {
 
         mockSession = new MockSessionBuilder().createMockSession();
         registerToVerify(mockSession);
-        testSession = new HJBSession((Session) mockSession.proxy(), 0, defaultTestClock());
+        testSession = new HJBSession((Session) mockSession.proxy(),
+                                     0,
+                                     defaultTestClock());
 
         mockDestination = new Mock(Destination.class);
         testDestination = (Destination) mockDestination.proxy();

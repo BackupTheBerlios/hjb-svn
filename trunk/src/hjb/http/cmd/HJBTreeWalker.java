@@ -134,7 +134,7 @@ public class HJBTreeWalker {
             if (null == connection) {
                 return null;
             }
-            HJBSession result = connection.getSession(connectionIndex);
+            HJBSession result = connection.getSession(sessionIndex);
             if (null == result) {
                 handleMissingComponent("" + PathNaming.SESSION + ""
                         + sessionIndex);

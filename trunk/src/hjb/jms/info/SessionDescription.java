@@ -75,5 +75,5 @@ public class SessionDescription extends BaseJMSObjectDescription {
         return theSession;
     }
 
-    private Session theSession;
+    private final Session theSession;
 }

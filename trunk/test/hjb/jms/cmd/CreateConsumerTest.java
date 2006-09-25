@@ -49,7 +49,7 @@ public class CreateConsumerTest extends BaseHJBTestCase {
         HJBSession testSession = root.getProvider("testProvider")
             .getConnectionFactory("testFactory")
             .getConnection(0).getSession(0);
-        HJBSessionConsumers sessionConsumers = new HJBSessionConsumers(testSession);
+        HJBSessionConsumers sessionConsumers = new HJBSessionConsumers(testSession, defaultTestClock());
         try {
             new CreateConsumer(sessionConsumers, null, "testSelector");
             fail("should have thrown an exception");

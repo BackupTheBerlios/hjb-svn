@@ -48,6 +48,11 @@ public class HJBSessionTest extends BaseHJBTestCase {
         } catch (IllegalArgumentException e) {}
     }
 
+    public void testConstructionSetsCreationsTimeCorrectly() {
+        HJBSession s = new HJBSession(((Session) mockSession.proxy()), 0, defaultTestClock());
+        assertEquals(s.getCreationTime(), defaultTestClock().getCurrentTime());
+    }
+    
     public void testThatSimpleNoArgMethodsInvokeDecorateeInstance()
             throws Exception {
         for (int i = 0; i < SIMPLE_NO_ARG_SESSION_METHODS.length; i++) {

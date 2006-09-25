@@ -49,6 +49,12 @@ public class HJBConnectionTest extends BaseHJBTestCase {
             fail("An IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {}
     }
+    
+    public void testConstructionSetsCreationTimeCorrectly() {
+        Connection testConnection = (Connection) mockConnection.proxy();
+        HJBConnection c = new HJBConnection(testConnection, 0, defaultTestClock());
+        assertEquals(c.getCreationTime(), defaultTestClock().getCurrentTime());
+    }
 
     public void testConstructionThrowsIllegalArgumentExceptionOnNullConnection() {
         try {

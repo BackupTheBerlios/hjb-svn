@@ -105,12 +105,12 @@ public class ConnectionListing implements JMSObjectListing {
         Map activeSessions = getTheConnection().getActiveSessions();
         for (Iterator i = activeSessions.keySet().iterator(); i.hasNext();) {
             Integer sessionIndex = (Integer) i.next();
-            SessionDescription sd = getTheConnection().getSessionDescription(sessionIndex.intValue());
+            BaseJMSObjectDescription d = getTheConnection().getSessionDescription(sessionIndex.intValue());
             aWriter.println();
-            aWriter.println(prefixEndingInSlash + sd.longDescription());
+            aWriter.println(prefixEndingInSlash + d.longDescription());
             new SessionListing(getTheConnection().getSession(sessionIndex.intValue())).writeListing(aWriter,
-                                                                                         prefixEndingInSlash,
-                                                                                         true);
+                                                                                                    prefixEndingInSlash,
+                                                                                                    true);
         }
     }
 
@@ -118,8 +118,8 @@ public class ConnectionListing implements JMSObjectListing {
         Map activeSessions = getTheConnection().getActiveSessions();
         for (Iterator i = activeSessions.keySet().iterator(); i.hasNext();) {
             Integer sessionIndex = (Integer) i.next();
-            SessionDescription sd = getTheConnection().getSessionDescription(sessionIndex.intValue());
-            aWriter.print(prefixEndingInSlash + sd);
+            BaseJMSObjectDescription d = getTheConnection().getSessionDescription(sessionIndex.intValue());
+            aWriter.print(prefixEndingInSlash + d);
             aWriter.println();
         }
     }

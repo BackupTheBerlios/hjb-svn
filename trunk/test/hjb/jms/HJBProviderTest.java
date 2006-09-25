@@ -40,7 +40,13 @@ public class HJBProviderTest extends BaseHJBTestCase {
         contextBuilder = new MockContextBuilder();
         sharedMock = SharedMock.getInstance();
     }
-    
+
+    public void testConstructionSetsCreationTimeCorrectly() {
+        testProvider = new ProviderBuilder(testEnvironment, defaultTestClock()).createProvider();
+        assertEquals(testProvider.getCreationTime(),
+                     defaultTestClock().getCurrentTime());
+    }
+
     public void testCannotRegisterDestinationThatIsNotInTheContext()
             throws Exception {
         try {

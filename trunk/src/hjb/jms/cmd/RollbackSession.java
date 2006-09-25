@@ -46,13 +46,13 @@ public class RollbackSession extends SessionCommand {
 
     public String getDescription() {
         return strings().getString(HJBStrings.DESCRIPTION_OF_SESSION_ROLLBACK,
-                                   getTheSession().getSessionDescription());
+                                   getTheSession().getDescription());
     }
 
     public String getStatusMessage() {
         if (isExecutedOK()) {
             return strings().getString(HJBStrings.SUCCESS_MESSAGE_OF_SESSION_ROLLBACK,
-                                       getTheSession().getSessionDescription());
+                                       getTheSession().getDescription());
         } else {
             return getFault().getMessage();
         }
