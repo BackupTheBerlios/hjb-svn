@@ -65,7 +65,7 @@ public class HJBConnection implements Connection {
      * @param connectionIndex
      *            the index of this connection in the set of connections created
      *            by a connection factory.
-     * @param clock
+     * @param aClock
      *            used to assign times to events that occur within the
      *            <code>HJBConnection</code>
      */
@@ -99,7 +99,7 @@ public class HJBConnection implements Connection {
      * @param connectionIndex
      *            the index of this connection in the set of connections created
      *            by a connection factory.
-     * @param clock
+     * @param aClock
      *            used to assign times to events that occur within the
      *            <code>HJBConnection</code>
      */

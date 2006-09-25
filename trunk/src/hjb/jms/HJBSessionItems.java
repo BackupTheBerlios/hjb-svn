@@ -56,7 +56,7 @@ public abstract class HJBSessionItems {
 
     /**
      * Returns an array containing the <code>BaseJMSObjectDescrptions</code>
-     * of the items held by this instance
+     * of the items held by this instance.
      * 
      * <p>
      * Subclasses implement this method by constructing an array of the
