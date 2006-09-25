@@ -55,15 +55,15 @@ public abstract class HJBSessionItems {
     }
 
     /**
-     * Returns an array containing the <code>BaseJMSObjectDescrptions</code>
-     * of the items held by this instance.
+     * Returns an array containing the <code>JMSObjectDescrptions</code> of
+     * the items held by this instance.
      * 
      * <p>
      * Subclasses implement this method by constructing an array of the
      * appropriate JMSObjectDescription subclass.
      * </p>
      * 
-     * @return an array containing the <code>BaseJMSObjectDescrptions</code>
+     * @return an array containing the <code>JMSObjectDescrptions</code>
      *         of the items held by this instance
      */
     public abstract JMSObjectDescription[] getItemDescriptions();
