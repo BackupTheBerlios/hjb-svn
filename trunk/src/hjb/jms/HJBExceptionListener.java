@@ -46,6 +46,7 @@ public class HJBExceptionListener implements ExceptionListener {
         this.creationTime = connection.getCreationTime();
         this.connectionIndex = new Integer(connection.getConnectionIndex());
         this.randomPart = new Integer(Math.abs(RANDOM.nextInt()));
+        this.config = new HJBExceptionListenerConfiguration();
         this.connectionLogger = Logger.getLogger(CONNECTION_LOG_PREFIX
                 + HJBExceptionListener.class.getName());
     }
@@ -79,7 +80,7 @@ public class HJBExceptionListener implements ExceptionListener {
     protected void addUniqueLogAppender() {
         FileAppender a = new FileAppender();
         a.setFile(getUniqueFilePath());
-        a.setLayout(new PatternLayout(DEFAULT_LOG4J_PATTERN_LAYOUT));
+        a.setLayout(new PatternLayout(config.getConnectionLogjPattern()));
         a.activateOptions();
         getConnectionLogger().addAppender(a);
     }
@@ -111,7 +112,7 @@ public class HJBExceptionListener implements ExceptionListener {
     }
 
     protected String getLogDirectory() {
-        return System.getProperty("user.dir");
+        return config.getConnectionLogDirectory();
     }
 
     protected String getUniqueFileName() {
@@ -134,6 +135,7 @@ public class HJBExceptionListener implements ExceptionListener {
     private final Integer connectionIndex;
     private final Date creationTime;
     private final Logger connectionLogger;
+    private final HJBExceptionListenerConfiguration config;
     private static final String CONNECTION_LOG_PREFIX = "connection.";
     private static final Random RANDOM = new Random();
     private static final HJBStrings STRINGS = new HJBStrings();
