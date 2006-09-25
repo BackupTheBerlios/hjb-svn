@@ -53,10 +53,10 @@ public abstract class BaseJMSCommand implements JMSCommand {
 
     /**
      * Use to signal that execution of this <code>JMSCommand</code> is
-     * complete. After it is invoked, {@link #isComplete()} return
+     * complete. After it is invoked, {@link #isComplete()} returns
      * <code>true</code>.
      * <p>
-     * It is synchronized so that other threads can wait a
+     * It is synchronized so that other threads can wait on a
      * <code>JMSCommand</code> instance's semaphore, and be woken up when this
      * method is executed.
      */
