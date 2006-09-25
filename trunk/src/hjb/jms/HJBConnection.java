@@ -27,8 +27,8 @@ import javax.jms.*;
 import org.apache.log4j.Logger;
 
 import hjb.jms.cmd.JMSCommandRunner;
-import hjb.jms.info.JMSObjectDescription;
 import hjb.jms.info.ConnectionDescription;
+import hjb.jms.info.JMSObjectDescription;
 import hjb.jms.info.SessionDescription;
 import hjb.misc.Clock;
 import hjb.misc.HJBException;
@@ -83,10 +83,11 @@ public class HJBConnection implements Connection {
         this.theConnection = theConnection;
         this.sessionIndices = Collections.synchronizedList(new ArrayList());
         this.activeSessions = Collections.synchronizedMap(new HashMap());
-        assignExceptionListener();
-        assignClientIdIfNecessary(clientId);
         this.connectionIndex = connectionIndex;
         this.creationTime = aClock.getCurrentTime();
+        this.connectionListener = new HJBExceptionListener(this);
+        assignExceptionListener();
+        assignClientIdIfNecessary(clientId);
     }
 
     /**
@@ -216,7 +217,11 @@ public class HJBConnection implements Connection {
     }
 
     public ExceptionListener getExceptionListener() throws JMSException {
-        return getTheConnection().getExceptionListener();
+        return getConnectionListener();
+    }
+    
+    public HJBExceptionListener getConnectionListener() {
+        return connectionListener;
     }
 
     public void setExceptionListener(ExceptionListener listener) {
@@ -269,6 +274,10 @@ public class HJBConnection implements Connection {
     public Date getCreationTime() {
         return creationTime;
     }
+    
+    public String getErrorLog() throws HJBException {
+        return getConnectionListener().getErrorLog();
+    }
 
     protected void assignClientIdIfNecessary(String clientId) {
         try {
@@ -285,7 +294,7 @@ public class HJBConnection implements Connection {
 
     protected void assignExceptionListener() {
         try {
-            this.theConnection.setExceptionListener(new HJBExceptionListener());
+            this.theConnection.setExceptionListener(getConnectionListener());
         } catch (JMSException e) {
             LOG.error(strings().getString(HJBStrings.COULD_NOT_ASSIGN_EXCEPTION_LISTENER));
         }
@@ -326,6 +335,7 @@ public class HJBConnection implements Connection {
     private final Connection theConnection;
     private final Clock clock;
     private final Date creationTime;
+    private final HJBExceptionListener connectionListener;
 
     private static final Logger LOG = Logger.getLogger(HJBConnection.class);
     private static final HJBStrings STRINGS = new HJBStrings();

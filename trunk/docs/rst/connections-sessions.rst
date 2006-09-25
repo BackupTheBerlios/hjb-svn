@@ -39,9 +39,7 @@ In HJB, each connection
 
 * is configured with an ExceptionListener that writes any exceptions
   that occur on the connection to a log file.  The log file can be
-  retrieved using HTTP GET on the appropriate child URL. (**N.B.** At
-  the moment [October 2006, HJB version 0.8.2], this feature is not
-  available).
+  retrieved using HTTP GET on the appropriate child URL. 
 
 
 JMS Sessions

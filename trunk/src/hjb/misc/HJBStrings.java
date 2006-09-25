@@ -488,4 +488,14 @@ public final class HJBStrings {
     public static final String ANY_PRODUCER = "any.producer";
 
     public static final String RUNNER_FOR = "runner.for";
+
+    public static final String EXCEPTION_LOGFILE_NAME = "exception.logfile.name";
+
+    public static final String COULD_NOT_READ_EXCEPTION_LOG = "could.not.read.exception.log";
+
+    public static final String NO_ERRORS_WRITTEN = "no.errors.written";
+
+    public static final String DESCRIPTION_OF_SHOW_ERROR_LOG = "description.of.show.error.log";
+
+    public static final String SUCCESS_MESSAGE_OF_SHOW_ERROR_LOG = "success.message.of.show.error.log";
 }

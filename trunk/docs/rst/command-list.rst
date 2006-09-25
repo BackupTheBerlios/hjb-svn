@@ -42,6 +42,8 @@ specified URLs and HTTP request methods.
 +----------------------------------+--------------------------------------------------------+
 |`List Connection`_ (*G*)          |*factory-uri*/connection-*nnn*/list                     |
 +----------------------------------+--------------------------------------------------------+
+|`Show Connection Errors`_ (*G*)   |*factory-uri*/connection-*nnn*/errors                   |
++----------------------------------+--------------------------------------------------------+
 |`Create Session`_ (*P*)           |*connection-uri*/create                                 |
 +----------------------------------+--------------------------------------------------------+
 |`Rollback Session`_ (*G*)         |*connection-uri*/session-*nnn*/rollback                 |
@@ -103,6 +105,7 @@ URIs
 .. _Read Connection MetaData: ./read-connection-metadata.html
 .. _Delete Connection: ./delete-connection.html
 .. _List Connection: ./list-connection.html
+.. _Show Connection Errors: ./show-connection-errors.html
 .. _Create Session: ./create-session.html
 .. _Unsubscribe Client Id: ./unsubscribe-client-id.html
 .. _Rollback Session: ./rollback-session.html

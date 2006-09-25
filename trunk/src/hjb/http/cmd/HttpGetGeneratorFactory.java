@@ -55,6 +55,7 @@ public class HttpGetGeneratorFactory implements JMSCommandGeneratorFactory {
                 new UnsubscribeClientIdGenerator(),
                 new StartConnectionGenerator(),
                 new StopConnectionGenerator(),
+                new ShowConnectionErrorsGenerator(),
                 new RegisterConnectionFactoryGenerator(),
                 new RegisterDestinationGenerator(),
                 new ReadMetaDataGenerator(),

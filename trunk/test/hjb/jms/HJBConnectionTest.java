@@ -164,18 +164,9 @@ public class HJBConnectionTest extends BaseHJBTestCase {
         } catch (JMSException e) {}
     }
 
-    public void testGetExceptionListenerInvokesDecorateeConnection()
-            throws Exception {
-        decoraterMock.invokeAndExpectOnDecoratee("getExceptionListener");
-    }
-
-    public void testGetExceptionListenerPropagatesJMSException()
-            throws Throwable {
-        try {
-            decoraterMock.invokeAndExpectDecorateeException("getExceptionListener",
-                                                            new JMSException("thrown as a test"));
-            fail("A JMSException should have been thrown");
-        } catch (JMSException e) {}
+    public void testGetExceptionListenerNeverInvokesDecorateeConnection() throws Exception {
+        mockConnection.expects(never()).method("getExceptionListener");
+        testConnection.getExceptionListener();
     }
 
     public void testStartInvokesDecorateeConnection() throws Exception {
@@ -217,6 +208,7 @@ public class HJBConnectionTest extends BaseHJBTestCase {
     public void testSetExceptionListenerNeverInvokesDecorateeConnection() {
         testConnection.setExceptionListener(null);
         testConnection.setExceptionListener(null);
+        mockConnection.expects(never()).method("setExceptionListener");
     }
 
     public void testCreateConnectionConsumerAlwaysThrowsHJBException() {

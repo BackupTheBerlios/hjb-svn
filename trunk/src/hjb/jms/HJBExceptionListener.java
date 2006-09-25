@@ -20,10 +20,19 @@
  */
 package hjb.jms;
 
+import java.io.*;
+import java.util.Date;
+import java.util.Random;
+
 import javax.jms.ExceptionListener;
 import javax.jms.JMSException;
 
+import org.apache.log4j.FileAppender;
 import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
+
+import hjb.misc.HJBException;
+import hjb.misc.HJBStrings;
 
 /**
  * <code>HJBExceptionListener</code> logs exception using a <code>Log4j</code>
@@ -33,10 +42,101 @@ import org.apache.log4j.Logger;
  */
 public class HJBExceptionListener implements ExceptionListener {
 
-    public void onException(JMSException e) {
-        LOG.error(e);
+    public HJBExceptionListener(HJBConnection connection) {
+        this.creationTime = connection.getCreationTime();
+        this.connectionIndex = new Integer(connection.getConnectionIndex());
+        this.randomPart = new Integer(Math.abs(RANDOM.nextInt()));
+        this.connectionLogger = Logger.getLogger(CONNECTION_LOG_PREFIX
+                + HJBExceptionListener.class.getName());
     }
 
-    private static final Logger LOG = Logger.getLogger(HJBExceptionListener.class);
+    public synchronized String getErrorLog() throws HJBException {
+        try {
+            StringWriter sw = new StringWriter();
+            FileReader fw = new FileReader(getUniqueFilePath());
+            int nextChar = fw.read();
+            while (-1 != nextChar) {
+                sw.write(nextChar);
+                nextChar = fw.read();
+            }
+            String result = sw.toString();
+            if (0 == result.length()) {
+                result = strings().getString(HJBStrings.NO_ERRORS_WRITTEN,
+                                             getConnectionIndex());
+            }
+            return result;
+        } catch (FileNotFoundException e) {
+            return strings().getString(HJBStrings.NO_ERRORS_WRITTEN,
+                                       getConnectionIndex());
+        } catch (IOException e) {
+            String message = strings().getString(HJBStrings.COULD_NOT_READ_EXCEPTION_LOG,
+                                                 getUniqueFilePath());
+            LOG.error(message, e);
+            throw new HJBException(message, e);
+        }
+    }
 
+    protected void addUniqueLogAppender() {
+        FileAppender a = new FileAppender();
+        a.setFile(getUniqueFilePath());
+        a.setLayout(new PatternLayout(DEFAULT_LOG4J_PATTERN_LAYOUT));
+        a.activateOptions();
+        getConnectionLogger().addAppender(a);
+    }
+
+    public synchronized void onException(JMSException e) {
+        if (!errorHasBeenReceived) {
+            // the appender is lazily initialized, so there will
+            // be no file if no error's occur
+            addUniqueLogAppender();
+            errorHasBeenReceived = true;
+        }
+        getConnectionLogger().error(e.getMessage(), e);
+    }
+
+    protected Integer getRandomPart() {
+        return randomPart;
+    }
+
+    protected Integer getConnectionIndex() {
+        return connectionIndex;
+    }
+
+    protected Date getCreationTime() {
+        return creationTime;
+    }
+
+    protected String getUniqueFilePath() {
+        return new File(getLogDirectory(), getUniqueFileName()).getAbsolutePath();
+    }
+
+    protected String getLogDirectory() {
+        return System.getProperty("user.dir");
+    }
+
+    protected String getUniqueFileName() {
+        return strings().getString(HJBStrings.EXCEPTION_LOGFILE_NAME,
+                                   getConnectionIndex(),
+                                   new Long(getCreationTime().getTime()),
+                                   getRandomPart());
+    }
+
+    protected HJBStrings strings() {
+        return STRINGS;
+    }
+
+    protected Logger getConnectionLogger() {
+        return connectionLogger;
+    }
+
+    private boolean errorHasBeenReceived;
+    private final Integer randomPart;
+    private final Integer connectionIndex;
+    private final Date creationTime;
+    private final Logger connectionLogger;
+    private static final String CONNECTION_LOG_PREFIX = "connection.";
+    private static final Random RANDOM = new Random();
+    private static final HJBStrings STRINGS = new HJBStrings();
+    private static final Logger LOG = Logger.getLogger(HJBExceptionListener.class);
+    public static final String DEFAULT_LOG4J_PATTERN_LAYOUT = "%d [%t] %p %m%n";
 }
