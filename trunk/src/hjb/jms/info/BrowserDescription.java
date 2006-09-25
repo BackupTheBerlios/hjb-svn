@@ -36,7 +36,7 @@ import hjb.misc.PathNaming;
  * 
  * @author Tim Emiola
  */
-public class BrowserDescription extends BaseJMSObjectDescription {
+public class BrowserDescription extends JMSObjectDescription {
 
     public BrowserDescription(QueueBrowser theBrowser, int browserIndex) {
         super(browserIndex, HJBStrings.INVALID_BROWSER_INDEX);

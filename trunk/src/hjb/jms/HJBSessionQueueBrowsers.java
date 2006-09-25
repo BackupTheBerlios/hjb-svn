@@ -24,7 +24,7 @@ import javax.jms.JMSException;
 import javax.jms.Queue;
 import javax.jms.QueueBrowser;
 
-import hjb.jms.info.BaseJMSObjectDescription;
+import hjb.jms.info.JMSObjectDescription;
 import hjb.jms.info.BrowserDescription;
 import hjb.misc.Clock;
 import hjb.misc.HJBStrings;
@@ -81,9 +81,9 @@ public class HJBSessionQueueBrowsers extends HJBSessionItems {
         }
     }
 
-    public BaseJMSObjectDescription[] getItemDescriptions() {
+    public JMSObjectDescription[] getItemDescriptions() {
         final QueueBrowser[] browsers = asArray();
-        BaseJMSObjectDescription result[] = new BaseJMSObjectDescription[browsers.length];
+        JMSObjectDescription result[] = new JMSObjectDescription[browsers.length];
         for (int i = 0; i < browsers.length; i++) {
             result[i] = new BrowserDescription(browsers[i], i);
         }

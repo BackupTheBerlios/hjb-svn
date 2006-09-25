@@ -210,5 +210,4 @@ public class HJBSessionDurableSubscribersTest extends BaseHJBTestCase {
 
     private MockConnectionBuilder connectionBuilder;
     private MockSessionBuilder sessionBuilder;
-
 }

@@ -36,7 +36,7 @@ import hjb.misc.PathNaming;
  * 
  * @author Tim Emiola
  */
-public class ProducerDescription extends BaseJMSObjectDescription {
+public class ProducerDescription extends JMSObjectDescription {
 
     public ProducerDescription(MessageProducer theProducer, int producerIndex) {
         super(producerIndex, HJBStrings.INVALID_PRODUCER_INDEX);

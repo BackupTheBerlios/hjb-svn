@@ -25,7 +25,7 @@ import java.util.*;
 
 import org.apache.log4j.Logger;
 
-import hjb.jms.info.BaseJMSObjectDescription;
+import hjb.jms.info.JMSObjectDescription;
 import hjb.misc.Clock;
 import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
@@ -60,13 +60,13 @@ public abstract class HJBSessionItems {
      * 
      * <p>
      * Subclasses implement this method by constructing an array of the
-     * appropriate BaseJMSObjectDescription subclass.
+     * appropriate JMSObjectDescription subclass.
      * </p>
      * 
      * @return an array containing the <code>BaseJMSObjectDescrptions</code>
      *         of the items held by this instance
      */
-    public abstract BaseJMSObjectDescription[] getItemDescriptions();
+    public abstract JMSObjectDescription[] getItemDescriptions();
 
     protected void handleFailure(MessageFormat formatter, Exception e) {
         logAndThrowFailure(formatter.format(new Object[] {
@@ -120,7 +120,7 @@ public abstract class HJBSessionItems {
         return theSession;
     }
 
-    protected BaseJMSObjectDescription getSessionDescription() {
+    protected JMSObjectDescription getSessionDescription() {
         return getTheSession().getDescription();
     }
 

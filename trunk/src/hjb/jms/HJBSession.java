@@ -29,7 +29,7 @@ import javax.jms.*;
 import org.apache.log4j.Logger;
 
 import hjb.jms.cmd.JMSCommandRunner;
-import hjb.jms.info.BaseJMSObjectDescription;
+import hjb.jms.info.JMSObjectDescription;
 import hjb.jms.info.SessionDescription;
 import hjb.misc.Clock;
 import hjb.misc.HJBException;
@@ -300,7 +300,7 @@ public class HJBSession implements Session {
                                                itemDescription), e);
     }
 
-    public BaseJMSObjectDescription getDescription() {
+    public JMSObjectDescription getDescription() {
         return new SessionDescription(getTheSession(), getSessionIndex());
     }
 

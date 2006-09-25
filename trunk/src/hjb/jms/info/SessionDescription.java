@@ -36,7 +36,7 @@ import hjb.misc.PathNaming;
  * 
  * @author Tim Emiola
  */
-public class SessionDescription extends BaseJMSObjectDescription {
+public class SessionDescription extends JMSObjectDescription {
 
     public SessionDescription(Session theSession, int sessionIndex) {
         super(sessionIndex, HJBStrings.INVALID_SESSION_INDEX);

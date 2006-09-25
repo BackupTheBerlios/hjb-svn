@@ -24,7 +24,7 @@ import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 
-import hjb.jms.info.BaseJMSObjectDescription;
+import hjb.jms.info.JMSObjectDescription;
 import hjb.jms.info.ConsumerDescription;
 import hjb.misc.Clock;
 import hjb.misc.HJBStrings;
@@ -98,9 +98,9 @@ public class HJBSessionConsumers extends HJBSessionItems {
         return (MessageConsumer[]) getItems().toArray(new MessageConsumer[0]);
     }
 
-    public BaseJMSObjectDescription[] getItemDescriptions() {
+    public JMSObjectDescription[] getItemDescriptions() {
         final MessageConsumer[] consumers = asArray();
-        BaseJMSObjectDescription result[] = new BaseJMSObjectDescription[consumers.length];
+        JMSObjectDescription result[] = new JMSObjectDescription[consumers.length];
         for (int i = 0; i < consumers.length; i++) {
             result[i] = new ConsumerDescription(consumers[i], i);
         }

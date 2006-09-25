@@ -38,7 +38,7 @@ import hjb.misc.PathNaming;
  * 
  * @author Tim Emiola
  */
-public class ConnectionDescription extends BaseJMSObjectDescription {
+public class ConnectionDescription extends JMSObjectDescription {
 
     public ConnectionDescription(HJBConnection theConnection) {
         super(DUMMY, HJBStrings.INVALID_CONNECTION_INDEX);

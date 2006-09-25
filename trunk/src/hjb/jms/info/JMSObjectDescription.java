@@ -31,19 +31,17 @@ import hjb.misc.HJBStrings;
 import hjb.msg.codec.OrderedTypedValueCodec;
 
 /**
- * <code>BaseJMSObjectDescription</code> is the base class for the various
+ * <code>JMSObjectDescription</code> is the base class for the various
  * XXXDescription classes, which are used to provided descriptions of JMS
  * objects in log and status messages.
  * 
- * It uses template methods to implement the behaviour of the class hierarchy,
- * and defines a number of protected methods that its subclasse override to
- * customize their behaviour.
+ * It defines a number of template methods for its subclasses override.
  * 
  * @author Tim Emiola
  */
-public class BaseJMSObjectDescription {
+public class JMSObjectDescription {
 
-    public BaseJMSObjectDescription(int index, String invalidIndexMessage) {
+    public JMSObjectDescription(int index, String invalidIndexMessage) {
         if (index < 0) {
             throw new IllegalArgumentException(strings().getString(invalidIndexMessage,
                                                                    new Integer(index)));

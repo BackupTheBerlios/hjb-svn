@@ -27,7 +27,7 @@ import javax.jms.*;
 import org.apache.log4j.Logger;
 
 import hjb.jms.cmd.JMSCommandRunner;
-import hjb.jms.info.BaseJMSObjectDescription;
+import hjb.jms.info.JMSObjectDescription;
 import hjb.jms.info.ConnectionDescription;
 import hjb.jms.info.SessionDescription;
 import hjb.misc.Clock;
@@ -141,7 +141,7 @@ public class HJBConnection implements Connection {
         }
     }
 
-    public BaseJMSObjectDescription getSessionDescription(int index) {
+    public JMSObjectDescription getSessionDescription(int index) {
         return new SessionDescription(getSession(index), index);
     }
 
@@ -195,7 +195,7 @@ public class HJBConnection implements Connection {
         return connectionIndex;
     }
     
-    public BaseJMSObjectDescription getDescrption() {
+    public JMSObjectDescription getDescrption() {
         return new ConnectionDescription(this);
     }
 

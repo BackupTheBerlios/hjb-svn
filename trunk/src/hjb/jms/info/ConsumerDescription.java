@@ -36,7 +36,7 @@ import hjb.misc.PathNaming;
  * 
  * @author Tim Emiola
  */
-public class ConsumerDescription extends BaseJMSObjectDescription {
+public class ConsumerDescription extends JMSObjectDescription {
 
     public ConsumerDescription(MessageConsumer theConsumer, int consumerIndex) {
         super(consumerIndex, HJBStrings.INVALID_CONSUMER_INDEX);

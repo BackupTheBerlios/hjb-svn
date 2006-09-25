@@ -24,7 +24,7 @@ import javax.jms.JMSException;
 import javax.jms.Topic;
 import javax.jms.TopicSubscriber;
 
-import hjb.jms.info.BaseJMSObjectDescription;
+import hjb.jms.info.JMSObjectDescription;
 import hjb.jms.info.SubscriberDescription;
 import hjb.misc.Clock;
 import hjb.misc.HJBStrings;
@@ -89,9 +89,9 @@ public class HJBSessionDurableSubscribers extends HJBSessionItems {
         }
     }
 
-    public BaseJMSObjectDescription[] getItemDescriptions() {
+    public JMSObjectDescription[] getItemDescriptions() {
         final TopicSubscriber[] subscribers = asArray();
-        BaseJMSObjectDescription result[] = new BaseJMSObjectDescription[subscribers.length];
+        JMSObjectDescription result[] = new JMSObjectDescription[subscribers.length];
         for (int i = 0; i < subscribers.length; i++) {
             result[i] = new SubscriberDescription(subscribers[i], i);
         }

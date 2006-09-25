@@ -111,7 +111,7 @@ public class SessionListing implements JMSObjectListing {
     protected void writeBrowsers(PrintWriter aWriter,
                                  String sessionPrefix,
                                  boolean useLongDescription) {
-        BaseJMSObjectDescription descriptions[] = getTheSession().getBrowsers()
+        JMSObjectDescription descriptions[] = getTheSession().getBrowsers()
             .getItemDescriptions();
         writeDescriptions(descriptions,
                           aWriter,
@@ -122,7 +122,7 @@ public class SessionListing implements JMSObjectListing {
     protected void writeProducers(PrintWriter aWriter,
                                   String sessionPrefix,
                                   boolean useLongDescription) {
-        BaseJMSObjectDescription descriptions[] = getTheSession().getProducers()
+        JMSObjectDescription descriptions[] = getTheSession().getProducers()
             .getItemDescriptions();
         writeDescriptions(descriptions,
                           aWriter,
@@ -136,7 +136,7 @@ public class SessionListing implements JMSObjectListing {
     protected void writeConsumers(PrintWriter aWriter,
                                   String sessionPrefix,
                                   boolean useLongDescription) {
-        BaseJMSObjectDescription descriptions[] = getTheSession().getConsumers()
+        JMSObjectDescription descriptions[] = getTheSession().getConsumers()
             .getItemDescriptions();
         writeDescriptions(descriptions,
                           aWriter,
@@ -150,7 +150,7 @@ public class SessionListing implements JMSObjectListing {
     protected void writeSubscribers(PrintWriter aWriter,
                                     String sessionPrefix,
                                     boolean useLongDescription) {
-        BaseJMSObjectDescription descriptions[] = getTheSession().getSubscribers()
+        JMSObjectDescription descriptions[] = getTheSession().getSubscribers()
             .getItemDescriptions();
         writeDescriptions(descriptions,
                           aWriter,
@@ -161,11 +161,7 @@ public class SessionListing implements JMSObjectListing {
         }
     }
 
-    private HJBSession getTheSession() {
-        return theSession;
-    }
-
-    protected void writeDescriptions(BaseJMSObjectDescription[] descriptions,
+    protected void writeDescriptions(JMSObjectDescription[] descriptions,
                                      PrintWriter aWriter,
                                      String sessionPrefix,
                                      boolean useLongDescription) {
@@ -183,12 +179,16 @@ public class SessionListing implements JMSObjectListing {
         }
     }
 
-    protected HJBStrings strings() {
-        return STRINGS;
+    protected HJBSession getTheSession() {
+        return theSession;
     }
 
     protected int getSessionIndex() {
         return getTheSession().getSessionIndex();
+    }
+
+    protected HJBStrings strings() {
+        return STRINGS;
     }
 
     private HJBSession theSession;

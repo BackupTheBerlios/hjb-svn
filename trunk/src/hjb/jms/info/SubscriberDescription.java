@@ -36,7 +36,7 @@ import hjb.misc.PathNaming;
  * 
  * @author Tim Emiola
  */
-public class SubscriberDescription extends BaseJMSObjectDescription {
+public class SubscriberDescription extends JMSObjectDescription {
 
     public SubscriberDescription(TopicSubscriber theSubscriber,
                                  int subscriberIndex) {
