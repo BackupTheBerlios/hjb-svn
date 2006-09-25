@@ -25,6 +25,7 @@ import javax.jms.TopicSubscriber;
 
 import org.jmock.Mock;
 
+import hjb.misc.HJBConstants;
 import hjb.misc.PathNaming;
 import hjb.testsupport.BaseHJBTestCase;
 
@@ -34,14 +35,18 @@ public class SubscriberDescriptionTest extends BaseHJBTestCase {
         Mock mockSubscriber = mock(TopicSubscriber.class);
         TopicSubscriber testSubscriber = (TopicSubscriber) mockSubscriber.proxy();
         try {
-            new SubscriberDescription(testSubscriber, -1);
+            new SubscriberDescription(testSubscriber,
+                                      -1,
+                                      defaultTestClock().getCurrentTime());
             fail("Should have thrown an IllegalArgumentException");
         } catch (IllegalArgumentException e) {}
     }
 
     public void testConstructorShouldThrowOnNullInputs() {
         try {
-            new SubscriberDescription(null, 0);
+            new SubscriberDescription(null,
+                                      0,
+                                      defaultTestClock().getCurrentTime());
             fail("Should have thrown an IllegalArgumentException");
         } catch (IllegalArgumentException e) {}
     }
@@ -53,7 +58,8 @@ public class SubscriberDescriptionTest extends BaseHJBTestCase {
 
         TopicSubscriber testSubscriber = (TopicSubscriber) mockSubscriber.proxy();
         SubscriberDescription testDescription = new SubscriberDescription(testSubscriber,
-                                                                          0);
+                                                                          0,
+                                                                          defaultTestClock().getCurrentTime());
         assertContains(testDescription.toString(), "0");
         assertContains(testDescription.toString(), PathNaming.SUBSCRIBER);
     }
@@ -69,7 +75,8 @@ public class SubscriberDescriptionTest extends BaseHJBTestCase {
 
         TopicSubscriber testSubscriber = (TopicSubscriber) mockSubscriber.proxy();
         SubscriberDescription testDescription = new SubscriberDescription(testSubscriber,
-                                                                          0);
+                                                                          0,
+                                                                          defaultTestClock().getCurrentTime());
         assertContains(testDescription.toString(), "0");
         assertContains(testDescription.toString(), "false");
         assertContains(testDescription.toString(), PathNaming.SUBSCRIBER);
@@ -91,9 +98,12 @@ public class SubscriberDescriptionTest extends BaseHJBTestCase {
 
         TopicSubscriber testSubscriber = (TopicSubscriber) mockSubscriber.proxy();
         SubscriberDescription testDescription = new SubscriberDescription(testSubscriber,
-                                                                          0);
+                                                                          0,
+                                                                          defaultTestClock().getCurrentTime());
 
         String expectedOutput = testDescription.toString() + CR
+                + HJBConstants.CREATION_TIME + "="
+                + defaultClockTimeAsHJBEncodedLong() + CR
                 + "message-selector=testSelector" + CR
                 + "no-local=(boolean false)" + CR + "subscriber-name=testTopic";
 

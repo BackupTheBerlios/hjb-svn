@@ -26,6 +26,7 @@ import javax.jms.MessageProducer;
 
 import org.jmock.Mock;
 
+import hjb.misc.HJBConstants;
 import hjb.misc.PathNaming;
 import hjb.testsupport.BaseHJBTestCase;
 
@@ -35,14 +36,18 @@ public class ProducerDescriptionTest extends BaseHJBTestCase {
         Mock mockProducer = mock(MessageProducer.class);
         MessageProducer testProducer = (MessageProducer) mockProducer.proxy();
         try {
-            new ProducerDescription(testProducer, -1);
+            new ProducerDescription(testProducer,
+                                    -1,
+                                    defaultTestClock().getCurrentTime());
             fail("Should have thrown an IllegalArgumentException");
         } catch (IllegalArgumentException e) {}
     }
 
     public void testConstructorShouldThrowOnNullInputs() {
         try {
-            new ProducerDescription(null, 0);
+            new ProducerDescription(null,
+                                    0,
+                                    defaultTestClock().getCurrentTime());
             fail("Should have thrown an IllegalArgumentException");
         } catch (IllegalArgumentException e) {}
     }
@@ -54,7 +59,8 @@ public class ProducerDescriptionTest extends BaseHJBTestCase {
 
         MessageProducer testProducer = (MessageProducer) mockProducer.proxy();
         ProducerDescription testDescription = new ProducerDescription(testProducer,
-                                                                      0);
+                                                                      0,
+                                                                      defaultTestClock().getCurrentTime());
         assertContains(testDescription.toString(), "-4");
         assertContains(testDescription.toString(), PathNaming.PRODUCER);
     }
@@ -70,7 +76,8 @@ public class ProducerDescriptionTest extends BaseHJBTestCase {
 
         MessageProducer testProducer = (MessageProducer) mockProducer.proxy();
         ProducerDescription testDescription = new ProducerDescription(testProducer,
-                                                                      0);
+                                                                      0,
+                                                                      defaultTestClock().getCurrentTime());
         assertContains(testDescription.toString(), "-3");
         assertContains(testDescription.toString(), PathNaming.PRODUCER);
         assertContains(testDescription.toString(), mockDestination.toString());
@@ -99,12 +106,16 @@ public class ProducerDescriptionTest extends BaseHJBTestCase {
 
         MessageProducer testProducer = (MessageProducer) mockProducer.proxy();
         ProducerDescription testDescription = new ProducerDescription(testProducer,
-                                                                      0);
-        
+                                                                      0,
+                                                                      defaultTestClock().getCurrentTime());
+
         String expectedOutput = testDescription.toString() + CR
-                + "delivery-mode=(int 1)" + CR + "disable-message-ids=(boolean false)" + CR
-                + "disable-timestamps=(boolean true)" + CR + "priority=(int -3)" + CR
-                + "time-to-live=(long 10002000)";
+                + HJBConstants.CREATION_TIME + "="
+                + defaultClockTimeAsHJBEncodedLong() + CR
+                + "delivery-mode=(int 1)" + CR
+                + "disable-message-ids=(boolean false)" + CR
+                + "disable-timestamps=(boolean true)" + CR
+                + "priority=(int -3)" + CR + "time-to-live=(long 10002000)";
 
         assertContains(testDescription.longDescription(), "-3");
         assertContains(testDescription.longDescription(), PathNaming.PRODUCER);

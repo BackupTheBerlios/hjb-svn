@@ -20,6 +20,7 @@
  */
 package hjb.jms.info;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -38,12 +39,18 @@ import hjb.misc.PathNaming;
  */
 public class BrowserDescription extends JMSObjectDescription {
 
-    public BrowserDescription(QueueBrowser theBrowser, int browserIndex) {
+    public BrowserDescription(QueueBrowser theBrowser,
+                              int browserIndex,
+                              Date creationTime) {
         super(browserIndex, HJBStrings.INVALID_BROWSER_INDEX);
         if (null == theBrowser) {
             throw new IllegalArgumentException(strings().needsANonNull(QueueBrowser.class));
         }
+        if (null == creationTime) {
+            throw new IllegalArgumentException(strings().needsANonNull(Date.class));
+        }
         this.theBrowser = theBrowser;
+        this.creationTime = creationTime;
     }
 
     protected String getExtraInformation() {
@@ -63,6 +70,7 @@ public class BrowserDescription extends JMSObjectDescription {
             result.put(HJBConstants.MESSAGE_SELECTOR,
                        (null == getTheBrowser().getMessageSelector() ? ""
                                : getTheBrowser().getMessageSelector()));
+            result.put(HJBConstants.CREATION_TIME, getEncodedCreationTime(getCreationTime()));
         } catch (JMSException e) {}
         return result;
     }
@@ -74,6 +82,11 @@ public class BrowserDescription extends JMSObjectDescription {
     protected QueueBrowser getTheBrowser() {
         return theBrowser;
     }
+    
+    protected Date getCreationTime() {
+        return creationTime;
+    }
 
     private final QueueBrowser theBrowser;
+    private final Date creationTime;
 }

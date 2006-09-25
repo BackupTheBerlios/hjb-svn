@@ -52,7 +52,7 @@ import hjb.misc.HJBStrings;
  */
 public class HJBConnectionFactory implements ConnectionFactory {
 
-    public HJBConnectionFactory(ConnectionFactory connectionFactory, Object newParam, Clock aClock) {
+    public HJBConnectionFactory(ConnectionFactory connectionFactory, Clock aClock) {
         if (null == connectionFactory) {
             throw new IllegalArgumentException(strings().needsANonNull(ConnectionFactory.class.getName()));
         }

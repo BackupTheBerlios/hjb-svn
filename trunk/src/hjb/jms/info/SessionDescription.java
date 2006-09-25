@@ -26,6 +26,7 @@ import java.util.TreeMap;
 import javax.jms.JMSException;
 import javax.jms.Session;
 
+import hjb.jms.HJBSession;
 import hjb.misc.HJBConstants;
 import hjb.misc.HJBStrings;
 import hjb.misc.PathNaming;
@@ -38,11 +39,12 @@ import hjb.misc.PathNaming;
  */
 public class SessionDescription extends JMSObjectDescription {
 
-    public SessionDescription(Session theSession, int sessionIndex) {
-        super(sessionIndex, HJBStrings.INVALID_SESSION_INDEX);
+    public SessionDescription(HJBSession theSession) {
+        super(DUMMY, HJBStrings.INVALID_SESSION_INDEX);
         if (null == theSession) {
             throw new IllegalArgumentException(strings().needsANonNull(Session.class));
         }
+        setIndex(theSession.getSessionIndex());
         this.theSession = theSession;
     }
 
@@ -53,6 +55,7 @@ public class SessionDescription extends JMSObjectDescription {
                        getCodec().encode(new Boolean(getTheSession().getTransacted())));
             result.put(HJBConstants.SESSION_ACKNOWLEDGEMENT_MODE,
                        getCodec().encode(new Integer(getTheSession().getAcknowledgeMode())));
+            result.put(HJBConstants.CREATION_TIME, getEncodedCreationTime(getTheSession().getCreationTime()));
         } catch (JMSException e) {}
         return result;
     }
@@ -71,9 +74,10 @@ public class SessionDescription extends JMSObjectDescription {
         }
     }
 
-    protected Session getTheSession() {
+    protected HJBSession getTheSession() {
         return theSession;
     }
 
-    private final Session theSession;
+    private final HJBSession theSession;
+    private static final int DUMMY = 0;
 }

@@ -86,7 +86,6 @@ public class HJBProvider {
                 }
             } else {
                 factories.put(name, new HJBConnectionFactory(f,
-                                                             null,
                                                              getClock()));
             }
         }

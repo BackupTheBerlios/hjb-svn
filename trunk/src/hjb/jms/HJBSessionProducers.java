@@ -20,6 +20,9 @@
  */
 package hjb.jms;
 
+import java.util.Iterator;
+import java.util.List;
+
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
@@ -68,10 +71,16 @@ public class HJBSessionProducers extends HJBSessionItems {
     }
 
     public JMSObjectDescription[] getItemDescriptions() {
-        final MessageProducer[] producers = asArray();
-        JMSObjectDescription result[] = new JMSObjectDescription[producers.length];
-        for (int i = 0; i < producers.length; i++) {
-            result[i] = new ProducerDescription(producers[i], i);
+        final List createdItems = getItemsWithTheirCreationTime();
+        JMSObjectDescription result[] = new JMSObjectDescription[createdItems.size()];
+        int count = 0;
+        for (Iterator i = createdItems.iterator(); i.hasNext();) {
+            SessionItem anItem = (SessionItem) i.next();
+            MessageProducer aProducer = (MessageProducer) anItem.getObject();
+            result[count] = new ProducerDescription(aProducer,
+                                                    count,
+                                                    anItem.getCreationTime());
+            count++;
         }
         return result;
     }

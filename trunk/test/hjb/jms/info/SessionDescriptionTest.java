@@ -24,6 +24,8 @@ import javax.jms.Session;
 
 import org.jmock.Mock;
 
+import hjb.jms.HJBSession;
+import hjb.misc.HJBConstants;
 import hjb.misc.HJBStrings;
 import hjb.misc.PathNaming;
 import hjb.testsupport.BaseHJBTestCase;
@@ -31,28 +33,16 @@ import hjb.testsupport.MockSessionBuilder;
 
 public class SessionDescriptionTest extends BaseHJBTestCase {
 
-    public void testConstructorShouldThrowOnNegativeIndices() {
-        Mock mockSession = mock(Session.class);
-        Session testSession = (Session) mockSession.proxy();
-        try {
-            new SessionDescription(testSession, -1);
-            fail("Should have thrown an IllegalArgumentException");
-        } catch (IllegalArgumentException e) {}
-    }
-
     public void testConstructorShouldThrowOnNullSessionInputs() {
         try {
-            new SessionDescription((Session) null, 0);
+            new SessionDescription(null);
             fail("Should have thrown an IllegalArgumentException");
         } catch (IllegalArgumentException e) {}
     }
 
     public void testToStringHasNoXtraInfoForNonTransactedSessions() {
-        Mock mockSession = mock(Session.class);
         mockSession.stubs().method("getTransacted").will(returnValue(false));
-
-        SessionDescription testDescription = new SessionDescription(((Session) mockSession.proxy()),
-                                                                    0);
+        SessionDescription testDescription = new SessionDescription(testHJBSession);
         assertContains(testDescription.toString(), "0");
         assertContains(testDescription.toString(), PathNaming.SESSION);
         assertDoesNotContain(testDescription.toString(),
@@ -60,11 +50,7 @@ public class SessionDescriptionTest extends BaseHJBTestCase {
     }
 
     public void testToStringHasXtraInfoForTransactedSessions() {
-        Mock mockSession = new MockSessionBuilder().createMockSession();
-        registerToVerify(mockSession);
-        mockSession.stubs().method("getTransacted").will(returnValue(true));
-        SessionDescription testDescription = new SessionDescription(((Session) mockSession.proxy()),
-                                                                    0);
+        SessionDescription testDescription = new SessionDescription(testHJBSession);
         assertContains(testDescription.toString(), "0");
         assertContains(testDescription.toString(), PathNaming.SESSION);
         assertContains(testDescription.toString(),
@@ -72,16 +58,15 @@ public class SessionDescriptionTest extends BaseHJBTestCase {
     }
 
     public void testLongDescriptionIncludeSessionAttributes() {
-        Mock mockSession = mock(Session.class);
-        mockSession.stubs().method("getTransacted").will(returnValue(true));
         mockSession.stubs()
             .method("getAcknowledgeMode")
             .will(returnValue(Session.AUTO_ACKNOWLEDGE));
 
-        SessionDescription testDescription = new SessionDescription((Session) mockSession.proxy(),
-                                                                    0);
+        SessionDescription testDescription = new SessionDescription(testHJBSession);
         String expectedOutput = testDescription.toString() + CR
                 + "acknowledgement-mode=(int 1)" + CR
+                + HJBConstants.CREATION_TIME + "="
+                + defaultClockTimeAsHJBEncodedLong() + CR
                 + "transacted=(boolean true)";
         System.err.println(testDescription.longDescription());
 
@@ -92,4 +77,17 @@ public class SessionDescriptionTest extends BaseHJBTestCase {
         assertEquals(expectedOutput, testDescription.longDescription());
     }
 
+    protected void setUp() throws Exception {
+        super.setUp();
+        mockSession = new MockSessionBuilder().createMockSession();
+        mockSession.stubs().method("getTransacted").will(returnValue(true));
+        registerToVerify(mockSession);
+        testSession = (Session) mockSession.proxy();
+        registerToVerify(mockSession);
+        testHJBSession = new HJBSession(testSession, 0, defaultTestClock());
+    }
+
+    private HJBSession testHJBSession;
+    private Mock mockSession;
+    private Session testSession;
 }

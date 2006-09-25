@@ -29,37 +29,40 @@ import org.jmock.MockObjectTestCase;
 
 import hjb.misc.Clock;
 import hjb.misc.HJBStrings;
+import hjb.msg.codec.LongCodec;
 
-public abstract class BaseHJBTestCase  extends MockObjectTestCase  {
+public abstract class BaseHJBTestCase extends MockObjectTestCase {
 
-    protected void assertContains(String outer, String inner, String message)  {
+    protected void assertContains(String outer, String inner, String message) {
         if (-1 == outer.lastIndexOf(inner)) {
             throw new AssertionFailedError(message);
         }
     }
-      
-    protected void assertDoesNotContain(String outer, String inner, String message)  {
+
+    protected void assertDoesNotContain(String outer,
+                                        String inner,
+                                        String message) {
         if (-1 != outer.lastIndexOf(inner)) {
             throw new AssertionFailedError(message);
         }
     }
 
-    protected void assertDoesNotContain(String outer, String inner)  {
+    protected void assertDoesNotContain(String outer, String inner) {
         assertDoesNotContain(outer, inner, "");
-    }      
+    }
 
-    protected void assertContains(String outer, String inner)  {
+    protected void assertContains(String outer, String inner) {
         assertContains(outer, inner, "");
     }
-      
+
     protected HJBStrings strings() {
         return STRINGS;
     }
-    
+
     protected Clock clockAtTime(Date aTime) {
         return new DummyClock(aTime);
     }
-    
+
     protected synchronized Clock defaultTestClock() {
         Calendar c = Calendar.getInstance();
         c.set(2003, 12, 25, 0, 0, 0);
@@ -68,11 +71,16 @@ public abstract class BaseHJBTestCase  extends MockObjectTestCase  {
         }
         return clockAtTime(XMAS_DAY_2004);
     }
-    
+
+    protected String defaultClockTimeAsHJBEncodedLong() {
+        return new LongCodec().encode(new Long(defaultTestClock().getCurrentTime()
+            .getTime()));
+    }
+
     private static final HJBStrings STRINGS = new HJBStrings();
     public static final String CR = System.getProperty("line.separator");
     protected static Date XMAS_DAY_2004;
-    
+
     protected static class DummyClock extends Clock {
         private Date currentTime;
 

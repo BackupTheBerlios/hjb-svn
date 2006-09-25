@@ -71,7 +71,6 @@ public class ConnectionFactoryListingTest extends BaseHJBTestCase {
     protected void setUp() throws Exception {
         Mock mockFactory = new MockConnectionFactoryBuilder().createMockConnectionFactory();
         testFactory = new HJBConnectionFactory((ConnectionFactory) mockFactory.proxy(),
-                                               null,
                                                defaultTestClock());
     }
 

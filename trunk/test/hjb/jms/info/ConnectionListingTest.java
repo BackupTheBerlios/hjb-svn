@@ -30,6 +30,7 @@ import org.jmock.Mock;
 
 import hjb.jms.HJBConnection;
 import hjb.jms.HJBSessionQueueBrowsers;
+import hjb.misc.HJBConstants;
 import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
 
@@ -60,6 +61,10 @@ public class ConnectionListingTest extends BaseHJBTestCase {
                 + CR
                 + "acknowledgement-mode=(int 1)"
                 + CR
+                + HJBConstants.CREATION_TIME
+                + "="
+                + defaultClockTimeAsHJBEncodedLong()
+                + CR
                 + "transacted=(boolean false)"
                 + CR
                 + CR
@@ -67,10 +72,16 @@ public class ConnectionListingTest extends BaseHJBTestCase {
                 + CR
                 + "acknowledgement-mode=(int 1)"
                 + CR
+                + HJBConstants.CREATION_TIME
+                + "="
+                + defaultClockTimeAsHJBEncodedLong()
+                + CR
                 + "transacted=(boolean false)"
                 + CR
                 + "/testProvider/testFactory/connection-10/session-0/browser-0[(source mockQueue)]"
-                + CR + "message-selector=testSelector";
+                + CR + HJBConstants.CREATION_TIME + "="
+                + defaultClockTimeAsHJBEncodedLong() + CR
+                + "message-selector=testSelector";
         new ConnectionListing(testConnection).writeListing(sw,
                                                            "/testProvider/testFactory/connection-10",
                                                            true);
@@ -98,7 +109,8 @@ public class ConnectionListingTest extends BaseHJBTestCase {
     }
 
     protected void addDefaultTestBrowser() {
-        HJBSessionQueueBrowsers browsers = testConnection.getSession(0).getBrowsers();
+        HJBSessionQueueBrowsers browsers = testConnection.getSession(0)
+            .getBrowsers();
         Mock mockQueue = mock(Queue.class);
         browsers.createBrowser((Queue) mockQueue.proxy());
     }

@@ -20,12 +20,15 @@
  */
 package hjb.jms;
 
+import java.util.Iterator;
+import java.util.List;
+
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 
-import hjb.jms.info.JMSObjectDescription;
 import hjb.jms.info.ConsumerDescription;
+import hjb.jms.info.JMSObjectDescription;
 import hjb.misc.Clock;
 import hjb.misc.HJBStrings;
 
@@ -99,10 +102,16 @@ public class HJBSessionConsumers extends HJBSessionItems {
     }
 
     public JMSObjectDescription[] getItemDescriptions() {
-        final MessageConsumer[] consumers = asArray();
-        JMSObjectDescription result[] = new JMSObjectDescription[consumers.length];
-        for (int i = 0; i < consumers.length; i++) {
-            result[i] = new ConsumerDescription(consumers[i], i);
+        final List createdItems = getItemsWithTheirCreationTime();
+        JMSObjectDescription result[] = new JMSObjectDescription[createdItems.size()];
+        int count = 0;
+        for (Iterator i = createdItems.iterator(); i.hasNext();) {
+            SessionItem anItem = (SessionItem) i.next();
+            MessageConsumer aConsumer = (MessageConsumer) anItem.getObject();
+            result[count] = new ConsumerDescription(aConsumer,
+                                                    count,
+                                                    anItem.getCreationTime());
+            count++;
         }
         return result;
     }

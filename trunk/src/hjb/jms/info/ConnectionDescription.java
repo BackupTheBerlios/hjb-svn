@@ -55,8 +55,9 @@ public class ConnectionDescription extends JMSObjectDescription {
             result.put(HJBConstants.CLIENT_ID,
                        null == getTheConnection().getClientID() ? ""
                                : getTheConnection().getClientID());
+            result.put(HJBConstants.CREATION_TIME,
+                       getEncodedCreationTime(getTheConnection().getCreationTime()));
             result.putAll(getModifiedMetadataMap());
-            new MetadataReaderAssistant().metaDataAsMap(getTheConnection().getMetaData());
         } catch (JMSException e) {}
         return result;
     }
@@ -91,10 +92,10 @@ public class ConnectionDescription extends JMSObjectDescription {
         }
     }
 
-    protected Connection getTheConnection() {
+    protected HJBConnection getTheConnection() {
         return theConnection;
     }
 
-    private final Connection theConnection;
+    private final HJBConnection theConnection;
     private static final int DUMMY = 0;
 }

@@ -20,6 +20,7 @@
  */
 package hjb.jms.info;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -38,12 +39,18 @@ import hjb.misc.PathNaming;
  */
 public class ProducerDescription extends JMSObjectDescription {
 
-    public ProducerDescription(MessageProducer theProducer, int producerIndex) {
+    public ProducerDescription(MessageProducer theProducer,
+                               int producerIndex,
+                               Date creationTime) {
         super(producerIndex, HJBStrings.INVALID_PRODUCER_INDEX);
         if (null == theProducer) {
             throw new IllegalArgumentException(strings().needsANonNull(MessageProducer.class));
         }
+        if (null == creationTime) {
+            throw new IllegalArgumentException(strings().needsANonNull(Date.class));
+        }
         this.theProducer = theProducer;
+        this.creationTime = creationTime;
     }
 
     protected Map attributesAsAMap() {
@@ -59,6 +66,7 @@ public class ProducerDescription extends JMSObjectDescription {
                        getCodec().encode((new Integer(getTheProducer().getPriority()))));
             result.put(HJBConstants.DELIVERY_MODE,
                        getCodec().encode((new Integer(getTheProducer().getDeliveryMode()))));
+            result.put(HJBConstants.CREATION_TIME, getEncodedCreationTime(getCreationTime()));
         } catch (JMSException e) {}
         return result;
     }
@@ -83,5 +91,10 @@ public class ProducerDescription extends JMSObjectDescription {
         return theProducer;
     }
 
+    protected Date getCreationTime() {
+        return creationTime;
+    }
+
     private final MessageProducer theProducer;
+    private final Date creationTime;
 }

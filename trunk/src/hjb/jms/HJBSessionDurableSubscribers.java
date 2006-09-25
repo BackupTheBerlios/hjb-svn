@@ -20,6 +20,9 @@
  */
 package hjb.jms;
 
+import java.util.Iterator;
+import java.util.List;
+
 import javax.jms.JMSException;
 import javax.jms.Topic;
 import javax.jms.TopicSubscriber;
@@ -90,12 +93,19 @@ public class HJBSessionDurableSubscribers extends HJBSessionItems {
     }
 
     public JMSObjectDescription[] getItemDescriptions() {
-        final TopicSubscriber[] subscribers = asArray();
-        JMSObjectDescription result[] = new JMSObjectDescription[subscribers.length];
-        for (int i = 0; i < subscribers.length; i++) {
-            result[i] = new SubscriberDescription(subscribers[i], i);
+        final List createdItems = getItemsWithTheirCreationTime();
+        JMSObjectDescription result[] = new JMSObjectDescription[createdItems.size()];
+        int count = 0;
+        for (Iterator i = createdItems.iterator(); i.hasNext();) {
+            SessionItem anItem = (SessionItem) i.next();
+            TopicSubscriber aSubscriber = (TopicSubscriber) anItem.getObject();
+            result[count] = new SubscriberDescription(aSubscriber,
+                                                      count,
+                                                      anItem.getCreationTime());
+            count++;
         }
         return result;
+
     }
 
 }

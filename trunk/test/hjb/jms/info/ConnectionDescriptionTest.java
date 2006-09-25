@@ -26,6 +26,7 @@ import javax.jms.ConnectionMetaData;
 import org.jmock.Mock;
 
 import hjb.jms.HJBConnection;
+import hjb.misc.HJBConstants;
 import hjb.misc.PathNaming;
 import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
@@ -48,7 +49,8 @@ public class ConnectionDescriptionTest extends BaseHJBTestCase {
         Connection testConnection = (Connection) mockConnection.proxy();
         ConnectionDescription testDescription = new ConnectionDescription(new HJBConnection(testConnection,
                                                                                             null,
-                                                                                            0, defaultTestClock()));
+                                                                                            0,
+                                                                                            defaultTestClock()));
         assertContains(testDescription.toString(), "0");
         assertContains(testDescription.toString(), PathNaming.CONNECTION);
         assertContains(testDescription.toString(), "barfoo");
@@ -63,7 +65,8 @@ public class ConnectionDescriptionTest extends BaseHJBTestCase {
         Connection testConnection = (Connection) mockConnection.proxy();
         ConnectionDescription testDescription = new ConnectionDescription(new HJBConnection(testConnection,
                                                                                             null,
-                                                                                            0, defaultTestClock()));
+                                                                                            0,
+                                                                                            defaultTestClock()));
         assertContains(testDescription.toString(), "0");
         assertContains(testDescription.toString(), PathNaming.CONNECTION);
         assertContains(testDescription.toString(), "foobar");
@@ -82,10 +85,13 @@ public class ConnectionDescriptionTest extends BaseHJBTestCase {
 
         ConnectionDescription testDescription = new ConnectionDescription(new HJBConnection((Connection) mockConnection.proxy(),
                                                                                             null,
-                                                                                            1, defaultTestClock()));
+                                                                                            1,
+                                                                                            defaultTestClock()));
 
         String expectedOutput = testDescription.toString() + CR
-                + "clientId=foobar" + CR + "jms-major-version=(int 444)" + CR
+                + "clientId=foobar" + CR + HJBConstants.CREATION_TIME + "="
+                + defaultClockTimeAsHJBEncodedLong() + CR
+                + "jms-major-version=(int 444)" + CR
                 + "jms-minor-version=(int 777)" + CR
                 + "jms-provider-name=testProviderName" + CR
                 + "jms-version=testVersion" + CR

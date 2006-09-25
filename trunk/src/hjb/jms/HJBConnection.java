@@ -142,7 +142,7 @@ public class HJBConnection implements Connection {
     }
 
     public JMSObjectDescription getSessionDescription(int index) {
-        return new SessionDescription(getSession(index), index);
+        return new SessionDescription(getSession(index));
     }
 
     public void assertSessionExists(int sessionIndex) {

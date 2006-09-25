@@ -27,6 +27,7 @@ import javax.jms.*;
 import org.jmock.Mock;
 
 import hjb.jms.*;
+import hjb.misc.HJBConstants;
 import hjb.misc.MessageProducerArguments;
 import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
@@ -48,14 +49,22 @@ public class SessionListingTest extends BaseHJBTestCase {
         assertEquals(expectedOutput, sw.toString());
     }
 
-    public void testRecurseListingAddsSessionListings() {
+    public void testRecurseListingAddsSessionObjectListings() {
         StringWriter sw = new StringWriter();
         createSomeSessionObjects();
         String expectedOutput = "/testProvider/testFactory/connection-10/session-0/consumer-0"
                 + CR
+                + HJBConstants.CREATION_TIME
+                + "="
+                + defaultClockTimeAsHJBEncodedLong()
+                + CR
                 + "message-selector=testSelector"
                 + CR
                 + "/testProvider/testFactory/connection-10/session-0/subscriber-0[(source mockTopic) (nolocal? false)]"
+                + CR
+                + HJBConstants.CREATION_TIME
+                + "="
+                + defaultClockTimeAsHJBEncodedLong()
                 + CR
                 + "message-selector=testSelector"
                 + CR
@@ -64,6 +73,10 @@ public class SessionListingTest extends BaseHJBTestCase {
                 + "subscriber-name=testTopic"
                 + CR
                 + "/testProvider/testFactory/connection-10/session-0/producer-0[(target supplied-by-sender) (priority -4)]"
+                + CR
+                + HJBConstants.CREATION_TIME
+                + "="
+                + defaultClockTimeAsHJBEncodedLong()
                 + CR
                 + "delivery-mode=(int 1)"
                 + CR
@@ -76,7 +89,12 @@ public class SessionListingTest extends BaseHJBTestCase {
                 + "time-to-live=(long 1)"
                 + CR
                 + "/testProvider/testFactory/connection-10/session-0/browser-0[(source mockQueue)]"
-                + CR + "message-selector=testSelector";
+                + CR
+                + HJBConstants.CREATION_TIME
+                + "="
+                + defaultClockTimeAsHJBEncodedLong()
+                + CR
+                + "message-selector=testSelector";
         new SessionListing(testSession).writeListing(sw,
                                                      "/testProvider/testFactory/connection-10",
                                                      true);

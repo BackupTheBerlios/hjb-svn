@@ -141,24 +141,24 @@ public class HJBMessenger {
         return getTheSession().getSessionIndex();
     }
 
-    public SessionDescription getSessionDescription() {
-        return new SessionDescription(getTheSession(), getSessionIndex());
+    public JMSObjectDescription getSessionDescription() {
+        return new SessionDescription(getTheSession());
     }
 
-    public ProducerDescription getProducerDescription(int index) {
-        return new ProducerDescription(getProducerFor(index), index);
+    public JMSObjectDescription getProducerDescription(int index) {
+        return getTheSession().getProducers().getItemDescriptions()[index];
     }
 
-    public BrowserDescription getBrowserDescription(int index) {
-        return new BrowserDescription(getBrowserFor(index), index);
+    public JMSObjectDescription getBrowserDescription(int index) {
+        return getTheSession().getBrowsers().getItemDescriptions()[index];
     }
 
-    public ConsumerDescription getConsumerDescription(int index) {
-        return new ConsumerDescription(getConsumerFor(index), index);
+    public JMSObjectDescription getConsumerDescription(int index) {
+        return getTheSession().getConsumers().getItemDescriptions()[index];
     }
 
-    public SubscriberDescription getSubscriberDescription(int index) {
-        return new SubscriberDescription(getSubscriberFor(index), index);
+    public JMSObjectDescription getSubscriberDescription(int index) {
+        return getTheSession().getSubscribers().getItemDescriptions()[index];
     }
 
     protected void debugMessage(HJBMessage asHJB) {
@@ -266,23 +266,19 @@ public class HJBMessenger {
     }
 
     protected MessageConsumer getConsumerFor(int index) {
-        HJBSessionConsumers consumers = getTheSession().getConsumers();
-        return consumers.getConsumer(index);
+        return getTheSession().getConsumers().getConsumer(index);
     }
 
     protected MessageProducer getProducerFor(int index) {
-        HJBSessionProducers producers = getTheSession().getProducers();
-        return producers.getProducer(index);
+        return getTheSession().getProducers().getProducer(index);
     }
 
     protected QueueBrowser getBrowserFor(int index) {
-        HJBSessionQueueBrowsers browsers = getTheSession().getBrowsers();
-        return browsers.getBrowser(index);
+        return getTheSession().getBrowsers().getBrowser(index);
     }
 
     protected TopicSubscriber getSubscriberFor(int index) {
-        HJBSessionDurableSubscribers subscribers = getTheSession().getSubscribers();
-        return subscribers.getSubscriber(index);
+        return getTheSession().getSubscribers().getSubscriber(index);
     }
 
     protected HJBSession getTheSession() {

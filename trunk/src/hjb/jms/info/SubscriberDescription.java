@@ -20,6 +20,7 @@
  */
 package hjb.jms.info;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -39,11 +40,16 @@ import hjb.misc.PathNaming;
 public class SubscriberDescription extends JMSObjectDescription {
 
     public SubscriberDescription(TopicSubscriber theSubscriber,
-                                 int subscriberIndex) {
+                                 int subscriberIndex,
+                                 Date creationTime) {
         super(subscriberIndex, HJBStrings.INVALID_SUBSCRIBER_INDEX);
         if (null == theSubscriber) {
             throw new IllegalArgumentException(strings().needsANonNull(TopicSubscriber.class));
         }
+        if (null == creationTime) {
+            throw new IllegalArgumentException(strings().needsANonNull(Date.class));
+        }
+        this.creationTime = creationTime;
         this.theSubscriber = theSubscriber;
     }
 
@@ -57,6 +63,8 @@ public class SubscriberDescription extends JMSObjectDescription {
             result.put(HJBConstants.MESSAGE_SELECTOR,
                        (null == getTheSubscriber().getMessageSelector() ? ""
                                : getTheSubscriber().getMessageSelector()));
+            result.put(HJBConstants.CREATION_TIME,
+                       getEncodedCreationTime(getCreationTime()));
         } catch (JMSException e) {}
         return result;
     }
@@ -81,5 +89,10 @@ public class SubscriberDescription extends JMSObjectDescription {
         return theSubscriber;
     }
 
+    protected Date getCreationTime() {
+        return creationTime;
+    }
+
+    private final Date creationTime;
     private final TopicSubscriber theSubscriber;
 }

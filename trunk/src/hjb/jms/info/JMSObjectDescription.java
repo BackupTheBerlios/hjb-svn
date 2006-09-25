@@ -24,9 +24,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Map;
 
 import hjb.http.cmd.HJBMessageWriter;
+import hjb.misc.HJBException;
 import hjb.misc.HJBStrings;
 import hjb.msg.codec.OrderedTypedValueCodec;
 
@@ -133,6 +135,10 @@ public class JMSObjectDescription {
 
     protected HJBStrings strings() {
         return STRINGS;
+    }
+
+    protected String getEncodedCreationTime(Date creationTime) throws HJBException {
+        return getCodec().encode(new Long(creationTime.getTime()));
     }
 
     private int index;

@@ -213,8 +213,7 @@ public class HJBSession implements Session {
     public void startCommandRunner(String connectionName) {
         String threadName = strings().getString(HJBStrings.RUNNER_FOR,
                                                 connectionName,
-                                                new SessionDescription(this,
-                                                                       sessionIndex).toString());
+                                                new SessionDescription(this).toString());
         Thread runnerThread = new Thread(commandRunner, threadName);
         runnerThread.setDaemon(true);
         runnerThread.start();
@@ -301,7 +300,7 @@ public class HJBSession implements Session {
     }
 
     public JMSObjectDescription getDescription() {
-        return new SessionDescription(getTheSession(), getSessionIndex());
+        return new SessionDescription(this);
     }
 
     protected void logAndThrowFailure(String message, Exception e) {

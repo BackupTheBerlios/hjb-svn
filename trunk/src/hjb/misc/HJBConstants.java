@@ -77,7 +77,6 @@ public final class HJBConstants {
      */
     public static final String HJB_DEFAULT_CACHE_CONTROL = "no-store";
 
-
     /**
      * Constant that holds the standard MIME type for plain text
      * <p />
@@ -249,6 +248,14 @@ public final class HJBConstants {
      * The value of this constant is <code>false</code>.
      */
     public static final boolean DEFAULT_TRANSACTED = false;
+
+    /**
+     * Constant that holds the name of the field associated the creation time of
+     * JMS objects in JMS Object Listings.
+     * <p />
+     * The value of this constant is <code>creation-time</code>.
+     */
+    public static final String CREATION_TIME = "creation-time";
 
     /**
      * Constant that holds the default value of the transacted flag for use in

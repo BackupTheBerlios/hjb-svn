@@ -39,7 +39,7 @@ public class HJBConnectionFactoryTest extends BaseHJBTestCase {
     public void testConstructionThrowsIllegalArgumentExceptionOnNullConnectionFactory()
             throws Exception {
         try {
-            new HJBConnectionFactory(null, null, defaultTestClock());
+            new HJBConnectionFactory(null, defaultTestClock());
             fail("Allowed creation from a null ConnectionFactory");
         } catch (IllegalArgumentException iae) {}
     }
@@ -47,14 +47,13 @@ public class HJBConnectionFactoryTest extends BaseHJBTestCase {
     public void testConstructionThrowsIllegalArgumentExceptionOnNullClock()
             throws Exception {
         try {
-            new HJBConnectionFactory(testConnectionFactory, null, null);
+            new HJBConnectionFactory(testConnectionFactory, null);
             fail("Allowed creation from a null ConnectionFactory");
         } catch (IllegalArgumentException iae) {}
     }
 
     public void testConstructionSetsCreationTimeCorrectly() {
         HJBConnectionFactory f = new HJBConnectionFactory(testConnectionFactory,
-                                                          null,
                                                           defaultTestClock());
         assertEquals(f.getCreationTime(), defaultTestClock().getCurrentTime());
     }
@@ -62,7 +61,6 @@ public class HJBConnectionFactoryTest extends BaseHJBTestCase {
     public void testConstructionSucceedsWithValidArguments() {
         try {
             new HJBConnectionFactory(testConnectionFactory,
-                                     null,
                                      defaultTestClock());
         } catch (Exception e) {
             fail("Disallowed creation from a valid ConnectionFactory");
@@ -72,7 +70,6 @@ public class HJBConnectionFactoryTest extends BaseHJBTestCase {
     public void testCreateConnectionAddsToConnectionsOnSuccess()
             throws Exception {
         HJBConnectionFactory rcf = new HJBConnectionFactory(testConnectionFactory,
-                                                            null,
                                                             defaultTestClock());
         rcf.createConnection();
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
@@ -85,7 +82,6 @@ public class HJBConnectionFactoryTest extends BaseHJBTestCase {
     public void testCreateHJBConnectionAddsToConnectionsOnSuccess()
             throws Exception {
         HJBConnectionFactory rcf = new HJBConnectionFactory(testConnectionFactory,
-                                                            null,
                                                             defaultTestClock());
         assertEquals("index should be 0", 0, rcf.createHJBConnection(null));
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
@@ -99,7 +95,6 @@ public class HJBConnectionFactoryTest extends BaseHJBTestCase {
 
     public void testGetConnectionsIsACopy() throws Exception {
         HJBConnectionFactory rcf = new HJBConnectionFactory(testConnectionFactory,
-                                                            null,
                                                             defaultTestClock());
         rcf.createConnection();
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
@@ -120,7 +115,6 @@ public class HJBConnectionFactoryTest extends BaseHJBTestCase {
         testConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(testConnectionFactory,
-                                                            null,
                                                             defaultTestClock());
         try {
             rcf.createConnection();
@@ -158,7 +152,6 @@ public class HJBConnectionFactoryTest extends BaseHJBTestCase {
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
-                                                            null,
                                                             defaultTestClock());
         rcf.createConnection("testUser", "testPassword");
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
@@ -178,7 +171,6 @@ public class HJBConnectionFactoryTest extends BaseHJBTestCase {
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
-                                                            null,
                                                             defaultTestClock());
         rcf.createConnection("testUser", "testPassword");
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
@@ -197,7 +189,6 @@ public class HJBConnectionFactoryTest extends BaseHJBTestCase {
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
-                                                            null,
                                                             defaultTestClock());
         rcf.createConnection("testUser", "testPassword");
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
@@ -214,7 +205,6 @@ public class HJBConnectionFactoryTest extends BaseHJBTestCase {
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
-                                                            null,
                                                             defaultTestClock());
         try {
             rcf.startConnection(-1);
@@ -243,7 +233,6 @@ public class HJBConnectionFactoryTest extends BaseHJBTestCase {
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
-                                                            null,
                                                             defaultTestClock());
         rcf.createConnection("testUser", "testPassword");
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
@@ -264,7 +253,6 @@ public class HJBConnectionFactoryTest extends BaseHJBTestCase {
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
-                                                            null,
                                                             defaultTestClock());
         rcf.createConnection("testUser", "testPassword");
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
@@ -281,7 +269,6 @@ public class HJBConnectionFactoryTest extends BaseHJBTestCase {
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
-                                                            null,
                                                             defaultTestClock());
         try {
             rcf.stopConnection(-1);
@@ -311,7 +298,6 @@ public class HJBConnectionFactoryTest extends BaseHJBTestCase {
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
-                                                            null,
                                                             defaultTestClock());
         rcf.createConnection("testUser", "testPassword");
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
@@ -328,7 +314,6 @@ public class HJBConnectionFactoryTest extends BaseHJBTestCase {
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
-                                                            null,
                                                             defaultTestClock());
         rcf.createConnection("testUser", "testPassword");
         assertEquals("should be one connection", 1, rcf.getActiveConnections()
@@ -348,7 +333,6 @@ public class HJBConnectionFactoryTest extends BaseHJBTestCase {
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
-                                                            null,
                                                             defaultTestClock());
         try {
             rcf.getConnectionMetaData(-1);
@@ -376,7 +360,6 @@ public class HJBConnectionFactoryTest extends BaseHJBTestCase {
         ConnectionFactory aConnectionFactory = (ConnectionFactory) mockFactory.proxy();
 
         HJBConnectionFactory rcf = new HJBConnectionFactory(aConnectionFactory,
-                                                            null,
                                                             defaultTestClock());
         rcf.createConnection("testUser", "testPassword");
         assertEquals("should be one connection", 1, rcf.getActiveConnections()

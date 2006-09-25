@@ -20,12 +20,15 @@
  */
 package hjb.jms;
 
+import java.util.Iterator;
+import java.util.List;
+
 import javax.jms.JMSException;
 import javax.jms.Queue;
 import javax.jms.QueueBrowser;
 
-import hjb.jms.info.JMSObjectDescription;
 import hjb.jms.info.BrowserDescription;
+import hjb.jms.info.JMSObjectDescription;
 import hjb.misc.Clock;
 import hjb.misc.HJBStrings;
 
@@ -82,10 +85,16 @@ public class HJBSessionQueueBrowsers extends HJBSessionItems {
     }
 
     public JMSObjectDescription[] getItemDescriptions() {
-        final QueueBrowser[] browsers = asArray();
-        JMSObjectDescription result[] = new JMSObjectDescription[browsers.length];
-        for (int i = 0; i < browsers.length; i++) {
-            result[i] = new BrowserDescription(browsers[i], i);
+        final List createdItems = getItemsWithTheirCreationTime();
+        JMSObjectDescription result[] = new JMSObjectDescription[createdItems.size()];
+        int count = 0;
+        for (Iterator i = createdItems.iterator(); i.hasNext();) {
+            SessionItem anItem = (SessionItem) i.next();
+            QueueBrowser aBrowser = (QueueBrowser) anItem.getObject();
+            result[count] = new BrowserDescription(aBrowser,
+                                                   count,
+                                                   anItem.getCreationTime());
+            count++;
         }
         return result;
     }
