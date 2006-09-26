@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """
-Uses kid and docutils to construct the website from its rst source
+Uses kid and docutils to construct the website from its rst, javadoc
+and emma sources
 
 USAGE
 =====
@@ -14,6 +15,7 @@ from os import makedirs, remove as remove_file
 from os.path import walk, splitext, dirname, abspath
 from os.path import join as join_path, exists as path_exists
 from time import time, strftime, gmtime
+from subprocess import call
 from glob import glob
 
 from shutil import copy as copy_file
@@ -23,33 +25,47 @@ from docutils.writers import html4css1
 
 from kid import Template
 
+#from paramiko import SSHClient
+
+
 # the script assumes that it is in an immediate subdirectory
 # of the top-level hjb project directory
+
+ssh_username="tbetbe"
+ssh_host="shell.berlios.de"
 root = dirname(dirname(abspath(__file__)))
 rst_doc_root = join_path(root, "docs/rst")
 site_root = join_path(root, "pub/www")
 archive_prefix = join_path(root, 'hjb_web_site_')
 main_page_template = join_path(root, "bin/sitepage.kid")
+ant_command = ["ant", "-f", join_path(root, "build.xml"), "javadoc.to.web", "instrument.publish"]
 css_file = "hjb_v1.css"
 
 # precompile the template
 _template = Template(file=main_page_template)
 
-def remove_old_archives():
+def get_secure_server():
+    return 
+
+def rebuild_java_pages():
+    call(ant_command)
+    
+def remove_old_site_archives():
     def remove_old_archive(name):
         remove_file(name)
         print "... removed old archive", name
     [remove_old_archive(a) for a in glob(archive_prefix + "*.gz")]
     
-def archive_site(root=site_root):
+def create_a_new_site_archive(root=site_root):
     archive_name = strftime(archive_prefix + "%Y%m%d_%H%M%S", gmtime(time()))                            
     archive_path = make_archive(archive_name,
                                 "gztar",
                                 site_root,
                                 ".")
     print "[COMPLETED] hjb website is archived at: ", archive_path
+    return archive_path
     
-def generate_site(doc_root=rst_doc_root):
+def rebuild_rst_pages(doc_root=rst_doc_root):
     """
     Generate the site.
 
@@ -103,7 +119,7 @@ def sitepath_of(filename,
 def get_stylesheet_path():
     return join_path(site_root, css_file)
 
-def update_css():
+def update_the_css_file():
     original_css_path = join_path(rst_doc_root, css_file)
     site_css_path = join_path(site_root, css_file)
     copy_file(original_css_path, site_css_path)
@@ -123,13 +139,31 @@ def parts_of(rst_file):
             'source_link': True},
         )
 
+def get_password(host):
+    print "sitebuilder> please enter password for accessing % s" % (host,)
+    return raw_input("sitebuilder... ")
+
+def check_password_works(password):
+    #c = SSHClient()
+    #c.connect(hostname=ssh_host, username=ssh_username, password=password)
+    #c.close()
+    return password
+
+def send_site_to_server(password, localname):
+    pass
+
+def deploy_site_on_server(password, localname):
+    pass
 
 def main():
-    remove_old_archives()
-    update_css()
-    generate_site()
-    archive_site()
-
-
+    password = check_password_works(get_password("@".join([ssh_username, ssh_host])))
+    remove_old_site_archives()
+    rebuild_java_pages()
+    update_the_css_file()
+    rebuild_rst_pages()
+    site_archive = create_a_new_site_archive()
+    send_site_to_server(password, site_archive)
+    deploy_site_on_server(password, site_archive)
+    
 if __name__ == '__main__':
     main()
