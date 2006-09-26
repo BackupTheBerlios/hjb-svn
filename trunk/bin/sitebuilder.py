@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 """
 Uses kid and docutils to construct the website from its rst source
 
@@ -10,10 +10,11 @@ python sitebuilder.py
 
 """
 
-from os import makedirs
+from os import makedirs, remove as remove_file
 from os.path import walk, splitext, dirname, abspath
 from os.path import join as join_path, exists as path_exists
 from time import time, strftime, gmtime
+from glob import glob
 
 from shutil import copy as copy_file
 from distutils.archive_util import make_archive
@@ -22,17 +23,29 @@ from docutils.writers import html4css1
 
 from kid import Template
 
-rst_doc_root = "../docs/rst"
-site_root = "../pub/www"
+root = dirname(dirname(abspath(__file__)))
+rst_doc_root = join_path(root, "docs/rst")
+site_root = join_path(root, "pub/www")
+archive_prefix = join_path(root, 'hjb_web_site_')
+main_page_template = join_path(root, "bin/sitepage.kid")
+css_file = "hjb_v1.css"
 
-main_page_template = "sitepage.kid"
+# precompile the template
 _template = Template(file=main_page_template)
 
+def remove_old_archives():
+    def remove_old_archive(name):
+        remove_file(name)
+        print "... removed old archive", name
+    [remove_old_archive(a) for a in glob(archive_prefix + "*.gz")]
+    
 def archive_site(root=site_root):
-    make_archive(strftime("../hjb_web_site_%Y%m%d_%H%M%S", gmtime(time())),
-                 "gztar",
-                 abspath(site_root),
-                 ".")    
+    archive_name = strftime(archive_prefix + "%Y%m%d_%H%M%S", gmtime(time()))                            
+    archive_path = make_archive(archive_name,
+                                "gztar",
+                                site_root,
+                                ".")
+    print "[COMPLETED] hjb website is archived at: ", archive_path
     
 def generate_site(doc_root=rst_doc_root):
     """
@@ -85,13 +98,12 @@ def sitepath_of(filename,
     return splitext(filename.replace(rst_root,
                                      site_root))[0] + with_extension
 
-
 def get_stylesheet_path():
-    return abspath(join_path(site_root, "hjb_v1.css"))
+    return join_path(site_root, css_file)
 
 def update_css():
-    original_css_path = abspath(join_path(rst_doc_root, "hjb_v1.css"))
-    site_css_path = abspath(join_path(site_root, "hjb_v1.css"))
+    original_css_path = join_path(rst_doc_root, css_file)
+    site_css_path = join_path(site_root, css_file)
     copy_file(original_css_path, site_css_path)
 
 def parts_of(rst_file):
@@ -111,6 +123,9 @@ def parts_of(rst_file):
 
 
 def main():
+    print abspath(__file__)
+    print dirname(dirname(abspath(__file__)))
+    remove_old_archives()
     update_css()
     generate_site()
     archive_site()
