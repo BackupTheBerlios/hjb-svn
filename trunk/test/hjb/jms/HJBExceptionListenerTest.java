@@ -20,16 +20,16 @@
  */
 package hjb.jms;
 
+import hjb.misc.HJBStrings;
+import hjb.testsupport.BaseHJBTestCase;
+import hjb.testsupport.MockConnectionBuilder;
+
 import java.io.File;
 
 import javax.jms.Connection;
 import javax.jms.JMSException;
 
 import org.jmock.Mock;
-
-import hjb.misc.HJBStrings;
-import hjb.testsupport.BaseHJBTestCase;
-import hjb.testsupport.MockConnectionBuilder;
 
 public class HJBExceptionListenerTest extends BaseHJBTestCase {
 
@@ -60,12 +60,10 @@ public class HJBExceptionListenerTest extends BaseHJBTestCase {
     }
 
     public void testShouldCreateLogFileOnError() {
-        File testFile = new File(testListener.getUniqueFilePath());
         JMSException testException = new JMSException("thrown as a test");
         testException.fillInStackTrace();
         testListener.onException(testException);
         assertTrue(new File(testListener.getUniqueFilePath()).exists());
-        testFile.deleteOnExit();
     }
 
     public void testShouldWriteLogFileOnError() {
@@ -75,7 +73,6 @@ public class HJBExceptionListenerTest extends BaseHJBTestCase {
         testListener.onException(testException);
         assertContains(testListener.getErrorLog(),
                        testException.getMessage());
-        testFile.deleteOnExit();
         System.err.println("Contents of " + testFile + " after a unit test");
         System.err.println(testListener.getErrorLog());
         System.err.println();
@@ -90,6 +87,13 @@ public class HJBExceptionListenerTest extends BaseHJBTestCase {
                                            0,
                                            defaultTestClock());
         testListener = testConnection.getConnectionListener();
+    }
+    
+    protected void tearDown() throws Exception {
+        File testFile = new File(testListener.getUniqueFilePath());
+        if (testFile.exists()) {
+            testFile.delete();
+        }
     }
 
     private Mock mockConnection;

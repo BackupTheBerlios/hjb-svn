@@ -498,4 +498,6 @@ public final class HJBStrings {
     public static final String DESCRIPTION_OF_SHOW_ERROR_LOG = "description.of.show.error.log";
 
     public static final String SUCCESS_MESSAGE_OF_SHOW_ERROR_LOG = "success.message.of.show.error.log";
+
+    public static final String CONNECTION_ERRORS_LOGGED = "connection.errors.logged";
 }

@@ -49,6 +49,13 @@ public class HJBExceptionListener implements ExceptionListener {
         this.config = new HJBExceptionListenerConfiguration();
         this.connectionLogger = Logger.getLogger(CONNECTION_LOG_PREFIX
                 + HJBExceptionListener.class.getName());
+        logIsConstructedOK();
+    }
+
+    protected void logIsConstructedOK() {
+        LOG.info(strings().getString(HJBStrings.CONNECTION_ERRORS_LOGGED,
+                                     getConnectionIndex(),
+                                     getUniqueFilePath()));
     }
 
     public synchronized String getErrorLog() throws HJBException {
