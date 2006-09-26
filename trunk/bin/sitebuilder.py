@@ -23,6 +23,8 @@ from docutils.writers import html4css1
 
 from kid import Template
 
+# the script assumes that it is in an immediate subdirectory
+# of the top-level hjb project directory
 root = dirname(dirname(abspath(__file__)))
 rst_doc_root = join_path(root, "docs/rst")
 site_root = join_path(root, "pub/www")
@@ -123,8 +125,6 @@ def parts_of(rst_file):
 
 
 def main():
-    print abspath(__file__)
-    print dirname(dirname(abspath(__file__)))
     remove_old_archives()
     update_css()
     generate_site()

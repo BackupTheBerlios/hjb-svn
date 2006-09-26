@@ -3,35 +3,37 @@
 import sys
 import os
 from os import listdir
-from os.path import isdir, join, walk
+from os.path import dirname, abspath, isdir, join as join_path, walk
 from cStringIO import StringIO
 from optparse import OptionParser
 
-HJB_PATH = ".."
-HJB_RST_PATH = "../docs/rst/supported-commands"
-HEADER_FILE = join(HJB_PATH, "LICENSE-header.txt")
-JAVA_PATHS = [join(HJB_PATH, "src"), join(HJB_PATH, "test")]
+# the script assumes that it is in an immediate subdirectory
+# of the top-level hjb project directory
+root = dirname(dirname(abspath(__file__)))
+hjb_rst_path = join_path(root, "docs/rst/supported-commands")
+header_file = join_path(root, "LICENSE-header.txt")
+java_paths = [join_path(root, "src"), join_path(root, "test")]
     
-def update_license_headers():
-    header = file(HEADER_FILE).read()
-    [[update_java_file_headers(path, header, f) for path in JAVA_PATHS] for f in [remove_from_file, add_to_file]]
+master_text = "master command list"
+master_link = "master-command-list"
 
-MASTER_TEXT = "master command list"
-MASTER_LINK = "master-command-list"
+def update_license_headers():
+    header = file(header_file).read()
+    [[update_java_file_headers(path, header, f) for path in java_paths] for f in [remove_from_file, add_to_file]]
 
 def change_master_command():
-    [update_master_command_list(path, update_master) for path in [HJB_RST_PATH]]
+    [update_master_command_list(path, update_master) for path in [hjb_rst_path]]
 
 def update_master(filename):
     inputlines = file(filename, 'r').readlines()
     outputlines = []
     for line in inputlines:
-        outputlines.append(line.replace(MASTER_LINK, "index").replace(MASTER_TEXT, "back to commands"))
+        outputlines.append(line.replace(master_link, "index").replace(master_text, "back to commands"))
     file(filename, 'w').writelines(outputlines)
 
 def update_master_command_list(parent, updater):
     for path in os.listdir(parent):
-        current = join(parent, path)
+        current = join_path(parent, path)
         print "Checking ", current
         if isdir(current) and -1 == path.find("svn"):
             update_master_command_list(parent, updater)
@@ -43,7 +45,7 @@ def update_master_command_list(parent, updater):
 def update_java_file_headers(top, header, updater):
     def update_headers_in_dir(ignored, dir_path, file_names):
         """Updates the headers of java files in a directory"""
-        for f in [join(dir_path, f) for f in file_names]:
+        for f in [join_path(dir_path, f) for f in file_names]:
             if isdir(f) or not f.endswith(".java"):
                 continue
             else:
