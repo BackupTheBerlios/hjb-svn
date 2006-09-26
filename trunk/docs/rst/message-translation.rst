@@ -100,9 +100,9 @@ transferred in a simple, consistent fashion:
   format, as follows:
 
   - The message is in two sections. There is a header section, that
-   contains the standard headers and application-specific properties,
-   and a body section that contains the message body.  The two
-   sections are separated by a
+    contains the standard headers and application-specific properties,
+    and a body section that contains the message body.  The two
+    sections are separated by a
 
     %<CR> 
 

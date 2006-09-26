@@ -6,8 +6,9 @@ Register Provider
 
 :URL-Pattern: *hjb-root-uri*/provider-name/register
 
-:Parameters: multiple; they are used to populate the provider's JNDI
-Context environment
+:Parameters: 
+
+    multiple; used to fill the provider's JNDI Context environment
 
 :Returns: N/A
 

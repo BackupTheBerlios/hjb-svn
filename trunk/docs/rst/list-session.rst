@@ -20,7 +20,7 @@ the root of the request's URL.  The command
     durable subscribers created by the session.
 
   - lists all the accessible properties of the session objects if the
-  *recurse* parameter is provided.
+    *recurse* parameter is provided.
   
 .. _back to commands: ./command-list.html
 
