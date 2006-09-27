@@ -15,8 +15,10 @@ from os import makedirs, remove as remove_file
 from os.path import walk, splitext, dirname, abspath
 from os.path import join as join_path, exists as path_exists
 from time import time, strftime, gmtime
-from subprocess import call
+from subprocess import Popen, call, PIPE
 from glob import glob
+from sys import platform, stdout
+from cStringIO import StringIO
 
 from shutil import copy as copy_file
 from distutils.archive_util import make_archive
@@ -38,17 +40,28 @@ rst_doc_root = join_path(root, "docs/rst")
 site_root = join_path(root, "pub/www")
 archive_prefix = join_path(root, 'hjb_web_site_')
 main_page_template = join_path(root, "bin/sitepage.kid")
-ant_command = ["ant", "-f", join_path(root, "build.xml"), "javadoc.to.web", "instrument.publish"]
 css_file = "hjb_v1.css"
 
 # precompile the template
 _template = Template(file=main_page_template)
 
+def real_path(path):
+    if not "cygwin" == platform:
+        return path
+    return Popen("cygpath -w " + path, shell=True, stdout=PIPE).communicate()[0].strip().replace("\\", "\\\\")
+
 def get_secure_server():
     return 
 
 def rebuild_java_pages():
-    call(ant_command)
+    class AntFailedException(Exception):
+        pass
+    ant_build_xml = real_path(join_path(root, "build.xml"))
+    print ant_build_xml
+    ant_command = "ant -f " + ant_build_xml + " javadoc.to.web instrument.publish"
+    print "running",  "'" + ant_command + "'"
+    if call(ant_command, shell=True):
+        raise AntFailedException 
     
 def remove_old_site_archives():
     def remove_old_archive(name):
