@@ -185,7 +185,7 @@ def skip_java():
 
 def main():
     remove_old_site_archives()
-    if not skip_java:
+    if not skip_java():
         rebuild_java_pages()
     update_the_css_file()
     rebuild_rst_pages()
