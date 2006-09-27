@@ -13,7 +13,7 @@ python sitebuilder.py
 
 from os import makedirs, remove as remove_file
 from os.path import walk, splitext, dirname, abspath
-from os.path import join as join_path, exists as path_exists
+from os.path import basename, join as join_path, exists as path_exists
 from time import time, strftime, gmtime
 from subprocess import Popen, call, PIPE
 from glob import glob
@@ -26,9 +26,6 @@ from docutils import core, frontend
 from docutils.writers import html4css1
 
 from kid import Template
-
-#from paramiko import SSHClient
-
 
 # the script assumes that it is in an immediate subdirectory
 # of the top-level hjb project directory
@@ -45,6 +42,10 @@ css_file = "hjb_v1.css"
 # precompile the template
 _template = Template(file=main_page_template)
 
+class SiteBuildingError(Exception):
+    def __init__(self, message):
+        self.message = message
+        
 def real_path(path):
     if not "cygwin" == platform:
         return path
@@ -54,14 +55,11 @@ def get_secure_server():
     return 
 
 def rebuild_java_pages():
-    class AntFailedException(Exception):
-        pass
     ant_build_xml = real_path(join_path(root, "build.xml"))
-    print ant_build_xml
     ant_command = "ant -f " + ant_build_xml + " javadoc.to.web instrument.publish"
     print "running",  "'" + ant_command + "'"
     if call(ant_command, shell=True):
-        raise AntFailedException 
+        raise SiteBuildingError, "invocation of ant failed" 
     
 def remove_old_site_archives():
     def remove_old_archive(name):
@@ -93,6 +91,7 @@ def rebuild_rst_pages(doc_root=rst_doc_root):
         copy_file(source, target)        
     sources = find_rst_files_in(doc_root)
     outputs = [sitepath_of(f, with_extension=".rst") for f in sources]
+    print "... converting rst pages to html"
     [safe_copy(source, output) for source, output in zip(sources, outputs)]
     [apply_template(_template, parts_of(rst), rst.replace(".rst", ".html")) for rst in outputs] 
 
@@ -153,8 +152,9 @@ def parts_of(rst_file):
         )
 
 def get_password(host):
-    print "sitebuilder> please enter password for accessing % s" % (host,)
-    return raw_input("sitebuilder... ")
+    #print "sitebuilder> please enter password for accessing % s" % (host,)
+    #return raw_input("sitebuilder... ")
+    return ""
 
 def check_password_works(password):
     #c = SSHClient()
@@ -162,21 +162,36 @@ def check_password_works(password):
     #c.close()
     return password
 
-def send_site_to_server(password, localname):
-    pass
+def send_to_server(local_name):
+    remote_name = join_path("\\~/websites", basename(local_name))
+    scp_command = "scp " + local_name + " " + "@".join([ssh_username, ssh_host]) + ":" + remote_name
+    print "... sending file using '" + scp_command + "'"
+    cmd = Popen(scp_command, stdin=PIPE, stdout=PIPE, shell=True)
+    cmd.communicate()
+    if cmd.returncode:
+        print "[FAIL] send failed"
+        raise SiteBuildingError, "Send of archived website to server failed"
+    else:
+        print "[OK] send suceeded"
 
-def deploy_site_on_server(password, localname):
-    pass
+def deploy_on_the_web(archive_name):
+    ssh_command = "ssh " + "@".join([ssh_username, ssh_host]) + " . \\~/bin/update_main_website.sh " + archive_name
+    print "... updating website using '" + ssh_command + "'"
+    cmd = Popen(ssh_command, stdin=PIPE, stdout=PIPE, shell=True)
+    if cmd.returncode:
+        print "[FAIL] website update failed"
+        raise SiteBuildingError, "website update failed"
+    else:
+        print "[OK] website update suceeded"
 
 def main():
-    password = check_password_works(get_password("@".join([ssh_username, ssh_host])))
     remove_old_site_archives()
     rebuild_java_pages()
     update_the_css_file()
     rebuild_rst_pages()
     site_archive = create_a_new_site_archive()
-    send_site_to_server(password, site_archive)
-    deploy_site_on_server(password, site_archive)
+    remote_archive = send_to_server(site_archive)
+    deploy_on_the_web(remove_archive)
     
 if __name__ == '__main__':
     main()
