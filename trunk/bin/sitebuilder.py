@@ -55,7 +55,7 @@ def real_path(path):
 def rebuild_java_pages():
     ant_build_xml = real_path(join_path(root, "build.xml"))
     ant_command = "ant -f " + ant_build_xml + " javadoc.to.web instrument.publish"
-    print "running",  "'" + ant_command + "'"
+    print "\nrunning",  "'" + ant_command + "'"
     if call(ant_command, shell=True):
         raise SiteBuildingError, "invocation of ant failed" 
     
@@ -66,6 +66,7 @@ def remove_old_site_archives():
     [remove_old_archive(a) for a in glob(archive_prefix + "*.gz")]
     
 def create_a_new_site_archive(root=site_root):
+    print "\n...archiving entire website"
     archive_name = strftime(archive_prefix + "%Y%m%d_%H%M%S", gmtime(time()))                            
     archive_path = make_archive(archive_name,
                                 "gztar",
@@ -89,7 +90,7 @@ def rebuild_rst_pages(doc_root=rst_doc_root):
         copy_file(source, target)        
     sources = find_rst_files_in(doc_root)
     outputs = [sitepath_of(f, with_extension=".rst") for f in sources]
-    print "... converting rst pages to html"
+    print "\n... converting rst pages to html"
     [safe_copy(source, output) for source, output in zip(sources, outputs)]
     [apply_template(_template, parts_of(rst), rst.replace(".rst", ".html")) for rst in outputs] 
 
@@ -152,26 +153,26 @@ def parts_of(rst_file):
 def send_to_server(local_path):
     remote_path = join_path("\\~/websites", basename(local_path))
     scp_command = "scp " + local_path + " " + "@".join([ssh_username, ssh_host]) + ":" + remote_path
-    print "... sending file using '" + scp_command + "'"
+    print "\n... sending file using '" + scp_command + "'"
     cmd = Popen(scp_command, stdin=PIPE, stdout=PIPE, shell=True)
     cmd.communicate()
     if cmd.returncode:
         print "[FAIL] send failed"
         raise SiteBuildingError, "Send of archived website to server failed"
     else:
-        print "[OK] send suceeded"
+        print "[OK] send succeeded"
         return remote_path
 
 def deploy_on_the_web(archive_path):
     ssh_command = "ssh " + "@".join([ssh_username, ssh_host]) + " . \\~/bin/update_main_website.sh " + archive_path
-    print "... updating website using '" + ssh_command + "'"
+    print "\n... updating website using '" + ssh_command + "'"
     cmd = Popen(ssh_command, stdin=PIPE, stdout=PIPE, shell=True)
     cmd.communicate()
     if cmd.returncode:
         print "[FAIL] website update failed"
         raise SiteBuildingError, "website update failed"
     else:
-        print "[OK] website update suceeded"
+        print "[OK] website update succeeded"
 
 def skip_java():
     args = argv[1:]
