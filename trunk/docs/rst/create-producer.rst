@@ -43,8 +43,9 @@ API with the parameters derived from the request.  The command
 * includes the URI of the producer in the standard HTTP 'Location'
   header of the response.
 
-Consult [JMSSpec]_ for about JMS Producers and their creation,
-especially about the various optional arguments to this command.
+Consult [JMSSpec]_ for more information about JMS Producers and their
+creation, especially about the various optional arguments to this
+command.
 
 .. _back to commands: ./command-list.html
 
