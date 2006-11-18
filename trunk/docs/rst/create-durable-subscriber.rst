@@ -20,8 +20,8 @@ Create Durable Subscriber
 
   Location (a standard HTTP response header) : the URI of the created durable subscriber
 
-This **POST** request creates a new JMS Durable Subscriber by invoking
-the JMS API with parameters derived from the request.  The command
+This **POST** request creates a new JMS Durable Subscriber,
+initialising it with values derived from the request.  The command
 
 * constructs a durable subscriber of messages from the supplied
   subscriber-name and destination-url.

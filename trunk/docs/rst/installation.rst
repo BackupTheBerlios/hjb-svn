@@ -11,7 +11,7 @@ Installing HJB
 * To install from a binaries-only distribution, download the `binary
   archive`_ and unzip it.
 
-* In the rest of note, the top level directory of the
+* In the rest of this document, the top level directory of the
   downloaded/gunpacked distribution will is referred to as
   *${HJB_ROOT}*.
 
@@ -22,26 +22,28 @@ Installing HJB
 
   - $ ant dist.bin
 
-* An HJB war (Web ARchive) file for the particular JMS messaging
-  provider HJB will communicate with needs to be generated.  A war is
-  a deployable unit that is added to a servlet container and
-  executed. The HJB war is the physical deployment unit that
+* An HJB servlet WAR archive for communicating with the specific JMS
+  messaging provider needs to be generated.  A WAR archive is a
+  deployable unit that is added to a servlet container and executed by
+  it. A HJB WAR archive is the physical deployment unit that
   communicates with a given Provider.  HJB's build script includes an
-  ant task that simplifies the creation of the war file, as follows:
+  ant task that simplifies the creation of the HJB WAR archive, as
+  follows:
 
   - Create a hjb_deploy.properties file that contains various
-    properties used by the ant build script to generate the war file.
+    properties used by the ant build script to generate the WAR
+    archive.
 
   - Use the distribution file hjb_deploy.properties.template as an
     example. It contains comments explaining what each property means.
 
-* The ant script creates the war file, but can also deploy it to the
-  servlet container.  If the war file is to be deployed as well as
-  built, it may be necessary to stop the target servlet container
+* The ant script creates the WAR archive, but can also deploy it to
+  the servlet container.  If the WAR archive is to be deployed as well
+  as built, it may be necessary to stop the target servlet container
   during deployment.
 
-* Use the *dist.webapp* ant target to create the war file without
-  deploying it.  The war file should be then be deployed in an
+* Use the *dist.webapp* ant target to create the WAR archive without
+  deploying it.  The WAR archive should be then be deployed in an
   appropriate manner to the target servlet container.
 
   - $ cd ${HJB_ROOT}
@@ -51,8 +53,8 @@ Installing HJB
 OR
 
 
-* Use the *deploy.webapp* ant target to create the war file and copy
-  it to a location where it can be used by the target servlet
+* Use the *deploy.webapp* ant target to create the WAR archive and
+  copy it to a location where it can be used by the target servlet
   container (*N.B. the location is one of the property values assigned
   in the hjb_deploy.properties file*):
 

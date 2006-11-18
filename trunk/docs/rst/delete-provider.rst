@@ -10,13 +10,13 @@ Delete Provider
 
 :Returns: N/A
 
-This **DELETE** request triggers shutdown of the provider with the
-specified URI.  This command
+This **DELETE** request triggers shutdown of the provider identified
+by the request's URI.  This command
 
-* is idempotent and can be invoked multiple times - if the provider
-  is no longer present, the command is ignored.
+* is idempotent.  I.e., it can be invoked multiple times - if the
+  provider is no longer present, the command is ignored.
 
-* removes all any connection-factories, destinations, connections and
+* removes all connection-factories, destinations, connections and
   sessions that have been registered or created while the provider has
   been registered, as follows:
 

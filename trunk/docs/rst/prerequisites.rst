@@ -33,11 +33,11 @@ Java SDK 1.4 or later
 HJB is coded using the Java SDK 1.4.  If you are thinking of hacking
 HJB, get the SDK for your platform.
 
-**N.B.** At the moment, the project purposefully used Java 1.4.  It
-does **not** use any features of Java 5, but is 'future compatible'
-with it. This is to allow HJB to be extended entirely within
-development teams that are constrained to using Java 1.4, a situation
-which is still quite common.
+**N.B.** At the moment, the project purposefully restricts itself to
+the features of Java version 1.4.  It does **not** use any features of
+Java 5, but is 'future compatible' with it. This is to allow HJB to be
+extended entirely within development teams that are constrained to
+using Java 1.4, a situation which is unfortunately still quite common.
 
 
 Ant 1.6.5 or later
@@ -47,8 +47,8 @@ The HJB project is built, tested and deployed using Ant_. Ant should
 be downloaded and installed as described on the `ant website
 installation page`_. Note that Ant is required for both the source and
 binary HJB installations of HJB.  This is because it is used by the
-post-installation task of building war files specific to messaging
-providers.
+post-installation task of building servlet WAR files specific to
+messaging providers.
 
 The Ant build scripts used the JUnit_ task for executing test cases.  As such,
 the JUnit library file, junit.jar, *must* be present in the Ant classpath when
@@ -98,9 +98,9 @@ Subversion Clients
 ******************
 
 The latest HJB source can be retrieved and viewed via anonymous
-`Subversion access`_, a good `subversion client`_ allows you to view the
-latest, greatest version of the source code. Read the `subversion
-book`_ for advice on using subversion.
+`Subversion access`_, and a good `subversion client`_ allows you to
+retrieve the latest, greatest version of the source code. Read the
+`subversion book`_ for advice on using subversion.
 
 .. _Subversion access: ./repository.html
 

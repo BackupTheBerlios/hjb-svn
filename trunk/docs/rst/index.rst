@@ -5,9 +5,10 @@ HJB - the HTTP JMS Bridge
 Mission
 -------
 
-HJB provides access to JMS resources via HTTP. It provides a REST
-equivalent of the JMS 1.1 API, making it possible to perform JMS
-operations by accessing JMS objects as REST resources via HTTP.
+HJB provides access to `JMS`_ resources via `HTTP`_. It provides a
+`REST`_ API equivalent of the `JMS 1.1 API`_, making it possible to
+perform JMS operations by accessing `JMS`_ objects as `REST`_
+resources via `HTTP`_.
 
 Scope
 -----
@@ -15,17 +16,21 @@ Scope
 HJB
 
 * is **language-neutral**: it will allow the writing of software
-  libraries for communicating with JMS providers in any language
-  that has libraries for communicating over HTTP.
+  libraries for communicating with JMS providers in any language that
+  has libraries for communicating over HTTP.
 
-* is `REST`_-ful: it provides a `REST`_-ful equivalent to all of the
-  non-optional portions of the JMS API including
+* is `REST`_ful: it provides a `REST`_ful equivalent to all of the
+  non-optional portions of the `JMS 1.1 API`_ including
 
   - registration of resources administered by the messaging provider
 
   - connection and session management
 
   - sending and receipt of all types of JMS message
+
+.. _`JMS`: http://java.sun.com/products/jms/
+
+.. _`HTTP`: http://tools.ietf.org/html/rfc2616
 
 Implementation overview
 -----------------------
@@ -39,8 +44,8 @@ HJB
 * will work with any messaging vendor that provides a JMS 1.1
   interface.
 
-* aims to do one thing well. Its role is to act as an HTTP gateway
-  server allowing access to JMS objects as REST resources. Other
+* aims to do one thing well. Its role is to act as an `HTTP`_ gateway
+  server allowing access to JMS objects as `REST`_ resources. Other
   potentially useful features are deliberately excluded, e.g,
 
   - HTTP session management
@@ -69,6 +74,12 @@ HJB
   - all faults are logged on the server and match the status messages
     returned to the user agent.
 
+* allows `Python`_ programs to communicate with arbitrary `JMS`_
+  providers via `PyHJB`_, the python client library for HJB 
+
+.. _`Python`: http://www.python.org
+
+.. _`PyHJB`: http://cheeseshop.python.org/pypi/pyhjb
 
 Related Resources
 -----------------
@@ -92,6 +103,8 @@ Related Resources
 
 * `Java Servlet specification 2.4
   <http://java.sun.com/products/servlet/download.html#specs>`_
+
+.. _`JMS 1.1 API`: http://java.sun.com/products/jms/docs.html
 
 .. _`REST`: http://en.wikipedia.org/wiki/REST
 

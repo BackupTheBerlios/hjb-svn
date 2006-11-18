@@ -13,8 +13,8 @@ List Connection
 :Returns: the listing of the JMS objects created by the connection
 
 This **GET** request generates a response whose body contains a
-listing of the URIs of the JMS objects beneath the connection whose
-URI is the root of the request's URL. The command
+listing of the URIs of the JMS objects beneath the connection
+identified by the URI at the root of the request's URL. The command
 
 * always returns the URIs of any current session of the JMS connection
 

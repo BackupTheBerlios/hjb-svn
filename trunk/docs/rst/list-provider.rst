@@ -13,8 +13,8 @@ List Provider
 :Returns: a listing of the JMS objects registered to the provider
 
 This **GET** request generates a response whose body contains a
-listing of the URIs of the JMS objects beneath the HJB provider whose
-URI is the root of the request's URL.  The command
+listing of the URIs of the JMS objects beneath the HJB provider
+identified by the URI at the root of the request's URL.  The command
 
 * always returns the URIs of any connection factories and destinations
   registered with the provider in HJB.

@@ -26,12 +26,13 @@ Send HJB Message
 :Returns: N/A
 
 This **POST** request sends a single message through a vendor's
-messaging system using a JMS producer.  The message must be encoded as
-described in `message translation`_ and included in the POST request
-as a parameter.  The command
+messaging system using the JMS producer identified by the URI at the
+root of the request's URL.  The message must be encoded as described
+in `message translation`_ and included in the POST request as the
+*message-to-send* parameter .  The command
 
 * must include a parameter indicating what type of JMS message is
-  being sent.
+  being sent *(cf hjb_jms_message_interface)*.
 
 * may optionally change the default 'send' behaviour of the producer,
   depending on the values of the *delivery-mode*, *priority*,

@@ -4,7 +4,7 @@ HJB's Design Overview
 
 So, how does HJB work?
 
-* HJB is a Java Servlet called the HJBServlet_.
+* HJB resides in Java Servlet called the HJBServlet_.
 
 * HJBServlet_ provides access to JMS objects, in particular
 

@@ -14,7 +14,7 @@ List Connection Factory
 
 This **GET** request generates a response whose body contains a
 listing of the URIs of the JMS objects beneath the connection factory
-whose URI is the root of the request's URL.  The command
+identified by the URI at the root of the request's URL.  The command
 
 * always returns the URIs of any connections that have been created
   by the connection factory

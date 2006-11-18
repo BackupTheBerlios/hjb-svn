@@ -10,14 +10,14 @@ Delete Connection
 
 :Returns: N/A
 
-This **DELETE** request stops and deletes the connection with the
-specified URI.  This command
+This **DELETE** request stops and deletes the connection identified by
+the request's URI.  This command
 
 * removes all the sessions created by the connection.  
 
   - First, the sessions' JMS objects are deleted
 
-  - Then the sessions are closed;
+  - Then the sessions themselves are closed;
    
   - Finally, the connection is closed and removed.
 

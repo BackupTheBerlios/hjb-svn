@@ -10,8 +10,8 @@ Delete Session
 
 :Returns: N/A
 
-This **DELETE** request deletes the session with the specified URI.
-This command
+This **DELETE** request deletes the session identified by the
+request's URI.  This command
 
 * closes the Session and removes its JMS objects from the HJB runtime
   application.
@@ -21,8 +21,8 @@ This command
 
 * is idempotent during the lifetime of the session's connection.  Once
   deleted, subsequent requests to the same url are ignored.  If the
-  connection is no longer present, it returns a *404 Not Found*
-  response.
+  connection is no longer present, a *404 Not Found* response is sent
+  back.
 
 .. _back to commands: ./command-list.html
 

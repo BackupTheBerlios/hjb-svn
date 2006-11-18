@@ -5,7 +5,7 @@ Message Translation
 JMS Message Types
 -----------------
 
-The JMS API supports 5 message types, all of which can be sent and
+The JMS API supports 5 message types.  All of them can be sent and
 received by HJB.  They are:
 
 * `Text Message`_
@@ -18,36 +18,38 @@ received by HJB.  They are:
 
 * `Stream Message`_
 
-Please refer to [JMSSpec]_ for full descriptions of each these message
+Please refer to [JMSSpec]_ for full descriptions of these message
 types.
 
 HJB clients can send or receive textual representations of any of
-these message types.  On sending, the message is one parameters of a
-POST request.  On receiving, the message is part of the body of a HTTP
-response.
+these message types.  On sending, the message is encoded and sent in
+one parameter of a POST request.  On receiving, the message is part of
+the body of a HTTP response.
 
-The following sections describe how the parts of each of these types
-of JMS message are transformed into text in a HTTP request or
-response.
+The following sections describe the different types of JMS message are
+transformed into text in a HTTP request or response.
 
 Common features
 ---------------
 
 All JMS messages have a fixed set of standard header fields, which JMS
-represents as typed attributes on the JMS message class. In addition,
+represents as typed attributes of the JMS message class. In addition,
 a message may have application-specific message properties (see
 [JMSSpec]_ for a full description).
 
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_ 
 
-HJB allows the standard headers and message properties to be
-transferred in a simple, consistent fashion:
+HJB allows both the standard header values and any application
+property values to be represented textually in a simple, consistent
+fashion:
 
-* The header fields are mapped to specific parameter names in a HTTP
-  POST request and to field-names in the header section of the HJB
-  message within a HTTP response.  The JMS standard headers and their
-  corresponding HJB field names are:
+* On sending, the JMS header fields are mapped to specific parameter
+  names in a HTTP POST request.  On receiving, the header fields are
+  are represented using the same specific parameters in the header
+  section of the HJB message sent back within HJB's HTTP response.
+  The JMS standard headers and their corresponding HJB field names
+  are:
 
   .. class:: display-items
 
@@ -75,40 +77,43 @@ transferred in a simple, consistent fashion:
   |JMSCorrelationID|hjb.core.jms.correlationId|
   +----------------+--------------------------+
   
-* Application-specific properties are mapped in the same way.  They
-  becomed additional parameters in the HTTP POST request when sending
-  a message, and extra field names in a header section of the HJB
-  message within a HTTP response.  The field names are used as
-  supplied by the application.
+* Application-specific properties are mapped in the same way.  On
+  sending a message, they are represented by additional parameters in
+  the HTTP POST request; on receiving one, they are any extra fields
+  in a header section of the HJB message in the a HTTP response sent
+  back by HJB.
 
-* The Java type of the message standard headers and properties is
-  preserved by making the values `HJB-encoded`_.
+* The Java type of the message's standard headers and application
+  properties is preserved by making the values `HJB-encoded`_.
 
-* If a message attribute is encoded as the wrong type, HJB will ignore
-  it.
+* If a JMS standard header is encoded as the wrong Java type, HJB will
+  ignore it.
 
 * When sending messages, HJB clients *must* put standard header and
   application-specific properties in the HTTP POST request as HTTP
   form-encoded parameters whose values are `HJB-encoded`_. HJB decodes
-  the parameters, places them into a real JMS message, then sends it.
+  the parameters, places them into a real JMS message, then gives it
+  the JMS provider's messaging infrastructure.
 
-* On receiving messages, the JMS message attributes, its optional
-  properties and the message body are all included in the response as
-  text. Note that the message attributes and properties are **not**
-  mapped to HTTP response headers.  The message attributes, properties
-  and the actual returned message are organised in a simple textual
-  format, as follows:
+* On receiving messages, the JMS message attributes, their optional
+  properties, and the message body are all included in the response as
+  text. **N.B.** The JMS standard headers and properties are **not**
+  mapped to HTTP response headers - this is carefully considered
+  design consideration, that makes it easier to extend the HJB message
+  format in the future.  The standard headers, properties and the
+  actual returned message are organised in a simple textual format, as
+  follows:
 
-  - The message is in two sections. There is a header section, that
-    contains the standard headers and application-specific properties,
-    and a body section that contains the message body.  The two
-    sections are separated by a
+  - The message is in two sections. There is a header section
+    containing the standard headers and application-specific
+    properties, and a body section that contains the message body.
+    The two sections are separated by a
 
     %<CR> 
 
     where <CR> is the platform specific line separator.
 
-  - Each standard headers and application-specific property is placed on
+  - Each standard header and application-specific property is placed on
     a separate line. Each line consists of
 
     name=value
@@ -116,13 +121,14 @@ transferred in a simple, consistent fashion:
     where 'name' is the header/property name and 'value' is its
     value.
 
-  - The body of the message depends on the message type. These are
-    described in following sections.
+  - The body of the message depends on the message type. The different
+    way of translating the body of the message are described in the
+    following sections.
 
-* On receiving multiple messages, e.g., in the HTTP response of
-  viewing the messages currently held on a queue, each message is
-  returned in the same format as described above, with each one
-  separated from the next by
+* On receiving multiple JMS messages in a single response, e.g., in
+  the HTTP response sent back by HJB on viewing the messages currently
+  held on a JMS queue, each message is returned in the same format as
+  described above, with each one separated from the next by
    
   %%<CR>
 
@@ -132,13 +138,12 @@ transferred in a simple, consistent fashion:
   *message-to-send*
 
 * On both sending and receiving, the HJB message **must** include a
-  specific named parameter containing the JMS class the HJB message
-  represents.
+  specific field containing the JMS message type of the HJB message.
 
   - The name of this required field is *hjb_jms_message_interface*
 
-  - Its value **must** be the name of the JMS interface class that the
-    message represents. I.e., it should be one of:
+  - Its value **must** be the name of the JMS interface class for the
+    message's JMS type. I.e., it should be one of:
 
     + javax.jms.TextMessage
 
@@ -150,12 +155,12 @@ transferred in a simple, consistent fashion:
 
     + javax.jmx.BytesMessage
 
-* On both sending and receiving, the HJB message **must** include the
-  version parameter and value HJB message.
+* On both sending and receiving, the HJB message **must** include a
+  field containing the version of the HJB message.
 
-  - the version parameter name is *hjb_message_version*
+  - the version field name is *hjb_message_version*
 
-  - the version parameter value for HJB messages as defined in this
+  - the version value for HJB messages as defined in this
     document is *1.0*
 
 .. _HJB-encoded: ./codec.html
@@ -217,11 +222,10 @@ Map Message
 * The body of the message consists of a line for each name in the
   MapMessage. Each line is as follows:
 
-  name=value<CR>
+  name=value
 
-  where <CR> is the platform specific line separator.  The map
-  values are represented in exactly the same as the way message
-  headers are written.
+  The map values are represented in exactly the same as the way
+  JMS message headers are written.
 
 * The value of the field 'hjb_jms_message_interface' is
 
@@ -241,7 +245,7 @@ Stream Message
   order in which it should be written to the message (on
   sending). Each line is as follows:
 
-  index=value<CR>
+  index=value
 
 * The value of the header field 'hjb_jms_message_interface' is
 

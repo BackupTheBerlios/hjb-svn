@@ -24,8 +24,8 @@ Create Producer
 
   Location (a standard HTTP response header) : the URI of the created producer
 
-This **POST** request creates a new JMS Producer by invoking the JMS
-API with the parameters derived from the request.  The command
+This **POST** request creates a new JMS Producer, initialising it with
+parameters contained in the request.  The command
 
 * constructs a producer for sending messages to the supplied
   destination-url.
@@ -43,7 +43,7 @@ API with the parameters derived from the request.  The command
 * includes the URI of the producer in the standard HTTP 'Location'
   header of the response.
 
-Consult [JMSSpec]_ for more information about JMS Producers and their
+Refer to [JMSSpec]_ for more information about JMS Producers and their
 creation, especially about the various optional arguments to this
 command.
 

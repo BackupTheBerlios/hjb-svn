@@ -13,8 +13,8 @@ List Sesions
 :Returns: a listing of the JMS session objects available in the session
 
 This **GET** request generates a response whose body contains a list
-of the URIs of the session objects created by the session whose URI is
-the root of the request's URL.  The command
+of the URIs of the session objects created by the session identified
+by URI at the root of the request's URL.  The command
 
   - always returns the URIs of any producers, consumers, browsers and
     durable subscribers created by the session.

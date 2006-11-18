@@ -3,7 +3,7 @@ Downloads
 =========
 
 
-The latest version is **HJB 0.8.2** (since 2006/06/21)
+The latest version is **HJB 0.9.0** (since 2006/11/18)
 
 You can
 
