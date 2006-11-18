@@ -12,7 +12,9 @@ access it.
 Online access
 -------------
 
-The subversion repository can also be `viewed online here`_.
+The subversion repository can also be `viewed online here`_ using `websvn`_.
+
+.. _websvn: http://websvn.tigris.org
 
 .. _viewed online here: http://svn.berlios.de/wsvn/hjb
 

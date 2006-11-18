@@ -3,7 +3,7 @@ Prerequisites
 =============
 
 HJB is a Java Servlet.  It runs in a servlet container; and to develop
-or extend it requires 
+or extend it requires
 
  * a Java SDK, 
 
@@ -78,7 +78,10 @@ should indicate how to obtain these.
 
 Once obtained, the vendor jars will need to be deployed with the HJB
 servlet.  Both the HJB source and binary distributions include a build
-file that contains an Ant task that simplifies this procedure.
+file containing an Ant task that simplifies this procedure.  See
+installation_ for further details
+
+.. _installation: ./installation.html
 
 .. _Sun website: http://java.sun.com/products/jms/docs.html
 
@@ -91,8 +94,8 @@ tested using the excellent open-source Tomcat_ servlet container.
 
 .. _Tomcat: http://tomcat.apache.org
 
-Optional
---------
+Optional Tools
+--------------
 
 Subversion Clients
 ******************

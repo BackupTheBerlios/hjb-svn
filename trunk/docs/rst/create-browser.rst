@@ -18,8 +18,8 @@ Create Browser
 
   Location (HTTP header) : the URI of the created queue browser
 
-This **POST** request creates a new JMS Queue Browser by invoking the
-JMS API with parameters derived from the request.  The command
+This **POST** request creates a new JMS Queue Browser, initialising it
+with values derived from the request.  The command
 
 * constructs a queue browser that access the queue with URI
   destination-url.
@@ -30,7 +30,8 @@ JMS API with parameters derived from the request.  The command
 * the destination-url *must* refer to a JMS Queue - it must not be a
   JMS Topic.
 
-* optionally creates the browser using the value of message-selector.
+* when provided, it creates the browser using the value of
+  message-selector to control what messages it returns
 
 * returns the URI of the created browser.
 

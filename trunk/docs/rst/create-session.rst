@@ -4,7 +4,7 @@ Create Session
 
 `back to commands`_
 
-:URL-Pattern: CONNECTION_URI/create
+:URL-Pattern: *connection-uri*/create
 
 :Parameters: 
 

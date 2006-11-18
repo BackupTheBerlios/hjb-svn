@@ -27,8 +27,7 @@ In HJB, each session object
   prior to creating it.
 
 * is created by sending a HTTP POST message to the appropriate child
-  URL of a session responisble for creating it.
-
+  URL of a session.
 
 Message Consumers
 -----------------
@@ -43,20 +42,20 @@ Message Consumers in HJB
 In HJB, each Message Consumer
 
 * is configured to receive messages from a specific Destination. The
-  HJB URL of the destination is included in the parameters of the
-  POST request that creates it.
+  HJB URI of the destination is one of the parameters of the POST
+  request that creates it.
 
 * can be configured to use a specific message selector to control
   which messages are returned.  This achieved by including the message
-  selector as a parameter in the POST request that creates it. When it
+  selector as a parameter of the POST request that creates it. When it
   is appropriate (i.e, when the Message Consumer is a Topic
   Subscriber), they can also be configured to ignore messages
-  broadcast by the same connection, by inclusion of a parameter
+  broadcast by the same connection, by inclusion of another parameter
   containing the value of the 'non-local' flag.
 
 * sends back an HJB-encoded JMS message in the HTTP response when a
   HTTP POST request is sent to its 'receive' child URL, or sends back
-  a 404 Not Found response is no message is available.
+  a '404 Not Found' response if no message is available.
 
 Message Producers
 -----------------
@@ -69,8 +68,8 @@ Message Producers in HJB
 
 In HJB, each Message Producer
 
-* is configured to send messages to a specific Destination. The URL of
-  the destination is included in the parameters of the creating POST
+* is configured to send messages to a specific Destination. The URI of
+  the destination is one of the parameters of the creating POST
   request.  Other parameters are also recognised, including 'time to
   live', priority, delivery mode, 'disable timestamps' and 'disable
   messageIds'
@@ -84,10 +83,10 @@ Durable Subscribers
 
 A *Durable Subscriber* is used to receive messages from a Topic when
 it is necessary for all messages sent to a Topic to be received, even
-if they are sent when the subscriber is not currently running.  A
+if they are sent whilst the subscriber is not currently running.  A
 Topic is a Destination specific to the Publish/Subscribe messaging
 domain; normally Topic Subscribers are Message Consumers that only
-receive messages that are sent when they are active. See [JMSSpec]_
+receive messages that are sent whilst they are running. See [JMSSpec]_
 for a detailed description of the differences between the two
 messaging domains.
 
@@ -97,18 +96,18 @@ Durable Subscribers in HJB
 In HJB, each Durable Subscriber
 
 * is configured to receive messages from a specific Destination. The
-  URL of the destination is included in the parameters of the POST
-  request that creates it.
+  URL of the destination is one of the parameters of the POST request
+  that creates it.
 
 * can be configured to use a specific message selector to control
   which messages are returned, by including the message selector as a
   parameter in the POST request that creates it.  Similarly, a
-  'no-local' parameter can be used to control whether or not messages
-  broadcast by the same connection are to be retrieved.
+  'no-local' parameter can be used to control whether or not it
+  retrieves messages broadcast by the same JMS connection.
 
 * sends back an HJB-encoded JMS message in the response on receiving a
-  HTTP POST request at its /receive child URL, or sends a 404 Not
-  Found response is no message is available.
+  HTTP POST request at its /receive child URL, or sends a '404 Not
+  Found' response if no message is available.
 
 Queue Browsers
 --------------
@@ -126,7 +125,7 @@ Queue Browsers in HJB
 In HJB, each Queue Browser
 
 * is configured to retrieve messages from a specific JMS Queue. The
-  URL of the Queue is included in the parameters of the POST request
+  URI of the Queue is included in the parameters of the POST request
   that creates it.
 
 * can be configured to use a specific Message Selector to control

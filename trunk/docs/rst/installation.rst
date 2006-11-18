@@ -23,7 +23,7 @@ Installing HJB
   - $ ant dist.bin
 
 * An HJB servlet WAR archive for communicating with the specific JMS
-  messaging provider needs to be generated.  A WAR archive is a
+  messaging provider needs to be created.  A WAR archive is a
   deployable unit that is added to a servlet container and executed by
   it. A HJB WAR archive is the physical deployment unit that
   communicates with a given Provider.  HJB's build script includes an

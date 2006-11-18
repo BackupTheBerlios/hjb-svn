@@ -27,7 +27,7 @@ Contributing
 ------------
 
 If you would like to contribute to the HJB project, please get in
-touch by sending a email to the `HJB developers mailing list`_.
+touch by sending an email to the `HJB developers mailing list`_.
 
 .. _HJB developers mailing list: mailto:hjb-developers@lists.berlios.de
 

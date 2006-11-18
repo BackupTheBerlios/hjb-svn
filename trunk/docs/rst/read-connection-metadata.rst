@@ -19,12 +19,14 @@ This command
 
 * is idempotent during the lifetime of a connection. I.e, it can be
   sent more than once to the same URI, and will return the same
-  results.  If the connection is no longer present, it sends back a
-  *404 Not Found* response.
+  results.  
+
+* sends back a *404 Not Found* response if the connection is no longer
+  available.
 
 * when successful, it sends back a HTTP response containing the
-  metadata as a list of key-value pairs in the same format used by HJB
-  message headers.
+  metadata as a list of key-value pairs in the same textual format
+  used to transmit HJB message headers.
 
 .. _back to commands: ./command-list.html
 

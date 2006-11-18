@@ -40,15 +40,15 @@ HJB Servlet allows
   provider, i.e., connection factories and destinations.
 
 * the creation, at runtime, of JMS connections, sessions, consumers,
-  subscribers, producers and consumers using the JMS API.
+  subscribers, producers and consumers.
 
-All JMS objects created or registered by HJB are stored in memory in
-the HJB runtime application, and the servlet provides access to them
-via URIs that match specific patterns:
+All JMS objects created or registered by HJB are stored in memory
+within the HJB runtime application, and the servlet provides access to
+them via URIs that match specific patterns:
 
 * The HJB servlet itself is accessed via the hosting servlet container
   on a particular context path and root.  Its URI is denoted in rest
-  of the text as HJB_ROOT.
+  of this document as HJB_ROOT.
 
 * Within the HJB runtime application, each JMS object's URI is rooted
   with the hosting servlet's URI. Furthermore, the URI of the JMS

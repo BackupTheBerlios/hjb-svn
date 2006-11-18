@@ -41,7 +41,6 @@ In HJB, each connection
   that occur on the connection to a log file.  The log file can be
   retrieved using HTTP GET on the appropriate child URL. 
 
-
 JMS Sessions
 ------------
 
