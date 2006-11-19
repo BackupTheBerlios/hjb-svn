@@ -48,12 +48,15 @@ In HJB, each registered provider
   initialise its JNDI environment.
 
 * can be removed from the HJB runtime by sending a HTTP DELETE request
-  to the provider URI.  This will have the effect of stopping any
-  activity on the provider's connections, followed by removal of the
-  provider and any administered objects that have been registered.
+  to the provider URI.  This will have the effect of 
+
+    - stopping any activity on the provider's connections, followed by
+
+    - removal of the provider and its administered objects been
+      registered from the HJB runtime application
 
 * list their registered administered objects when a HTTP GET request
-  is made to their /list child URL. 
+  is made to their /list child URL.
 
 JMS Administered Objects
 ------------------------

@@ -14,9 +14,10 @@ This **GET** request stops the connection identified by the URI at the
 root of the request's URL.  This command
 
 * is idempotent during the lifetime of the connection.  I.e, it can be
-  sent more than once to the same URL.  If the connection is already
-  stopped, the request is ignored.  If the connection is no longer
-  present, the command results in a *404 Not Found* response.
+  sent more than once to the same URL, and is ignored if the connection
+  is already stopped.
+
+* sends back a *404 Not Found* response if the connection is no longer present.
 
 .. _back to commands: ./command-list.html
 

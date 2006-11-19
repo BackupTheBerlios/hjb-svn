@@ -18,7 +18,7 @@ with the HJB runtime. This command
   the same factory-jndi-name; after the first successful attempt, HJB
   ignores subsequent invocations.
 
-* sends back a '404 Not Found' response if no connection factory is
+* sends back a *404 Not Found* response if no connection factory is
   available in JNDI under the name *factory-jndi-name*.
 
 .. _back to commands: ./command-list.html

@@ -23,7 +23,7 @@ In HJB, each session object
   create it as its root.
 
 * has a URI that includes its creation index. This is the same as
-  number of session objects of that type that the session created
+  number of session objects of that type that the session has created
   prior to creating it.
 
 * is created by sending a HTTP POST message to the appropriate child
@@ -55,7 +55,7 @@ In HJB, each Message Consumer
 
 * sends back an HJB-encoded JMS message in the HTTP response when a
   HTTP POST request is sent to its 'receive' child URL, or sends back
-  a '404 Not Found' response if no message is available.
+  a *404 Not Found* response if no message is available.
 
 Message Producers
 -----------------
@@ -86,9 +86,9 @@ it is necessary for all messages sent to a Topic to be received, even
 if they are sent whilst the subscriber is not currently running.  A
 Topic is a Destination specific to the Publish/Subscribe messaging
 domain; normally Topic Subscribers are Message Consumers that only
-receive messages that are sent whilst they are running. See [JMSSpec]_
-for a detailed description of the differences between the two
-messaging domains.
+receive messages that are sent whilst they are running. Refer to
+[JMSSpec]_ for a detailed description of the differences between the
+two messaging domains.
 
 Durable Subscribers in HJB
 ++++++++++++++++++++++++++
@@ -106,8 +106,8 @@ In HJB, each Durable Subscriber
   retrieves messages broadcast by the same JMS connection.
 
 * sends back an HJB-encoded JMS message in the response on receiving a
-  HTTP POST request at its /receive child URL, or sends a '404 Not
-  Found' response if no message is available.
+  HTTP POST request at its /receive child URL, or sends a *404 Not
+  Found* response if no message is available.
 
 Queue Browsers
 --------------
@@ -130,7 +130,7 @@ In HJB, each Queue Browser
 
 * can be configured to use a specific Message Selector to control
   which messages are returned, by including the message selector text
-  as a parameter in the POST request.  See [JMSSpec]_ for more
+  as a parameter in the POST request.  Refer to [JMSSpec]_ for more
   information about message selectors.
 
 * sends back a set of HJB-encoded JMS messages in the HTTP response on

@@ -19,10 +19,8 @@ request's URI.  This command
   - Session closure and connection termination are performed in
     accordance with the guidelines in [JMSSpec]_.
 
-* is idempotent during the lifetime of the session's connection.  Once
-  deleted, subsequent requests to the same url are ignored.  If the
-  connection is no longer present, a *404 Not Found* response is sent
-  back.
+* sends back a *404 Not Found* response if the session is no longer
+  present.
 
 .. _back to commands: ./command-list.html
 

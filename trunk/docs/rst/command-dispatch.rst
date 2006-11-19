@@ -97,7 +97,7 @@ together. It
 * on receiving a HTTP request on a given URL for a given method, it
   determines if there is a generator matching that URL.
 
-  - if there is none, it returns *404 NOT FOUND* in the HTTP response.
+  - if there is none, it sends back a *404 Not Found* HTTP response.
 
 * on finding a matching Generator, it uses it to generate the JMS
   Command, then schedules the Command for execution on its specific

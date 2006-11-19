@@ -5,10 +5,10 @@ HJB - the HTTP JMS Bridge
 Mission
 -------
 
-HJB provides access to `JMS`_ resources via `HTTP`_. It provides a
-`REST`_ API equivalent of the `JMS 1.1 API`_, making it possible to
-perform JMS operations by accessing `JMS`_ objects as `REST`_
-resources via `HTTP`_.
+HJB provides access to JMS_ resources via HTTP_. It provides a
+REST_ API equivalent of the `JMS 1.1 API`_, making it possible to
+perform JMS operations by accessing JMS_ objects as REST_
+resources via HTTP_.
 
 Scope
 -----
@@ -18,8 +18,16 @@ HJB
 * is **language-neutral**: it will allow the writing of software
   libraries for communicating with JMS providers in any language that
   has libraries for communicating over HTTP.
+  
+  - E.g., it allows `Python`_ programs to communicate with arbitrary `JMS`_
+    providers via `PyHJB`_, the python client library for HJB
 
-* is `REST`_ful: it provides a `REST`_ful equivalent to all of the
+.. _`Python`: http://www.python.org
+
+.. _`PyHJB`: http://cheeseshop.python.org/pypi/pyhjb
+
+
+* is `RESTful`_: it provides a `RESTful`_ equivalent to all of the
   non-optional portions of the `JMS 1.1 API`_ including
 
   - registration of resources administered by the messaging provider
@@ -32,14 +40,18 @@ HJB
 
 .. _`HTTP`: http://tools.ietf.org/html/rfc2616
 
+.. _`REST`: http://en.wikipedia.org/wiki/REST
+
+.. _`RESTful`: http://en.wikipedia.org/wiki/REST
+
 Implementation overview
 -----------------------
 
 HJB
 
 * is deployed as a servlet (HJBServlet), that can run on any servlet
-  container compliant with version 2.4 of the Java Servlet
-  specification.
+  container compliant with version 2.4 of the `Java Servlet
+  specification`_.
 
 * will work with any messaging vendor that provides a JMS 1.1
   interface.
@@ -74,12 +86,7 @@ HJB
   - all faults are logged on the server and match the status messages
     returned to the user agent.
 
-* allows `Python`_ programs to communicate with arbitrary `JMS`_
-  providers via `PyHJB`_, the python client library for HJB 
-
-.. _`Python`: http://www.python.org
-
-.. _`PyHJB`: http://cheeseshop.python.org/pypi/pyhjb
+.. _`Java Servlet Specification` : http://java.sun.com/products/servlet/download.html#specs
 
 Related Resources
 -----------------
@@ -105,8 +112,6 @@ Related Resources
   <http://java.sun.com/products/servlet/download.html#specs>`_
 
 .. _`JMS 1.1 API`: http://java.sun.com/products/jms/docs.html
-
-.. _`REST`: http://en.wikipedia.org/wiki/REST
 
 .. _`Apache httpd`: http://httpd.apache.org
 

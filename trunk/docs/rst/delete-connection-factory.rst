@@ -26,10 +26,8 @@ the request's URI from the HJB runtime application. This command
   - Session closure and connection termination are performed in
     accordance with the guidelines in [JMSSpec]_.
 
-* is idempotent during the lifetime of its provider.  I.e, this
-  command can be invoked multiples times - if the connection factory
-  is no longer registered, the command is ignored. If its provider is
-  no longer present, it returns a *404 Not Found* response.
+* sends back a *404 Not Found* response if the connection factory is
+  no longer present.
 
 .. _back to commands: ./command-list.html
 

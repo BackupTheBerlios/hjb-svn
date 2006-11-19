@@ -28,8 +28,8 @@ list of all supported patterns.
 
 * However, if the matching request can be handled, the HJB servlet
   will create a JMS command and schedule its execution. See `JMS
-  Commands`_ for further details.  The HTTP response that is returned
-  will be contain the result of executing the command.
+  Commands`_ for further details.  The HTTP response that is sent back
+  contains the result of executing the command.
 
 Maintaining references to JMS Objects
 -------------------------------------
@@ -47,13 +47,15 @@ within the HJB runtime application, and the servlet provides access to
 them via URIs that match specific patterns:
 
 * The HJB servlet itself is accessed via the hosting servlet container
-  on a particular context path and root.  Its URI is denoted in rest
-  of this document as HJB_ROOT.
+  on a particular context path and root.  Its URI is denoted in the
+  remainder of this document as HJB_ROOT.
 
-* Within the HJB runtime application, each JMS object's URI is rooted
-  with the hosting servlet's URI. Furthermore, the URI of the JMS
+* Within the HJB runtime application, each JMS object's URI has the
+  hosting servlet's URI at its root. Furthermore, the URI of the JMS
   object responsible for registering or creating it is also a root of
-  an object's URI.
+  an object's URI.  This means that the URIs of the objects in HJB
+  have URIs that represent a hierarchy with creators/registrars closer
+  to its root.
 
 * When an object's creator or registrar can create several instances
   of the object, the object's URI is suffixed with its creation index.
@@ -65,7 +67,7 @@ This leads to the URI space described in the table below.  Note that
 these URIs denote the *conceptual* location of a JMS object in the HJB
 runtime.  They will not necessarily be URLs that respond to an HTTP
 request - in general, HJB's actions are implemented by sending
-requests to child paths of these URIs (cf. `the JMS command list`_).
+requests to child paths of these URIs (cf. `JMS command list`_).
 
 .. _JMS command list: ./command-list.html
 

@@ -21,7 +21,7 @@ described in `message translation`_.  The command
 * times out after a HJB preset timeout period if no timeout is
   specified.
 
-* sends back a '404 Not Found' response on timing out.
+* sends back a *404 Not Found* response on timing out.
 
 .. _back to commands: ./command-list.html
 

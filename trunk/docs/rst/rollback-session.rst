@@ -15,8 +15,9 @@ by the URI at the root of the request's URL.  This command
 
 * is idempotent during the lifetime of the session. I.e, if sent to a
   a transactional session that is already rolled back, it is ignored.
-  If the session is no longer present, it responds with a *404 Not
-  Found* response.
+  
+* sends back a *404 Not Found* response if the session is no longer
+  present.
 
 * is ignored by sessions that are not transactional.
 

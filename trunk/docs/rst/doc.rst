@@ -9,6 +9,8 @@ particularly if you feel like contributing it yourself!
 
 * `Installation guide`_
 
+* `Tutorial - simple HTTP messaging with HJB`_
+
 * `Design notes`_
 
 * `Javadocs (online)`_
@@ -18,6 +20,8 @@ particularly if you feel like contributing it yourself!
 * `Test Coverage report (online)`_
 
 * `HJB project website`_
+
+.. _Tutorial - simple HTTP messaging with HJB: ./transcript.html
 
 .. _Installation guide: ./installation.html
 

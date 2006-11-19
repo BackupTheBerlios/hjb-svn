@@ -13,10 +13,12 @@ Start Connection
 This **GET** request starts the connection identified by the URI at
 the root of the request's URL.  This command
 
-* is idempotent during the lifetime of a connection. I.e, can be sent
-  more than once to the same URL.  If the connection is already
-  started, the request is ignored. If the connection is no longer
-  present, the command results in a *404 Not Found* response.
+* is idempotent during the lifetime of a connection. I.e, it can be
+  sent more than once to the same URL and is ignored if the connection
+  is already started.
+
+* sends back a *404 Not Found* response, if the connection is no longer
+  present.
 
 .. _back to commands: ./command-list.html
 

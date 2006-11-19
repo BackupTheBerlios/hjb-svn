@@ -18,7 +18,7 @@ with the HJB runtime.  This command
   exactly the same jndi-name; after the first successful attempt, HJB
   ignores subsequent invocations.
 
-* sends back a '404 Not Found' response if no destination is
+* sends back a *404 Not Found* response if no destination is
   available in JNDI under the name *factory-jndi-name*.
 
 .. _back to commands: ./command-list.html
