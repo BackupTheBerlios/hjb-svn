@@ -287,7 +287,7 @@ Tidy up after messaging is complete
 
   **DELETE** HJB_ROOT/transcript
 
-  Its pretty powerful! Each one of those deletions can actually be
+  It's pretty powerful! Each one of those deletions can actually be
   performed on their own using more specific DELETE URIs.  In real
   applications, it is more likely that the created JMS resources will
   be managed in that way than in this example.
