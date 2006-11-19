@@ -180,6 +180,8 @@
   <target name="clean" description="removes all files generated during the build">
     <delete dir="${build.dir}" failonerror="false"/>
     <delete dir="${javadoc.dir}" failonerror="false"/>
+    <delete dir="${web.dir}" failonerror="false"/>
+
   </target>
 
   <target name="clean.dist" description="removes the distribution files">
