@@ -174,25 +174,39 @@ def deploy_on_the_web(archive_path):
     else:
         print "[OK] website update succeeded"
 
-def skip_java():
-    args = argv[1:]
-    opts, ignored = getopt(args, '', ['skip-java'])
-    if (0 != len(args)):
-        for o, a in opts:
-            if o in ("--skip-java"):
-                return True
-    else:
-        return False
+class Options(object):
 
+    def __init__(self,
+                 deploy_remotely=False,
+                 skip_java=False):
+        self.skip_java = skip_java
+        self.deploy_remotely = deploy_remotely
+        
+def deploy_remotely():
+    args = argv[1:]
+
+def parse_cmd_lines():
+    result = Options()
+    args = argv[1:]
+    opts, ignored = getopt(args, '', ['skip-java', 'deploy-remotely'])
+    for o, a in opts:
+        if o in ("--skip-java"):
+            result.skip_java = True
+        if o in ("--deploy-remotely"):
+            result.deploy_remotely = True
+    return result
+    
 def main():
+    options = parse_cmd_lines()
     remove_old_site_archives()
-    if not skip_java():
+    if not options.skip_java:
         rebuild_java_pages()
     update_the_css_file()
     rebuild_rst_pages()
-    site_archive = create_a_new_site_archive()
-    remote_archive = send_to_server(site_archive)
-    deploy_on_the_web(remote_archive)
+    if options.deploy_remotely:
+        site_archive = create_a_new_site_archive()
+        remote_archive = send_to_server(site_archive)
+        deploy_on_the_web(remote_archive)
     
 if __name__ == '__main__':
     main()
