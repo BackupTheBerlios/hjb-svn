@@ -1,0 +1,18 @@
+2006-11-19  Timothy Emiola  <tbetbe@hjb.berlios.de>
+
+	* hjb0.9.0 support for storing the creation time of all JMS
+	objects stored in a HJBApplication
+
+	* hjb0.9.0 the ability to list JMS sessions, connections, connection
+	factories and providers
+
+	* hjb0.9.0 support for writing connection errors to a specific log
+	per connection
+
+	* hjb0.9.0 support for retrieving connection error logs
+
+	* hjb0.9.0 refactored HJBConnection to move all session behaviour
+	into HJBSession
+
+	* hjb0.9.0 added ChangeLog
+
