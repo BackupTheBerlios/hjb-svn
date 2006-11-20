@@ -31,7 +31,7 @@ particularly if you feel like contributing it yourself!
 
 .. _Design notes: ./detailed-design.html
 
-.. _Javadocs (download): http://prdownload.berlios.de/hjb/hjb-docs-0.8.2.jar
+.. _Javadocs (download): http://prdownload.berlios.de/hjb/hjb-docs-0.9.0.jar
 
 .. _get in touch: mailto:hjb-users@lists.berlios.de
 

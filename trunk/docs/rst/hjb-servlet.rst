@@ -105,6 +105,6 @@ Optional Storage of Provider configuration
 It will be possible to configure the HJB servlet to remember any JMS
 Providers that have been configured, so that they do not need to be
 re-registered each time the servlet is restarted.  As of October 2006
-(HJB version 0.8.2), this feature is not implemented.
+(HJB version 0.9.0), this feature is not implemented.
 
 .. Copyright (C) 2006 Tim Emiola
