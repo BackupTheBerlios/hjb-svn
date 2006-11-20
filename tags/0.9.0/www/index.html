@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>HJB - the HTTP JMS Bridge</title>
+    <link href="hjb_v1.css" type="text/css" rel="stylesheet">
+    </link>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    </meta>
+<meta content="Docutils 0.3.7: http://docutils.sourceforge.net/" name="generator">
+</meta>
+  </head>
+  <body align="center">
+    <div class="outer-body">
+      <div class="hjb-title">
+	<h2 class="hjb-title">HJB (HTTP JMS Bridge)</h2>
+      </div>
+      <div class="navigation-bar">
+	<table align="center" class="navigation-bar">
+	  <tbody>
+	    <tr>
+	      <td>
+	      <a href="index.html">Home</a></td>
+	      <td>
+	      <a href="http://hjb.berlios.de/download.html">Download</a></td>
+	      <td>
+	      <a href="http://hjb.berlios.de/doc.html">Documentation</a></td>
+	      <td>
+	      <a href="http://hjb.berlios.de/detailed-design.html">Design</a></td>
+	      <td>
+	      <a href="mailto:users@hjb.tigris.org">Support</a></td>
+	    </tr>
+	  </tbody>
+	</table>
+      </div>
+   
+      <div>
+    
+     <div class="inner-body">
+      <h2>HJB - the HTTP JMS Bridge</h2>
+      <div class="section" id="mission">
+<h2>
+<a name="mission">Mission</a></h2>
+<p>HJB provides access to JMS resources via HTTP.</p>
+</div>
+<div class="section" id="scope">
+<h2>
+<a name="scope">Scope</a></h2>
+<p>HJB</p>
+<ul class="simple">
+<li>is <strong>language-neutral</strong>: it will allow the writing of software
+libraries for communicating with JMS providers in any language
+that has libraries for communicating over HTTP.</li>
+<li>is <strong>RESTful</strong>: it provides a RESTful equivalent to all of the
+non-optional portions of the JMS API including<ul>
+<li>registration of resources administered by the messaging provider</li>
+<li>connection and session management</li>
+<li>sending and receipt of all types of JMS message</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="implementation-overview">
+<h2>
+<a name="implementation-overview">Implementation overview</a></h2>
+<p>HJB</p>
+<ul>
+<li>
+<p class="first">is deployed as a servlet (HJBServlet), that can run on any compliant
+Servlet specification 2.4 container.</p>
+</li>
+<li>
+<p class="first">will work with any messaging vendor that provides a JMS interface.</p>
+</li>
+<li>
+<p class="first">aims to do one thing well. Its role is to act as an HTTP gateway
+server for JMS resources.  Other potentially useful features are
+deliberately excluded, e.g,</p>
+<ul class="simple">
+<li>HTTP session management</li>
+<li>authentication and authorization</li>
+</ul>
+<p>These can be added by using other HTTP servers in the HTTP request
+processing chain, e.g, another servlet, <a href="http://httpd.apache.org" class="reference">Apache httpd</a>, <a href="http://www.zope.org" class="reference">Zope</a>,
+<a href="http://www.rubyonrails.org" class="reference">RubyOnRails</a>, AddYourFavouriteWebServer here.</p>
+</li>
+<li>
+<p class="first">is extensively unit tested using <a href="http://www.junit.org" class="reference">JUnit</a>
+and <a href="http://www.jmock.org" class="reference">JMock</a></p>
+</li>
+<li>
+<p class="first">aspires to make the best possible use of the HTTP protocol, and to
+be a thin, transparent layer so that there is very little obtruding
+between HJB client code and the JMS API. E.g,</p>
+<ul class="simple">
+<li>success or failure of each request is indicated by the HTTP
+response code,</li>
+<li>a descriptive status of each request is returned to the HTTP user
+agent in the response header,</li>
+<li>status messages are detailed, clear and fully internationalized,</li>
+<li>all faults are logged on the server and match the status messages
+returned to the user agent.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="related-resources">
+<h2>
+<a name="related-resources">Related Resources</a></h2>
+<ul class="simple">
+<li>
+<a href="http://en.wikipedia.org/wiki/REST" class="reference">REST (Representational State Transfer) overview</a></li>
+<li>
+<a href="http://www.prescod.net/rest/rest_vs_soap_overview" class="reference">REST vs SOAP</a></li>
+<li>
+<a href="http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm" class="reference">REST paper</a></li>
+<li>
+<a href="http://www.prescod.net/rest/mistakes/" class="reference">REST design advice</a></li>
+<li>
+<a href="http://java.sun.com/products/jms/faq.html" class="reference">Sun's JMS FAQ</a></li>
+<li>
+<a href="http://java.sun.com/products/jms/docs.html" class="reference">JMS specification 1.1</a></li>
+<li>
+<a href="http://java.sun.com/products/jms/docs.html" class="reference">JMS documentatation downloads</a></li>
+<li>
+<a href="http://java.sun.com/products/servlet/download.html#specs" class="reference">Java Servlet specification 2.4</a></li>
+</ul>
+</div>
+      <hr class="docutils footer">
+      </hr>
+<div class="footer">
+<a href="index.rst" class="reference">View document source</a>.
+Generated by <a href="http://docutils.sourceforge.net/" class="reference">Docutils</a> from <a href="http://docutils.sourceforge.net/rst.html" class="reference">reStructuredText</a> source.
+</div>
+      <div class="small-print">
+	Copyright © 2006 Tim Emiola. All rights reserved.
+      </div>
+    </div>
+  </div>
+    </div>
+   
+  </body>
+</html>

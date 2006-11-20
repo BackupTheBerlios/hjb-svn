@@ -1,0 +1,23 @@
+<html>
+<body bgcolor="white">
+
+Provides the classes used to allow values read and written from the
+fields of JMS StreamMessages.
+
+<p>
+<code>StreamMessageValueCopier</code> extends {@link
+hjb.msg.valuecopiers.BaseEncodedValueCopier} and serves as base class
+for the <code>EncodedValueCopiers</code> in this package.  There are
+implementations to support reading and writing of boolean, char, byte,
+short, int, long, double, float, byte array and string property
+values to/from a <code>StreamMessage</code>
+</p>
+
+<p>
+<code>OrderedStreamMessageValueCopier</code> combines all the other
+implementations and should be used when the type to be read/written is
+unknown.
+</p>
+
+</body>
+</html>

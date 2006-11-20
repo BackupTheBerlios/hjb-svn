@@ -1,0 +1,26 @@
+<html>
+<body bgcolor="white">
+
+Provides the interface and classes needed to allow values to be read
+and written from the properties of JMS messages.
+
+<p>
+<code>EncodedValueCopier</code> defines the methods for reading and
+writing encoded values to and from JMS Message properties.  There are
+implementations of this interface to support boolean, char, byte,
+short, int, long, double, float and string property values.  All the
+implementations are actually subclasses of {@link
+hjb.msg.valuecopiers.BaseEncodedValueCopier}, which provides various
+utility methods used by all, as well as standard implementations of
+methods in {@link java.lang.Object}.
+</p>
+
+<p>
+<code>OrderedPropertyValueCopier</code> is an implementation of the
+<code>EncodedValueCopier</code> interface that combines all the other
+implementations in this package and should be used when the type to be 
+read/written is unknown.
+</p>
+
+</body>
+</html>
