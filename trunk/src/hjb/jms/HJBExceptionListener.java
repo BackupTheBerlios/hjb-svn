@@ -32,6 +32,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 
 import hjb.misc.HJBException;
+import hjb.misc.HJBExceptionListenerConfiguration;
 import hjb.misc.HJBStrings;
 
 /**
@@ -87,7 +88,7 @@ public class HJBExceptionListener implements ExceptionListener {
     protected void addUniqueLogAppender() {
         FileAppender a = new FileAppender();
         a.setFile(getUniqueFilePath());
-        a.setLayout(new PatternLayout(config.getConnectionLogjPattern()));
+        a.setLayout(new PatternLayout(config.getConnectionLog4jPattern()));
         a.activateOptions();
         getConnectionLogger().addAppender(a);
     }

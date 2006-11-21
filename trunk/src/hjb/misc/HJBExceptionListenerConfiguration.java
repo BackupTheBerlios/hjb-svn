@@ -18,7 +18,7 @@
  USA
 
  */
-package hjb.jms;
+package hjb.misc;
 
 import java.io.File;
 
@@ -55,7 +55,7 @@ public class HJBExceptionListenerConfiguration {
      * 
      * @return the bufferSize.
      */
-    public String getConnectionLogjPattern() {
+    public String getConnectionLog4jPattern() {
         return System.getProperty(CONNECTION_LOG_LOG4J_PATTERN,
                                   DEFAULT_LOG4J_PATTERN_LAYOUT);
     }

@@ -23,6 +23,28 @@
       <param-name>hjb.config.command.timeout</param-name>
       <param-value>@hjb.config.command.timeout@</param-value>
     </init-param>
+    <!-- Uncomment this to configure these system parameters from this config file
+    <init-param>
+      <param-name>hjb.runtime.minimum-receive-timeout</param-name>
+      <param-value>60</param-value>
+    </init-param>
+    <init-param>
+      <param-name>hjb.runtime.maximum-receive-timeout</param-name>
+      <param-value>300</param-value>
+    </init-param>
+    <init-param>
+      <param-name>hjb.runtime.connection-log-dir</param-name>
+      <param-value>/</param-value>
+    </init-param>
+    <init-param>
+      <param-name>hjb.runtime.connection-log-log4j-pattern</param-name>
+      <param-value>d [%t] %p %m%n</param-value>
+    </init-param>
+    <init-param>
+      <param-name>hjb.runtime.byte-buffer-size</param-name>
+      <param-value>8192</param-value>
+    </init-param>
+    -->
   </servlet>
 
   <!-- Define the HJB Servlet Mapping -->

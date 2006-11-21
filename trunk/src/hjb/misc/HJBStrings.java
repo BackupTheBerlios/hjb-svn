@@ -500,4 +500,6 @@ public final class HJBStrings {
     public static final String SUCCESS_MESSAGE_OF_SHOW_ERROR_LOG = "success.message.of.show.error.log";
 
     public static final String CONNECTION_ERRORS_LOGGED = "connection.errors.logged";
+
+    public static final String CAN_NOT_SET_SYSTEM_PROPERTIES = "can.not.set.system.properties";
 }

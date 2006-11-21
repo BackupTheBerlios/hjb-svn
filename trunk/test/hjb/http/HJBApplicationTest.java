@@ -90,6 +90,33 @@ public class HJBApplicationTest extends MockObjectTestCase {
         assertNotNull(application.getRoot());
     }
 
+    public void testAddsKnownRuntimePropertiesIfPresentInServletConfig()
+            throws Exception {
+        String[] knownProperties = HJBApplication.knownRuntimePropertyNames();
+        for (int i = 0; i < knownProperties.length; i++) {
+            Mock mockConfig = mock(ServletConfig.class);
+            mockConfig.stubs()
+                .method("getInitParameter")
+                .will(returnValue(null));
+            mockConfig.stubs()
+                .method("getInitParameter")
+                .with(eq(HJBConstants.COMMAND_TIMEOUT_CONFIG))
+                .will(returnValue("1000"));
+            mockConfig.stubs()
+                .method("getInitParameter")
+                .with(eq(HJBConstants.ROOT_PATH_CONFIG))
+                .will(returnValue(testRootPath.getAbsolutePath()));
+            mockConfig.stubs()
+                .method("getInitParameter")
+                .with(eq(knownProperties[i]))
+                .will(returnValue(knownProperties[i] + "_value"));
+            
+            new HJBApplication((ServletConfig) mockConfig.proxy(), new Timer());
+            assertThatSystemPropertyHasValue(knownProperties[i],
+                                             knownProperties[i] + "_value");
+        }
+    }
+
     public void testShutdownCancelsTimer() throws Exception {
         final boolean[] shutdown = new boolean[] {
             false
@@ -100,12 +127,13 @@ public class HJBApplicationTest extends MockObjectTestCase {
                 shutdown[0] = true;
             }
         };
+        assertFalse(shutdown[0]);
         HJBApplication application = createValidApplication(timer);
         application.shutdown();
         assertTrue(shutdown[0]);
     }
 
-    public void testShutdownShutsdownHJBRoot() throws Exception {
+    public void testShutdownShouldShutdownHJBRoot() throws Exception {
         HJBApplication application = createValidApplication(new Timer());
         String testProvider = "foo";
         mockHJB.make1Provider(application.getRoot(), testProvider);
@@ -246,6 +274,11 @@ public class HJBApplicationTest extends MockObjectTestCase {
         t.setDaemon(true);
         t.start();
         return testCommandRunner;
+    }
+
+    protected void assertThatSystemPropertyHasValue(String propertyName,
+                                                    String value) {
+        assertEquals(value, System.getProperty(propertyName));
     }
 
     protected void setUp() throws Exception {

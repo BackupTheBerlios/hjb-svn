@@ -37,9 +37,12 @@ import hjb.http.cmd.JMSCommandGenerator;
 import hjb.http.cmd.JMSCommandGeneratorFactory;
 import hjb.jms.HJBRoot;
 import hjb.jms.cmd.JMSCommand;
+import hjb.misc.BufferSizeConfiguration;
 import hjb.misc.HJBConstants;
 import hjb.misc.HJBException;
+import hjb.misc.HJBExceptionListenerConfiguration;
 import hjb.misc.HJBStrings;
+import hjb.misc.MessagingTimeoutConfiguration;
 
 /**
  * <code>HJBApplication</code> is the Facade through which the servlet
@@ -54,6 +57,7 @@ public class HJBApplication {
         assertNotNull(config, timeoutTimer);
         this.timeoutTimer = timeoutTimer;
         constructRequiredObjectsFrom(config);
+        maybeUpdateHJBRuntimeSystemProperties(config);
     }
 
     /**
@@ -62,6 +66,10 @@ public class HJBApplication {
     public void shutdown() {
         getRoot().shutdown();
         getTimeoutTimer().cancel();
+    }
+
+    public static String[] knownRuntimePropertyNames() {
+        return HJB_RUNTIME_PROPERTY_NAMES;
     }
 
     /**
@@ -145,6 +153,30 @@ public class HJBApplication {
             findHJBRoot(config);
         } catch (RuntimeException e) {
             throw new ServletException(e);
+        }
+    }
+
+    protected void maybeUpdateHJBRuntimeSystemProperties(ServletConfig config) {
+        String[] knownProperties = HJBApplication.knownRuntimePropertyNames();
+        for (int i = 0; i < knownProperties.length; i++) {
+            String name = knownProperties[i];
+            String value = config.getInitParameter(name);
+            maybeUpdateOneHJBRuntimeSystemProperty(name, value);
+        }
+    }
+
+    protected void maybeUpdateOneHJBRuntimeSystemProperty(String name,
+                                                          String value) {
+        if (null == value) {
+            return;
+        }
+        try {
+            System.setProperty(name, value);
+        } catch (SecurityException e) {
+            String message = strings().getString(HJBStrings.CAN_NOT_SET_SYSTEM_PROPERTIES,
+                                                 name,
+                                                 value);
+            LOG.warn(message);
         }
     }
 
@@ -280,6 +312,14 @@ public class HJBApplication {
 
     private static final Logger LOG = Logger.getLogger(HJBApplication.class);
     private static final HJBStrings STRINGS = new HJBStrings();
+
+    private static final String[] HJB_RUNTIME_PROPERTY_NAMES = {
+            BufferSizeConfiguration.BUFFER_SIZE_PROPERTY_NAME,
+            HJBExceptionListenerConfiguration.CONNECTION_LOG_DIR_PROPERTY_NAME,
+            HJBExceptionListenerConfiguration.CONNECTION_LOG_LOG4J_PATTERN,
+            MessagingTimeoutConfiguration.MAXIMUM_TIMEOUT_PROPERTY,
+            MessagingTimeoutConfiguration.MINIMUM_TIMEOUT_PROPERTY,
+    };
 
     public static class CommandTimeoutTask extends TimerTask {
         public void run() {
