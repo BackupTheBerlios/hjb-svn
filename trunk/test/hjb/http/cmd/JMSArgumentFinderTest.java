@@ -217,6 +217,19 @@ public class JMSArgumentFinderTest extends BaseHJBTestCase {
                      new JMSArgumentFinder().findTimeToLive(decodedParameters));
     }
 
+    public void testReturnsDefaultNumberToCollectIfNoneIsPresent() throws Exception {
+        assertEquals(HJBConstants.DEFAULT_NUMBER_TO_COLLECT,
+                     new JMSArgumentFinder().findNumberToCollect(decodedParameters));
+    }
+
+
+    public void testReturnsAssignedNumberIfItIsPresent() throws Exception {
+        decodedParameters.put(HJBConstants.NUMBER_TO_COLLECT, new Integer(1000));
+        assertEquals(1000,
+                     new JMSArgumentFinder().findNumberToCollect(decodedParameters));
+    }
+
+
     public void testFindsProducerArgumentsIfTheyArePresent() {
         decodedParameters.put(HJBConstants.TIME_TO_LIVE, new Long(1000));
         decodedParameters.put(HJBConstants.PRIORITY, new Integer(1));

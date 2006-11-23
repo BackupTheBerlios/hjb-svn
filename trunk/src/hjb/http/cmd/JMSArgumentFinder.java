@@ -145,12 +145,29 @@ public class JMSArgumentFinder {
         return (Integer) rawValue;
     }
 
+    public long findRequiredTimeout(Map decodedParameters) {
+        Long result = findTimeout(decodedParameters);
+        if (null == result) {
+            return new MessagingTimeoutConfiguration().getMinimumMessageTimeout();
+        } else {
+            return result.longValue();
+        }
+    }
+    
     public Long findTimeout(Map decodedParameters) {
         return findLong(decodedParameters,
                         HJBConstants.TIMEOUT,
                         "timeout",
                         null);
     }
+
+    public int findNumberToCollect(Map decodedParameters) {
+        return findInteger(decodedParameters,
+                        HJBConstants.NUMBER_TO_COLLECT,
+                        "number to collect",
+                        new Integer(HJBConstants.DEFAULT_NUMBER_TO_COLLECT)).intValue();
+    }
+
 
     public Long findTimeToLive(Map decodedParameters) {
         return findLong(decodedParameters,

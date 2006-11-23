@@ -209,6 +209,22 @@ public final class HJBConstants {
 
     /**
      * Constant that holds the name of the request parameter that HJB uses to
+     * determine the maximum number of messages to return when collecting messages.
+     * <p />
+     * The value of this constant is "number-to-collect".
+     */
+    public static final String NUMBER_TO_COLLECT = "number-to-collect";
+
+    /**
+     * Constant that holds the default value of the number-to-collect parameter that HJB uses
+     * when collecting messages.
+     * <p />
+     * The value of this constant is 3.
+     */
+    public static final int DEFAULT_NUMBER_TO_COLLECT = 3;
+
+    /**
+     * Constant that holds the name of the request parameter that HJB uses to
      * identify the encoded JMS message to send.
      * <p />
      * The value of this constant is "message-to-send".
@@ -258,7 +274,7 @@ public final class HJBConstants {
     public static final String CREATION_TIME = "creation-time";
 
     /**
-     * Constant that holds the default value of the transacted flag for use in
+     * Constant that holds the default value of the acknowledgement mode for use in
      * configuration of JMS <code>Sessions</code>
      * <p />
      * The value of this constant is {@link Session#AUTO_ACKNOWLEDGE}.
