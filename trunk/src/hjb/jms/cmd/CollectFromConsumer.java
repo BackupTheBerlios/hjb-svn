@@ -25,24 +25,26 @@ import hjb.misc.HJBNotFoundException;
 import hjb.misc.HJBStrings;
 import hjb.msg.HJBMessage;
 
-public class ReceiveFromConsumer extends MessengerCommand {
+public class CollectFromConsumer extends MessengerCommand {
 
-    public ReceiveFromConsumer(HJBMessenger messenger, int consumerIndex) {
-        this(messenger, consumerIndex, NO_TIMEOUT_SET);
-    }
-
-    public ReceiveFromConsumer(HJBMessenger messenger,
+    public CollectFromConsumer(HJBMessenger messenger,
                                int consumerIndex,
-                               long timeout) {
+                               long timeout,
+                               int numberToCollect) {
         super(messenger);
+        if (timeout <= 0) {
+            throw new IllegalArgumentException(strings().getString(HJBStrings.TIMEOUT_MUST_BE_ABOVE_ZERO,
+                                                                   new Long(timeout)));
+        }
         this.consumerIndex = consumerIndex;
         this.timeout = timeout;
+        this.numberToCollect = numberToCollect;
     }
 
     public void execute() {
         assertNotCompleted();
         try {
-            receiveMessage();
+            collectMessages();
         } catch (HJBNotFoundException e) {
             recordFaultAsDebug(e);
         } catch (RuntimeException e) {
@@ -52,36 +54,32 @@ public class ReceiveFromConsumer extends MessengerCommand {
     }
 
     public String getDescription() {
-        return strings().getString(HJBStrings.DESCRIPTION_OF_RECEIVE_FROM_CONSUMER,
+        return strings().getString(HJBStrings.DESCRIPTION_OF_COLLECT_FROM_CONSUMER,
                                    getMessenger().getConsumerDescription(getConsumerIndex()),
-                                   getMessenger().getSessionDescription());
+                                   getMessenger().getSessionDescription(),
+                                   new Integer(getMessagesReceived().length));
     }
 
     public String getStatusMessage() {
         if (isExecutedOK()) {
-            return strings().getString(HJBStrings.MESSAGE_RECEIVED_OK);
+            return strings().getString(HJBStrings.MESSAGES_RECEIVED_OK);
         } else {
             return getFault().getMessage();
         }
     }
 
-    public HJBMessage getMessageReceived() {
-        return messageReceived;
-    }
-    
-    protected void setMessageReceived(HJBMessage messageReceived) {
-        this.messageReceived = messageReceived;
+    public HJBMessage[] getMessagesReceived() {
+        return messagesReceived;
     }
 
-    protected void receiveMessage() {
-        if (NO_TIMEOUT_SET == getTimeout()) {
-            setMessageReceived(getMessenger().receiveFromConsumer(getConsumerIndex()));
-        } else if (NO_WAIT == getTimeout()) {
-            setMessageReceived(getMessenger().receiveFromConsumerNoWait(getConsumerIndex()));
-        } else {
-            setMessageReceived(getMessenger().receiveFromConsumer(getConsumerIndex(),
-                                                                  getTimeout()));
-        }
+    protected void collectMessages() {
+        setMessagesReceived(getMessenger().collectFromConsumer(getConsumerIndex(),
+                                                               getTimeout(),
+                                                               getNumberToCollect()));
+    }
+
+    protected void setMessagesReceived(HJBMessage[] messagesReceived) {
+        this.messagesReceived = messagesReceived;
     }
 
     protected int getConsumerIndex() {
@@ -92,10 +90,15 @@ public class ReceiveFromConsumer extends MessengerCommand {
         return timeout;
     }
 
+    protected int getNumberToCollect() {
+        return numberToCollect;
+    }
+
     private int consumerIndex;
+    private int numberToCollect;
     private long timeout;
 
     public static final long NO_TIMEOUT_SET = Long.MAX_VALUE;
     public static final long NO_WAIT = Long.MIN_VALUE;
-    private HJBMessage messageReceived;
+    private HJBMessage messagesReceived[];
 }

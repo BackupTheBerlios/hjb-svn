@@ -20,19 +20,36 @@
  */
 package hjb.jms;
 
-import java.util.*;
-
-import javax.jms.*;
-
-import org.apache.log4j.Logger;
-
-import hjb.jms.info.*;
-import hjb.misc.*;
+import hjb.jms.info.JMSObjectDescription;
+import hjb.jms.info.SessionDescription;
+import hjb.misc.HJBException;
+import hjb.misc.HJBNotFoundException;
+import hjb.misc.HJBStrings;
+import hjb.misc.MessageProducerArguments;
+import hjb.misc.MessagingTimeoutConfiguration;
 import hjb.msg.AttributeCopier;
 import hjb.msg.HJBMessage;
 import hjb.msg.MessageCopier;
 import hjb.msg.MessageCopierFactory;
 import hjb.msg.NamedPropertyCopier;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageProducer;
+import javax.jms.QueueBrowser;
+import javax.jms.TopicSubscriber;
+
+import org.apache.log4j.Logger;
 
 /**
  * <code>HJBMessenger</code> uses a <code>HJBConnection</code> to send and
@@ -51,7 +68,7 @@ public class HJBMessenger {
         this.theSession = theSession;
         setTimeout(new MessagingTimeoutConfiguration().getMinimumMessageTimeout());
     }
-    
+
     public HJBMessage[] viewQueue(int index) throws HJBException {
         try {
             List inQueue = Collections.list(getBrowserFor(index).getEnumeration());
@@ -95,7 +112,7 @@ public class HJBMessenger {
             Message asJMS = createJMSMessageFor(asHJB);
             findMessageCopierFor(asHJB).copyToJMSMessage(asHJB, asJMS);
             sendJMSMessage(asJMS, destination, producerArguments, index);
-            updateHeaders(asHJB, asJMS);
+            updateHJBMessageHeaders(asHJB, asJMS);
             if (MESSAGE_LOG.isDebugEnabled()) {
                 String message = strings().getString(HJBStrings.MESSAGE_WAS_SENT,
                                                      asHJB);
@@ -116,11 +133,17 @@ public class HJBMessenger {
 
     public HJBMessage receiveFromConsumer(int index, long timeout)
             throws HJBException {
-        return receiveFromConsumer(getConsumerFor(index), timeout);
+        return receiveFrom(getConsumerFor(index), timeout);
     }
 
     public HJBMessage receiveFromConsumerNoWait(int index) throws HJBException {
         return receiveFromConsumerNoWait(getConsumerFor(index));
+    }
+
+    public HJBMessage[] collectFromConsumer(int index,
+                                            long timeout,
+                                            int numberToCollect) {
+        return collectFrom(getConsumerFor(index), timeout, numberToCollect);
     }
 
     public HJBMessage receiveFromSubscriber(int index) throws HJBException {
@@ -134,7 +157,13 @@ public class HJBMessenger {
 
     public HJBMessage receiveFromSubscriber(int index, long timeout)
             throws HJBException {
-        return receiveFromConsumer(getSubscriberFor(index), timeout);
+        return receiveFrom(getSubscriberFor(index), timeout);
+    }
+
+    public HJBMessage[] collectFromSubscriber(int index,
+                                              long timeout,
+                                              int numberToCollect) {
+        return collectFrom(getSubscriberFor(index), timeout, numberToCollect);
     }
 
     public int getSessionIndex() {
@@ -169,7 +198,7 @@ public class HJBMessenger {
         }
     }
 
-    protected void updateHeaders(HJBMessage asHJB, Message asJMS) {
+    protected void updateHJBMessageHeaders(HJBMessage asHJB, Message asJMS) {
         new NamedPropertyCopier().copyToHJBMessage(asJMS, asHJB);
         new AttributeCopier().copyToHJBMessage(asJMS, asHJB);
     }
@@ -200,13 +229,40 @@ public class HJBMessenger {
         }
     }
 
-    protected HJBMessage receiveFromConsumer(MessageConsumer aConsumer,
-                                             long timeout) throws HJBException {
+    protected HJBMessage receiveFrom(MessageConsumer aConsumer, long timeout)
+            throws HJBException {
         try {
             return processReceivedMessage(aConsumer.receive(Math.max(timeout,
                                                                      getMinimumTimeout())));
         } catch (JMSException e) {
             return handleReceiptFailure(e);
+        }
+    }
+
+    protected HJBMessage[] collectFrom(MessageConsumer aConsumer,
+                                       long timeout,
+                                       int numberToCollect) throws HJBException {
+        TimerTask waitForMessages = null;
+        try {
+            final List result = Collections.synchronizedList(new ArrayList());
+            final boolean timedOut[] = new boolean[] {
+                false
+            };
+            waitForMessages = new TimerTask() {
+                public void run() {
+                    synchronized (result) {
+                        timedOut[0] = true;
+                    }
+                }
+            };
+            collectTimer().schedule(waitForMessages,
+                                    Math.max(timeout, getMinimumTimeout()));
+            while (!timedOut[0] && result.size() < numberToCollect) {
+                result.add(receiveFrom(aConsumer, timeout));
+            }
+            return (HJBMessage[]) result.toArray(new HJBMessage[result.size()]);
+        } finally {
+            waitForMessages.cancel();
         }
     }
 
@@ -294,8 +350,11 @@ public class HJBMessenger {
     }
 
     public void setTimeout(long timeout) {
-        this.timeout = Math.min(timeout,
-                                new MessagingTimeoutConfiguration().getMaximumMessageTimeout());
+        this.timeout = Math.min(timeout, getMaximumTimeout());
+    }
+
+    protected int getMaximumTimeout() {
+        return TIMEOUT_CONFIG.getMaximumMessageTimeout();
     }
 
     protected long getTimeout() {
@@ -303,16 +362,23 @@ public class HJBMessenger {
     }
 
     protected long getMinimumTimeout() {
-        return new MessagingTimeoutConfiguration().getMinimumMessageTimeout();
+        return TIMEOUT_CONFIG.getMinimumMessageTimeout();
     }
 
     protected HJBStrings strings() {
         return STRINGS;
     }
 
+    protected Timer collectTimer() {
+        return COLLECT_MESSAGES_TIMER;
+    }
+
     private final HJBSession theSession;
     private long timeout;
 
+    private static final String COLLECT_MESSAGES_TIMER_NAME = "COLLECT_MESSAGES_TIMERS";
+    private static final Timer COLLECT_MESSAGES_TIMER = new Timer(COLLECT_MESSAGES_TIMER_NAME);
+    private static final MessagingTimeoutConfiguration TIMEOUT_CONFIG = new MessagingTimeoutConfiguration();
     private static final MessageCopierFactory COPIER_FACTORY = new MessageCopierFactory();
     private static final Logger LOG = Logger.getLogger(HJBMessenger.class);
     private static final Logger MESSAGE_LOG = Logger.getLogger("Messages."

@@ -53,7 +53,7 @@ public class ViewQueue extends MessengerCommand {
 
     public String getStatusMessage() {
         if (isExecutedOK()) {
-            return strings().getString(HJBStrings.STRINGS_RECEIVED_OK);
+            return strings().getString(HJBStrings.MESSAGES_RECEIVED_OK);
         } else {
             return getFault().getMessage();
         }

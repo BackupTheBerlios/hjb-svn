@@ -26,6 +26,11 @@ import org.jmock.Mock;
 import org.jmock.core.stub.ReturnStub;
 import org.jmock.core.stub.ThrowStub;
 
+import hjb.jms.HJBSession;
+import hjb.jms.HJBSessionConsumers;
+import hjb.jms.HJBSessionDurableSubscribers;
+import hjb.jms.cmd.CreateConsumer;
+import hjb.jms.cmd.CreateSubscriber;
 import hjb.misc.MessageProducerArguments;
 
 public class MockSessionBuilder {
@@ -139,5 +144,24 @@ public class MockSessionBuilder {
         mockSession.stubs()
             .method("createDurableSubscriber")
             .will(new ReturnStub(testSubscriber));
+    }
+
+    public void create1Subscriber(HJBSession testSession) {
+        HJBSessionDurableSubscribers subscribers = testSession.getSubscribers();
+        Mock mockTopic = new Mock(Topic.class);
+        Topic testTopic = (Topic) mockTopic.proxy();
+        CreateSubscriber command = new CreateSubscriber(subscribers,
+                                                        testTopic,
+                                                        "aName");
+        command.execute();
+    }
+
+    public void create1Consumer(HJBSession testSession) {
+        HJBSessionConsumers sessionConsumers = testSession.getConsumers();
+        Mock mockDestination = new Mock(Destination.class);
+        Destination testDestination = (Destination) mockDestination.proxy();
+        CreateConsumer command = new CreateConsumer(sessionConsumers,
+                                                    testDestination);
+        command.execute();
     }
 }

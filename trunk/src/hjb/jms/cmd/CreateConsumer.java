@@ -124,7 +124,6 @@ public class CreateConsumer extends BaseJMSCommand {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Using selector: " + messageSelector);
         }
-        LOG.info("Using selector: " + messageSelector);
         return messageSelector;
     }
 

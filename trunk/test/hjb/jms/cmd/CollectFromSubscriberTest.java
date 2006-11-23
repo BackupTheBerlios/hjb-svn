@@ -20,7 +20,6 @@
  */
 package hjb.jms.cmd;
 
-import hjb.http.cmd.HJBMessageWriter;
 import hjb.jms.HJBMessenger;
 import hjb.misc.HJBException;
 import hjb.msg.HJBMessage;
@@ -33,53 +32,61 @@ import hjb.testsupport.MockSessionBuilder;
 import java.util.HashMap;
 
 import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
 import javax.jms.TextMessage;
+import javax.jms.TopicSubscriber;
 
 import org.jmock.Mock;
 
-public class ReceiveFromConsumerTest extends BaseHJBTestCase {
+public class CollectFromSubscriberTest extends BaseHJBTestCase {
 
     public void testConstructionThrowsOnNullInputs() {
         try {
-            new ReceiveFromConsumer(null, 1);
+            new CollectFromSubscriber(null, 1, 100, 0);
             fail("should have thrown an exception");
         } catch (IllegalArgumentException e) {}
     }
 
-    protected HJBMessage createTestTextHJBMessage() {
-        HashMap headers = new HashMap();
-        headers.put(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE,
-                    TextMessage.class.getName());
-        return new HJBMessage(headers, "boo!");
+    public void testConstructionThrowsOnZeroOrLessTimeout() throws Exception {
+        try {
+            Mock mockSubscriber = mock(TopicSubscriber.class);
+            TopicSubscriber testSubscriber = (TopicSubscriber) mockSubscriber.proxy();
+            HJBMessenger m = messengerBuilder.createForSessionWith(testSubscriber);
+            new CollectFromSubscriber(m, 0, 0, 0);
+            fail("should have thrown an exception");
+        } catch (IllegalArgumentException e) {}
+        try {
+            Mock mockSubscriber = mock(TopicSubscriber.class);
+            TopicSubscriber testSubscriber = (TopicSubscriber) mockSubscriber.proxy();
+            HJBMessenger m = messengerBuilder.createForSessionWith(testSubscriber);
+            new CollectFromSubscriber(m, 0, -1, 0);
+            fail("should have thrown an exception");
+        } catch (IllegalArgumentException e) {}
     }
 
     public void testExecuteReceivesAMessage() throws Exception {
         Mock mockTextMessage = mock(TextMessage.class);
-        mockTextMessage.expects(once())
+        mockTextMessage.expects(atLeastOnce())
             .method("getText")
             .will(returnValue("boo!"));
-        mockTextMessage.expects(once()).method("acknowledge");
+        mockTextMessage.expects(atLeastOnce()).method("acknowledge");
         MessageAttributeInvoker attributeInvoker = new MessageAttributeInvoker();
         attributeInvoker.invokesAllAccessors(mockTextMessage);
         attributeInvoker.invokesGetPropertyNamesReturnsNothing(mockTextMessage);
-        Message testMessage = (TextMessage) mockTextMessage.proxy();
 
-        Mock mockConsumer = mock(MessageConsumer.class);
-        mockConsumer.expects(once())
+        Mock mockSubscriber = mock(TopicSubscriber.class);
+        mockSubscriber.stubs()
             .method("receive")
-            .will(returnValue(testMessage));
-        MessageConsumer testConsumer = (MessageConsumer) mockConsumer.proxy();
+            .will(returnValue((TextMessage) mockTextMessage.proxy()));
+        TopicSubscriber testSubscriber = (TopicSubscriber) mockSubscriber.proxy();
 
-        HJBMessenger m = messengerBuilder.createForSessionWith(testConsumer);
-        ReceiveFromConsumer command = new ReceiveFromConsumer(m, 0);
+        HJBMessenger m = messengerBuilder.createForSessionWith(testSubscriber);
+        CollectFromSubscriber command = new CollectFromSubscriber(m, 0, 100, 3);
         command.execute();
         assertTrue(command.isExecutedOK());
         assertTrue(command.isComplete());
         assertNull(command.getFault());
+        assertEquals(3, command.getMessagesReceived().length);
         assertNotNull(command.getStatusMessage());
-        System.err.println(new HJBMessageWriter().asText(command.getMessageReceived()));
         try {
             command.execute();
             fail("should have thrown an exception");
@@ -92,14 +99,17 @@ public class ReceiveFromConsumerTest extends BaseHJBTestCase {
                 new RuntimeException("fire in the server room"),
         };
         for (int i = 0; i < possibleExceptions.length; i++) {
-            Mock mockConsumer = mock(MessageConsumer.class);
-            mockConsumer.expects(once())
+            Mock mockSubscriber = mock(TopicSubscriber.class);
+            mockSubscriber.stubs()
                 .method("receive")
                 .will(throwException(possibleExceptions[i]));
-            MessageConsumer testConsumer = (MessageConsumer) mockConsumer.proxy();
-            
-            HJBMessenger m = messengerBuilder.createForSessionWith(testConsumer);
-            ReceiveFromConsumer command = new ReceiveFromConsumer(m, 0);
+            TopicSubscriber testSubscriber = (TopicSubscriber) mockSubscriber.proxy();
+
+            HJBMessenger m = messengerBuilder.createForSessionWith(testSubscriber);
+            CollectFromSubscriber command = new CollectFromSubscriber(m,
+                                                                      0,
+                                                                      100,
+                                                                      3);
             command.execute();
             assertFalse(command.isExecutedOK());
             assertTrue(command.isComplete());
@@ -109,11 +119,18 @@ public class ReceiveFromConsumerTest extends BaseHJBTestCase {
         }
     }
 
-    protected void setUp() throws Exception {
-        sessionBuilder = new MockSessionBuilder();
-        messengerBuilder = new MockMessengerBuilder();
+    protected HJBMessage createTestTextHJBMessage() {
+        HashMap headers = new HashMap();
+        headers.put(MessageCopierFactory.HJB_JMS_MESSAGE_INTERFACE,
+                    TextMessage.class.getName());
+        return new HJBMessage(headers, "boo!");
     }
 
-    protected MockSessionBuilder sessionBuilder;
+    protected void setUp() throws Exception {
+        messengerBuilder = new MockMessengerBuilder();
+        sessionBuilder = new MockSessionBuilder();
+    }
+
     protected MockMessengerBuilder messengerBuilder;
+    protected MockSessionBuilder sessionBuilder;
 }

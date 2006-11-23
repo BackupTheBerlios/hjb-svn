@@ -225,7 +225,7 @@ public final class HJBStrings {
 
     public static final String MESSAGE_RECEIVED_OK = "message.received.ok";
 
-    public static final String STRINGS_RECEIVED_OK = "messages.received.ok";
+    public static final String MESSAGES_RECEIVED_OK = "messages.received.ok";
 
     public static final String MESSAGE_COPIERS_NOT_FOUND = "message.copiers.not.found";
 
@@ -502,4 +502,10 @@ public final class HJBStrings {
     public static final String CONNECTION_ERRORS_LOGGED = "connection.errors.logged";
 
     public static final String CAN_NOT_SET_SYSTEM_PROPERTIES = "can.not.set.system.properties";
+
+    public static final String DESCRIPTION_OF_COLLECT_FROM_CONSUMER = "description.of_collect.from.consumer";
+
+    public static final String DESCRIPTION_OF_COLLECT_FROM_SUBSCRIBER = "description.of_collect.from.subscriber";
+
+    public static final String TIMEOUT_MUST_BE_ABOVE_ZERO = "timeout.must.be.above.zero";
 }
