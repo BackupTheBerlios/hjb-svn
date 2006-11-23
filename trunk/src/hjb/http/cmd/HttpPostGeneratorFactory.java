@@ -48,9 +48,11 @@ public class HttpPostGeneratorFactory implements JMSCommandGeneratorFactory {
         JMSCommandGenerator[] result = new JMSCommandGenerator[] {
                 new RegisterProviderGenerator(),
                 new CreateConsumerGenerator(),
+                new CollectFromConsumerGenerator(),
                 new ReceiveFromConsumerGenerator(),
                 new CreateSubscriberGenerator(),
                 new ReceiveFromSubscriberGenerator(),
+                new CollectFromSubscriberGenerator(),
                 new CreateProducerGenerator(),
                 new SendHJBMessageGenerator(),
                 new CreateBrowserGenerator(),
