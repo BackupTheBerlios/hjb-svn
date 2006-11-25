@@ -20,16 +20,15 @@
  */
 package hjb.jms.info;
 
+import hjb.jms.HJBConnection;
+import hjb.jms.HJBConnectionFactory;
+import hjb.misc.HJBStrings;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.Map;
-
-import hjb.jms.HJBConnection;
-import hjb.jms.HJBConnectionFactory;
-import hjb.misc.HJBStrings;
-import hjb.misc.PathNaming;
 
 /**
  * <code>ConnectionFactoryListing</code> is used to generate a text list of
@@ -96,36 +95,40 @@ public class ConnectionFactoryListing implements JMSObjectListing {
         PrintWriter pw = new PrintWriter(aWriter);
         String prefixEndingInSlash = prefix.endsWith("/") ? prefix : prefix
                 + "/";
-        writeConnections(pw, prefixEndingInSlash);
+        String prefixWithoutFinalSlash = prefixEndingInSlash.substring(0,
+                                                                       (prefixEndingInSlash.length() - 1));
+        pw.println(prefixWithoutFinalSlash + ':');
+        String totalLine = strings().getString(HJBStrings.LISTING_TOTAL,
+                                               new Integer(getListingTotal()));
+        pw.println(totalLine);
+        writeConnections(pw);
+
         if (getTheConnectionFactory().getActiveConnections().size() > 0
                 && recurse) {
             writeConnectionListings(pw, prefixEndingInSlash);
         }
     }
 
-    protected void writeConnectionListings(PrintWriter aWriter,
-                                           String prefixEndingInSlash) {
+    public int getListingTotal() {
+        return getTheConnectionFactory().getActiveConnections().size();
+    }
+
+    protected void writeConnectionListings(PrintWriter aWriter, String prefix) {
         Map activeConnections = getTheConnectionFactory().getActiveConnections();
         for (Iterator i = activeConnections.keySet().iterator(); i.hasNext();) {
             HJBConnection aConnection = (HJBConnection) activeConnections.get(i.next());
             aWriter.println();
-            aWriter.println(prefixEndingInSlash + aConnection);
             new ConnectionListing(aConnection).writeListing(aWriter,
-                                                            prefixEndingInSlash
-                                                                    + PathNaming.CONNECTION
-                                                                    + "-"
-                                                                    + aConnection.getConnectionIndex(),
+                                                            prefix,
                                                             true);
         }
     }
 
-    protected void writeConnections(PrintWriter aWriter,
-                                    String prefixEndingInSlash) {
+    protected void writeConnections(PrintWriter aWriter) {
         Map activeConnections = getTheConnectionFactory().getActiveConnections();
         for (Iterator i = activeConnections.keySet().iterator(); i.hasNext();) {
             HJBConnection aConnection = (HJBConnection) activeConnections.get(i.next());
-            aWriter.print(prefixEndingInSlash + aConnection);
-            aWriter.println();
+            aWriter.println(new ConnectionDescription(aConnection).longDescription());
         }
     }
 

@@ -66,5 +66,10 @@ public interface JMSObjectListing {
      *            required.
      */
     public void writeListing(Writer aWriter, String prefix, boolean recurse);
-
+    
+    /**
+     * Gets the total number of items contained in the listing.
+     * @return the total number of items contained in the listing.
+     */
+    public int getListingTotal();
 }

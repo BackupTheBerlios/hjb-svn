@@ -29,6 +29,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.jms.*;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
@@ -42,6 +43,13 @@ import hjb.msg.HJBMessage;
  * various arguments used in the construction of <code>JMSCommand</code>s
  * from a <code>Map</code>
  * 
+ * <p>
+ * In normal HJB usage, the map used an argument to most of this classes methods
+ * is obtained by apply {@link ParameterMapDecoder#decode(Map)} to the values obtained
+ * from {@link HttpServletRequest#getParameterMap}. 
+ * </p>
+ * 
+ * @see ParameterMapDecoder
  * @author Tim Emiola
  */
 public class JMSArgumentFinder {
@@ -100,7 +108,6 @@ public class JMSArgumentFinder {
             return HJBConstants.DEFAULT_NOLOCAL;
         }
         return ((Boolean) rawValue).booleanValue();
-
     }
 
     public Integer findDeliveryMode(Map decodedParameters) {
@@ -114,13 +121,7 @@ public class JMSArgumentFinder {
             case DeliveryMode.NON_PERSISTENT:
                 return (Integer) rawValue;
             default:
-                if (LOG.isDebugEnabled()) {
-                    String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
-                                                         "delivery mode",
-                                                         rawValue,
-                                                         null);
-                    LOG.debug(message);
-                }
+                warnAboutUsingDefault("delivery mode", rawValue, null);
                 return null;
         }
     }
@@ -133,13 +134,7 @@ public class JMSArgumentFinder {
         if (null == rawValue) return null;
         if (rawValue.intValue() < MINIMUM_PRIORITY
                 || rawValue.intValue() > MAXIMUM_PRIORITY) {
-            if (LOG.isDebugEnabled()) {
-                String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
-                                                     "priority",
-                                                     rawValue,
-                                                     null);
-                LOG.debug(message);
-            }
+            warnAboutUsingDefault("priority", rawValue, null);
             return null;
         }
         return (Integer) rawValue;
@@ -153,7 +148,7 @@ public class JMSArgumentFinder {
             return result.longValue();
         }
     }
-    
+
     public Long findTimeout(Map decodedParameters) {
         return findLong(decodedParameters,
                         HJBConstants.TIMEOUT,
@@ -163,11 +158,10 @@ public class JMSArgumentFinder {
 
     public int findNumberToCollect(Map decodedParameters) {
         return findInteger(decodedParameters,
-                        HJBConstants.NUMBER_TO_COLLECT,
-                        "number to collect",
-                        new Integer(HJBConstants.DEFAULT_NUMBER_TO_COLLECT)).intValue();
+                           HJBConstants.NUMBER_TO_COLLECT,
+                           "number to collect",
+                           new Integer(HJBConstants.DEFAULT_NUMBER_TO_COLLECT)).intValue();
     }
-
 
     public Long findTimeToLive(Map decodedParameters) {
         return findLong(decodedParameters,
@@ -198,14 +192,9 @@ public class JMSArgumentFinder {
             case Session.SESSION_TRANSACTED:
                 return rawValue.intValue();
             default:
-                if (LOG.isDebugEnabled()) {
-                    String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
-                                                         "acknowledgement mode",
-                                                         rawValue,
-                                                         new Integer(HJBConstants.DEFAULT_ACKNOWLEDGEMENT_MODE));
-                    LOG.debug(message);
-                }
-                return HJBConstants.DEFAULT_ACKNOWLEDGEMENT_MODE;
+                Integer defaultValue = new Integer(HJBConstants.DEFAULT_ACKNOWLEDGEMENT_MODE);
+                warnAboutUsingDefault("acknowledgement mode", rawValue, defaultValue);
+                return defaultValue.intValue();
         }
     }
 
@@ -229,8 +218,7 @@ public class JMSArgumentFinder {
         }
         return (String) rawSubscriberName;
     }
-    
-    
+
     public String findClientId(Map decodedParameters) {
         Object rawValue = decodedParameters.get(HJBConstants.CLIENT_ID);
         return (null == rawValue) ? null : "" + rawValue;
@@ -321,13 +309,7 @@ public class JMSArgumentFinder {
                                   Object defaultValue) {
         Object rawValue = decodedParameters.get(key);
         if (!(rawValue instanceof Integer)) {
-            if (LOG.isDebugEnabled()) {
-                String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
-                                                     name,
-                                                     rawValue,
-                                                     defaultValue);
-                LOG.debug(message);
-            }
+            warnAboutUsingDefault(name, rawValue, defaultValue);
             rawValue = defaultValue;
         }
         return (Integer) rawValue;
@@ -339,13 +321,7 @@ public class JMSArgumentFinder {
                                   Object defaultValue) {
         Object rawValue = decodedParameters.get(key);
         if (!(rawValue instanceof Boolean)) {
-            if (LOG.isDebugEnabled()) {
-                String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
-                                                     name,
-                                                     rawValue,
-                                                     defaultValue);
-                LOG.debug(message);
-            }
+            warnAboutUsingDefault(name, rawValue, defaultValue);
             rawValue = defaultValue;
         }
         return (Boolean) rawValue;
@@ -357,16 +333,22 @@ public class JMSArgumentFinder {
                             Object defaultValue) {
         Object rawValue = decodedParameters.get(key);
         if (!(rawValue instanceof Long)) {
-            if (LOG.isDebugEnabled()) {
-                String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
-                                                     name,
-                                                     rawValue,
-                                                     defaultValue);
-                LOG.debug(message);
-            }
+            warnAboutUsingDefault(name, rawValue, defaultValue);
             rawValue = defaultValue;
         }
         return (Long) rawValue;
+    }
+
+    protected void warnAboutUsingDefault(String name,
+                                         Object rawValue,
+                                         Object defaultValue) {
+        if (LOG.isDebugEnabled()) {
+            String message = strings().getString(HJBStrings.IGNORE_AND_DEFAULT_WARNING,
+                                                 name,
+                                                 rawValue,
+                                                 defaultValue);
+            LOG.debug(message);
+        }
     }
 
     protected String findHJBMessageAsText(Map decodedParameters) {
@@ -450,5 +432,5 @@ public class JMSArgumentFinder {
     private static final Logger LOG = Logger.getLogger(JMSArgumentFinder.class);
     private static final Pattern DESTINATION_PATH_MATCHER = Pattern.compile("^/[^/]*/[^/]*/(\\w+)/"
             + PathNaming.DESTINATION + "/(.+)/?$");
-    private static final HJBStrings STRINGS = new HJBStrings();    
+    private static final HJBStrings STRINGS = new HJBStrings();
 }

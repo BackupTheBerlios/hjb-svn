@@ -39,14 +39,14 @@ public class ConnectionListingTest extends BaseHJBTestCase {
     public void testGetListingIncludesAllConnections() {
         String expectedOutput = createSomeSessions();
         assertEquals(expectedOutput,
-                     new ConnectionListing(testConnection).getListing("/testProvider/testFactory/connection-10"));
+                     new ConnectionListing(testConnection).getListing("/testProvider/testFactory"));
     }
 
     public void testWriteListingIncludesAllConnections() {
         StringWriter sw = new StringWriter();
         String expectedOutput = createSomeSessions();
         new ConnectionListing(testConnection).writeListing(sw,
-                                                           "/testProvider/testFactory/connection-10",
+                                                           "/testProvider/testFactory",
                                                            false);
         assertEquals(expectedOutput, sw.toString());
     }
@@ -55,35 +55,16 @@ public class ConnectionListingTest extends BaseHJBTestCase {
         StringWriter sw = new StringWriter();
         String expectedOutput = createSomeSessions();
         addDefaultTestBrowser();
-        expectedOutput = expectedOutput
-                + CR
-                + "/testProvider/testFactory/connection-10/session-1"
-                + CR
-                + "acknowledgement-mode=(int 1)"
-                + CR
-                + HJBConstants.CREATION_TIME
-                + "="
+        expectedOutput = expectedOutput + CR + CR
+                + "/testProvider/testFactory/connection-10/session-1:" + CR
+                + "total 0" + CR + CR
+                + "/testProvider/testFactory/connection-10/session-0:" + CR
+                + "total 1" + CR + "browser-0[(source mockQueue)]" + CR + '\t'
+                + HJBConstants.CREATION_TIME + "="
                 + defaultClockTimeAsHJBEncodedLong()
-                + CR
-                + "transacted=(boolean false)"
-                + CR
-                + CR
-                + "/testProvider/testFactory/connection-10/session-0"
-                + CR
-                + "acknowledgement-mode=(int 1)"
-                + CR
-                + HJBConstants.CREATION_TIME
-                + "="
-                + defaultClockTimeAsHJBEncodedLong()
-                + CR
-                + "transacted=(boolean false)"
-                + CR
-                + "/testProvider/testFactory/connection-10/session-0/browser-0[(source mockQueue)]"
-                + CR + HJBConstants.CREATION_TIME + "="
-                + defaultClockTimeAsHJBEncodedLong() + CR
-                + "message-selector=testSelector";
+                + ", message-selector=testSelector";
         new ConnectionListing(testConnection).writeListing(sw,
-                                                           "/testProvider/testFactory/connection-10",
+                                                           "/testProvider/testFactory",
                                                            true);
         assertEquals(expectedOutput, sw.toString());
     }
@@ -91,8 +72,16 @@ public class ConnectionListingTest extends BaseHJBTestCase {
     protected String createSomeSessions() {
         testConnection.createSession(true, Session.AUTO_ACKNOWLEDGE);
         testConnection.createSession(false, Session.DUPS_OK_ACKNOWLEDGE);
-        String expectedOutput = "/testProvider/testFactory/connection-10/session-1"
-                + CR + "/testProvider/testFactory/connection-10/session-0" + CR;
+        String expectedOutput = "/testProvider/testFactory/connection-10:" + CR
+                + "total 2" + CR + "session-1" + CR
+                + "\tacknowledgement-mode=(int 1), "
+                + HJBConstants.CREATION_TIME + "="
+                + defaultClockTimeAsHJBEncodedLong()
+                + ", transacted=(boolean false)" + CR + "session-0" + CR
+                + "\tacknowledgement-mode=(int 1), "
+                + HJBConstants.CREATION_TIME + "="
+                + defaultClockTimeAsHJBEncodedLong()
+                + ", transacted=(boolean false)";
         return expectedOutput;
     }
 

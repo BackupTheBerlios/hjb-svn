@@ -64,10 +64,10 @@ public class SessionDescriptionTest extends BaseHJBTestCase {
 
         SessionDescription testDescription = new SessionDescription(testHJBSession);
         String expectedOutput = testDescription.toString() + CR
-                + "acknowledgement-mode=(int 1)" + CR
+                + "\tacknowledgement-mode=(int 1), "
                 + HJBConstants.CREATION_TIME + "="
-                + defaultClockTimeAsHJBEncodedLong() + CR
-                + "transacted=(boolean true)";
+                + defaultClockTimeAsHJBEncodedLong()
+                + ", transacted=(boolean true)";
         System.err.println(testDescription.longDescription());
 
         assertContains(testDescription.toString(), "0");

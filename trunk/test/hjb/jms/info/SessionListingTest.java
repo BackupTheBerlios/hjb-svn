@@ -52,49 +52,41 @@ public class SessionListingTest extends BaseHJBTestCase {
     public void testRecurseListingAddsSessionObjectListings() {
         StringWriter sw = new StringWriter();
         createSomeSessionObjects();
-        String expectedOutput = "/testProvider/testFactory/connection-10/session-0/consumer-0"
+        String expectedOutput = "/testProvider/testFactory/connection-10/session-0:"
                 + CR
+                + "total 4"
+                + CR
+                + "consumer-0"
+                + CR
+                + '\t'
                 + HJBConstants.CREATION_TIME
                 + "="
                 + defaultClockTimeAsHJBEncodedLong()
+                + ", message-selector=testSelector"
                 + CR
-                + "message-selector=testSelector"
+                + "subscriber-0[(source mockTopic) (nolocal? false)]"
                 + CR
-                + "/testProvider/testFactory/connection-10/session-0/subscriber-0[(source mockTopic) (nolocal? false)]"
-                + CR
+                + '\t'
                 + HJBConstants.CREATION_TIME
                 + "="
                 + defaultClockTimeAsHJBEncodedLong()
+                + ", message-selector=testSelector, no-local=(boolean false), subscriber-name=testTopic"
                 + CR
-                + "message-selector=testSelector"
+                + "producer-0[(target supplied-by-sender) (priority -4)]"
                 + CR
-                + "no-local=(boolean false)"
-                + CR
-                + "subscriber-name=testTopic"
-                + CR
-                + "/testProvider/testFactory/connection-10/session-0/producer-0[(target supplied-by-sender) (priority -4)]"
-                + CR
+                + '\t'
                 + HJBConstants.CREATION_TIME
                 + "="
                 + defaultClockTimeAsHJBEncodedLong()
+                + ", delivery-mode=(int 1), disable-message-ids=(boolean false), disable-timestamps=(boolean false), priority=(int -4), time-to-live=(long 1)"
                 + CR
-                + "delivery-mode=(int 1)"
+                + "browser-0[(source mockQueue)]"
                 + CR
-                + "disable-message-ids=(boolean false)"
-                + CR
-                + "disable-timestamps=(boolean false)"
-                + CR
-                + "priority=(int -4)"
-                + CR
-                + "time-to-live=(long 1)"
-                + CR
-                + "/testProvider/testFactory/connection-10/session-0/browser-0[(source mockQueue)]"
-                + CR
+                + '\t'
                 + HJBConstants.CREATION_TIME
                 + "="
                 + defaultClockTimeAsHJBEncodedLong()
-                + CR
-                + "message-selector=testSelector";
+                + ", message-selector=testSelector";
         new SessionListing(testSession).writeListing(sw,
                                                      "/testProvider/testFactory/connection-10",
                                                      true);
@@ -106,13 +98,17 @@ public class SessionListingTest extends BaseHJBTestCase {
         addDefaultTestProducer();
         addDefaultTestSubscriber();
         addDefaultTestBrowser();
-        String expectedOutput = "/testProvider/testFactory/connection-10/session-0/consumer-0"
+        String expectedOutput = "/testProvider/testFactory/connection-10/session-0:"
                 + CR
-                + "/testProvider/testFactory/connection-10/session-0/subscriber-0[(source mockTopic) (nolocal? false)]"
+                + "total 4"
                 + CR
-                + "/testProvider/testFactory/connection-10/session-0/producer-0[(target supplied-by-sender) (priority -4)]"
+                + "consumer-0"
                 + CR
-                + "/testProvider/testFactory/connection-10/session-0/browser-0[(source mockQueue)]";
+                + "subscriber-0[(source mockTopic) (nolocal? false)]"
+                + CR
+                + "producer-0[(target supplied-by-sender) (priority -4)]"
+                + CR
+                + "browser-0[(source mockQueue)]";
         return expectedOutput;
     }
 

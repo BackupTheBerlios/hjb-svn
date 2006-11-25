@@ -92,16 +92,30 @@ public class SessionListing implements JMSObjectListing {
      */
     public void writeListing(Writer aWriter, String prefix, boolean recurse) {
         PrintWriter pw = new PrintWriter(aWriter);
+
+        JMSObjectDescription d = new SessionDescription(getTheSession());
         String prefixEndingInSlash = prefix.endsWith("/") ? prefix : prefix
                 + "/";
-        writeJMSObjects(pw, prefixEndingInSlash, recurse);
+        String sessionPrefix = prefixEndingInSlash + PathNaming.SESSION + "-"
+                + getSessionIndex() + "/";
+        String totalLine = strings().getString(HJBStrings.LISTING_TOTAL,
+                                               new Integer(getListingTotal()));
+        pw.println(prefixEndingInSlash + d + ':');
+        pw.println(totalLine);
+        writeJMSObjects(pw, sessionPrefix, recurse);
+    }
+
+    public int getListingTotal() {
+        HJBSession h = getTheSession();
+        return h.getConsumers().getItemDescriptions().length
+                + h.getBrowsers().getItemDescriptions().length
+                + h.getSubscribers().getItemDescriptions().length
+                + h.getProducers().getItemDescriptions().length;
     }
 
     protected void writeJMSObjects(PrintWriter aWriter,
-                                   String prefixEndingInSlash,
+                                   String sessionPrefix,
                                    boolean recurse) {
-        String sessionPrefix = prefixEndingInSlash + PathNaming.SESSION + "-"
-                + getSessionIndex() + "/";
         writeConsumers(aWriter, sessionPrefix, recurse);
         writeSubscribers(aWriter, sessionPrefix, recurse);
         writeProducers(aWriter, sessionPrefix, recurse);
@@ -166,7 +180,6 @@ public class SessionListing implements JMSObjectListing {
                                      String sessionPrefix,
                                      boolean useLongDescription) {
         for (int i = 0; i < descriptions.length; i++) {
-            aWriter.print(sessionPrefix);
             if (useLongDescription) {
                 aWriter.print(descriptions[i].longDescription());
             } else {

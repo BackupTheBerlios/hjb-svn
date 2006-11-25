@@ -28,6 +28,7 @@ import java.util.Map;
 
 import hjb.jms.HJBProvider;
 import hjb.misc.HJBStrings;
+import hjb.misc.PathNaming;
 
 /**
  * <code>ProviderListing</code> is used to generate a text list of the
@@ -92,6 +93,16 @@ public class ProviderListing implements JMSObjectListing {
     }
 
     /**
+     * Gets the total number of items contained in the listing.
+     * 
+     * @return the total number of items contained in the listing.
+     */
+    public int getListingTotal() {
+        return getTheProvider().getConnectionFactories().size()
+                + getTheProvider().getDestinations().size();
+    }
+
+    /**
      * Writes the text corresponding to the path portion of the URIs of the
      * destinations and connection factories registered with the provider.
      * 
@@ -111,8 +122,13 @@ public class ProviderListing implements JMSObjectListing {
         PrintWriter pw = new PrintWriter(aWriter);
         String prefixEndingInSlash = prefix.endsWith("/") ? prefix : prefix
                 + "/";
+        String prefixWithoutFinalSlash = prefixEndingInSlash.substring(0,
+                                                                       (prefixEndingInSlash.length() - 1));
+        pw.println(prefixWithoutFinalSlash + ':');
+        pw.println(strings().getString(HJBStrings.LISTING_TOTAL,
+                                       new Integer(getListingTotal())));
         writeDestinations(pw, prefixEndingInSlash);
-        writeConnectionFactories(pw, prefixEndingInSlash);
+        writeConnectionFactories(pw);
         if (getTheProvider().getConnectionFactories().size() > 0 && recurse) {
             writeConnectionFactoryListings(pw, prefixEndingInSlash);
         }
@@ -124,9 +140,9 @@ public class ProviderListing implements JMSObjectListing {
         for (Iterator i = connectionFactories.keySet().iterator(); i.hasNext();) {
             String factoryName = (String) i.next();
             aWriter.println();
-            aWriter.println(prefixEndingInSlash + factoryName);
             listingFor(factoryName).writeListing(aWriter,
-                                                 prefixEndingInSlash + factoryName + "/",
+                                                 prefixEndingInSlash
+                                                         + factoryName + "/",
                                                  true);
         }
     }
@@ -135,13 +151,10 @@ public class ProviderListing implements JMSObjectListing {
         return new ConnectionFactoryListing(getTheProvider().getConnectionFactory(factoryName));
     }
 
-    protected void writeConnectionFactories(PrintWriter aWriter,
-                                            String prefixEndingInSlash) {
+    protected void writeConnectionFactories(PrintWriter aWriter) {
         Map connectionFactories = getTheProvider().getConnectionFactories();
         for (Iterator i = connectionFactories.keySet().iterator(); i.hasNext();) {
-            String factoryName = (String) i.next();
-            aWriter.print(prefixEndingInSlash + factoryName);
-            aWriter.println();
+            aWriter.println((String) i.next());
         }
     }
 
@@ -149,8 +162,7 @@ public class ProviderListing implements JMSObjectListing {
                                      String prefixEndingInSlash) {
         Map destinations = getTheProvider().getDestinations();
         for (Iterator i = destinations.keySet().iterator(); i.hasNext();) {
-            String destinationName = (String) i.next();
-            aWriter.println(prefixEndingInSlash + destinationName);
+            aWriter.println(PathNaming.DESTINATION + '/' + ((String) i.next()));
         }
     }
 

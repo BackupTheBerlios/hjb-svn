@@ -42,13 +42,13 @@ import hjb.msg.HJBMessage;
  * itself, and finally the message body is written.
  * 
  * <pre>
- *   header1=headerValue1&lt;CR&gt;
- *   header2=headerValue2&lt;CR&gt;
- *   header3=headerValue3&lt;CR&gt;
- *   ...
- *   headerN=headerValueN&lt;CR&gt;
- *   %&lt;CR&gt;
- *   ... insert message body here ...
+ *    header1=headerValue1&lt;CR&gt;
+ *    header2=headerValue2&lt;CR&gt;
+ *    header3=headerValue3&lt;CR&gt;
+ *    ...
+ *    headerN=headerValueN&lt;CR&gt;
+ *    %&lt;CR&gt;
+ *    ... insert message body here ...
  * </pre>
  * 
  * <p />
@@ -56,13 +56,13 @@ import hjb.msg.HJBMessage;
  * and with a '%%' is used to separate each one:
  * 
  * <pre>
- *  message1
- *   %%&lt;CR&gt;
- *  message2
- *   %%&lt;CR&gt;
- *  ....
- *  messageN
- *   %%&lt;CR&gt;
+ *   message1
+ *    %%&lt;CR&gt;
+ *   message2
+ *    %%&lt;CR&gt;
+ *   ....
+ *   messageN
+ *    %%&lt;CR&gt;
  * </pre>
  * 
  * @author Tim Emiola
@@ -158,6 +158,20 @@ public class HJBMessageWriter {
      *            a <code>Writer</code>
      */
     public void writeAsText(Map anyMap, Writer aWriter) {
+        writeAsText(anyMap, aWriter, false);
+    }
+
+    /**
+     * Writes the content of <code>anyMap</code> to <code>aWriter</code>.
+     * 
+     * @param anyMap
+     *            a <code>Map</code>
+     * @param aWriter
+     *            a <code>Writer</code>
+     * @param onOneLine
+     *            indicates whether to restrict output to one line
+     */
+    public void writeAsText(Map anyMap, Writer aWriter, boolean onOneLine) {
         if (null == anyMap) return;
         PrintWriter pw = new PrintWriter(aWriter);
         for (Iterator i = anyMap.keySet().iterator(); i.hasNext();) {
@@ -166,9 +180,25 @@ public class HJBMessageWriter {
                                          key,
                                          anyMap.get(key)));
             if (i.hasNext()) {
-                pw.println();
+                if (onOneLine) {
+                    pw.print(", ");
+                } else {
+                    pw.println();
+                }
             }
         }
+    }
+
+    /**
+     * Writes the content of <code>anyMap</code> to <code>aWriter</code>.
+     * 
+     * @param anyMap
+     *            a <code>Map</code>
+     * @param aWriter
+     *            a <code>Writer</code>
+     */
+    public void writeAsTextOnALine(Map anyMap, Writer aWriter) {
+        writeAsText(anyMap, aWriter, true);
     }
 
     /**

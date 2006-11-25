@@ -23,10 +23,12 @@ package hjb.jms.info;
 import java.io.StringWriter;
 
 import javax.jms.ConnectionFactory;
+import javax.jms.Session;
 
 import org.jmock.Mock;
 
 import hjb.jms.HJBConnectionFactory;
+import hjb.misc.HJBConstants;
 import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionFactoryBuilder;
 
@@ -51,20 +53,58 @@ public class ConnectionFactoryListingTest extends BaseHJBTestCase {
         StringWriter sw = new StringWriter();
         String expectedOutput = createSomeConnections();
         expectedOutput = expectedOutput + CR
-                + "/testProvider/testFactory/connection-1" + CR + CR
-                + "/testProvider/testFactory/connection-0" + CR;
+                + "/testProvider/testFactory/connection-1:" + CR + "total 0"
+                + CR + CR + "/testProvider/testFactory/connection-0:" + CR
+                + "total 2" + CR + "session-1" + CR
+                + "\tacknowledgement-mode=(int 1), "
+                + HJBConstants.CREATION_TIME + "="
+                + defaultClockTimeAsHJBEncodedLong()
+                + ", transacted=(boolean false)" + CR + "session-0" + CR
+                + "\tacknowledgement-mode=(int 1), "
+                + HJBConstants.CREATION_TIME + "="
+                + defaultClockTimeAsHJBEncodedLong()
+                + ", transacted=(boolean false)" + CR + CR
+                + "/testProvider/testFactory/connection-0/session-1:" + CR
+                + "total 0" + CR + CR
+                + "/testProvider/testFactory/connection-0/session-0:" + CR
+                + "total 0" + CR;
 
         new ConnectionFactoryListing(testFactory).writeListing(sw,
                                                                "/testProvider/testFactory",
                                                                true);
+        System.err.println(sw.toString());
         assertEquals(expectedOutput, sw.toString());
     }
 
     protected String createSomeConnections() {
         testFactory.createConnection();
         testFactory.createConnection();
-        String expectedOutput = "/testProvider/testFactory/connection-1" + CR
-                + "/testProvider/testFactory/connection-0" + CR;
+        testFactory.getConnection(0).createSession(true,
+                                                   Session.AUTO_ACKNOWLEDGE);
+        testFactory.getConnection(0).createSession(true,
+                                                   Session.AUTO_ACKNOWLEDGE);
+        String expectedOutput = "/testProvider/testFactory:" + CR + "total 2"
+                + CR + "connection-1" + CR + '\t' + "clientId=, "
+                + HJBConstants.CREATION_TIME + "="
+                + defaultClockTimeAsHJBEncodedLong()
+                + ", jms-major-version=(int 444)"
+                + ", jms-minor-version=(int 777)"
+                + ", jms-provider-name=testProviderName"
+                + ", jms-version=testVersion"
+                + ", jmsx-property-names=[fakeMetaData1, fakeMetaData2]"
+                + ", provider-major-version=(int 999)"
+                + ", provider-minor-version=(int 999)"
+                + ", provider-version=testProviderVersion" + CR
+                + "connection-0" + CR + '\t' + "clientId=, "
+                + HJBConstants.CREATION_TIME + "="
+                + defaultClockTimeAsHJBEncodedLong()
+                + ", jms-major-version=(int 444)"
+                + ", jms-minor-version=(int 777)"
+                + ", jms-provider-name=testProviderName"
+                + ", jms-version=testVersion" + ", jmsx-property-names=[]"
+                + ", provider-major-version=(int 999)"
+                + ", provider-minor-version=(int 999)"
+                + ", provider-version=testProviderVersion" + CR;
         return expectedOutput;
     }
 

@@ -95,9 +95,9 @@ public class BrowserDescriptionTest extends BaseHJBTestCase {
                                                                     defaultTestClock().getCurrentTime());
 
         String expectedOutput = testDescription.toString() + CR
-                + HJBConstants.CREATION_TIME + "="
-                + defaultClockTimeAsHJBEncodedLong() + CR
-                + "message-selector=testSelector";
+                + '\t' + HJBConstants.CREATION_TIME + "="
+                + defaultClockTimeAsHJBEncodedLong()
+                + ", message-selector=testSelector";
 
         assertContains(testDescription.longDescription(), "0");
         assertContains(testDescription.longDescription(), PathNaming.BROWSER);

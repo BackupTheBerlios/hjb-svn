@@ -83,7 +83,8 @@ public class JMSObjectDescription {
         PrintWriter pw = new PrintWriter(aWriter);
         pw.print(this);
         pw.println();
-        new HJBMessageWriter().writeAsText(attributesAsAMap(), pw);
+        pw.print('\t');
+        new HJBMessageWriter().writeAsTextOnALine(attributesAsAMap(), pw);
     }
 
     /**

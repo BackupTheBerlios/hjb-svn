@@ -101,11 +101,11 @@ public class SubscriberDescriptionTest extends BaseHJBTestCase {
                                                                           0,
                                                                           defaultTestClock().getCurrentTime());
 
-        String expectedOutput = testDescription.toString() + CR
+        String expectedOutput = testDescription.toString() + CR + '\t'
                 + HJBConstants.CREATION_TIME + "="
-                + defaultClockTimeAsHJBEncodedLong() + CR
-                + "message-selector=testSelector" + CR
-                + "no-local=(boolean false)" + CR + "subscriber-name=testTopic";
+                + defaultClockTimeAsHJBEncodedLong()
+                + ", message-selector=testSelector"
+                + ", no-local=(boolean false), subscriber-name=testTopic";
 
         assertContains(testDescription.longDescription(), "0");
         assertContains(testDescription.longDescription(), PathNaming.SUBSCRIBER);

@@ -508,4 +508,6 @@ public final class HJBStrings {
     public static final String DESCRIPTION_OF_COLLECT_FROM_SUBSCRIBER = "description.of_collect.from.subscriber";
 
     public static final String TIMEOUT_MUST_BE_ABOVE_ZERO = "timeout.must.be.above.zero";
+
+    public static final String LISTING_TOTAL = "listing.total";
 }

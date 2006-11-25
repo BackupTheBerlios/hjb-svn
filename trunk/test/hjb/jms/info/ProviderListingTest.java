@@ -31,6 +31,7 @@ import org.jmock.Mock;
 
 import hjb.jms.HJBProvider;
 import hjb.jms.ProviderBuilder;
+import hjb.misc.HJBConstants;
 import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionFactoryBuilder;
 import hjb.testsupport.MockContextBuilder;
@@ -58,10 +59,21 @@ public class ProviderListingTest extends BaseHJBTestCase {
         String expectedOutput = registerSomeObjects();
         testProvider.getConnectionFactory("fooBarFactory")
             .createHJBConnection(null);
-        expectedOutput = expectedOutput + CR + "/testProvider/fooBarFactory"
-                + CR + "/testProvider/fooBarFactory/connection-0" + CR + CR
-                + "/testProvider/fooBarFactory/connection-0" + CR + CR
-                + "/testProvider/barFooFactory" + CR;
+        expectedOutput = expectedOutput + CR + "/testProvider/fooBarFactory:"
+                + CR + "total 1" + CR + "connection-0" + CR + '\t'
+                + "clientId=, " + HJBConstants.CREATION_TIME + "="
+                + defaultClockTimeAsHJBEncodedLong()
+                + ", jms-major-version=(int 444)"
+                + ", jms-minor-version=(int 777)"
+                + ", jms-provider-name=testProviderName"
+                + ", jms-version=testVersion"
+                + ", jmsx-property-names=[fakeMetaData1, fakeMetaData2]"
+                + ", provider-major-version=(int 999)"
+                + ", provider-minor-version=(int 999)"
+                + ", provider-version=testProviderVersion" + CR + CR
+                + "/testProvider/fooBarFactory/connection-0:" + CR + "total 0"
+                + CR + CR + "/testProvider/barFooFactory:" + CR + "total 0"
+                + CR;
 
         new ProviderListing(testProvider).writeListing(sw,
                                                        "/testProvider",
@@ -75,10 +87,10 @@ public class ProviderListingTest extends BaseHJBTestCase {
         testProvider.registerDestination("barBazDestination");
         testProvider.registerDestination("bazbarDestination");
 
-        String expectedOutput = "/testProvider/bazbarDestination" + CR
-                + "/testProvider/barBazDestination" + CR
-                + "/testProvider/fooBarFactory" + CR
-                + "/testProvider/barFooFactory" + CR;
+        String expectedOutput = "/testProvider:" + CR + "total 4" + CR
+                + "destination/bazbarDestination" + CR
+                + "destination/barBazDestination" + CR + "fooBarFactory" + CR
+                + "barFooFactory" + CR;
 
         return expectedOutput;
     }

@@ -20,14 +20,16 @@
  */
 package hjb.jms.info;
 
+import hjb.jms.HJBConnection;
+import hjb.jms.HJBSession;
+import hjb.misc.HJBStrings;
+import hjb.misc.PathNaming;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.Map;
-
-import hjb.jms.HJBConnection;
-import hjb.misc.HJBStrings;
 
 /**
  * <code>ConnectionListing</code> is used to generate a text list of the
@@ -94,33 +96,48 @@ public class ConnectionListing implements JMSObjectListing {
         PrintWriter pw = new PrintWriter(aWriter);
         String prefixEndingInSlash = prefix.endsWith("/") ? prefix : prefix
                 + "/";
-        writeSessions(pw, prefixEndingInSlash);
+        String totalLine = strings().getString(HJBStrings.LISTING_TOTAL,
+                                               new Integer(getListingTotal()));
+        String prefixEndingWithConnection = prefixEndingInSlash
+                + PathNaming.CONNECTION + '-'
+                + getTheConnection().getConnectionIndex();
+        pw.println(prefixEndingWithConnection + ':');
+        pw.println(totalLine);
+        writeSessions(pw);
         if (getTheConnection().getActiveSessions().size() > 0 && recurse) {
-            writeSessionListings(pw, prefixEndingInSlash);
+            writeSessionListings(pw, prefixEndingWithConnection + "/");
         }
+    }
+
+    public int getListingTotal() {
+        return getTheConnection().getActiveSessions().size();
     }
 
     protected void writeSessionListings(PrintWriter aWriter,
                                         String prefixEndingInSlash) {
         Map activeSessions = getTheConnection().getActiveSessions();
+        if (activeSessions.size() > 0) {
+            aWriter.println();
+        }
         for (Iterator i = activeSessions.keySet().iterator(); i.hasNext();) {
             Integer sessionIndex = (Integer) i.next();
-            JMSObjectDescription d = getTheConnection().getSessionDescription(sessionIndex.intValue());
             aWriter.println();
-            aWriter.println(prefixEndingInSlash + d.longDescription());
-            new SessionListing(getTheConnection().getSession(sessionIndex.intValue())).writeListing(aWriter,
-                                                                                                    prefixEndingInSlash,
-                                                                                                    true);
+            HJBSession theSession = getTheConnection().getSession(sessionIndex.intValue());
+            new SessionListing(theSession).writeListing(aWriter,
+                                                      prefixEndingInSlash,
+                                                      true);
         }
     }
 
-    protected void writeSessions(PrintWriter aWriter, String prefixEndingInSlash) {
+    protected void writeSessions(PrintWriter aWriter) {
         Map activeSessions = getTheConnection().getActiveSessions();
         for (Iterator i = activeSessions.keySet().iterator(); i.hasNext();) {
             Integer sessionIndex = (Integer) i.next();
             JMSObjectDescription d = getTheConnection().getSessionDescription(sessionIndex.intValue());
-            aWriter.print(prefixEndingInSlash + d);
-            aWriter.println();
+            aWriter.print(d.longDescription());
+            if (i.hasNext()) {
+                aWriter.println();
+            }
         }
     }
 

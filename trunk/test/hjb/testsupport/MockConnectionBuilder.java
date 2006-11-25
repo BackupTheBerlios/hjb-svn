@@ -40,7 +40,8 @@ public class MockConnectionBuilder {
     }
 
     public Mock createMockConnection() {
-        return createMockConnection((Session) sessionBuilder.createMockSession().proxy());
+        return createMockConnection((Session) sessionBuilder.createMockSession()
+            .proxy());
     }
 
     public Mock createMockConnection(Session testSession) {
@@ -50,6 +51,9 @@ public class MockConnectionBuilder {
         result.stubs()
             .method("createSession")
             .will(new ReturnStub(testSession));
+        ConnectionMetaData testMetaData = (ConnectionMetaData) createConnectionMetaDataMock().proxy();
+        result.stubs().method("getMetaData").will(new ReturnStub(testMetaData));
+
         return result;
     }
 
@@ -57,9 +61,12 @@ public class MockConnectionBuilder {
         Mock result = new Mock(Connection.class);
         result.stubs().method("setExceptionListener");
         result.stubs().method("getClientID").will(new ReturnStub(null));
+        ConnectionMetaData testMetaData = (ConnectionMetaData) createConnectionMetaDataMock().proxy();
+        result.stubs().method("getMetaData").will(new ReturnStub(testMetaData));
         result.stubs()
             .method("createSession")
-            .will(new ReturnStub((Session) sessionBuilder.createMockSession().proxy()));
+            .will(new ReturnStub((Session) sessionBuilder.createMockSession()
+                .proxy()));
         return result;
     }
 

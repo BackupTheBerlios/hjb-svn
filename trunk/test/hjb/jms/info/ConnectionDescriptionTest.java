@@ -20,16 +20,15 @@
  */
 package hjb.jms.info;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionMetaData;
-
-import org.jmock.Mock;
-
 import hjb.jms.HJBConnection;
 import hjb.misc.HJBConstants;
 import hjb.misc.PathNaming;
 import hjb.testsupport.BaseHJBTestCase;
 import hjb.testsupport.MockConnectionBuilder;
+
+import javax.jms.Connection;
+
+import org.jmock.Mock;
 
 public class ConnectionDescriptionTest extends BaseHJBTestCase {
 
@@ -73,32 +72,26 @@ public class ConnectionDescriptionTest extends BaseHJBTestCase {
     }
 
     public void testLongDescriptionIncludeConnectionAttributes() {
-        Mock mockMetaData = new MockConnectionBuilder().createConnectionMetaDataMock();
-        ConnectionMetaData testMetaData = (ConnectionMetaData) mockMetaData.proxy();
         Mock mockConnection = new MockConnectionBuilder().createMockConnection();
         mockConnection.stubs()
             .method("getClientID")
             .will(returnValue("foobar"));
-        mockConnection.stubs()
-            .method("getMetaData")
-            .will(returnValue(testMetaData));
-
         ConnectionDescription testDescription = new ConnectionDescription(new HJBConnection((Connection) mockConnection.proxy(),
                                                                                             null,
                                                                                             1,
                                                                                             defaultTestClock()));
 
-        String expectedOutput = testDescription.toString() + CR
-                + "clientId=foobar" + CR + HJBConstants.CREATION_TIME + "="
-                + defaultClockTimeAsHJBEncodedLong() + CR
-                + "jms-major-version=(int 444)" + CR
-                + "jms-minor-version=(int 777)" + CR
-                + "jms-provider-name=testProviderName" + CR
-                + "jms-version=testVersion" + CR
-                + "jmsx-property-names=[fakeMetaData1, fakeMetaData2]" + CR
-                + "provider-major-version=(int 999)" + CR
-                + "provider-minor-version=(int 999)" + CR
-                + "provider-version=testProviderVersion";
+        String expectedOutput = testDescription.toString() + CR + '\t'
+                + "clientId=foobar, " + HJBConstants.CREATION_TIME + "="
+                + defaultClockTimeAsHJBEncodedLong()
+                + ", jms-major-version=(int 444)"
+                + ", jms-minor-version=(int 777)"
+                + ", jms-provider-name=testProviderName"
+                + ", jms-version=testVersion"
+                + ", jmsx-property-names=[fakeMetaData1, fakeMetaData2]"
+                + ", provider-major-version=(int 999)"
+                + ", provider-minor-version=(int 999)"
+                + ", provider-version=testProviderVersion";
 
         assertContains(testDescription.toString(), "1");
         assertContains(testDescription.toString(), PathNaming.CONNECTION);

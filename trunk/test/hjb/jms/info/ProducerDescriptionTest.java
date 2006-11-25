@@ -110,12 +110,12 @@ public class ProducerDescriptionTest extends BaseHJBTestCase {
                                                                       defaultTestClock().getCurrentTime());
 
         String expectedOutput = testDescription.toString() + CR
-                + HJBConstants.CREATION_TIME + "="
-                + defaultClockTimeAsHJBEncodedLong() + CR
-                + "delivery-mode=(int 1)" + CR
-                + "disable-message-ids=(boolean false)" + CR
-                + "disable-timestamps=(boolean true)" + CR
-                + "priority=(int -3)" + CR + "time-to-live=(long 10002000)";
+                + '\t' + HJBConstants.CREATION_TIME + "="
+                + defaultClockTimeAsHJBEncodedLong()
+                + ", delivery-mode=(int 1)"
+                + ", disable-message-ids=(boolean false)"
+                + ", disable-timestamps=(boolean true)"
+                + ", priority=(int -3), time-to-live=(long 10002000)";
 
         assertContains(testDescription.longDescription(), "-3");
         assertContains(testDescription.longDescription(), PathNaming.PRODUCER);
