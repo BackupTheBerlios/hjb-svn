@@ -1,0 +1,12 @@
+* Review and fix all the TODOs in the java source
+
+* Begin Ruby Client for HJB API
+
+* change 'receive' methods and uris to 'collect'
+
+  OR
+
+  * add a collect synonym for the receive uris
+
+* add the ability to query what's available on configured objects, so that
+  clients can verify that they are communicating with the right resource.

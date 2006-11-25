@@ -1,0 +1,36 @@
+2006-11-25  Timothy Emiola  <tbetbe at users point berlios point de>
+
+	* hjb0.9.1 Changed the version to 0.9.1
+
+	* hjb0.9.1 fixed an error that prevented recursive listing from
+	working
+
+	* hjb0.9.1 added the ability to configure HJB's runtime system
+	parameters from the servlet config XML file
+
+	* hjb0.9.1 added the /collect command (Collect From) for consumers
+	and subscribers.  This allows clients to collect several messages
+	from them in one request
+
+	* hjb0.9.1 Changed the output of the /list commands so that it
+	looks more like the output of 'ls -lR' when recursively listing
+
+2006-11-19  Timothy Emiola  <tbetbe at users point berlios point de>
+
+	* hjb0.9.0 added support for saving the creation time of the JMS
+	objects created by HJB
+
+	* hjb0.9.0 added the ability to list JMS sessions, connections,
+	connection factories and providers
+
+	* hjb0.9.0 started writing JMS connection errors to a unique log file
+	per JMS connection
+
+	* hjb0.9.0 added /errors URL to allow retrieving of the new
+	connection error logs
+
+	* hjb0.9.0 refactored the HJBConnection class; moved
+	session-specific behaviour into a new class HJBSession.
+
+	* hjb0.9.0 added ChangeLog
+

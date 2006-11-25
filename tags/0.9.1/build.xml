@@ -1,0 +1,191 @@
+<?xml version='1.0'?>
+<project name="HJB" default="test" basedir=".">
+
+  <description>
+    The build file used to build and deploy the HJB project.
+  </description>
+
+  <property file="${user.dir}/build.properties"/>
+  <property file="build.properties"/>
+  <property file="${hjb.deploy.properties}"/>
+
+  <import file="./instr.xml"/>
+
+  <patternset id="java.sources">
+    <include name="**/*.java"/>
+  </patternset>
+
+  <path id="java.libs">
+    <fileset dir="${lib.dir}">
+      <include name="**/*.jar"/>
+    </fileset>
+    <pathelement location="${jms.jar}"/>
+  </path>
+
+  <target name="init">
+    <fail unless="jms.jar">The jms.jar property is not set</fail>
+    <available file="${jms.jar}" property="jms.jar.present"/>
+    <fail unless="jms.jar.present">Could not locate jms jar at ${jms.jar}</fail>
+    <tstamp/>
+    <mkdir dir="${build.dir}/classes"/>
+    <mkdir dir="${dist.dir}/lib"/>
+    <mkdir dir="${reports.tests}"/>
+  </target>
+
+  <target name="compile" depends="init" description="compiles the java source code">
+    <javac 
+	srcdir="${src.dir}:${test.dir}" 
+	destdir="${build.dir}/classes" 
+	deprecation="true"
+	debug="${emma.enabled}"
+        debuglevel="lines,vars,source"
+	>
+      <patternset refid="java.sources"/>
+      <classpath refid="java.libs"/>
+    </javac>
+
+    <copy todir="${build.dir}/classes">
+      <fileset dir="${src.dir}">
+	<include name="**/*.properties"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="test" depends="compile" description="runs the junit test cases">
+
+    <junit printsummary="yes" haltonfailure="yes">
+      <classpath>
+	<pathelement location="${build.dir}/classes"/>
+	<path refid="java.libs"/>
+      </classpath>
+      <formatter type="plain"/>
+
+      <batchtest fork="yes" todir="${reports.tests}">
+	<fileset dir="${test.dir}">
+	  <include name="**/*Test.java"/>
+	</fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+  <target name="javadoc" depends="init">
+    <delete dir="${javadoc.dir}" failonerror="false"/>
+    <mkdir dir="${javadoc.dir}"/>
+    <javadoc 
+	sourcepath="${src.dir}" 
+	destdir="${javadoc.dir}"
+	packagenames="hjb.*"
+	classpathref="java.libs"
+	link=""
+	package="true"
+	author="true"
+	overview="overview.html"
+	windowtitle="HJB Project API Documentation"
+	>
+      <link href="http://java.sun.com/j2se/1.4/docs/api"/>
+      <link href="http://java.sun.com/j2ee/1.4/docs/api"/>
+    </javadoc>
+  </target>
+
+  <target name="javadoc.to.web" depends="javadoc, only.javadoc.to.web"/>
+  <target name="only.javadoc.to.web">
+    <delete dir="${javadoc.web.dir}" failonerror="false"/>
+    <copy todir="${javadoc.web.dir}">
+      <fileset dir="${javadoc.dir}"/>
+    </copy>
+  </target>
+
+  <target name="dist.main" 
+	      depends="dist.jar, dist.doc, clean" 
+	      description="creates the full source HJB distribution">
+
+    <delete dir="${dist.dir}/${src.dist}" failonerror="false"/>
+    <mkdir dir="${dist.dir}/${src.dist}"/>
+    <copy todir="${dist.dir}/${src.dist}">
+      <fileset dir="." includes="**/*" excludes="www/**/* pub/www/**/*"/> 
+    </copy>
+
+    <delete file="${dist.dir}/lib/${src.dist.jar.name}" failonerror="false"/>
+    <jar destfile="${dist.dir}/lib/${src.dist.jar.name}" basedir="${dist.dir}"
+	     includes="${src.dist}/**">
+       <manifest>
+	     <attribute name="Implementation-Title" value="HJB Full Distribution"/>
+	     <attribute name="Implementation-Version" value="${version}"/> 
+	     <attribute name="Implementation-Vendor" value="The HJB Developers"/>
+       </manifest>
+    </jar>
+
+    <delete dir="${dist.dir}/${src.dist}" failonerror="false"/>
+
+  </target>
+
+  <target name="dist.bin" 
+	  depends="dist.jar, clean" 
+	  description="creates the binary HJB distribution">
+
+    <delete dir="${dist.dir}/${bin.dist}" failonerror="false"/>
+    <mkdir dir="${dist.dir}/${bin.dist}"/>
+    <copy todir="${dist.dir}/${bin.dist}">
+      <fileset dir="." 
+               includes="${dist.dir}/lib/${dist.jar.name} lib/**/* webapps/**/* instr.xml build.* *.properties* *.txt"/>
+    </copy>
+
+    <delete file="${dist.dir}/lib/${bin.dist.jar.name}" failonerror="false"/>
+    <jar destfile="${dist.dir}/lib/${bin.dist.jar.name}" basedir="${dist.dir}" 
+         includes="${bin.dist}/**">
+      <manifest>
+	    <attribute name="Implementation-Title" value="HJB Full Distribution"/>
+	    <attribute name="Implementation-Version" value="${version}"/> 
+	    <attribute name="Implementation-Vendor" value="The HJB Developers"/>
+      </manifest>
+    </jar>
+
+    <delete dir="${dist.dir}/${bin.dist}" failonerror="false"/>
+
+  </target>
+
+  <target name="dist.webapp">
+    <ant dir="${basedir}/webapps/default" target="dist"/>
+  </target>
+
+  <target name="deploy.webapp">
+    <ant dir="${basedir}/webapps/default" target="deploy"/>
+  </target>
+
+  <target name="dist.doc" depends="javadoc" description="creates the HJB documentation distribution">
+    <delete file="${dist.dir}/lib/${doc.dist.jar.name}" failonerror="false"/>
+    <jar jarfile="${dist.dir}/lib/${doc.dist.jar.name}" basedir="${javadoc.dir}">
+      <manifest>
+	<attribute name="Implementation-Title" value="HJB Documenation"/>
+	<attribute name="Implementation-Version" value="${version}"/> 
+	<attribute name="Implementation-Vendor" value="The HJB Developers"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="dist.jar" depends="test" description="creates the HJB distribution">
+    <delete file="${dist.dir}/lib/${dist.jar.name}" failonerror="false"/>
+    <jar jarfile="${dist.dir}/lib/${dist.jar.name}">
+      <fileset dir="${build.dir}/classes"
+	       excludes="**/*Test*.class **/testsupport/**/*"
+	       />
+      <manifest>
+	<attribute name="Implementation-Title" value="HJB"/>
+	<attribute name="Implementation-Version" value="${version}"/> 
+	<attribute name="Implementation-Vendor" value="HJB Developers"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="clean" description="removes all files generated during the build">
+    <delete dir="${build.dir}" failonerror="false"/>
+    <delete dir="${javadoc.dir}" failonerror="false"/>
+    <delete dir="${web.dir}" failonerror="false"/>
+
+  </target>
+
+  <target name="clean.dist" description="removes the distribution files">
+    <delete dir="${dist.dir}" failonerror="false"/>
+  </target>
+
+</project>
