@@ -20,17 +20,12 @@
  */
 package hjb.http.cmd;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import hjb.jms.HJBRoot;
+import hjb.jms.cmd.RetrieveListing;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.jmock.Mock;
-
-import hjb.jms.HJBRoot;
-import hjb.jms.cmd.RetrieveListing;
-import hjb.misc.HJBConstants;
 
 public class ListSessionGeneratorTest extends
         BaseJMSCommandGeneratorTestCase {
@@ -43,6 +38,7 @@ public class ListSessionGeneratorTest extends
         assertFalse(generator.matches("/foo/bar/connection-1/sesssion0"));
         assertTrue(generator.matches("/foo/bar/connection-1/session-2/list"));
         assertTrue(generator.matches("/foo/baz/multiple/slashes/connection-5/session-3/list"));
+        assertTrue(generator.matches("/foo/baz/multiple/slashes/connection-5/session-3/list?recurse=bling"));
     }
 
     public void testJMSCommandAndItsRunnerAreGeneratedCorrectly() {
@@ -61,12 +57,7 @@ public class ListSessionGeneratorTest extends
         assertTrue(generator.getGeneratedCommand() instanceof RetrieveListing);
         RetrieveListing listingCommand = (RetrieveListing) generator.getGeneratedCommand();
         assertContains(listingCommand.getDescription(), "session-0");
-    }
-
-    protected Map generateMockParameterMap() {
-        Map parameterMap = new HashMap();
-        parameterMap.put(HJBConstants.LISTING_RECURSE, new Boolean(false));
-        return Collections.unmodifiableMap(parameterMap);
+        assertFalse(listingCommand.isRecursive());
     }
 
     protected void setUp() throws Exception {

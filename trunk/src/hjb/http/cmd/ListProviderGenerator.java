@@ -63,7 +63,6 @@ public class ListProviderGenerator extends PatternMatchingCommandGenerator {
         HJBTreeWalker walker = new HJBTreeWalker(root, pathInfo);
         HJBProvider factory = walker.findProvider(providerName);
         Map decodedParameters = getDecoder().decode(request.getParameterMap());
-
         this.generatedCommand = new RetrieveListing(new ProviderListing(factory),
                                                     pathInfo.substring(0,
                                                                        pathInfo.lastIndexOf("list")),
@@ -81,5 +80,5 @@ public class ListProviderGenerator extends PatternMatchingCommandGenerator {
 
     private transient RetrieveListing generatedCommand;
 
-    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/list");
+    private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/list\\??.*");
 }

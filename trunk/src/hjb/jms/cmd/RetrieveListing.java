@@ -70,6 +70,10 @@ public class RetrieveListing extends BaseJMSCommand {
         return theOutput;
     }
 
+    public boolean isRecursive() {
+        return recursive;
+    }
+
     protected void validateArguments(JMSObjectListing listing,
                                      String prefix,
                                      String rawDescription)
@@ -93,9 +97,6 @@ public class RetrieveListing extends BaseJMSCommand {
         return prefix;
     }
 
-    protected boolean isRecursive() {
-        return recursive;
-    }
 
     protected JMSObjectListing getListing() {
         return listing;

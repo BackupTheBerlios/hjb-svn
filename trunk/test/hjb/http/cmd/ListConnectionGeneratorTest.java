@@ -41,15 +41,16 @@ public class ListConnectionGeneratorTest extends
         assertFalse(generator.matches("///"));
         assertFalse(generator.matches("/foo/"));
         assertFalse(generator.matches("/foo/bar/connection-1/sesssion0"));
-        assertTrue(generator.matches("/foo/bar/connection-1/list"));
+        assertTrue(generator.matches("/foo/bar/connection-1/list?recurse"));
         assertTrue(generator.matches("/foo/baz/multiple/slashes/connection-5/list"));
+        assertTrue(generator.matches("/foo/baz/multiple/slashes/connection-5/list?recurse=AnyTing"));
     }
 
     public void testJMSCommandAndItsRunnerAreGeneratedCorrectly() {
         Mock mockRequest = generateMockRequest();
         mockRequest.expects(atLeastOnce())
             .method("getPathInfo")
-            .will(returnValue("/testProvider/testFactory/with/slash/connection-0/list"));
+            .will(returnValue("/testProvider/testFactory/with/slash/connection-0/list?recurse"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
 
         HJBRoot root = new HJBRoot(testRootPath, defaultTestClock());
@@ -61,11 +62,12 @@ public class ListConnectionGeneratorTest extends
         assertTrue(generator.getGeneratedCommand() instanceof RetrieveListing);
         RetrieveListing listingCommand = (RetrieveListing) generator.getGeneratedCommand();
         assertContains(listingCommand.getDescription(), "connection-0");
+        assertTrue(listingCommand.isRecursive());
     }
 
     protected Map generateMockParameterMap() {
         Map parameterMap = new HashMap();
-        parameterMap.put(HJBConstants.LISTING_RECURSE, new Boolean(false));
+        parameterMap.put(HJBConstants.LISTING_RECURSE, new String[] {"anythingGoes"});
         return Collections.unmodifiableMap(parameterMap);
     }
 

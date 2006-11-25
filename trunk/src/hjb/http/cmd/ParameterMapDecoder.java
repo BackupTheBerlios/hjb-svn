@@ -20,13 +20,18 @@
  */
 package hjb.http.cmd;
 
-import java.util.*;
-
-import org.apache.log4j.Logger;
-
 import hjb.misc.HJBConstants;
 import hjb.misc.HJBStrings;
 import hjb.msg.codec.OrderedTypedValueCodec;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 /**
  * <code>ParameterMapDecoder</code> is used to translate the values in the
@@ -75,6 +80,7 @@ public class ParameterMapDecoder {
     public Map decode(Map parameterMap) {
         Map result = new HashMap();
         if (null == parameterMap) return Collections.unmodifiableMap(result);
+        showMapInDebug(parameterMap, "Raw");
         List toBeDecoded = getCompulsoryDecodings();
         for (Iterator i = parameterMap.keySet().iterator(); i.hasNext();) {
             Object next = i.next();
@@ -92,7 +98,33 @@ public class ParameterMapDecoder {
                 LOG.error(e); // paranoia setting in!
             }
         }
+        showMapInDebug(result, "Decoded");
         return Collections.unmodifiableMap(result);
+    }
+    
+    protected void showMapInDebug(Map aMap, String title) {
+        if (! LOG.isDebugEnabled()) {
+            return;
+        }
+        Map toPrint = new HashMap();
+        for (Iterator i = aMap.entrySet().iterator(); i.hasNext();) {
+            Map.Entry anEntry = (Map.Entry) i.next();
+            Object value = anEntry.getValue();
+            if (value instanceof String []) {
+                String[] valueStrings = (String []) value;
+                StringBuffer asText = new StringBuffer();
+                for (int j = 0; j < valueStrings.length; j++) {
+                    if (j != 0) {
+                        asText.append(",");
+                    }
+                    asText.append(valueStrings[j]);
+                }
+                toPrint.put("" + anEntry.getKey(), asText.toString());
+            } else {
+                toPrint.put("" + anEntry.getKey(), "" + value);
+            }
+        }
+        LOG.debug(title + ": " + toPrint);
     }
 
     /**

@@ -86,5 +86,5 @@ public class ListConnectionFactoryGenerator extends
     private transient RetrieveListing generatedCommand;
 
     private static final Pattern PATH_MATCHER = Pattern.compile("^/(\\w+)/(?!.*?"
-            + PathNaming.CONNECTION + "-\\d+)(.+)/list$");
+            + PathNaming.CONNECTION + "-\\d+)(.+)/list\\??.*");
 }

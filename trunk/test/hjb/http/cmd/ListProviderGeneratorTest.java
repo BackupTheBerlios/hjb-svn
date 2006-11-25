@@ -38,13 +38,15 @@ public class ListProviderGeneratorTest extends
     public void testMatchWorksCorrectly() {
         assertFalse(generator.matches("/foo/destination/list"));
         assertFalse(generator.matches("/foo/bar/baz/list"));
-        assertTrue(generator.matches("/foo/list"));
+        assertTrue(generator.matches("/foo/list?recurse=anything"));
+        assertTrue(generator.matches("/foo/list?recurse"));
         assertTrue(generator.matches("/foo/list"));
     }
 
     public void testJMSCommandAndItsRunnerAreGeneratedCorrectly() {
         Mock mockRequest = generateMockRequest();
-        mockRequest.expects(atLeastOnce())
+        System.out.println(mockRequest);
+        mockRequest.stubs()
             .method("getPathInfo")
             .will(returnValue("/testProvider/list"));
         HttpServletRequest testRequest = (HttpServletRequest) mockRequest.proxy();
@@ -58,11 +60,12 @@ public class ListProviderGeneratorTest extends
         assertTrue(generator.getGeneratedCommand() instanceof RetrieveListing);
         RetrieveListing listingCommand = (RetrieveListing) generator.getGeneratedCommand();
         assertContains(listingCommand.getDescription(), "testProvider");
+        assertTrue(listingCommand.isRecursive());
     }
 
     protected Map generateMockParameterMap() {
         Map parameterMap = new HashMap();
-        parameterMap.put(HJBConstants.LISTING_RECURSE, new Boolean(false));
+        parameterMap.put(HJBConstants.LISTING_RECURSE, new String[] {"anythingGoes"});
         return Collections.unmodifiableMap(parameterMap);
     }
 

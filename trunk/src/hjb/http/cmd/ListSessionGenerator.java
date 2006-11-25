@@ -93,5 +93,5 @@ public class ListSessionGenerator extends PatternMatchingCommandGenerator {
             + PathNaming.CONNECTION
             + "-(\\d+)/"
             + PathNaming.SESSION
-            + "-(\\d+)/list$");
+            + "-(\\d+)/list\\??.*$");
 }
