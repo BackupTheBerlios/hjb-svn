@@ -21,6 +21,13 @@ particularly if you feel like contributing it yourself!
 
 * `HJB project website`_
 
+* `Subscribe`_ to `HJB project news`_ (RSS_)
+
+.. _Subscribe: http://developer.berlios.de/export/rss20_bsnews.php?group_id=6390
+.. _HJB project news: http://developer.berlios.de/export/rss20_bsnews.php?group_id=6390
+
+.. _RSS: http://blogs.law.harvard.edu/tech/rss
+
 .. _Tutorial - simple HTTP messaging with HJB: ./transcript.html
 
 .. _Installation guide: ./installation.html

@@ -9,7 +9,7 @@
 	parameters from the servlet config XML file
 
 	* hjb0.9.1 added the /collect command (Collect From) for consumers
-	and subscribers.  This allows client to collect several messages
+	and subscribers.  This allows clients to collect several messages
 	from them in one request
 
 	* hjb0.9.1 Changed the output of the /list commands so that it
