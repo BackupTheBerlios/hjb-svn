@@ -14,7 +14,7 @@ Create Session
 
 :Returns:
 
-  Location (a standard HTTP response header) : the URI of the created session
+  Location (a standard HTTP response header) : the URI_ of the created session
 
 This **POST** request creates a new JMS Session.  The command
 
@@ -25,6 +25,8 @@ This **POST** request creates a new JMS Session.  The command
 
 * includes the URI of the session in the standard HTTP 'Location'
   header of the response.
+
+.. _URI: http://en.wikipedia.org/wiki/Uniform_Resource_Identifier
 
 .. _back to commands: ./command-list.html
 

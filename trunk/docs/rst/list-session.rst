@@ -14,7 +14,7 @@ List Sesions
 
 This **GET** request generates a response whose body contains a list
 of the URIs of the session objects created by the session identified
-by URI at the root of the request's URL.  The command
+by URI_ at the root of the request's URL_.  The command
 
   - always returns the URIs of any producers, consumers, browsers and
     durable subscribers created by the session.
@@ -22,6 +22,10 @@ by URI at the root of the request's URL.  The command
   - lists all the accessible properties of the session objects if the
     *recurse* parameter is provided.
   
+.. _URL: http://en.wikipedia.org/wiki/URL
+
+.. _URI: http://en.wikipedia.org/wiki/Uniform_Resource_Identifier
+
 .. _back to commands: ./command-list.html
 
 .. Copyright (C) 2006 Tim Emiola

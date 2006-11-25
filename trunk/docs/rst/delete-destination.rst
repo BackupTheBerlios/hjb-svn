@@ -11,10 +11,12 @@ Delete Destination
 :Returns: N/A
 
 This **DELETE** request delects the destination identified by the
-request's URI from the HJB runtime application.  This command
+request's URI_ from the HJB runtime application.  This command
 
 * is idempotent. I.e., it can be invoked multiples times - if the
   destination is no longer registered, the command is ignored.
+
+.. _URI: http://en.wikipedia.org/wiki/Uniform_Resource_Identifier
 
 .. _back to commands: ./command-list.html
 

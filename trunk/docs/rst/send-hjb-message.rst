@@ -26,8 +26,8 @@ Send HJB Message
 :Returns: N/A
 
 This **POST** request sends a single message through a vendor's
-messaging system using the JMS producer identified by the URI at the
-root of the request's URL.  The message must be encoded as described
+messaging system using the `JMS producer`_ identified by the URI_ at the
+root of the request's URL_.  The message must be encoded as described
 in `message translation`_ and included in the POST request as the
 *message-to-send* parameter .  The command
 
@@ -47,6 +47,12 @@ in `message translation`_ and included in the POST request as the
 Consult [JMSSpec]_ for further information on sending JMS messages,
 particularly about the usage of the various optional arguments that
 this command takes.
+
+.. _URL: http://en.wikipedia.org/wiki/URL
+
+.. _URI: http://en.wikipedia.org/wiki/Uniform_Resource_Identifier
+
+.. _JMS Producer: http://java.sun.com/products/jms/tutorial/1_3_1-fcs/doc/prog_model.html#1026466 
 
 .. _back to commands: ./command-list.html
 

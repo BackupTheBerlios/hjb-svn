@@ -3,21 +3,22 @@ Simple HTTP messaging with HJB
 ==============================
 
 HJB allows communication with JMS_ messaging systems using nothing
-more than HTTP requests.  This document demonstrates this capability
-using a series of HTTP requests that are used to configure a JMS
+more than `HTTP`_ requests.  This document demonstrates this capability
+using a series of `HTTP`_ requests that are used to configure a JMS
 provider, then send and receive a message, and then finally remove any
 JMS objects that have been created.
 
 *N.B.* This example assumes HJB is running on a servlet whose servlet
 context URL is something like:
 
-  http://hjbserver.anywhere.net:8080/messaging/hjb01.  
+  `http://hjbserver.anywhere.net:8080/messaging/hjb01`  
 
 However, to shorten the URLs used written in the remainder of the
 document, this is replaced with the alias HJB_ROOT.
 
 .. _JMS: http://java.sun.com/products/JMS
 
+.. _HTTP: http://en.wikipedia.org/wiki/HTTP
 
 Transcript summary
 ------------------
@@ -89,7 +90,7 @@ The `administered objects`_ are provided by the JMS provider.  They
 will have been created separately using the provider's administration
 interface, and are made available to HJB via registration.
 
-.. _administered objects: ./administered_objects.html
+.. _administered objects: ./administered-objects.html
 
 * Register the provider
 

@@ -64,9 +64,13 @@ specified URLs and HTTP request methods.
 +----------------------------------+--------------------------------------------------------+
 |`Receive From Consumer`_ (*P*)    |*session-uri*/consumer-*nnn*/receive                    |
 +----------------------------------+--------------------------------------------------------+
+|`Collect From Consumer`_ (*P*)    |*session-uri*/consumer-*nnn*/collect                    |
++----------------------------------+--------------------------------------------------------+
 |`Create Subscriber`_ (*P*)        |*session-uri*/create-durable-subscriber                 |
 +----------------------------------+--------------------------------------------------------+
 |`Receive From Subscriber`_ (*P*)  |*session-uri*/subscriber-*nnn*/receive                  |
++----------------------------------+--------------------------------------------------------+
+|`Collect From Subscriber`_ (*P*)  |*session-uri*/subscriber-*nnn*/collect                  |
 +----------------------------------+--------------------------------------------------------+
 |`Create Producer`_ (*P*)          |*session-uri*/create-producer                           |
 +----------------------------------+--------------------------------------------------------+
@@ -116,8 +120,10 @@ URIs
 .. _View Queue: ./view-queue.html
 .. _Create Consumer: ./create-consumer.html
 .. _Receive From Consumer: ./receive-from-consumer.html
+.. _Collect From Consumer: ./collect-from-consumer.html
 .. _Create Subscriber: ./create-subscriber.html
 .. _Receive From Subscriber: ./receive-from-subscriber.html
+.. _Collect From Subscriber: ./collect-from-subscriber.html
 .. _Create Producer: ./create-producer.html
 .. _Send HJB Message: ./send-hjb-message.html
 

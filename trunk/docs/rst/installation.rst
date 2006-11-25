@@ -72,9 +72,9 @@ OR
 
 .. _anonymous subversion: http://developer.berlios.de/svn/?group_id=6390
 
-.. _downloading: http://prdownload.berlios.de/hjb/hjb-src-0.9.0.jar
+.. _downloading: http://prdownload.berlios.de/hjb/hjb-src-0.9.1.jar
 
-.. _binary archive: http://prdownload.berlios.de/hjb/hjb-bin-0.9.0.jar
+.. _binary archive: http://prdownload.berlios.de/hjb/hjb-bin-0.9.1.jar
 
 .. _HJB client libraries: ./hjb-clients.html
 

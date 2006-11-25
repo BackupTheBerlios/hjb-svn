@@ -4,7 +4,7 @@ HJB's Design Overview
 
 So, how does HJB work?
 
-* HJB resides in Java Servlet called the HJBServlet_.
+* HJB resides in a `Java Servlet`_ called the HJBServlet_.
 
 * HJBServlet_ provides access to JMS objects, in particular
 
@@ -20,13 +20,19 @@ So, how does HJB work?
   administration commands, others send and receive `JMS messages`_.
 
 * HJB achieves language-neutrality by `converting`_ between the Java
-  native types that the JMS API uses and a simple textual
-  representation suitable for transmission via HTTP that preserves
+  native types that the `JMS API`_ uses and a simple textual
+  representation suitable for transmission via HTTP_ that preserves
   Java type information.
 
 There is not much to it really ;-)
 
+.. _HTTP: http://en.wikipedia.org/wiki/HTTP
+
 .. _dispatching: ./command-dispatch.html
+
+.. _Java Servlet: http://en.wikipedia.org/wiki/Java_Servlet
+
+.. _JMS API: http://java.sun.com/products/jms/docs.html
 
 .. _JMS commands: ./command-list.html
 

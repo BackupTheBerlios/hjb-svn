@@ -11,7 +11,7 @@ Delete Session
 :Returns: N/A
 
 This **DELETE** request deletes the session identified by the
-request's URI.  This command
+request's URI_.  This command
 
 * closes the Session and removes its JMS objects from the HJB runtime
   application.
@@ -21,6 +21,8 @@ request's URI.  This command
 
 * sends back a *404 Not Found* response if the session is no longer
   present.
+
+.. _URI: http://en.wikipedia.org/wiki/Uniform_Resource_Identifier
 
 .. _back to commands: ./command-list.html
 

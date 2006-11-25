@@ -6,7 +6,7 @@ Mission
 -------
 
 HJB provides access to JMS_ resources via HTTP_. It provides a
-REST_ API equivalent of the `JMS 1.1 API`_, making it possible to
+REST_ API equivalent of the `JMS 1.1`_ API, making it possible to
 perform JMS operations by accessing JMS_ objects as REST_
 resources via HTTP_.
 
@@ -28,7 +28,7 @@ HJB
 
 
 * is `RESTful`_: it provides a `RESTful`_ equivalent to all of the
-  non-optional portions of the `JMS 1.1 API`_ including
+  non-optional portions of the `JMS 1.1`_ API including
 
   - registration of resources administered by the messaging provider
 
@@ -37,6 +37,8 @@ HJB
   - sending and receipt of all types of JMS message
 
 .. _`JMS`: http://java.sun.com/products/jms/
+
+.. _`JMS 1.1`: http://java.sun.com/products/jms/docs.html
 
 .. _`HTTP`: http://tools.ietf.org/html/rfc2616
 
@@ -53,7 +55,7 @@ HJB
   container compliant with version 2.4 of the `Java Servlet
   specification`_.
 
-* will work with any messaging vendor that provides a JMS 1.1
+* will work with any messaging vendor that provides a `JMS 1.1`_
   interface.
 
 * aims to do one thing well. Its role is to act as an `HTTP`_ gateway
@@ -68,25 +70,42 @@ HJB
   processing chain, e.g, another servlet, `Apache httpd`_, Zope_,
   RubyOnRails_, AddYourFavouriteWebServer here.
 
-* is extensively unit tested using `JUnit <http://www.junit.org>`_
-  and `JMock <http://www.jmock.org>`_
+.. _`Apache httpd`: http://httpd.apache.org
+
+.. _`Zope`: http://www.zope.org
+
+.. _`RubyOnRails`: http://www.rubyonrails.org
+
+* is very robust as its extensively unit tested using `JUnit
+  <http://www.junit.org>`_ and `JMock <http://www.jmock.org>`_.
+  Its Emma_ `coverage report`_ is available `online`_)
+
+.. _Emma: http://emma.sourceforge.net/
+
+.. _coverage report: ./instr/coverage.html
+
+.. _online: ./instr/coverage.html
 
 * aspires to make the best possible use of the HTTP protocol, and to
   be a thin, transparent layer so that there is very little obtruding
   between HJB client code and the JMS API. E.g,
 
-  - success or failure of each request is indicated by the HTTP
-    response code,
+  - success or failure of each request is indicated by the `HTTP
+    response code`_,
 
   - a descriptive status of each request is returned to the HTTP user
     agent in the response header,
 
-  - status messages are detailed, clear and fully internationalized, 
+  - status messages are detailed, clear and fully `internationalized`_, 
 
   - all faults are logged on the server and match the status messages
     returned to the user agent.
 
-.. _`Java Servlet Specification` : http://java.sun.com/products/servlet/download.html#specs
+.. _HTTP Response Code: http://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+
+.. _Java Servlet Specification : http://java.sun.com/products/servlet/download.html#specs
+
+.. _internationalized: http://en.wikipedia.org/wiki/I18n
 
 Related Resources
 -----------------
@@ -110,13 +129,5 @@ Related Resources
 
 * `Java Servlet specification 2.4
   <http://java.sun.com/products/servlet/download.html#specs>`_
-
-.. _`JMS 1.1 API`: http://java.sun.com/products/jms/docs.html
-
-.. _`Apache httpd`: http://httpd.apache.org
-
-.. _`Zope`: http://www.zope.org
-
-.. _`RubyOnRails`: http://www.rubyonrails.org
 
 .. Copyright (C) 2006 Tim Emiola

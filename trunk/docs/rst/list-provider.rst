@@ -14,7 +14,7 @@ List Provider
 
 This **GET** request generates a response whose body contains a
 listing of the URIs of the JMS objects beneath the HJB provider
-identified by the URI at the root of the request's URL.  The command
+identified by the URI_ at the root of the request's URL_.  The command
 
 * always returns the URIs of any connection factories and destinations
   registered with the provider in HJB.
@@ -24,6 +24,10 @@ identified by the URI at the root of the request's URL.  The command
   by the factory, their sessions and the session's JMS objects are
   included in the body of the response
   
+.. _URL: http://en.wikipedia.org/wiki/URL
+
+.. _URI: http://en.wikipedia.org/wiki/Uniform_Resource_Identifier
+
 .. _back to commands: ./command-list.html
 
 .. Copyright (C) 2006 Tim Emiola

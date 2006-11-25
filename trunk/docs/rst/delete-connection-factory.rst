@@ -11,7 +11,7 @@ Delete Connection Factory
 :Returns: N/A
 
 This **DELETE** request removes the connection factory identified by
-the request's URI from the HJB runtime application. This command
+the request's URI_ from the HJB runtime application. This command
 
 * removes all the connections and sessions created by the connection
   factory. 
@@ -28,6 +28,8 @@ the request's URI from the HJB runtime application. This command
 
 * sends back a *404 Not Found* response if the connection factory is
   no longer present.
+
+.. _URI: http://en.wikipedia.org/wiki/Uniform_Resource_Identifier
 
 .. _back to commands: ./command-list.html
 

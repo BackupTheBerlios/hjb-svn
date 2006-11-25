@@ -10,8 +10,8 @@ Commit Session
 
 :Returns: N/A
 
-This *GET* request commits a transactional session at the specified
-URI.  This command
+This *GET* request commits a transactional_ session at the specified
+URI_.  This command
 
 * is idempotent during the lifetime of the session. I.e, if sent to a
   a transactional session that is already committed, it is ignored. 
@@ -20,6 +20,10 @@ URI.  This command
   present.
 
 * is ignored by sessions that are not transactional.
+
+.. _transactional: http://foldoc.org/index.cgi?query=transaction&action=Search
+
+.. _URI: http://en.wikipedia.org/wiki/Uniform_Resource_Identifier
 
 .. _back to commands: ./command-list.html
 

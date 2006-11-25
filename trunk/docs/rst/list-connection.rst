@@ -14,13 +14,17 @@ List Connection
 
 This **GET** request generates a response whose body contains a
 listing of the URIs of the JMS objects beneath the connection
-identified by the URI at the root of the request's URL. The command
+identified by the URI_ at the root of the request's URL_. The command
 
 * always returns the URIs of any current session of the JMS connection
 
 * lists the sessions recursively if the *recurse* parameter is
   provided.  The URIs of all the session's child objects are included
   in the body of the response.
+
+.. _URL: http://en.wikipedia.org/wiki/URL
+
+.. _URI: http://en.wikipedia.org/wiki/Uniform_Resource_Identifier
 
 .. _back to commands: ./command-list.html
 

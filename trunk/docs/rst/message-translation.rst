@@ -5,8 +5,8 @@ Message Translation
 JMS Message Types
 -----------------
 
-The JMS API supports 5 message types.  All of them can be sent and
-received by HJB.  They are:
+The `JMS API`_ describes 5 message types.  HJB can send and receive all
+them.  They are:
 
 * `Text Message`_
 
@@ -27,16 +27,23 @@ parameter of a POST request.  On receiving, the message is included in
 the body of a HTTP response.
 
 The following sections give describe how the different types of JMS
-message are transformed into text for inclusion in HTTP requests and
+message are transformed into text for inclusion in HTTP_ requests and
 responses.
+
+.. _`JMS API`: http://java.sun.com/products/jms/faq.html#what_is_jms
+
+.. _`HTTP`: http://en.wikipedia.org/wiki/HTTP
+
 
 Common features
 ---------------
 
-All JMS messages have a fixed set of standard header fields, which JMS
+All JMS messages have a fixed set of `standard header`_ fields, which JMS
 represents as typed attributes of the JMS message class. In addition,
 a message may have application-specific message properties.  Refer to
 [JMSSpec]_ for a full description of JMS headers and properties.
+
+.. _`standard header`: http://java.sun.com/products/jms/tutorial/1_3_1-fcs/doc/prog_model.html#1023400
 
 .. [JMSSpec] `Java Message Service specification 1.1
    <http://java.sun.com/products/jms/docs.html>`_ 
@@ -87,7 +94,7 @@ fashion:
 * The Java type of the message's standard headers and application
   properties is preserved by making the values `HJB-encoded`_.
 
-* If a JMS standard header is encoded as the wrong Java type, HJB will
+* If a JMS `standard header`_ is encoded as the wrong Java type, HJB will
   ignore it.
 
 * When sending messages, HJB clients *must* put standard header and
@@ -149,15 +156,25 @@ fashion:
   - Its value **must** be the name of the JMS interface class for the
     message's JMS type. I.e., it should be one of:
 
-    + javax.jms.TextMessage
+    + `javax.jms.TextMessage`_
 
-    + javax.jms.ObjectMessage
+    + `javax.jms.ObjectMessage`_
 
-    + javax.jms.StreamMessage
+    + `javax.jms.StreamMessage`_
 
-    + javax.jms.MapMessage
+    + `javax.jms.MapMessage`_
 
-    + javax.jmx.BytesMessage
+    + `javax.jms.BytesMessage`_
+
+.. _javax.jms.TextMessage: http://java.sun.com/j2ee/1.4/docs/api/javax/jms/TextMessage.html
+
+.. _javax.jms.MapMessage: http://java.sun.com/j2ee/1.4/docs/api/javax/jms/MapMessage.html
+
+.. _javax.jms.StreamMessage: http://java.sun.com/j2ee/1.4/docs/api/javax/jms/StreamMessage.html
+
+.. _javax.jms.BytesMessage: http://java.sun.com/j2ee/1.4/docs/api/javax/jms/BytesMessage.html
+
+.. _javax.jms.ObjectMessage: http://java.sun.com/j2ee/1.4/docs/api/javax/jms/ObjectMessage.html
 
 * On both sending and receiving, the HJB message **must** include a
   field containing the version of the HJB message format.
@@ -187,7 +204,7 @@ Text Message
 
 * The value of the field 'hjb_jms_message_interface' is 
 
-  - javax.jms.TextMessage
+  - **javax.jms.TextMessage**
 
 .. class:: message_desc
 
@@ -203,7 +220,7 @@ Object Message
 
 * The value of the field 'hjb_jms_message_interface' is
 
-  - javax.jms.ObjectMessage
+  - **javax.jms.ObjectMessage**
 
 .. _translation: ./codec.html 
 
@@ -219,7 +236,7 @@ Bytes Message
 
 * The value of the field 'hjb_jms_message_interface' is
 
-  - javax.jms.BytesMessage
+  - **javax.jms.BytesMessage**
 
 .. class:: message_desc
 
@@ -233,7 +250,7 @@ Map Message
 
 * The value of the field 'hjb_jms_message_interface' is
 
-  - javax.jms.MapMessage
+  - **javax.jms.MapMessage**
 
 
 .. class:: message_desc
@@ -253,7 +270,7 @@ Stream Message
 
 * The value of the header field 'hjb_jms_message_interface' is
 
-  - javax.jms.StreamMessage
+  - **javax.jms.StreamMessage**
 
 Links
 -----

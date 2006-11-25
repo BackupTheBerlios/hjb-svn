@@ -11,7 +11,7 @@ Delete Provider
 :Returns: N/A
 
 This **DELETE** request triggers shutdown of the provider identified
-by the request's URI.  This command
+by the request's URI_.  This command
 
 * is idempotent.  I.e., it can be invoked multiple times - if the
   provider is no longer present, the command is ignored.
@@ -31,6 +31,8 @@ by the request's URI.  This command
 
   - Session closure and connection termination are performed in	
     accordance with the guidelines in [JMSSpec]_.
+
+.. _URI: http://en.wikipedia.org/wiki/Uniform_Resource_Identifier
 
 .. _back to commands: ./command-list.html
 
