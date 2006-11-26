@@ -44,7 +44,8 @@ HJB
 
 .. _`REST`: http://en.wikipedia.org/wiki/REST
 
-.. _`RESTful`: http://en.wikipedia.org/wiki/REST
+.. _`RESTful`: http://rest.blueoxen.net/cgi-bin/wiki.pl?RESTfulDesign
+
 
 Implementation overview
 -----------------------
@@ -82,7 +83,7 @@ HJB
 
 .. _Emma: http://emma.sourceforge.net/
 
-.. _coverage report: ./instr/coverage.html
+.. _coverage report:
 
 .. _online: ./instr/coverage.html
 
