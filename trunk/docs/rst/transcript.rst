@@ -3,8 +3,8 @@ Simple HTTP messaging with HJB
 ==============================
 
 HJB allows communication with JMS_ messaging systems using nothing
-more than `HTTP`_ requests.  This document demonstrates this capability
-using a series of `HTTP`_ requests that are used to configure a JMS
+more than HTTP_ requests.  This document demonstrates this capability
+using a series of HTTP_ requests that are used to configure a JMS
 provider, then send and receive a message, and then finally remove any
 JMS objects that have been created.
 
@@ -55,13 +55,13 @@ shown in the lines immediately following it.
 
     *destination-uri*: **HJB_ROOT/transcript/destination/hjb_transcript_receive**
 
-    *message-selector*: **transcript-only=(boolean true)**
+    *message-selector*: **transcript-only=true**
 
   **POST** HJB_ROOT/transcript/ConnectionFactory/connection-0/session-0/create-producer
 
     *destination-uri*: **HJB_ROOT/transcript/destination/hjb_transcript_send**
 
-    *message-selector*: **transcript-only=(boolean true)**
+    *priority*: **(integer 5)**
 
 * `Send and receive messages`_
 
@@ -183,7 +183,7 @@ active operations; and the consumer_ and producer_ that receive and send message
 
     *destination-uri*: **HJB_ROOT/transcript/destination/hjb_transcript_receive**
 
-    *message-selector*: **transcript-only=(boolean true)**
+    *message-selector*: **transcript-only=true**
 
   The Location header of the response will contain the URI of the
   created JMS consumer:
@@ -202,7 +202,7 @@ active operations; and the consumer_ and producer_ that receive and send message
   
     *destination-uri*: **HJB_ROOT/transcript/destination/hjb_transcript_send**
 
-    *message-selector*: **transcript-only=(boolean true)**
+    *priority*: **(integer 5)**
 
   The Location header of the response will contain the URI of the
   created JMS producer:

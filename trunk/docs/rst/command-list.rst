@@ -2,92 +2,104 @@
 HJB JMS Commands
 ================
 
-URL Patterns
-------------
+HJB recognises all the `JMS Commands`_ in the table below, matching them
+to the specified URLs and HTTP request methods.  To see examples of
+them in use.
+ 
+* examine this transcript_ of a simple messaging use case using raw
+  HTTP,
 
-HJB recognises the JMS Commands in the table below, matching them to the
-specified URLs and HTTP request methods.
+* or explore how the `python`_ client, PyHJB_ `accesses JMS`_ using
+  these commands.
+
+.. _transcript: ./transcript.html
+.. _python: http://www.python.org
+.. _PyHJB: http://cheeseshop.python.org/pypi/pyhjb 
+.. _accesses JMS: http://hjb.python-hosting.com/wiki/BuiltOnHttpLib
+
+
+JMS Commands
+------------
 
   .. class:: display-items
   
 +----------------------------------+--------------------------------------------------------+
-|JMS Command (method)              |URL                                                     |
+|JMS Command                       |(method) URL                                            |
 +==================================+========================================================+
-|`Register Provider`_ (*P*)        |*hjb-root-uri*/*provider-name*/register                 |
+|`Register Provider`_              |*(P)* *hjb-root-uri*/*provider-name*/register           |
 +----------------------------------+--------------------------------------------------------+
-|`Delete Provider`_ (*D*)          |*hjb-root-uri*/*provider-name*                          |
+|`Delete Provider`_                |*(D)* *hjb-root-uri*/*provider-name*                    |
 +----------------------------------+--------------------------------------------------------+
-|`List Provider`_ (*G*)            |*hjb-root-uri*/*provider-name*/list                     |
+|`List Provider`_                  |(*G*) *hjb-root-uri*/*provider-name*/list               |
 +----------------------------------+--------------------------------------------------------+
-|`Register Destination`_ (*G*)     |*provider-uri*/destination/*jndi-name*/register         |
+|`Register Destination`_           |(*G*) *provider-uri*/destination/*jndi-name*/register   |
 +----------------------------------+--------------------------------------------------------+
-|`Delete Destination`_ (*D*)       |*provider-uri*/destination/*jndi-name*                  |
+|`Delete Destination`_             |*(D)* *provider-uri*/destination/*jndi-name*            |
 +----------------------------------+--------------------------------------------------------+
-|`Register Connection Factory`_    |*provider-uri*/*jndi-name*/register                     |
-|(*G*)                             |                                                        |
+|`Register Connection Factory`_    |(*G*) *provider-uri*/*jndi-name*/register               |
 +----------------------------------+--------------------------------------------------------+
-|`Delete Connection Factory`_ (*D*)|*provider-uri*/*jndi-name*                              |
+|`Delete Connection Factory`_      |*(D)* *provider-uri*/*jndi-name*                        |
 +----------------------------------+--------------------------------------------------------+
-|`List Connection Factory`_ (*A*)  |*provider-uri*/*jndi-name*/list                         |
+|`List Connection Factory`_        |(*G*) *provider-uri*/*jndi-name*/list                   |
 +----------------------------------+--------------------------------------------------------+
-|`Create Connection`_ (*P*)        |*factory-uri*/create                                    |
+|`Create Connection`_              |*(P)* *factory-uri*/create                              |
 +----------------------------------+--------------------------------------------------------+
-|`Stop Connection`_ (*G*)          |*factory-uri*/connection-*nnn*/stop                     |
+|`Stop Connection`_                |(*G*) *factory-uri*/connection-*nnn*/stop               |
 +----------------------------------+--------------------------------------------------------+
-|`Start Connection`_ (*G*)         |*factory-uri*/connection-*nnn*/start                    |
+|`Start Connection`_               |(*G*) *factory-uri*/connection-*nnn*/start              |
 +----------------------------------+--------------------------------------------------------+
-|`Read Connection MetaData`_ (*G*) |*factory-uri*/connection-*nnn*/metadata                 |
+|`Read Connection MetaData`_       |(*G*) *factory-uri*/connection-*nnn*/metadata           |
 +----------------------------------+--------------------------------------------------------+
-|`Delete Connection`_ (*D*)        |*factory-uri*/connection-*nnn*                          |
+|`Delete Connection`_              |*(D)* *factory-uri*/connection-*nnn*                    |
 +----------------------------------+--------------------------------------------------------+
-|`List Connection`_ (*G*)          |*factory-uri*/connection-*nnn*/list                     |
+|`List Connection`_                |(*G*) *factory-uri*/connection-*nnn*/list               |
 +----------------------------------+--------------------------------------------------------+
-|`Show Connection Errors`_ (*G*)   |*factory-uri*/connection-*nnn*/errors                   |
+|`Show Connection Errors`_         |(*G*) *factory-uri*/connection-*nnn*/errors             |
 +----------------------------------+--------------------------------------------------------+
-|`Create Session`_ (*P*)           |*connection-uri*/create                                 |
+|`Create Session`_                 |*(P)* *connection-uri*/create                           |
 +----------------------------------+--------------------------------------------------------+
-|`Rollback Session`_ (*G*)         |*connection-uri*/session-*nnn*/rollback                 |
+|`Rollback Session`_               |(*G*) *connection-uri*/session-*nnn*/rollback           |
 +----------------------------------+--------------------------------------------------------+
-|`Unsubscribe Client Id`_ (*G*)    |*connection-uri*/session-*nnn*/unsubscribe              |
+|`Unsubscribe Client Id` _         |(*G*) *connection-uri*/session-*nnn*/unsubscribe        |
 +----------------------------------+--------------------------------------------------------+
-|`Commit Session`_ (*P*)           |*connection-uri*/session-*nnn*/commit                   |
+|`Commit Session`_                 |*(P)* *connection-uri*/session-*nnn*/commit             |
 +----------------------------------+--------------------------------------------------------+
-|`Delete Session`_ (*D*)           |*connection-uri*/session-*nnn*                          |
+|`Delete Session`_                 |*(D)* *connection-uri*/session-*nnn*                    |
 +----------------------------------+--------------------------------------------------------+
-|`List Session`_ (*G*)             |*connection-uri*/session-*nnn*/list                     |
+|`List Session`_                   |(*G*) *connection-uri*/session-*nnn*/list               |
 +----------------------------------+--------------------------------------------------------+
-|`Create Browser`_ (*P*)           |*session-uri*/create-browser                            |
+|`Create Browser`_                 |*(P)* *session-uri*/create-browser                      |
 +----------------------------------+--------------------------------------------------------+
-|`View Queue`_ (*P*)               |*session-uri*/browser-*nnn*/view                        |
+|`View Queue`_                     |*(P)* *session-uri*/browser-*nnn*/view                  |
 +----------------------------------+--------------------------------------------------------+
-|`Create Consumer`_ (*P*)          |*session-uri*/create-consumer                           |
+|`Create Consumer`_                |*(P)* *session-uri*/create-consumer                     |
 +----------------------------------+--------------------------------------------------------+
-|`Receive From Consumer`_ (*P*)    |*session-uri*/consumer-*nnn*/receive                    |
+|`Receive From Consumer`_          |*(P)* *session-uri*/consumer-*nnn*/receive              |
 +----------------------------------+--------------------------------------------------------+
-|`Collect From Consumer`_ (*P*)    |*session-uri*/consumer-*nnn*/collect                    |
+|`Collect From Consumer`_          |*(P)* *session-uri*/consumer-*nnn*/collect              |
 +----------------------------------+--------------------------------------------------------+
-|`Create Subscriber`_ (*P*)        |*session-uri*/create-durable-subscriber                 |
+|`Create Subscriber`_              |*(P)* *session-uri*/create-durable-subscriber           |
 +----------------------------------+--------------------------------------------------------+
-|`Receive From Subscriber`_ (*P*)  |*session-uri*/subscriber-*nnn*/receive                  |
+|`Receive From Subscriber`_        |*(P)* *session-uri*/subscriber-*nnn*/receive            |
 +----------------------------------+--------------------------------------------------------+
-|`Collect From Subscriber`_ (*P*)  |*session-uri*/subscriber-*nnn*/collect                  |
+|`Collect From Subscriber`_        |*(P)* *session-uri*/subscriber-*nnn*/collect            |
 +----------------------------------+--------------------------------------------------------+
-|`Create Producer`_ (*P*)          |*session-uri*/create-producer                           |
+|`Create Producer`_                |*(P)* *session-uri*/create-producer                     |
 +----------------------------------+--------------------------------------------------------+
-|`Send HJB Message`_ (*P*)         |*session-uri*/producer-*nnn*/send                       |
+|`Send HJB Message`_               |*(P)* *session-uri*/producer-*nnn*/send                 |
 +----------------------------------+--------------------------------------------------------+
 
 ------
 
-Key
+*Key*
  
-Methods
+**Methods**
 
 - *P* is POST 
 - *G* is GET
 - *D* is DELETE
 
-URIs
+**URIs**
 
 - *hjb-root-uri*   is as configured on the servlet container
 - *provider-uri*   is *hjb-root-uri*/*provider-name*
