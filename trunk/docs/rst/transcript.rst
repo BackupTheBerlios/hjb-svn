@@ -16,7 +16,7 @@ context URL is something like:
 However, to shorten the URLs used written in the remainder of the
 document, this is replaced with the alias HJB_ROOT.
 
-.. _JMS: http://java.sun.com/products/JMS
+.. _JMS: http://java.sun.com/products/jms
 
 .. _HTTP: http://en.wikipedia.org/wiki/HTTP
 
